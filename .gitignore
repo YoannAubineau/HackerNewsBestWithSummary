@@ -1,0 +1,19 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+dist/
+build/
+*.egg-info/
+.DS_Store
+
+# Claude Code local settings — per-machine, not shared
+.claude/
+
+# Transient article/discussion content — never committed (copyright + repo size)
+articles/**/*.raw.*.txt
+
