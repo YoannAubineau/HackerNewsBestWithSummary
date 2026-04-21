@@ -34,9 +34,13 @@ def write_feed() -> Path:
 
 def _collect_articles() -> list[tuple[Article, str]]:
     settings = get_settings()
-    items = [(a, body) for _, a, body in iter_summarized()]
-    items.sort(key=lambda pair: pair[0].hn_item_id, reverse=True)
-    return items[: settings.feed_items_limit]
+    limit = settings.feed_items_limit
+    items: list[tuple[Article, str]] = []
+    for _, article, body in iter_summarized():
+        items.append((article, body))
+        if len(items) >= limit:
+            break
+    return items
 
 
 def _add_entry(fg: FeedGenerator, article: Article, body: str) -> None:
