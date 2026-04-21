@@ -32,9 +32,9 @@ class Settings(BaseSettings):
     max_attempts: int = 3
     user_agent: str = "hn-best-summary/0.1 (+https://github.com/)"
 
-    articles_dir: Path = Path("articles")
-    failed_dir: Path = Path("articles/_failed")
-    feed_output_path: Path = Path("feed.xml")
+    articles_dir: Path = Path("artefacts/articles")
+    failed_dir: Path = Path("artefacts/articles/_failed")
+    feed_output_path: Path = Path("artefacts/feed.xml")
 
     log_level: LogLevel = "INFO"
 

@@ -15,5 +15,5 @@ build/
 .claude/
 
 # Transient article/discussion content — never committed (copyright + repo size)
-articles/**/*.raw.*.txt
+artefacts/articles/**/*.raw.*.txt
 

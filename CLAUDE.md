@@ -38,17 +38,21 @@ hourly on a public repo, so minutes are free.
 ## Architecture at a glance
 
 - **No database**. One Markdown file per article, frontmatter for metadata,
-  body for the LLM output. Files partitioned `articles/YYYY/MM/DD/` by the
-  article's HN submission date; filename is a 8-char SHA-256 short hash of
-  the `guid` for deterministic idempotent naming.
+  body for the LLM output. Files partitioned
+  `artefacts/articles/YYYY/MM/DD/` by the article's HN submission date;
+  filename is a 8-char SHA-256 short hash of the `guid` for deterministic
+  idempotent naming.
 - **No backend**. The whole pipeline runs inside a single Actions job that
-  reads/writes the repo and pushes back. Feed is served statically by Pages.
+  reads/writes the repo and pushes back. The `artefacts/` folder is
+  uploaded by a dedicated Actions workflow and served statically by Pages
+  — its contents are exposed at the site root, so the feed URL is
+  `https://.../feed.xml` (no `/artefacts/` in the path).
 - **No queue, no retry service**. The pipeline keeps state via a `status`
   field in each article's frontmatter (`pending` → `article_fetched` →
   `discussion_fetched` → `summarized`, or `failed`). Each step iterates files
   of the matching status. Crash-resumable for free.
 - **Raw HTML / discussion text is never committed**. Article content is kept
-  in sidecar files (`articles/.../<hash>.raw.article.txt`,
+  in sidecar files (`artefacts/articles/.../<hash>.raw.article.txt`,
   `<hash>.raw.discussion.txt`) which are gitignored, used during the cycle,
   and cleared once the summary succeeds. Only the summary itself ends up in
   git. Driven by copyright and repo-size concerns.
