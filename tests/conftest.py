@@ -13,6 +13,6 @@ def isolated_settings(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     settings = config_module.get_settings()
     settings.articles_dir = tmp_path / "articles"
     settings.failed_dir = tmp_path / "articles" / "_failed"
-    settings.feed_output_path = tmp_path / "feed.xml"
+    settings.feed_output_path = tmp_path / "feed.fr.xml"
     yield settings
     config_module.reset_settings()
