@@ -33,7 +33,7 @@ def write_feed() -> Path:
 def _collect_articles() -> list[tuple[Article, str]]:
     settings = get_settings()
     items = [(a, body) for _, a, body in iter_summarized()]
-    items.sort(key=lambda pair: pair[0].source_published_at, reverse=True)
+    items.sort(key=lambda pair: pair[0].hn_item_id, reverse=True)
     return items[: settings.feed_items_limit]
 
 

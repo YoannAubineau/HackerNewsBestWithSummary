@@ -58,11 +58,9 @@ def test_ask_hn_uses_hn_url_as_link(isolated_settings):
     assert items[0].findtext("comments") == "https://news.ycombinator.com/item?id=20"
 
 
-def test_feed_sorted_by_source_published_at_desc(isolated_settings):
-    older = _make_article("old", hn_item_id=1, title="Ancien")
-    older.source_published_at = datetime(2026, 4, 19, 9, 0, tzinfo=UTC)
-    newer = _make_article("new", hn_item_id=2, title="Récent")
-    newer.source_published_at = datetime(2026, 4, 21, 9, 0, tzinfo=UTC)
+def test_feed_sorted_by_hn_item_id_desc(isolated_settings):
+    older = _make_article("old", hn_item_id=100, title="Ancien")
+    newer = _make_article("new", hn_item_id=200, title="Récent")
     save(older, "body")
     save(newer, "body")
     items = _parse(build_feed())
