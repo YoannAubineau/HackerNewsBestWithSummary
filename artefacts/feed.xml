@@ -13,7 +13,7 @@
       <link>https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.xml</link>
     </image>
     <language>fr</language>
-    <lastBuildDate>Tue, 21 Apr 2026 15:34:47 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2026 15:37:57 +0000</lastBuildDate>
     <ttl>60</ttl>
     <item>
       <title>Recueil de lois et principes fondamentaux en génie logiciel</title>
@@ -59,6 +59,9 @@
       <comments>https://news.ycombinator.com/item?id=47847179</comments>
       <pubDate>Tue, 21 Apr 2026 11:04:56 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://lawsofsoftwareengineering.com/og-image.png"/>
+      </media:group>
     </item>
     <item>
       <title>Anthropic autorise à nouveau l'utilisation de Claude CLI dans OpenClaw selon les directives du personnel</title>
@@ -92,6 +95,9 @@
       <comments>https://news.ycombinator.com/item?id=47844269</comments>
       <pubDate>Tue, 21 Apr 2026 03:43:03 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://clawdhub.mintlify.app/mintlify-assets/_next/image?url=%2F_mintlify%2Fapi%2Fog%3Fdivision%3DProviders%26title%3DAnthropic%26logoLight%3Dhttps%253A%252F%252Fmintcdn.com%252Fclawdhub%252FdpADRo8IUoiDztzJ%252Fassets%252Fpixel-lobster.svg%253Ffit%253Dmax%2526auto%253Dformat%2526n%253DdpADRo8IUoiDztzJ%2526q%253D85%2526s%253D8fdf719fb6d3eaad7c65231385bf28e5%26logoDark%3Dhttps%253A%252F%252Fmintcdn.com%252Fclawdhub%252FdpADRo8IUoiDztzJ%252Fassets%252Fpixel-lobster.svg%253Ffit%253Dmax%2526auto%253Dformat%2526n%253DdpADRo8IUoiDztzJ%2526q%253D85%2526s%253D8fdf719fb6d3eaad7c65231385bf28e5%26primaryColor%3D%2523FF5A36%26lightColor%3D%2523FF8A6B%26darkColor%3D%2523FF5A36%26backgroundLight%3D%2523ffffff%26backgroundDark%3D%25230e0c0d&amp;w=1200&amp;q=100"/>
+      </media:group>
     </item>
     <item>
       <title>StackAdapt propose des publicités dans ChatGPT à bas coûts en ciblant la pertinence des requêtes utilisateurs</title>
@@ -127,6 +133,9 @@
       <comments>https://news.ycombinator.com/item?id=47840980</comments>
       <pubDate>Mon, 20 Apr 2026 21:20:52 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://static-www.adweek.com/wp-content/uploads/2025/05/open-ai-data-chatgpt-2025.jpg?w=600&amp;h=315&amp;crop=1"/>
+      </media:group>
     </item>
     <item>
       <title>Tim Cook devient président directeur général d'Apple, John Ternus lui succède à partir de septembre 2026</title>
@@ -164,6 +173,9 @@
       <comments>https://news.ycombinator.com/item?id=47840219</comments>
       <pubDate>Mon, 20 Apr 2026 20:39:32 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://www.apple.com/newsroom/images/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/tile/Apple-John-Ternus-Tim-Cook_lp.jpg.og.jpg?202604210034"/>
+      </media:group>
     </item>
     <item>
       <title>Les mouvements de résistance à l'IA se multiplient et soulèvent des questions importantes</title>
@@ -237,6 +249,9 @@
       <comments>https://news.ycombinator.com/item?id=47839835</comments>
       <pubDate>Mon, 20 Apr 2026 20:07:35 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://warontherocks.com/wp-content/uploads/2026/04/9513271.jpg?v=1776697753"/>
+      </media:group>
     </item>
     <item>
       <title>Kimi open-source le Vendor Verifier pour valider la précision des implémentations d'inférence</title>
@@ -308,6 +323,9 @@
       <comments>https://news.ycombinator.com/item?id=47837611</comments>
       <pubDate>Mon, 20 Apr 2026 17:23:58 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://theonion.com/wp-content/uploads/2026/04/IW_Flags_Announcement_IHA_GR_16x9.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Les ordinateurs quantiques ne menacent pas les clés symétriques de 128 bits</title>
@@ -345,6 +363,9 @@
       <comments>https://news.ycombinator.com/item?id=47836784</comments>
       <pubDate>Mon, 20 Apr 2026 16:37:48 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://assets.buttondown.email/images/4de912cf-5147-4672-9800-4510d734d5ec.jpeg?w=960&amp;fit=max"/>
+      </media:group>
     </item>
     <item>
       <title>Les raisons pour lesquelles la surveillance est devenue le modèle par défaut</title>
@@ -416,6 +437,9 @@
       <comments>https://news.ycombinator.com/item?id=47835928</comments>
       <pubDate>Mon, 20 Apr 2026 15:41:02 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://techcrunch.com/wp-content/uploads/2026/04/Copy-of-2000x1000-EN-1240x600-1.jpg?resize=1200,581"/>
+      </media:group>
     </item>
     <item>
       <title>Amazon Kindles deviennent des appareils jetables avec des restrictions croissantes, alternatives supérieures disponibles</title>
@@ -453,6 +477,9 @@
       <comments>https://news.ycombinator.com/item?id=47835775</comments>
       <pubDate>Mon, 20 Apr 2026 15:30:17 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://www.androidauthority.com/wp-content/uploads/2019/11/Amazon-Kindle-Oasis-with-warmth-and-brightness-slider.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Kimi K2.6 améliore significativement le codage autonome, les tâches longue durée et la coordination multi-agents</title>
@@ -523,6 +550,9 @@
       <comments>https://news.ycombinator.com/item?id=47834565</comments>
       <pubDate>Mon, 20 Apr 2026 14:05:34 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://img.alicdn.com/imgextra/i1/O1CN013ltlI61OTOnTStXfj_!!6000000001706-55-tps-330-327.svg"/>
+      </media:group>
     </item>
     <item>
       <title>À partir de 2027, tous les téléphones vendus dans l'UE doivent avoir des batteries amovibles</title>
@@ -559,6 +589,9 @@
       <comments>https://news.ycombinator.com/item?id=47834195</comments>
       <pubDate>Mon, 20 Apr 2026 13:41:25 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://www.theolivepress.es/wp-content/uploads/2021/12/Insurance-company-scammed-out-of-E500000-by-mobile-phone-dealer-on-Spains-Costa-Blanca-scaled.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>L'utilisation du sauna améliore la récupération cardiaque le jour même, particulièrement chez les femmes en phase lutéale</title>
@@ -594,6 +627,9 @@
       <comments>https://news.ycombinator.com/item?id=47834184</comments>
       <pubDate>Mon, 20 Apr 2026 13:40:28 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://loved-hug-5d84552294.media.strapiapp.com/large_sauna_hr_984f14dcae.png"/>
+      </media:group>
     </item>
     <item>
       <title>ggsql : une implémentation de la grammaire des graphiques basée sur la syntaxe SQL</title>
@@ -631,6 +667,9 @@
       <comments>https://news.ycombinator.com/item?id=47833558</comments>
       <pubDate>Mon, 20 Apr 2026 12:51:20 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://opensource.posit.co/blog/2026-04-20_ggsql_alpha_release/ggsql.png"/>
+      </media:group>
     </item>
     <item>
       <title>Atlassian active par défaut la collecte de données pour entraîner ses modèles d'IA</title>
@@ -703,6 +742,9 @@
       <comments>https://news.ycombinator.com/item?id=47833156</comments>
       <pubDate>Mon, 20 Apr 2026 12:12:19 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://img.rts.ch/articles/2026/image/50gomb-29214558.image?w=1200&amp;h=630"/>
+      </media:group>
     </item>
     <item>
       <title>Extension WebUSB pour Firefox : installation et configuration du stub natif</title>
@@ -740,6 +782,9 @@
       <comments>https://news.ycombinator.com/item?id=47832969</comments>
       <pubDate>Mon, 20 Apr 2026 11:51:04 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://opengraph.githubassets.com/c4313db2ff945a30e3c52c5848999db751c22be748a34a0ac7edcf00f68ded17/ArcaneNibble/awawausb"/>
+      </media:group>
     </item>
     <item>
       <title>Un tremblement de terre de magnitude 7,4 s'est produit à 100 km à l'est-nord-est de Miyako au Japon</title>
@@ -843,6 +888,9 @@
       <comments>https://news.ycombinator.com/item?id=47831742</comments>
       <pubDate>Mon, 20 Apr 2026 08:49:22 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://www.politico.eu/cdn-cgi/image/width=1200,height=630,fit=crop,quality=80,onerror=redirect/wp-content/uploads/2026/04/17/GettyImages-1829285149-scaled.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Des millions d'étoiles GitHub fausses se vendent ouvertement et influencent les décisions de financement des startups</title>
@@ -879,6 +927,9 @@
       <comments>https://news.ycombinator.com/item?id=47831621</comments>
       <pubDate>Mon, 20 Apr 2026 08:26:52 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://awesomeagents.ai/images/news/github-fake-stars-investigation_hu_e6899b47d07205c8.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Les architectures d'agents actuels reproduisent les failles de sécurité de MS-DOS, selon ce développeur</title>
@@ -953,6 +1004,9 @@
       <comments>https://news.ycombinator.com/item?id=47829486</comments>
       <pubDate>Mon, 20 Apr 2026 01:50:35 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://ichef.bbci.co.uk/news/1024/branded_news/974f/live/6a5a6a20-3c95-11f1-9d5c-8ba507d7dbde.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Les pièges courants qui empêchent d'écouter véritablement les utilisateurs en développement logiciel</title>
@@ -988,6 +1042,9 @@
       <comments>https://news.ycombinator.com/item?id=47827259</comments>
       <pubDate>Sun, 19 Apr 2026 20:09:09 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://images.unsplash.com/photo-1453738773917-9c3eff1db985?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wxMTc3M3wwfDF8c2VhcmNofDE2fHxsaXN0ZW58ZW58MHx8fHwxNzcwODU1NDg2fDA&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=2000"/>
+      </media:group>
     </item>
     <item>
       <title>Turtle WoW ferme après la victoire judiciaire de Blizzard contre le serveur privé</title>
@@ -1025,6 +1082,9 @@
       <comments>https://news.ycombinator.com/item?id=47825160</comments>
       <pubDate>Sun, 19 Apr 2026 15:48:40 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://cdn.mos.cms.futurecdn.net/FMANT4DGMrKnDjrSVT8sui-1920-80.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Vercel révèle une violation de ses systèmes internes liée à une application tiers compromise</title>
@@ -1057,6 +1117,9 @@
       <comments>https://news.ycombinator.com/item?id=47824976</comments>
       <pubDate>Sun, 19 Apr 2026 15:23:39 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://decipher.sc/wp-content/uploads/2025/09/engin-akyurt-A9_IsUtjHm4-unsplash-scaled.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Notion a exposé les adresses email de tous les éditeurs de pages publiques</title>
@@ -1128,6 +1191,9 @@
       <comments>https://news.ycombinator.com/item?id=47824463</comments>
       <pubDate>Sun, 19 Apr 2026 14:14:38 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://www.bleepstatic.com/content/hl-images/2026/04/19/vercel-header-lg.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Les concurrents d'Adobe lancent une offensive commerciale avec des alternatives gratuites et moins chères</title>
@@ -1163,6 +1229,9 @@
       <comments>https://news.ycombinator.com/item?id=47824403</comments>
       <pubDate>Sun, 19 Apr 2026 14:05:49 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://platform.theverge.com/wp-content/uploads/sites/2/2026/04/adobe-war_c7d8c4.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.742559278735%2C100%2C78.514881442529&amp;w=1200"/>
+      </media:group>
     </item>
     <item>
       <title>Un employé d'une compagnie aérienne arrêté à Dubaï pour avoir partagé des photos de dégâts de bombardements sur WhatsApp</title>
@@ -1198,6 +1267,9 @@
       <comments>https://news.ycombinator.com/item?id=47824068</comments>
       <pubDate>Sun, 19 Apr 2026 13:13:09 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://images.globalplayer.com/images/806846?crop=16_9&amp;width=1200&amp;signature=j04FpBQ6JCKH2_YlpvLA0NQhcG0="/>
+      </media:group>
     </item>
   </channel>
 </rss>

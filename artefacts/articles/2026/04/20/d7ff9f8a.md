@@ -14,6 +14,7 @@ feed_summary: '<p>Article URL: <a href="https://tryterra.co/research/sauna-effec
 guid: https://news.ycombinator.com/item?id=47834184
 hn_item_id: 47834184
 hn_url: https://news.ycombinator.com/item?id=47834184
+image_url: https://loved-hug-5d84552294.media.strapiapp.com/large_sauna_hr_984f14dcae.png
 is_ask_or_show_hn: false
 model: anthropic/claude-haiku-4.5
 our_published_at: '2026-04-21T11:50:23.830652Z'
