@@ -8,8 +8,47 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)</generator>
     <language>fr</language>
-    <lastBuildDate>Tue, 21 Apr 2026 17:22:23 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2026 20:17:40 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Framework Laptop 13 Pro</title>
+      <link>https://frame.work/laptop13pro</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;h2&gt;Framework Laptop 13 Pro avec processeur Intel Core Ultra Series 3 offre 20 heures d'autonomie&lt;/h2&gt;
+&lt;p&gt;Framework Laptop 13 Pro est un ordinateur portable destiné aux développeurs, équipé de processeurs Intel Core Ultra Series 3, d'une autonomie de 20 heures et d'une mémoire LPCAMM2 modulaire. Le dispositif conserve la philosophie de la marque en matière de réparabilité, modulabilité et personnalisation.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Autonomie de 20 heures grâce à une batterie 21% plus grande et aux processeurs Core Ultra Series 3 (validée en streaming Netflix 4K sur Windows 11)&lt;/li&gt;
+&lt;li&gt;Écran tactile 13,5 pouces 3:2 en 2880×1920 pixels avec taux de rafraîchissement variable 30-120Hz et pavé tactile haptique programmable&lt;/li&gt;
+&lt;li&gt;Châssis entièrement en aluminium CNC 6063 mesurant 15,85mm d'épaisseur pour 1,4kg, compatible avec tous les mainboards Framework précédents&lt;/li&gt;
+&lt;li&gt;Mémoire et stockage modulables jusqu'à 64GB LPCAMM2 LPDDR5X et 8TB NVMe Gen 5.0, réparabilité et upgradeabilité des composants individuels&lt;/li&gt;
+&lt;li&gt;Disponible avec Ubuntu pré-chargé (certification Ubuntu) ou Windows 11, avec support de plusieurs distributions Linux (Fedora, Bazzite, NixOS, Linux Mint, CachyOS) et commutateurs de confidentialité matériels pour caméra et microphones&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La modularité et la réparabilité restent des atouts majeurs : plusieurs utilisateurs confirment pouvoir upgrader CPU, RAM, ports et composants individuels (contrairement aux MacBooks), et apprécient que Framework ait conservé la compatibilité rétroactive entre générations.&lt;/li&gt;
+&lt;li&gt;Les performances Linux réelles sur Framework sont probablement bonnes mais non publiées : plusieurs commentaires suggèrent que Framework n'affiche que les chiffres Windows par prudence, mais que les perfs Linux devraient être proches ou meilleures grâce à une consommation système plus faible.&lt;/li&gt;
+&lt;li&gt;La conception et l'engagement de l'équipe sont remarquables : plusieurs utilisateurs louent l'approche open du CEO, la qualité de construction et l'attention aux détails de l'ingénierie.&lt;/li&gt;
+&lt;li&gt;LPCAMM2 + LPDDR5X en 7467 MT/s offre une véritable avance sur les alternatives AMD (DDR5 SODIMM à 5600 MT/s) pour la bande passante mémoire et l'efficacité énergétique.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le prix reste prohibitif : à ~£2000-2300 pour une bonne config (32GB RAM, 1TB SSD), Framework coûte plus cher qu'un MacBook Pro 14 comparable, sans justification claire pour les non-enthousiastes du Linux.&lt;/li&gt;
+&lt;li&gt;L'autonomie sur Linux n'est pas démontrée et les utilisateurs rapportent des problèmes graves : plusieurs possesseurs Framework (notamment Ryzen AI 300) signalent une autonomie déplorable en sommeil (inférieure à un week-end) et en utilisation, bien en dessous des promesses.&lt;/li&gt;
+&lt;li&gt;Des défauts de qualité/fiabilité nuisent à la réputation : cas rapportés de boîtiers déformés, modules USB-C défaillants, surchauffes, trackpads instables selon la flexion du châssis, et alimentations défectueuses.&lt;/li&gt;
+&lt;li&gt;L'absence de RAM ECC en version &amp;quot;Pro&amp;quot; est une omission majeure pour le positionnement claimed du produit, et les options CPU/GPU manquent d'unification mémoire comparées à Apple Silicon ou Strix Halo.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://frame.work/laptop13pro"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47852177"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">4137875d</guid>
+      <comments>https://news.ycombinator.com/item?id=47852177</comments>
+      <pubDate>Tue, 21 Apr 2026 18:00:34 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://images.prismic.io/frameworkmarketplace/aeVG_51ZCF7ETVz5_fw13pro-link-preview.jpg?auto=format,compress"/>
+      </media:group>
+    </item>
     <item>
       <title>Recueil de lois et principes fondamentaux en génie logiciel</title>
       <link>https://lawsofsoftwareengineering.com</link>
