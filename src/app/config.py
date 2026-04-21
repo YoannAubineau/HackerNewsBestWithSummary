@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     source_feed_url: str = "https://hnrss.org/best"
     feed_self_url: str = "http://localhost/feed.xml"
     feed_items_limit: int = 200
-    feed_title: str = "Hacker News Best summarized"
+    feed_title: str = "HackerNews Best with Summary"
     feed_description: str = "Hacker News Best with article and discussion summaries."
 
     # Max comments sent to the LLM for the discussion summary. Spent recursively:
