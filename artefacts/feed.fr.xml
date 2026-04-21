@@ -8,7 +8,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)</generator>
     <language>fr</language>
-    <lastBuildDate>Tue, 21 Apr 2026 21:15:58 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2026 23:13:46 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Framework Laptop 13 Pro</title>
@@ -666,6 +666,39 @@
       <guid isPermaLink="false">7c1db6ef</guid>
       <comments>https://news.ycombinator.com/item?id=47835735</comments>
       <pubDate>Mon, 20 Apr 2026 15:28:13 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>MNT Reform est un ordinateur portable open source conçu et assemblé en Allemagne</title>
+      <link>http://mnt.stanleylieber.com/reform/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;MNT Reform est un projet d'ordinateur portable basé sur des principes open hardware, entièrement conçu et fabriqué en Allemagne. Le projet suscite un intérêt significatif auprès de la communauté technologique.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Laptop entièrement open source avec composants et plans accessibles&lt;/li&gt;
+&lt;li&gt;Conception et assemblage réalisés en Allemagne&lt;/li&gt;
+&lt;li&gt;Forte communauté d'intérêt avec 260 points et 98 commentaires sur Hacker News&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'approche open hardware permet une évolutivité long terme : les utilisateurs peuvent upgrader les cartes mères et remplacer les composants au fil du temps, gardant le reste hors des décharges.&lt;/li&gt;
+&lt;li&gt;La conception open source et l'utilisation de composants standards (batteries 18650, switches mécaniques) facilitent la réparabilité et la maintenance future, contrairement aux appareils propriétaires verrouillés.&lt;/li&gt;
+&lt;li&gt;Les utilisateurs actuels (Pocket Reform, Reform 2) rapportent une excellente expérience : clavier mécanique confortable, communauté helpful, et performance suffisante pour des tâches réelles (Go, OCaml).&lt;/li&gt;
+&lt;li&gt;L'assemblage allemand et le design ouvert représentent un défi volontaire à la chaîne d'approvisionnement fermée habituelle, avec des bénéfices long terme potentiels malgré les coûts initiaux plus élevés.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le prix (1450 EUR) et la performance modérée (RK3588) rendent le produit injustifiable comparé aux alternatives : vieux ThinkPads à 10% du prix avec performance similaire, ou Framework moins cher et tout aussi ouvert.&lt;/li&gt;
+&lt;li&gt;L'argument environnemental est contesté : générer du nouveau matériel &amp;quot;e-waste&amp;quot; pour promouvoir l'open hardware est wasteful quand le matériel existant réparable est disponible immédiatement.&lt;/li&gt;
+&lt;li&gt;Problèmes de supply chain pratiques : composants discontinués (trackpad TPS65), stocks limités et incertitude sur les remplaçants réduisent la viabilité long terme.&lt;/li&gt;
+&lt;li&gt;La comparaison avec Framework est désavantageuse : coût plus élevé pour des bénéfices d'ouverture finalement marginaux, and Framework offre déjà modulabilité et upgradabilité.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="http://mnt.stanleylieber.com/reform/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47834689"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">88fe267d</guid>
+      <comments>https://news.ycombinator.com/item?id=47834689</comments>
+      <pubDate>Mon, 20 Apr 2026 14:14:52 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
