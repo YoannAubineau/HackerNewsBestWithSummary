@@ -4,6 +4,8 @@ name: ci
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "artefacts/**"
   pull_request:
   workflow_dispatch:
 
