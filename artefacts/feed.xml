@@ -8,7 +8,51 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>python-feedgen</generator>
     <language>fr</language>
-    <lastBuildDate>Tue, 21 Apr 2026 13:32:49 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2026 14:33:05 +0000</lastBuildDate>
+    <item>
+      <title>Recueil de lois et principes fondamentaux en génie logiciel</title>
+      <link>https://lawsofsoftwareengineering.com</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Un ensemble complet de lois, principes et biais qui régissent la conception de logiciels, l'organisation des équipes et le comportement humain dans les projets informatiques.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Lois de conception système&lt;/strong&gt; : Conway's Law (les systèmes reflètent la structure organisationnelle), Gall's Law (les systèmes complexes évoluent de systèmes simples), Law of Leaky Abstractions (les abstractions non triviales fuient toujours)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Principes de développement&lt;/strong&gt; : DRY, KISS, SOLID, YAGNI (ne pas ajouter de fonctionnalités inutiles), Boy Scout Rule (laisser le code mieux qu'on l'a trouvé)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Lois sur les performances et ressources&lt;/strong&gt; : Premature Optimization (l'optimisation prématurée est nuisible), Brooks's Law (ajouter des ressources à un projet tard l'aggrave), Amdahl's Law (limites de la parallélisation)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Dynamiques humaines et organisationnelles&lt;/strong&gt; : Peter Principle (montée au niveau d'incompétence), Dilbert Principle (promotion des incompétents), Dunbar's Number (limite cognitive de 150 relations), Price's Law (racine carrée des participants fait 50% du travail)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Biais et fallacies&lt;/strong&gt; : Dunning-Kruger Effect, Confirmation Bias, Sunk Cost Fallacy, Murphy's Law, et lois décrivant la mesure, l'estimation et les cycles technologiques&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les &amp;quot;lois&amp;quot; du génie logiciel sont des principes directeurs plutôt que des lois physiques, utiles pour guider les décisions mais nécessitant du jugement contextuel sur quand les appliquer.&lt;/li&gt;
+&lt;li&gt;Boyd's Law sur l'itération rapide et la règle d'Ousterhout sur l'encapsulation de la complexité sont des principes importants manquant à la collection et méritent d'être ajoutés.&lt;/li&gt;
+&lt;li&gt;Le principe de conception selon lequel supprimer une fonctionnalité devrait être aussi simple que supprimer un fichier/répertoire représente une approche structurelle utile et peu connue.&lt;/li&gt;
+&lt;li&gt;Les modèles d'IA actuels sont effectivement utiles pour raisonner sur les performances et découvrir des solutions alternatives lors de l'optimisation de code.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La loi &amp;quot;Premature Optimization&amp;quot; est souvent mal citée : Knuth lui-même considérait qu'une amélioration facile de 12% valait la peine, et du code simple est souvent plus rapide et mène à des architectures moins complexes que l'optimisation horizontale tardive.&lt;/li&gt;
+&lt;li&gt;Le théorème CAP est mal compris dans sa formulation &amp;quot;choisir deux parmi trois&amp;quot; : on ne peut pas vraiment choisir CA (qui implique un seul nœud), et la véritable heuristique utile est qu'il existe souvent un compromis entre cohérence et disponibilité.&lt;/li&gt;
+&lt;li&gt;Ces &amp;quot;lois&amp;quot; contiennent tellement de contradictions internes qu'on peut toujours en invoquer une pour justifier n'importe quelle décision ; le vrai défi est de savoir quand en violer une et pourquoi.&lt;/li&gt;
+&lt;li&gt;Le génie logiciel reste plus proche de la &amp;quot;magie vaudoue&amp;quot; que de la science : sans certification rigoureuse, normes établies et responsabilité légale comme dans les disciplines d'ingénierie classiques, ces principes restent peu fiables.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://lawsofsoftwareengineering.com"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47847179"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">080c6784</guid>
+      <comments>https://news.ycombinator.com/item?id=47847179</comments>
+      <pubDate>Tue, 21 Apr 2026 11:04:56 +0000</pubDate>
+    </item>
     <item>
       <title>Anthropic autorise à nouveau l'utilisation de Claude CLI dans OpenClaw selon les directives du personnel</title>
       <link>https://docs.openclaw.ai/providers/anthropic</link>
