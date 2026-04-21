@@ -139,6 +139,24 @@ def test_media_thumbnail_emitted_when_image_url_set(isolated_settings):
     assert _thumbnail_url(items[0]) == "https://cdn.example.com/hero.jpg"
 
 
+def test_channel_ttl_is_sixty_minutes(isolated_settings):
+    article = _make_article("g-ttl", hn_item_id=60)
+    save(article, "body")
+    root = ET.fromstring(build_feed())
+    ttl = root.find(".//channel/ttl")
+    assert ttl is not None
+    assert ttl.text == "60"
+
+
+def test_item_source_points_to_hnrss(isolated_settings):
+    article = _make_article("g-src", hn_item_id=61)
+    save(article, "body")
+    items = _parse(build_feed())
+    source = items[0].find("source")
+    assert source is not None
+    assert source.get("url") == isolated_settings.source_feed_url
+
+
 def test_no_media_thumbnail_when_image_url_absent(isolated_settings):
     article = _make_article("g-noimg", hn_item_id=52)
     save(article, "## Résumé\n\nCorps.")

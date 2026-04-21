@@ -8,7 +8,8 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)</generator>
     <language>fr</language>
-    <lastBuildDate>Tue, 21 Apr 2026 15:20:19 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2026 15:25:06 +0000</lastBuildDate>
+    <ttl>60</ttl>
     <item>
       <title>Recueil de lois et principes fondamentaux en génie logiciel</title>
       <link>https://lawsofsoftwareengineering.com</link>
@@ -52,6 +53,7 @@
       <guid isPermaLink="false">080c6784</guid>
       <comments>https://news.ycombinator.com/item?id=47847179</comments>
       <pubDate>Tue, 21 Apr 2026 11:04:56 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Anthropic autorise à nouveau l'utilisation de Claude CLI dans OpenClaw selon les directives du personnel</title>
@@ -84,6 +86,7 @@
       <guid isPermaLink="false">d1e684ce</guid>
       <comments>https://news.ycombinator.com/item?id=47844269</comments>
       <pubDate>Tue, 21 Apr 2026 03:43:03 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>StackAdapt propose des publicités dans ChatGPT à bas coûts en ciblant la pertinence des requêtes utilisateurs</title>
@@ -118,6 +121,7 @@
       <guid isPermaLink="false">d0652d0e</guid>
       <comments>https://news.ycombinator.com/item?id=47840980</comments>
       <pubDate>Mon, 20 Apr 2026 21:20:52 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Tim Cook devient président directeur général d'Apple, John Ternus lui succède à partir de septembre 2026</title>
@@ -154,6 +158,7 @@
       <guid isPermaLink="false">73ab13af</guid>
       <comments>https://news.ycombinator.com/item?id=47840219</comments>
       <pubDate>Mon, 20 Apr 2026 20:39:32 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Les mouvements de résistance à l'IA se multiplient et soulèvent des questions importantes</title>
@@ -189,6 +194,7 @@
       <guid isPermaLink="false">1c11f7da</guid>
       <comments>https://news.ycombinator.com/item?id=47839951</comments>
       <pubDate>Mon, 20 Apr 2026 20:19:13 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>le F-35 n'est pas adapté à une guerre de longue durée contre la Chine</title>
@@ -225,6 +231,7 @@
       <guid isPermaLink="false">381f52af</guid>
       <comments>https://news.ycombinator.com/item?id=47839835</comments>
       <pubDate>Mon, 20 Apr 2026 20:07:35 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Kimi open-source le Vendor Verifier pour valider la précision des implémentations d'inférence</title>
@@ -259,6 +266,7 @@
       <guid isPermaLink="false">35729d3a</guid>
       <comments>https://news.ycombinator.com/item?id=47838703</comments>
       <pubDate>Mon, 20 Apr 2026 18:39:53 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Un texte satirique annonce le contrôle de Global Tetrahedron sur InfoWars.com</title>
@@ -294,6 +302,7 @@
       <guid isPermaLink="false">2e5b90bc</guid>
       <comments>https://news.ycombinator.com/item?id=47837611</comments>
       <pubDate>Mon, 20 Apr 2026 17:23:58 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Les ordinateurs quantiques ne menacent pas les clés symétriques de 128 bits</title>
@@ -330,6 +339,7 @@
       <guid isPermaLink="false">05126279</guid>
       <comments>https://news.ycombinator.com/item?id=47836784</comments>
       <pubDate>Mon, 20 Apr 2026 16:37:48 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Les raisons pour lesquelles la surveillance est devenue le modèle par défaut</title>
@@ -363,6 +373,7 @@
       <guid isPermaLink="false">a56126f6</guid>
       <comments>https://news.ycombinator.com/item?id=47836730</comments>
       <pubDate>Mon, 20 Apr 2026 16:34:25 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Deezer signale que 44% des chansons téléchargées quotidiennement sont générées par l'IA</title>
@@ -399,6 +410,7 @@
       <guid isPermaLink="false">103ac50f</guid>
       <comments>https://news.ycombinator.com/item?id=47835928</comments>
       <pubDate>Mon, 20 Apr 2026 15:41:02 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Amazon Kindles deviennent des appareils jetables avec des restrictions croissantes, alternatives supérieures disponibles</title>
@@ -435,6 +447,7 @@
       <guid isPermaLink="false">6a6ed23f</guid>
       <comments>https://news.ycombinator.com/item?id=47835775</comments>
       <pubDate>Mon, 20 Apr 2026 15:30:17 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Kimi K2.6 améliore significativement le codage autonome, les tâches longue durée et la coordination multi-agents</title>
@@ -471,6 +484,7 @@
       <guid isPermaLink="false">7c1db6ef</guid>
       <comments>https://news.ycombinator.com/item?id=47835735</comments>
       <pubDate>Mon, 20 Apr 2026 15:28:13 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Alibaba annonce Qwen3.6-Max-Preview, modèle IA en évolution continue</title>
@@ -503,6 +517,7 @@
       <guid isPermaLink="false">04dea53e</guid>
       <comments>https://news.ycombinator.com/item?id=47834565</comments>
       <pubDate>Mon, 20 Apr 2026 14:05:34 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>À partir de 2027, tous les téléphones vendus dans l'UE doivent avoir des batteries amovibles</title>
@@ -538,6 +553,7 @@
       <guid isPermaLink="false">e98a34fa</guid>
       <comments>https://news.ycombinator.com/item?id=47834195</comments>
       <pubDate>Mon, 20 Apr 2026 13:41:25 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>L'utilisation du sauna améliore la récupération cardiaque le jour même, particulièrement chez les femmes en phase lutéale</title>
@@ -572,6 +588,7 @@
       <guid isPermaLink="false">d7ff9f8a</guid>
       <comments>https://news.ycombinator.com/item?id=47834184</comments>
       <pubDate>Mon, 20 Apr 2026 13:40:28 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>ggsql : une implémentation de la grammaire des graphiques basée sur la syntaxe SQL</title>
@@ -608,6 +625,7 @@
       <guid isPermaLink="false">82f3a9da</guid>
       <comments>https://news.ycombinator.com/item?id=47833558</comments>
       <pubDate>Mon, 20 Apr 2026 12:51:20 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Atlassian active par défaut la collecte de données pour entraîner ses modèles d'IA</title>
@@ -642,6 +660,7 @@
       <guid isPermaLink="false">1340adc9</guid>
       <comments>https://news.ycombinator.com/item?id=47833247</comments>
       <pubDate>Mon, 20 Apr 2026 12:23:39 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Tesla a dissimulé des accidents mortels pour poursuivre ses tests de conduite autonome</title>
@@ -678,6 +697,7 @@
       <guid isPermaLink="false">561ee7a0</guid>
       <comments>https://news.ycombinator.com/item?id=47833156</comments>
       <pubDate>Mon, 20 Apr 2026 12:12:19 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Extension WebUSB pour Firefox : installation et configuration du stub natif</title>
@@ -714,6 +734,7 @@
       <guid isPermaLink="false">4ed46646</guid>
       <comments>https://news.ycombinator.com/item?id=47832969</comments>
       <pubDate>Mon, 20 Apr 2026 11:51:04 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Un tremblement de terre de magnitude 7,4 s'est produit à 100 km à l'est-nord-est de Miyako au Japon</title>
@@ -747,6 +768,7 @@
       <guid isPermaLink="false">80b1dcd9</guid>
       <comments>https://news.ycombinator.com/item?id=47832248</comments>
       <pubDate>Mon, 20 Apr 2026 10:04:40 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>La NSA utilise le modèle Mythos d'Anthropic malgré son inscription sur liste noire</title>
@@ -782,6 +804,7 @@
       <guid isPermaLink="false">20f37101</guid>
       <comments>https://news.ycombinator.com/item?id=47832222</comments>
       <pubDate>Mon, 20 Apr 2026 10:00:35 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Une application de vérification d'âge de l'Union européenne contournée en deux minutes par des chercheurs en cybersécurité</title>
@@ -814,6 +837,7 @@
       <guid isPermaLink="false">964cecdb</guid>
       <comments>https://news.ycombinator.com/item?id=47831742</comments>
       <pubDate>Mon, 20 Apr 2026 08:49:22 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Des millions d'étoiles GitHub fausses se vendent ouvertement et influencent les décisions de financement des startups</title>
@@ -849,6 +873,7 @@
       <guid isPermaLink="false">95cece89</guid>
       <comments>https://news.ycombinator.com/item?id=47831621</comments>
       <pubDate>Mon, 20 Apr 2026 08:26:52 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Les architectures d'agents actuels reproduisent les failles de sécurité de MS-DOS, selon ce développeur</title>
@@ -885,6 +910,7 @@
       <guid isPermaLink="false">961cf3fe</guid>
       <comments>https://news.ycombinator.com/item?id=47831437</comments>
       <pubDate>Mon, 20 Apr 2026 07:49:48 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Des traders parient des millions avant les annonces de Trump, soulevant des soupçons de délit d'initié</title>
@@ -921,6 +947,7 @@
       <guid isPermaLink="false">bf43ee44</guid>
       <comments>https://news.ycombinator.com/item?id=47829486</comments>
       <pubDate>Mon, 20 Apr 2026 01:50:35 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Les pièges courants qui empêchent d'écouter véritablement les utilisateurs en développement logiciel</title>
@@ -955,6 +982,7 @@
       <guid isPermaLink="false">c52eb146</guid>
       <comments>https://news.ycombinator.com/item?id=47827259</comments>
       <pubDate>Sun, 19 Apr 2026 20:09:09 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Turtle WoW ferme après la victoire judiciaire de Blizzard contre le serveur privé</title>
@@ -991,6 +1019,7 @@
       <guid isPermaLink="false">be449c40</guid>
       <comments>https://news.ycombinator.com/item?id=47825160</comments>
       <pubDate>Sun, 19 Apr 2026 15:48:40 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Vercel révèle une violation de ses systèmes internes liée à une application tiers compromise</title>
@@ -1022,6 +1051,7 @@
       <guid isPermaLink="false">e57944f4</guid>
       <comments>https://news.ycombinator.com/item?id=47824976</comments>
       <pubDate>Sun, 19 Apr 2026 15:23:39 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Notion a exposé les adresses email de tous les éditeurs de pages publiques</title>
@@ -1055,6 +1085,7 @@
       <guid isPermaLink="false">7acc9982</guid>
       <comments>https://news.ycombinator.com/item?id=47824945</comments>
       <pubDate>Sun, 19 Apr 2026 15:20:01 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Vercel subit une cyberattaque via un outil IA tiers, des données clients exposées</title>
@@ -1091,6 +1122,7 @@
       <guid isPermaLink="false">93f90034</guid>
       <comments>https://news.ycombinator.com/item?id=47824463</comments>
       <pubDate>Sun, 19 Apr 2026 14:14:38 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Les concurrents d'Adobe lancent une offensive commerciale avec des alternatives gratuites et moins chères</title>
@@ -1125,6 +1157,7 @@
       <guid isPermaLink="false">94ae81ab</guid>
       <comments>https://news.ycombinator.com/item?id=47824403</comments>
       <pubDate>Sun, 19 Apr 2026 14:05:49 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Un employé d'une compagnie aérienne arrêté à Dubaï pour avoir partagé des photos de dégâts de bombardements sur WhatsApp</title>
@@ -1159,6 +1192,7 @@
       <guid isPermaLink="false">56836e22</guid>
       <comments>https://news.ycombinator.com/item?id=47824068</comments>
       <pubDate>Sun, 19 Apr 2026 13:13:09 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
   </channel>
 </rss>
