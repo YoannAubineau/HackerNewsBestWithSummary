@@ -54,7 +54,7 @@ def summarize() -> None:
 
 @app.command()
 def publish() -> None:
-    """Step 5: generate feed.xml."""
+    """Step 5: generate the feed XML."""
     step_publish()
 
 

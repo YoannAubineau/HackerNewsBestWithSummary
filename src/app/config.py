@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     )
 
     source_feed_url: str = "https://hnrss.org/best"
-    feed_self_url: str = "http://localhost/feed.xml"
+    feed_self_url: str = "http://localhost/feed.fr.xml"
     feed_items_limit: int = 200
     feed_title: str = "Hacker News: Best, with Summary"
     feed_description: str = (
@@ -37,7 +37,7 @@ class Settings(BaseSettings):
 
     articles_dir: Path = Path("artefacts/articles")
     failed_dir: Path = Path("artefacts/articles/_failed")
-    feed_output_path: Path = Path("artefacts/feed.xml")
+    feed_output_path: Path = Path("artefacts/feed.fr.xml")
 
     log_level: LogLevel = "INFO"
 

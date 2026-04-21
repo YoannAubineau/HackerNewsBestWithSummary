@@ -33,7 +33,7 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: |
           owner_lc="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
-          export FEED_SELF_URL="https://${owner_lc}.github.io/${{ github.event.repository.name }}/feed.xml"
+          export FEED_SELF_URL="https://${owner_lc}.github.io/${{ github.event.repository.name }}/feed.fr.xml"
           uv run app cycle
 
       - name: Commit & push

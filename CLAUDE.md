@@ -15,8 +15,9 @@ A Python pipeline that:
    fallbacks) to produce: a rewritten factual title, a summary of the article,
    and a pro/con synthesis of the HN discussion
 4. Publishes the result as a static RSS 2.0 feed at
-   `https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.xml`,
-   consumed by the user in Feedly
+   `https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml`,
+   consumed by the user in Feedly. The `.fr.` suffix leaves room for a
+   parallel `feed.en.xml` if English summaries are added later.
 
 The orchestration is a single GitHub Actions workflow (`cycle.yml`) that runs
 hourly on a public repo, so minutes are free.
@@ -46,7 +47,7 @@ hourly on a public repo, so minutes are free.
   reads/writes the repo and pushes back. The `artefacts/` folder is
   uploaded by a dedicated Actions workflow and served statically by Pages
   — its contents are exposed at the site root, so the feed URL is
-  `https://.../feed.xml` (no `/artefacts/` in the path).
+  `https://.../feed.fr.xml` (no `/artefacts/` in the path).
 - **No queue, no retry service**. The pipeline keeps state via a `status`
   field in each article's frontmatter (`pending` → `article_fetched` →
   `discussion_fetched` → `summarized`, or `failed`). Each step iterates files
@@ -76,7 +77,7 @@ hourly on a public repo, so minutes are free.
 - `src/app/summarize.py` — two prompts (article + title rewrite in one call,
   and discussion synthesis). French output, strict `## Titre` / `## Résumé`
   format that we parse back.
-- `src/app/publish.py` — builds `feed.xml` with `feedgen`. Items ordered by
+- `src/app/publish.py` — builds `feed.fr.xml` with `feedgen`. Items ordered by
   `hn_item_id` desc. `<link>` = article URL (or HN URL for Ask/Show HN),
   `<comments>` = HN URL. Description is markdown rendered with
   `markdown-it-py` (CommonMark-compliant, unlike the older `markdown`
@@ -107,7 +108,7 @@ uv run pytest                       # full test suite (65 tests today)
 uv run ruff check src/ tests/       # lint
 uv run app cycle                    # run the whole pipeline once
 uv run app fetch-feed               # step 1 only (no LLM)
-uv run app publish                  # step 5 only (regenerate feed.xml)
+uv run app publish                  # step 5 only (regenerate feed.fr.xml)
 ```
 
 `OPENROUTER_API_KEY` must be set in `.env` locally, or as a GitHub Secret
