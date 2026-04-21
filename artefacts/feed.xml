@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+<rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
   <channel>
     <title>Hacker News Best summarized</title>
-    <link>https://YoannAubineau.github.io/HackerNewsBestWithSummary/feed.xml</link>
+    <link>https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.xml</link>
     <description>Hacker News Best with article and discussion summaries.</description>
-    <atom:link href="https://YoannAubineau.github.io/HackerNewsBestWithSummary/feed.xml" rel="self"/>
+    <atom:link href="https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.xml" rel="self"/>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>python-feedgen</generator>
     <language>fr</language>
-    <lastBuildDate>Tue, 21 Apr 2026 14:33:05 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2026 15:09:29 +0000</lastBuildDate>
     <item>
       <title>Recueil de lois et principes fondamentaux en génie logiciel</title>
       <link>https://lawsofsoftwareengineering.com</link>
