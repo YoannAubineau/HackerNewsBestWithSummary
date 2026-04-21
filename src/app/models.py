@@ -33,6 +33,7 @@ class Article(BaseModel):
     article_fetched_at: datetime | None = None
     discussion_fetched_at: datetime | None = None
     summarized_at: datetime | None = None
+    image_url: str | None = None
     attempts: int = 0
     model: str | None = None
     error: str | None = None
