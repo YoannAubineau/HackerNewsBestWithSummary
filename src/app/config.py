@@ -10,9 +10,9 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     openrouter_api_key: str
-    openrouter_model: str = "deepseek/deepseek-chat-v3:free"
+    openrouter_model: str = "anthropic/claude-haiku-4.5"
     openrouter_fallback_models: tuple[str, ...] = (
-        "google/gemini-2.0-flash-exp:free",
+        "nvidia/nemotron-3-super-120b-a12b:free",
         "meta-llama/llama-3.3-70b-instruct:free",
     )
 
