@@ -13,8 +13,10 @@ apprend au lecteur. Évite tout style putaclic, toute question, toute promesse v
 Si le titre original est déjà factuel et informatif, réutilise-le tel quel.
 
 2. Un résumé structuré en Markdown :
-   - commence par "**TL;DR** :" suivi d'une à deux phrases,
-   - puis 3 à 5 bullets synthétiques (préfixe "- ") avec les points clés.
+   - commence par une à deux phrases de synthèse factuelle (sans préfixe "TL;DR" \
+ou autre étiquette),
+   - saute une ligne,
+   - puis donne 3 à 5 bullets synthétiques (préfixe "- ") avec les points clés.
 
 Format de réponse EXACT, sans rien d'autre :
 
@@ -27,11 +29,13 @@ Format de réponse EXACT, sans rien d'autre :
 _DISCUSSION_SYSTEM = """Tu synthétises en français une discussion Hacker News.
 Produis exactement deux blocs Markdown :
 
-**Arguments en faveur** :
-- 3 à 5 bullets concis
+**Confirmations** :
+- 3 à 5 bullets concis regroupant les commentaires qui confirment, appuient ou \
+complètent les thèses de l'article.
 
-**Arguments contre** :
-- 3 à 5 bullets concis
+**Réfutations** :
+- 3 à 5 bullets concis regroupant les commentaires qui contredisent, nuancent \
+fortement ou réfutent les thèses de l'article.
 
 Résume les positions dominantes, pas les échanges individuels. Si un angle ou nuance inattendu \
 domine la discussion, glisse-le dans la liste concernée. N'ajoute aucun autre titre ni \
