@@ -1,7 +1,8 @@
 from datetime import UTC, datetime
 
+from app import pipeline
 from app.models import Article, Status
-from app.pipeline import _record_attempt
+from app.pipeline import _record_attempt, run_cycle
 from app.storage import load, save, sidecar_path, write_sidecar
 
 
@@ -71,3 +72,36 @@ def test_record_attempt_keeps_sidecars_before_final_failure(isolated_settings):
     _record_attempt(path, article, "body", "first fail")
     # sidecars must still be there — a retry will consume them on the next run
     assert sidecar_path(path, "article").exists()
+
+
+def _neutralize_steps(monkeypatch, *, summarize_count: int = 0) -> list[str]:
+    """Replace every pipeline step except publish with a no-op and record
+    whether publish was invoked."""
+    calls: list[str] = []
+    monkeypatch.setattr(pipeline, "step_fetch_feed", lambda: 0)
+    monkeypatch.setattr(pipeline, "step_fetch_articles", lambda: 0)
+    monkeypatch.setattr(pipeline, "step_fetch_discussions", lambda: 0)
+    monkeypatch.setattr(pipeline, "step_summarize", lambda: summarize_count)
+    monkeypatch.setattr(pipeline, "step_publish", lambda: calls.append("publish") or "")
+    return calls
+
+
+def test_run_cycle_skips_publish_when_nothing_new(isolated_settings, monkeypatch):
+    calls = _neutralize_steps(monkeypatch, summarize_count=0)
+    isolated_settings.feed_output_path.write_text("<rss/>", encoding="utf-8")
+    run_cycle()
+    assert calls == []
+
+
+def test_run_cycle_publishes_when_new_summaries(isolated_settings, monkeypatch):
+    calls = _neutralize_steps(monkeypatch, summarize_count=3)
+    isolated_settings.feed_output_path.write_text("<rss/>", encoding="utf-8")
+    run_cycle()
+    assert calls == ["publish"]
+
+
+def test_run_cycle_publishes_when_feed_missing(isolated_settings, monkeypatch):
+    calls = _neutralize_steps(monkeypatch, summarize_count=0)
+    assert not isolated_settings.feed_output_path.exists()
+    run_cycle()
+    assert calls == ["publish"]
