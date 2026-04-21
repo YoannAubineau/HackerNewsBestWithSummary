@@ -91,7 +91,44 @@ def dates_in_feed(entries_dates: list[datetime]) -> set[date]:
 
 
 def iter_summarized() -> Iterator[tuple[Path, Article, str]]:
-    yield from iter_by_status(Status.SUMMARIZED)
+    """Yield summarized articles in descending order of HN item ID.
+
+    Walks the YYYY/MM/DD partition newest-first and sorts within each day
+    folder by ``hn_item_id`` desc. Since HN IDs are monotonic in submission
+    time, no article in an earlier day can outrank an article in a later
+    day — callers can break out of the loop as soon as they have enough
+    items without scanning the rest of the repository.
+    """
+    settings = get_settings()
+    root = settings.articles_dir
+    if not root.exists():
+        return
+    for day_dir in _walk_day_dirs_desc(root):
+        batch: list[tuple[Path, Article, str]] = []
+        for path in day_dir.glob("*.md"):
+            article, body = load(path)
+            if article.status == Status.SUMMARIZED:
+                batch.append((path, article, body))
+        batch.sort(key=lambda t: t[1].hn_item_id, reverse=True)
+        yield from batch
+
+
+def _walk_day_dirs_desc(root: Path) -> Iterator[Path]:
+    """Yield every YYYY/MM/DD directory under ``root``, newest-first.
+
+    Non-numeric children (such as ``_failed``) are skipped at every level,
+    which also excludes the failed tree even when it lives beneath the
+    articles directory.
+    """
+    for year in _numeric_subdirs_desc(root):
+        for month in _numeric_subdirs_desc(year):
+            yield from _numeric_subdirs_desc(month)
+
+
+def _numeric_subdirs_desc(parent: Path) -> Iterator[Path]:
+    subdirs = [d for d in parent.iterdir() if d.is_dir() and d.name.isdigit()]
+    subdirs.sort(key=lambda d: d.name, reverse=True)
+    yield from subdirs
 
 
 def _serialize_metadata(article: Article) -> dict:

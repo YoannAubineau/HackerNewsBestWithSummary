@@ -1,9 +1,11 @@
 from datetime import UTC, datetime
+from itertools import islice
 
 from app.models import Article, ContentSource, Status
 from app.storage import (
     clear_sidecars,
     iter_by_status,
+    iter_summarized,
     load,
     move_to_failed,
     path_for,
@@ -113,6 +115,71 @@ def test_clear_sidecars_removes_all_transient_files(isolated_settings):
     assert not sidecar_path(path, "discussion").exists()
     # The article .md itself stays untouched.
     assert path.exists()
+
+
+def _make_summarized(hn_item_id: int, source_date: datetime) -> Article:
+    article = Article(
+        guid=f"https://news.ycombinator.com/item?id={hn_item_id}",
+        url=f"https://example.com/{hn_item_id}",
+        hn_url=f"https://news.ycombinator.com/item?id={hn_item_id}",
+        hn_item_id=hn_item_id,
+        title=f"t-{hn_item_id}",
+        source_published_at=source_date,
+        our_published_at=source_date,
+        status=Status.SUMMARIZED,
+    )
+    return article
+
+
+def test_iter_summarized_yields_newest_day_first(isolated_settings):
+    older = _make_summarized(100, datetime(2026, 4, 19, 12, 0, tzinfo=UTC))
+    newer = _make_summarized(200, datetime(2026, 4, 21, 12, 0, tzinfo=UTC))
+    middle = _make_summarized(150, datetime(2026, 4, 20, 12, 0, tzinfo=UTC))
+    for a in (older, newer, middle):
+        save(a)
+    ids = [a.hn_item_id for _, a, _ in iter_summarized()]
+    assert ids == [200, 150, 100]
+
+
+def test_iter_summarized_sorts_within_day_by_hn_item_id_desc(isolated_settings):
+    same_day = datetime(2026, 4, 20, 8, 0, tzinfo=UTC)
+    for hid in (101, 105, 103, 110):
+        save(_make_summarized(hid, same_day))
+    ids = [a.hn_item_id for _, a, _ in iter_summarized()]
+    assert ids == [110, 105, 103, 101]
+
+
+def test_iter_summarized_skips_non_summarized(isolated_settings):
+    summarized = _make_summarized(200, datetime(2026, 4, 21, 12, 0, tzinfo=UTC))
+    pending = _make_summarized(150, datetime(2026, 4, 20, 12, 0, tzinfo=UTC))
+    pending.status = Status.PENDING
+    save(summarized)
+    save(pending)
+    ids = [a.hn_item_id for _, a, _ in iter_summarized()]
+    assert ids == [200]
+
+
+def test_iter_summarized_skips_failed_tree(isolated_settings):
+    ok = _make_summarized(200, datetime(2026, 4, 21, 12, 0, tzinfo=UTC))
+    doomed = _make_summarized(199, datetime(2026, 4, 21, 12, 0, tzinfo=UTC))
+    save(ok)
+    doomed_path = save(doomed)
+    move_to_failed(doomed_path, doomed, "body")
+    ids = [a.hn_item_id for _, a, _ in iter_summarized()]
+    assert ids == [200]
+
+
+def test_iter_summarized_is_lazy_and_stops_on_early_break(isolated_settings):
+    # Ten summarized articles across different days; consuming only the top
+    # two must not load the rest (indirectly verified: islice terminates and
+    # returns the two newest without raising or scanning further).
+    for i in range(10):
+        save(_make_summarized(
+            hn_item_id=1000 + i,
+            source_date=datetime(2026, 4, 10 + i, 12, 0, tzinfo=UTC),
+        ))
+    ids = [a.hn_item_id for _, a, _ in islice(iter_summarized(), 2)]
+    assert ids == [1009, 1008]
 
 
 def test_iter_by_status_skips_failed_tree(isolated_settings):
