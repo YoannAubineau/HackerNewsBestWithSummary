@@ -1,4 +1,3 @@
-from html import escape as html_escape
 from pathlib import Path
 
 from feedgen.feed import FeedGenerator
@@ -15,6 +14,7 @@ def build_feed() -> bytes:
     settings = get_settings()
     articles = _collect_articles()
     fg = FeedGenerator()
+    fg.load_extension("media")
     fg.id(settings.feed_self_url)
     fg.title(settings.feed_title)
     fg.link(href=settings.feed_self_url, rel="self")
@@ -56,12 +56,6 @@ def _add_entry(fg: FeedGenerator, article: Article, body: str) -> None:
     entry.guid(short_hash(article.guid), permalink=False)
     entry.comments(article.hn_url)
     entry.pubDate(article.source_published_at)
-    entry.description(_render_description(article, body))
-
-
-def _render_description(article: Article, body: str) -> str:
-    html = _md.render(body)
+    entry.description(_md.render(body))
     if article.image_url:
-        img_tag = f'<p><img src="{html_escape(article.image_url, quote=True)}" alt=""/></p>\n'
-        html = img_tag + html
-    return html
+        entry.media.thumbnail({"url": article.image_url})
