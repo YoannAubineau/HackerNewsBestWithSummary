@@ -1,11 +1,13 @@
 from pathlib import Path
 
-import markdown
 from feedgen.feed import FeedGenerator
+from markdown_it import MarkdownIt
 
 from app.config import get_settings
 from app.models import Article, ContentSource
 from app.storage import iter_summarized, short_hash
+
+_md = MarkdownIt()
 
 
 def build_feed() -> bytes:
@@ -49,4 +51,4 @@ def _add_entry(fg: FeedGenerator, article: Article, body: str) -> None:
     entry.guid(short_hash(article.guid), permalink=False)
     entry.comments(article.hn_url)
     entry.pubDate(article.source_published_at)
-    entry.description(markdown.markdown(body, extensions=["extra"]))
+    entry.description(_md.render(body))
