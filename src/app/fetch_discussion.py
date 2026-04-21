@@ -1,13 +1,37 @@
 import html
 import re
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 
 import httpx
+import structlog
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from app.config import get_settings
 
 _ALGOLIA_URL = "https://hn.algolia.com/api/v1/items/{id}"
 _TAG_RE = re.compile(r"<[^>]+>")
+
+log = structlog.get_logger()
+
+
+class AlgoliaItem(BaseModel):
+    """Schema of Algolia HN items.
+
+    All fields are optional: we only rely on ``author``, ``text`` and
+    ``children`` during traversal, and the API has historically drifted
+    in minor ways. Unknown fields are ignored rather than rejected.
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    author: str | None = None
+    text: str | None = None
+    points: int | None = None
+    children: list["AlgoliaItem"] = Field(default_factory=list)
+
+
+AlgoliaItem.model_rebuild()
 
 
 @dataclass
@@ -27,14 +51,18 @@ def fetch_discussion(hn_item_id: int) -> Discussion | None:
         response.raise_for_status()
     except httpx.HTTPError:
         return None
-    payload = response.json()
+    try:
+        payload = AlgoliaItem.model_validate(response.json())
+    except ValidationError as exc:
+        log.warning("algolia_payload_invalid", hn_item_id=hn_item_id, error=str(exc))
+        return None
     comments = list(_iter_comments(payload, settings.discussion_budget))
     if not comments:
         return None
     return Discussion(comment_count=len(comments), text=_render_comments(comments))
 
 
-def _iter_comments(root: dict, budget: int):
+def _iter_comments(root: AlgoliaItem, budget: int) -> Iterator[dict]:
     """Walk the comment tree with a recursive, degressive comment budget.
 
     A "branch node" is a comment that has at least one direct reply. Non-pinned
@@ -46,33 +74,36 @@ def _iter_comments(root: dict, budget: int):
     are "pinned": always included, regardless of budget, and without consuming
     budget that would otherwise be spent on non-pinned siblings.
     """
-    author = root.get("author")
-    pinned = _collect_pinned(root, author) if author else set()
+    pinned = _collect_pinned(root, root.author) if root.author else set()
     yield from _distribute_children(root, budget, pinned, depth=0)
 
 
-def _walk(node: dict, budget: int, pinned: set[int], depth: int):
+def _walk(
+    node: AlgoliaItem, budget: int, pinned: set[int], depth: int
+) -> Iterator[dict]:
     is_pinned = id(node) in pinned
-    has_reply = bool(node.get("children"))
+    has_reply = bool(node.children)
     if not (is_pinned or (budget > 0 and has_reply)):
         return
-    if node.get("text"):
+    if node.text:
         yield {
-            "author": node.get("author") or "?",
-            "points": node.get("points"),
-            "text": _strip_html(node["text"]),
+            "author": node.author or "?",
+            "points": node.points,
+            "text": _strip_html(node.text),
             "depth": depth,
         }
     remaining = budget if is_pinned else max(0, budget - 1)
     yield from _distribute_children(node, remaining, pinned, depth + 1)
 
 
-def _distribute_children(parent: dict, budget: int, pinned: set[int], depth: int):
-    children = parent.get("children") or []
+def _distribute_children(
+    parent: AlgoliaItem, budget: int, pinned: set[int], depth: int
+) -> Iterator[dict]:
+    children = parent.children
     alloc_map: dict[int, int] = {}
     if budget > 0:
         non_pinned_qualifying = [
-            c for c in children if id(c) not in pinned and c.get("children")
+            c for c in children if id(c) not in pinned and c.children
         ]
         allocations = _degressive_split(budget, len(non_pinned_qualifying))
         alloc_map = {
@@ -85,7 +116,7 @@ def _distribute_children(parent: dict, budget: int, pinned: set[int], depth: int
             yield from _walk(child, alloc, pinned, depth)
 
 
-def _collect_pinned(root: dict, author: str) -> set[int]:
+def _collect_pinned(root: AlgoliaItem, author: str) -> set[int]:
     """Return the set of id()s for (a) every comment posted by ``author`` and
     (b) each of its ancestors up to the story root."""
     pinned: set[int] = set()
@@ -94,13 +125,16 @@ def _collect_pinned(root: dict, author: str) -> set[int]:
 
 
 def _mark_pinned(
-    node: dict, author: str, pinned: set[int], ancestors: list[dict]
+    node: AlgoliaItem,
+    author: str,
+    pinned: set[int],
+    ancestors: list[AlgoliaItem],
 ) -> None:
-    if node.get("author") == author and node.get("text"):
+    if node.author == author and node.text:
         pinned.add(id(node))
         for anc in ancestors:
             pinned.add(id(anc))
-    for child in node.get("children") or []:
+    for child in node.children:
         _mark_pinned(child, author, pinned, ancestors + [node])
 
 
@@ -120,7 +154,7 @@ def _strip_html(text: str) -> str:
     return html.unescape(_TAG_RE.sub("", text))
 
 
-def _render_comments(comments: list[dict]) -> str:
+def _render_comments(comments: Iterable[dict]) -> str:
     parts: list[str] = []
     for c in comments:
         indent = "  " * c["depth"]
