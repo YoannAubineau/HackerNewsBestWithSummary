@@ -124,9 +124,9 @@ def test_original_title_used_when_no_rewrite(isolated_settings):
 
 def test_description_contains_rendered_markdown(isolated_settings):
     article = _make_article("g-desc", hn_item_id=7)
-    save(article, "## Résumé de l'article\n\n**TL;DR** : test.\n\n- Point 1\n- Point 2")
+    save(article, "## Résumé de l'article\n\n**Note importante.**\n\n- Point 1\n- Point 2")
     items = _parse(build_feed())
     description = items[0].findtext("description") or ""
     assert "<h2>" in description
-    assert "<strong>TL;DR</strong>" in description
+    assert "<strong>Note importante.</strong>" in description
     assert "<li>Point 1</li>" in description
