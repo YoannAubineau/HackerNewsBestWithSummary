@@ -17,18 +17,16 @@ def build_feed() -> bytes:
     fg.load_extension("media")
     fg.id(settings.feed_self_url)
     fg.title(settings.feed_title)
+    # Order matters: feedgen picks the *last* link without `rel` as the RSS
+    # <link> element, so rel="self" must come first.
     fg.link(href=settings.feed_self_url, rel="self")
+    fg.link(href="https://news.ycombinator.com/best")
     fg.description(settings.feed_description)
     fg.language("fr")
     fg.generator(
         "hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)"
     )
     fg.ttl(60)
-    fg.image(
-        url="https://yoannaubineau.github.io/HackerNewsBestWithSummary/logo.png",
-        title=settings.feed_title,
-        link=settings.feed_self_url,
-    )
     for article, body in articles:
         _add_entry(fg, article, body)
     return fg.rss_str(pretty=True)
