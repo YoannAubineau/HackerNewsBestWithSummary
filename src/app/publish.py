@@ -26,7 +26,7 @@ def build_feed() -> bytes:
     fg.generator(
         "hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)"
     )
-    fg.ttl(60)
+    fg.ttl(15)
     for article, body in articles:
         _add_entry(fg, article, body)
     return fg.rss_str(pretty=True)
