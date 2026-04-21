@@ -141,8 +141,12 @@ def run_cycle() -> None:
     step_fetch_feed()
     step_fetch_articles()
     step_fetch_discussions()
-    step_summarize()
-    step_publish()
+    newly_summarized = step_summarize()
+    feed_exists = get_settings().feed_output_path.exists()
+    if newly_summarized > 0 or not feed_exists:
+        step_publish()
+    else:
+        log.info("publish_skipped", reason="no new summaries, feed up to date")
 
 
 def _create_pending(entry: FeedEntry) -> None:
