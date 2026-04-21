@@ -58,4 +58,6 @@ def _add_entry(fg: FeedGenerator, article: Article, body: str) -> None:
     entry.pubDate(article.source_published_at)
     entry.description(_md.render(body))
     if article.image_url:
-        entry.media.thumbnail({"url": article.image_url})
+        # `media` is attached to FeedEntry at runtime by fg.load_extension("media");
+        # pyright cannot see this dynamic attribute.
+        entry.media.thumbnail({"url": article.image_url})  # type: ignore[attr-defined]
