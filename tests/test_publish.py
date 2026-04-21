@@ -123,34 +123,41 @@ def test_original_title_used_when_no_rewrite(isolated_settings):
     assert items[0].findtext("title") == "Titre original"
 
 
-def test_description_includes_image_when_image_url_set(isolated_settings):
+_MEDIA_NS = {"media": "http://search.yahoo.com/mrss/"}
+
+
+def _thumbnail_url(item) -> str | None:
+    thumb = item.find(".//media:thumbnail", _MEDIA_NS)
+    return thumb.get("url") if thumb is not None else None
+
+
+def test_media_thumbnail_emitted_when_image_url_set(isolated_settings):
     article = _make_article("g-img", hn_item_id=50)
     article.image_url = "https://cdn.example.com/hero.jpg"
     save(article, "## Résumé\n\nCorps.")
     items = _parse(build_feed())
-    description = items[0].findtext("description") or ""
-    assert '<img src="https://cdn.example.com/hero.jpg"' in description
-    # the image comes first in the description
-    assert description.index("<img") < description.index("Résumé")
+    assert _thumbnail_url(items[0]) == "https://cdn.example.com/hero.jpg"
 
 
-def test_description_escapes_image_url_attribute(isolated_settings):
-    article = _make_article("g-evil", hn_item_id=51)
-    # an image URL with an ampersand should be html-escaped, not inlined as-is
-    article.image_url = "https://cdn.example.com/p.jpg?w=1&h=2"
+def test_no_media_thumbnail_when_image_url_absent(isolated_settings):
+    article = _make_article("g-noimg", hn_item_id=52)
     save(article, "## Résumé\n\nCorps.")
     items = _parse(build_feed())
-    description = items[0].findtext("description") or ""
-    assert "w=1&amp;h=2" in description
-    assert "w=1&h=2\"" not in description
+    assert _thumbnail_url(items[0]) is None
 
 
-def test_description_without_image_url_has_no_img_tag(isolated_settings):
-    article = _make_article("g-noimg", hn_item_id=52)
+def test_description_does_not_inline_the_image(isolated_settings):
+    # media:thumbnail is the only channel for the image; the description
+    # stays clean and does not contain an <img> tag (which would risk
+    # showing up twice in readers that both display the thumbnail and
+    # render the body).
+    article = _make_article("g-clean", hn_item_id=53)
+    article.image_url = "https://cdn.example.com/hero.jpg"
     save(article, "## Résumé\n\nCorps.")
     items = _parse(build_feed())
     description = items[0].findtext("description") or ""
     assert "<img " not in description
+    assert "cdn.example.com" not in description
 
 
 def test_description_contains_rendered_markdown(isolated_settings):
