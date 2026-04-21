@@ -33,7 +33,7 @@ def write_feed() -> Path:
 def _collect_articles() -> list[tuple[Article, str]]:
     settings = get_settings()
     items = [(a, body) for _, a, body in iter_summarized()]
-    items.sort(key=lambda pair: pair[0].our_published_at, reverse=True)
+    items.sort(key=lambda pair: pair[0].source_published_at, reverse=True)
     return items[: settings.feed_items_limit]
 
 
@@ -48,5 +48,5 @@ def _add_entry(fg: FeedGenerator, article: Article, body: str) -> None:
     entry.link(href=link)
     entry.guid(short_hash(article.guid), permalink=False)
     entry.comments(article.hn_url)
-    entry.pubDate(article.our_published_at)
+    entry.pubDate(article.source_published_at)
     entry.description(markdown.markdown(body, extensions=["extra"]))
