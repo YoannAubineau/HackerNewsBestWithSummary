@@ -24,6 +24,11 @@ def build_feed() -> bytes:
         "hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)"
     )
     fg.ttl(60)
+    fg.image(
+        url="https://news.ycombinator.com/y18.gif",
+        title=settings.feed_title,
+        link=settings.feed_self_url,
+    )
     for article, body in articles:
         _add_entry(fg, article, body)
     return fg.rss_str(pretty=True)
