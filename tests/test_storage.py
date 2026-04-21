@@ -2,12 +2,16 @@ from datetime import UTC, datetime
 
 from app.models import Article, ContentSource, Status
 from app.storage import (
+    clear_sidecars,
     iter_by_status,
     load,
     move_to_failed,
     path_for,
+    read_sidecar,
     save,
     short_hash,
+    sidecar_path,
+    write_sidecar,
 )
 
 
@@ -85,6 +89,30 @@ def test_move_to_failed_removes_source_and_creates_failed(isolated_settings):
     assert "_failed" in dest.parts
     loaded, _ = load(dest)
     assert loaded.status == Status.FAILED
+
+
+def test_sidecar_roundtrip(isolated_settings):
+    article = _make_article("guid-sidecar")
+    path = save(article)
+    write_sidecar(path, "article", "raw content")
+    write_sidecar(path, "discussion", "raw discussion")
+    assert read_sidecar(path, "article") == "raw content"
+    assert read_sidecar(path, "discussion") == "raw discussion"
+    assert read_sidecar(path, "missing") is None
+
+
+def test_clear_sidecars_removes_all_transient_files(isolated_settings):
+    article = _make_article("guid-clear")
+    path = save(article)
+    write_sidecar(path, "article", "raw content")
+    write_sidecar(path, "discussion", "raw discussion")
+    assert sidecar_path(path, "article").exists()
+    assert sidecar_path(path, "discussion").exists()
+    clear_sidecars(path)
+    assert not sidecar_path(path, "article").exists()
+    assert not sidecar_path(path, "discussion").exists()
+    # The article .md itself stays untouched.
+    assert path.exists()
 
 
 def test_iter_by_status_skips_failed_tree(isolated_settings):
