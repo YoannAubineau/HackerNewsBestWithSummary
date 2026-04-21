@@ -123,6 +123,36 @@ def test_original_title_used_when_no_rewrite(isolated_settings):
     assert items[0].findtext("title") == "Titre original"
 
 
+def test_description_includes_image_when_image_url_set(isolated_settings):
+    article = _make_article("g-img", hn_item_id=50)
+    article.image_url = "https://cdn.example.com/hero.jpg"
+    save(article, "## Résumé\n\nCorps.")
+    items = _parse(build_feed())
+    description = items[0].findtext("description") or ""
+    assert '<img src="https://cdn.example.com/hero.jpg"' in description
+    # the image comes first in the description
+    assert description.index("<img") < description.index("Résumé")
+
+
+def test_description_escapes_image_url_attribute(isolated_settings):
+    article = _make_article("g-evil", hn_item_id=51)
+    # an image URL with an ampersand should be html-escaped, not inlined as-is
+    article.image_url = "https://cdn.example.com/p.jpg?w=1&h=2"
+    save(article, "## Résumé\n\nCorps.")
+    items = _parse(build_feed())
+    description = items[0].findtext("description") or ""
+    assert "w=1&amp;h=2" in description
+    assert "w=1&h=2\"" not in description
+
+
+def test_description_without_image_url_has_no_img_tag(isolated_settings):
+    article = _make_article("g-noimg", hn_item_id=52)
+    save(article, "## Résumé\n\nCorps.")
+    items = _parse(build_feed())
+    description = items[0].findtext("description") or ""
+    assert "<img " not in description
+
+
 def test_description_contains_rendered_markdown(isolated_settings):
     article = _make_article("g-desc", hn_item_id=7)
     save(article, "## Résumé de l'article\n\n**Note importante.**\n\n- Point 1\n- Point 2")

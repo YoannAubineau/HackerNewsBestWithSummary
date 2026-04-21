@@ -58,6 +58,7 @@ def step_fetch_articles() -> int:
         if result.text:
             write_sidecar(path, "article", result.text)
         article.content_source = result.source
+        article.image_url = result.image_url
         article.article_fetched_at = _now()
         article.status = Status.ARTICLE_FETCHED
         save(article, body)
