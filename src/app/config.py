@@ -21,7 +21,8 @@ class Settings(BaseSettings):
     feed_items_limit: int = 200
     feed_title: str = "Hacker News Best with Summary"
     feed_description: str = (
-        "Hacker News highest-voted recent links with article and discussion summaries."
+        "Hacker News highest-voted recent links with article and discussion summaries "
+        "in French."
     )
 
     # Max comments sent to the LLM for the discussion summary. Spent recursively:
