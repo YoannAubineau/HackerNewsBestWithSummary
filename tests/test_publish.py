@@ -58,19 +58,26 @@ def test_ask_hn_uses_hn_url_as_link(isolated_settings):
     assert items[0].findtext("comments") == "https://news.ycombinator.com/item?id=20"
 
 
-def test_feed_sorted_by_our_published_at_desc(isolated_settings):
-    older = _make_article(
-        "old", hn_item_id=1, our_published_at=datetime(2026, 4, 20, 9, 0, tzinfo=UTC),
-        title="Ancien",
-    )
-    newer = _make_article(
-        "new", hn_item_id=2, our_published_at=datetime(2026, 4, 21, 9, 0, tzinfo=UTC),
-        title="Récent",
-    )
+def test_feed_sorted_by_source_published_at_desc(isolated_settings):
+    older = _make_article("old", hn_item_id=1, title="Ancien")
+    older.source_published_at = datetime(2026, 4, 19, 9, 0, tzinfo=UTC)
+    newer = _make_article("new", hn_item_id=2, title="Récent")
+    newer.source_published_at = datetime(2026, 4, 21, 9, 0, tzinfo=UTC)
     save(older, "body")
     save(newer, "body")
     items = _parse(build_feed())
     assert [i.findtext("title") for i in items] == ["Récent", "Ancien"]
+
+
+def test_pubdate_is_source_published_at(isolated_settings):
+    article = _make_article("g1", hn_item_id=1)
+    article.source_published_at = datetime(2026, 4, 19, 7, 8, tzinfo=UTC)
+    save(article, "body")
+    items = _parse(build_feed())
+    pub = items[0].findtext("pubDate")
+    assert pub is not None
+    assert "19 Apr 2026" in pub
+    assert "07:08" in pub
 
 
 def test_feed_items_limit_respected(isolated_settings):
