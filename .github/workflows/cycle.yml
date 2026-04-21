@@ -42,6 +42,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Nothing to commit."
           else
-            git commit -m "cycle: update feed [skip ci]"
+            git commit -m "cycle: update feed"
             git push
           fi
