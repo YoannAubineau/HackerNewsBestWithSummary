@@ -25,7 +25,7 @@ def build_feed() -> bytes:
     )
     fg.ttl(60)
     fg.image(
-        url="https://news.ycombinator.com/y18.gif",
+        url="https://news.ycombinator.com/y18.svg",
         title=settings.feed_title,
         link=settings.feed_self_url,
     )
