@@ -23,6 +23,7 @@ def build_feed() -> bytes:
     fg.generator(
         "hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)"
     )
+    fg.ttl(60)
     for article, body in articles:
         _add_entry(fg, article, body)
     return fg.rss_str(pretty=True)
@@ -48,6 +49,7 @@ def _collect_articles() -> list[tuple[Article, str]]:
 
 
 def _add_entry(fg: FeedGenerator, article: Article, body: str) -> None:
+    settings = get_settings()
     entry = fg.add_entry(order="append")
     entry.title(article.rewritten_title or article.title)
     link = (
@@ -59,6 +61,7 @@ def _add_entry(fg: FeedGenerator, article: Article, body: str) -> None:
     entry.guid(short_hash(article.guid), permalink=False)
     entry.comments(article.hn_url)
     entry.pubDate(article.source_published_at)
+    entry.source(url=settings.source_feed_url, title="Hacker News Best via hnrss.org")
     entry.description(_md.render(body))
     if article.image_url:
         # `media` is attached to FeedEntry at runtime by fg.load_extension("media");
