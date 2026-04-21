@@ -2,6 +2,7 @@ import typer
 
 from app.logging_setup import setup_logging
 from app.pipeline import (
+    backfill_images,
     run_cycle,
     step_fetch_articles,
     step_fetch_discussions,
@@ -55,3 +56,9 @@ def summarize() -> None:
 def publish() -> None:
     """Step 5: generate feed.xml."""
     step_publish()
+
+
+@app.command("backfill-images")
+def backfill_images_cmd() -> None:
+    """Fill missing image_url on past summarized articles (no LLM calls)."""
+    backfill_images()

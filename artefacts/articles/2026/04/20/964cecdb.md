@@ -14,6 +14,7 @@ feed_summary: '<p>Article URL: <a href="https://www.politico.eu/article/eu-bruss
 guid: https://news.ycombinator.com/item?id=47831742
 hn_item_id: 47831742
 hn_url: https://news.ycombinator.com/item?id=47831742
+image_url: https://www.politico.eu/cdn-cgi/image/width=1200,height=630,fit=crop,quality=80,onerror=redirect/wp-content/uploads/2026/04/17/GettyImages-1829285149-scaled.jpg
 is_ask_or_show_hn: false
 model: anthropic/claude-haiku-4.5
 our_published_at: '2026-04-21T13:18:44.233250Z'

@@ -150,6 +150,37 @@ def run_cycle() -> None:
         log.info("publish_skipped", reason="no new summaries, feed up to date")
 
 
+def backfill_images() -> int:
+    """Fill missing image_url on already-summarized articles.
+
+    Re-fetches the article URL (no LLM calls) and pulls og:image /
+    twitter:image metadata into the frontmatter. Articles that already
+    carry an image_url, Ask/Show HN entries, and URLs we fail to fetch
+    are skipped in place.
+    """
+    from app.storage import iter_summarized
+
+    filled = 0
+    for _path, article, body in list(iter_summarized()):
+        if article.image_url:
+            continue
+        if article.content_source == ContentSource.ASK_SHOW_HN:
+            continue
+        try:
+            result = fetch_article(article.url, feed_fallback="")
+        except Exception as exc:  # noqa: BLE001
+            log.warning("backfill_fetch_failed", guid=article.guid, error=str(exc))
+            continue
+        if not result.image_url:
+            continue
+        article.image_url = result.image_url
+        save(article, body)
+        filled += 1
+        log.info("backfill_filled", guid=article.guid, image_url=result.image_url)
+    log.info("backfill_images", filled=filled)
+    return filled
+
+
 def _create_pending(entry: FeedEntry) -> None:
     article = Article(
         guid=entry.guid,
