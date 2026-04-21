@@ -20,6 +20,9 @@ def build_feed() -> bytes:
     fg.link(href=settings.feed_self_url, rel="self")
     fg.description(settings.feed_description)
     fg.language("fr")
+    fg.generator(
+        "hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)"
+    )
     for article, body in articles:
         _add_entry(fg, article, body)
     return fg.rss_str(pretty=True)

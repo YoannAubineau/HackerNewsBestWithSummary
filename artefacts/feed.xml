@@ -6,9 +6,9 @@
     <description>Hacker News highest-voted recent links with article and discussion summaries in French.</description>
     <atom:link href="https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.xml" rel="self"/>
     <docs>http://www.rssboard.org/rss-specification</docs>
-    <generator>python-feedgen</generator>
+    <generator>hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)</generator>
     <language>fr</language>
-    <lastBuildDate>Tue, 21 Apr 2026 15:16:53 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2026 15:20:19 +0000</lastBuildDate>
     <item>
       <title>Recueil de lois et principes fondamentaux en génie logiciel</title>
       <link>https://lawsofsoftwareengineering.com</link>
