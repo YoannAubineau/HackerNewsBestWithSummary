@@ -20,7 +20,9 @@ class Settings(BaseSettings):
     feed_self_url: str = "http://localhost/feed.xml"
     feed_items_limit: int = 200
     feed_title: str = "HackerNews Best with Summary"
-    feed_description: str = "Hacker News Best with article and discussion summaries."
+    feed_description: str = (
+        "Hacker News highest-voted recent links with article and discussion summaries."
+    )
 
     # Max comments sent to the LLM for the discussion summary. Spent recursively:
     # degressive split across root comments (those with ≥1 reply), the top-ranked
