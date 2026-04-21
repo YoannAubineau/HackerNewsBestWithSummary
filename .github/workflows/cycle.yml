@@ -38,9 +38,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add articles/ feed.xml
+          git add artefacts/
           if git diff --cached --quiet; then
-            echo "Rien à committer."
+            echo "Nothing to commit."
           else
             git commit -m "cycle: update feed [skip ci]"
             git push
