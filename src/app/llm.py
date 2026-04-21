@@ -1,10 +1,13 @@
 from dataclasses import dataclass
 
 import httpx
+import structlog
 
 from app.config import get_settings
 
 _OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+log = structlog.get_logger()
 
 
 class LLMError(RuntimeError):
@@ -19,6 +22,8 @@ class AllModelsFailedError(LLMError):
 class LLMResult:
     text: str
     model: str
+    prompt_tokens: int | None = None
+    completion_tokens: int | None = None
 
 
 def complete(system_prompt: str, user_prompt: str) -> LLMResult:
@@ -34,6 +39,7 @@ def complete(system_prompt: str, user_prompt: str) -> LLMResult:
             return _call(model, system_prompt, user_prompt)
         except _Retryable as exc:
             last_error = exc
+            log.warning("llm_retry", model=model, reason=str(exc))
             continue
         except httpx.HTTPStatusError as exc:
             raise LLMError(f"{model}: {exc.response.status_code} {exc.response.text}") from exc
@@ -71,7 +77,21 @@ def _call(model: str, system_prompt: str, user_prompt: str) -> LLMResult:
     text = (message.get("content") or "").strip()
     if not text:
         raise _Retryable(f"{model}: empty content")
-    return LLMResult(text=text, model=model)
+    usage = data.get("usage") or {}
+    prompt_tokens = usage.get("prompt_tokens")
+    completion_tokens = usage.get("completion_tokens")
+    log.info(
+        "llm_call",
+        model=model,
+        prompt_tokens=prompt_tokens,
+        completion_tokens=completion_tokens,
+    )
+    return LLMResult(
+        text=text,
+        model=model,
+        prompt_tokens=prompt_tokens,
+        completion_tokens=completion_tokens,
+    )
 
 
 class _Retryable(Exception):

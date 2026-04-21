@@ -329,6 +329,17 @@ def test_submitter_with_multiple_comments_pins_all(httpx_mock, isolated_settings
     assert result.text.count("[op]") == 2
 
 
+def test_fetch_discussion_returns_none_on_invalid_payload(httpx_mock):
+    # A malformed Algolia response (e.g. children ends up as a scalar instead
+    # of a list) should be rejected at validation time, and fetch_discussion
+    # should degrade gracefully rather than crash.
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/42",
+        json={"author": "op", "children": "not-a-list"},
+    )
+    assert fetch_discussion(42) is None
+
+
 def test_fetch_discussion_returns_none_on_http_error(httpx_mock):
     httpx_mock.add_response(
         url="https://hn.algolia.com/api/v1/items/500",
