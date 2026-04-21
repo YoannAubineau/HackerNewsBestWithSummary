@@ -98,6 +98,7 @@ def test_guid_is_short_hash_not_permalink(isolated_settings):
     guid = root.find(".//item/guid")
     assert guid is not None
     assert guid.attrib.get("isPermaLink") == "false"
+    assert guid.text is not None
     assert len(guid.text) == 8
 
 
