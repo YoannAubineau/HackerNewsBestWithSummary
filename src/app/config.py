@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     source_feed_url: str = "https://hnrss.org/best"
     feed_self_url: str = "http://localhost/feed.fr.xml"
-    feed_items_limit: int = 200
+    feed_items_limit: int = 100
     feed_ttl_minutes: int = 15
     feed_title: str = "Hacker News: Best, with Summary"
     feed_description: str = (

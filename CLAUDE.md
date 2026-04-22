@@ -64,7 +64,7 @@ hourly on a public repo, so minutes are free.
   bookkeeping (`_record_attempt`).
 - `src/app/storage.py`, filesystem layout. `iter_summarized()` walks the
   date tree newest-first and sorts by `hn_item_id` desc within each day, so
-  publish can break as soon as it has 200 items without scanning old files.
+  publish can break as soon as it has 100 items without scanning old files.
 - `src/app/rss_in.py`, parses the hnrss feed and detects Ask HN / Show HN
   (when `entry.link == entry.comments`).
 - `src/app/fetch_article.py`, HTTP + trafilatura, falls back to the feed's
