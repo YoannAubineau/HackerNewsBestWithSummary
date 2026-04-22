@@ -73,9 +73,6 @@ without touching the code, by adding lines to the `env:` block of the
           CHANNEL_SITE_URL: https://news.ycombinator.com/newest
 ```
 
-This is cleaner than editing the defaults in `src/app/config.py` because
-your fork stays rebase-friendly with upstream.
-
 ### Use a different Hacker News feed
 
 Set `SOURCE_FEED_URL` to any feed served by [hnrss.org](https://hnrss.org),
