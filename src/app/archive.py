@@ -187,11 +187,8 @@ _TEMPLATE = """<!DOCTYPE html>
     white-space: nowrap;
     color: var(--muted);
     width: 1%;
-    font-size: 0.85em;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
   }}
-  td.title {{ color: var(--fg); width: auto; }}
+  td.title, th:last-child {{ width: 100%; color: var(--fg); }}
   tbody tr:nth-child(even) {{ background: var(--row-alt); }}
   @media (max-width: 640px) {{
     th:nth-child(2), td:nth-child(2) {{ display: none; }}
