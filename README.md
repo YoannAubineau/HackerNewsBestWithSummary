@@ -27,12 +27,12 @@ XSLT stylesheet; RSS readers receive the same file as plain RSS 2.0.
 
 ## LLM Cost Supported by the Author
 
+Daily spend on OpenRouter over the last 30 days. Refreshed each hour by the cycle workflow.
+
 These costs cover the LLM calls used to rephrase each title, summarize the
 article, and analyze the Hacker News discussion.
 
 ![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
-
-Daily spend on OpenRouter over the last 30 days. Refreshed each hour by the cycle workflow.
 
 ## Set up your own instance using Github Pages
 
