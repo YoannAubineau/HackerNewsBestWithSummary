@@ -126,7 +126,6 @@ def step_summarize() -> int:
                 discussion_comment_count=article.discussion_comment_count,
                 url=article.url,
                 hn_url=article.hn_url,
-                hn_item_id=article.hn_item_id,
             )
             article.status = Status.SUMMARIZED
             article.summarized_at = _now()
