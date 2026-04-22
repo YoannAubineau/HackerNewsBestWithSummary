@@ -7,7 +7,10 @@ from app.config import get_settings
 from app.models import Article, ContentSource
 from app.storage import iter_summarized, short_hash
 
-_md = MarkdownIt()
+# html=False escapes any raw HTML that sneaks into the LLM output (prompt
+# injection via a crafted article could otherwise emit <script> tags that
+# slip through to the feed <description>).
+_md = MarkdownIt(options_update={"html": False})
 
 
 def build_feed() -> bytes:

@@ -186,3 +186,15 @@ def test_description_contains_rendered_markdown(isolated_settings):
     assert "<h2>" in description
     assert "<strong>Note importante.</strong>" in description
     assert "<li>Point 1</li>" in description
+
+
+def test_description_escapes_raw_html_in_body(isolated_settings):
+    # Guards against a prompt-injected LLM output emitting <script> / <iframe>
+    # that would slip through to RSS readers. markdown-it-py should treat the
+    # raw HTML as literal text (escaped) rather than pass it through.
+    article = _make_article("g-xss", hn_item_id=99)
+    save(article, "## Résumé\n\n<script>alert('xss')</script>\n\nnormal.")
+    items = _parse(build_feed())
+    description = items[0].findtext("description") or ""
+    assert "<script>" not in description
+    assert "&lt;script&gt;" in description
