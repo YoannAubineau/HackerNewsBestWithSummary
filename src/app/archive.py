@@ -25,6 +25,10 @@ from app.storage import iter_summarized, short_hash
 
 _PAGE_SIZE = 100
 _EPOCH = datetime.min.replace(tzinfo=UTC)
+# GitHub renders committed Markdown files with frontmatter + body as a nice
+# HTML page out of the box, so we link the archive titles there directly
+# rather than maintaining our own article HTML generator.
+_REPO_BLOB_URL = "https://github.com/YoannAubineau/HackerNewsBestWithSummary/blob/main"
 
 
 @dataclass(frozen=True)
@@ -75,7 +79,6 @@ def _filename(view_key: str, page: int) -> str:
 
 def _render_row(article: Article) -> str:
     title = article.rewritten_title or article.title
-    summary_url = f"a/{short_hash(article.guid)}.html"
     return (
         "<tr>"
         f'<td><a href="{escape(article.hn_url)}" rel="noopener">'
@@ -83,8 +86,19 @@ def _render_row(article: Article) -> str:
         f"{_date_cell(article.source_published_at)}"
         f"{_date_cell(article.our_published_at)}"
         f"{_date_cell(article.summarized_at)}"
-        f'<td class="title"><a href="{summary_url}">{escape(title)}</a></td>'
+        f'<td class="title"><a href="{escape(_summary_url(article))}">'
+        f"{escape(title)}</a></td>"
         "</tr>"
+    )
+
+
+def _summary_url(article: Article) -> str:
+    """Return the URL of the article's Markdown file rendered on GitHub."""
+    when = article.source_published_at
+    return (
+        f"{_REPO_BLOB_URL}/artefacts/articles/"
+        f"{when.year:04d}/{when.month:02d}/{when.day:02d}/"
+        f"{short_hash(article.guid)}.md"
     )
 
 
