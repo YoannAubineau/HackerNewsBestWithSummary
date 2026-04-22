@@ -1,5 +1,9 @@
 # Hacker News Best with summaries
 
+[![CI](https://img.shields.io/github/actions/workflow/status/YoannAubineau/HackerNewsBestWithSummary/ci.yml?label=CI)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/ci.yml)
+[![Feed Refresh](https://img.shields.io/github/actions/workflow/status/YoannAubineau/HackerNewsBestWithSummary/cycle.yml?label=Feed%20Refresh)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/cycle.yml)
+[![License: MIT](https://img.shields.io/github/license/YoannAubineau/HackerNewsBestWithSummary)](LICENSE)
+
 Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with:
 
 - a rewritten, factual title (clickbait headlines are replaced by what the article actually says)
