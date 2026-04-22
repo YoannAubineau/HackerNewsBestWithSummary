@@ -13,9 +13,9 @@ Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with L
 
 The generated feed is a static RSS 2.0 file, updated hourly by GitHub Actions and served through GitHub Pages.
 
-## Subscribe
+## Usage
 
-Feed URL (French summaries):
+Paste the URL below into your RSS reader to subscribe:
 
 <https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
 
@@ -28,6 +28,7 @@ still reachable on the
 which is sortable by HN submission date, first appearance in `/best`, or
 entry into this feed.
 
+For the moment, this feed is only available in French.
 [Open an issue](https://github.com/YoannAubineau/HackerNewsBestWithSummary/issues)
 if you'd like to see another language supported.
 
