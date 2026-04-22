@@ -39,8 +39,11 @@ def test_archive_lists_every_summarized_article(isolated_settings):
     path = write_archive()
     html = path.read_text(encoding="utf-8")
     assert html.count("<tr>") == 3  # header + 2 articles
-    assert "item?id=10" in html
-    assert "item?id=20" in html
+    # Titles link to the per-article summary pages under a/.
+    from app.storage import short_hash
+
+    assert f'href="a/{short_hash("g1")}.html"' in html
+    assert f'href="a/{short_hash("g2")}.html"' in html
 
 
 def test_archive_prefers_rewritten_title(isolated_settings):
@@ -75,14 +78,16 @@ def test_archive_formats_dates_as_iso_minute(isolated_settings):
 
 
 def test_archive_ignores_non_summarized_articles(isolated_settings):
+    from app.storage import short_hash
+
     summarized = _make_article("g1", hn_item_id=1)
     pending = _make_article("g2", hn_item_id=2)
     pending.status = Status.PENDING
     save(summarized, "body")
     save(pending, "body")
     html = write_archive().read_text(encoding="utf-8")
-    assert "item?id=1" in html
-    assert "item?id=2" not in html
+    assert short_hash("g1") in html
+    assert short_hash("g2") not in html
 
 
 def test_archive_escapes_html_in_title(isolated_settings):

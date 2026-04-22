@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anthropic autorise à nouveau l&#x27;utilisation de Claude CLI dans OpenClaw selon les directives du personnel — Hacker News Best with summaries</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fafafa;
+    --fg: #222;
+    --muted: #666;
+    --border: #e5e5e5;
+    --accent: #ff6600;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e5e5e5;
+      --muted: #999;
+      --border: #333;
+    }
+  }
+  body {
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--bg);
+    color: var(--fg);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main, nav.top {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+  nav.top {
+    margin-bottom: 1rem;
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  h1 { margin: 0.25rem 0 0.75rem; font-size: 1.6rem; line-height: 1.25; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .original-title, .dates {
+    color: var(--muted);
+    margin: 0.25rem 0;
+    font-size: 0.9em;
+  }
+  article {
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  article h2 { font-size: 1.2rem; margin-top: 1.5rem; }
+  article ul { padding-left: 1.25rem; }
+  article li { margin: 0.25rem 0; }
+  article blockquote {
+    margin: 0.5rem 0 0.5rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  footer {
+    max-width: 44rem;
+    margin: 2rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  footer a { margin-right: 1rem; }
+</style>
+</head>
+<body>
+<nav class="top">
+  <a href="../archive.html">← Archive</a> ·
+  <a href="../feed.fr.xml">Flux</a>
+</nav>
+<main>
+  <h1>Anthropic autorise à nouveau l&#x27;utilisation de Claude CLI dans OpenClaw selon les directives du personnel</h1>
+  <p class="original-title">Titre original : <em>Anthropic says OpenClaw-style Claude CLI usage is allowed again</em></p>
+  <p class="dates">Publié sur HN le 2026-04-21 03:43 · Entré dans /best le 2026-04-21 13:18 · Résumé généré le 2026-04-21 13:19</p>
+  <article>
+<h2>Résumé de l'article</h2>
+<p>Anthropic a confirmé auprès de son personnel que l'utilisation de Claude CLI via OpenClaw est à nouveau autorisée. OpenClaw supporte maintenant à la fois l'accès par clé API Anthropic et la réutilisation de Claude CLI, avec plusieurs configurations et optimisations disponibles.</p>
+<ul>
+<li>OpenClaw traite l'utilisation de Claude CLI et la commande <code>claude -p</code> comme sanctionnées à moins qu'Anthropic ne publie une nouvelle politique</li>
+<li>Plusieurs méthodes d'authentification sont supportées : clé API Anthropic, CLI Anthropic, et jetons OAuth legacy</li>
+<li>Les modèles Claude supportent le cache de prompts (5 minutes par défaut avec clé API), la fenêtre de contexte 1M en bêta, et les niveaux de réflexion adaptatifs</li>
+<li>Le mode &quot;fast&quot; d'OpenClaw permet de router le trafic direct vers api.anthropic.com avec gestion automatique des niveaux de service</li>
+<li>Pour les déploiements en production, les clés API Anthropic restent le chemin recommandé pour un contrôle explicite de la facturation et une disponibilité continue</li>
+</ul>
+<h2>Discussion sur Hacker News</h2>
+<p><strong>Confirmations</strong> :</p>
+<ul>
+<li>La stratégie de communication d'Anthropic est confuse et peu professionnelle : annonces via Twitter ou postes Reddit au lieu de canaux officiels, créant de l'incertitude persistante chez les utilisateurs.</li>
+<li>Les restrictions répétées sur Claude CLI et les changements de politique imprévisibles ont endommagé la confiance des utilisateurs fidèles, les poussant à tester des alternatives (Codex, Kimi, GLM) malgré la qualité perçue de Claude.</li>
+<li>Les utilisateurs ressentent une hausse des prix combinée à une réduction des limites d'usage, interprétée comme une « enshittification » progressive du service malgré la goodwill initial d'Anthropic.</li>
+</ul>
+<p><strong>Réfutations</strong> :</p>
+<ul>
+<li>La distinction entre utiliser OpenClaw au sein d'une session Claude Code officielle (autorisé) versus détourner les credentials OAuth (facturation API supplémentaire) est légitime et conforme aux ToS, selon les défenseurs d'Anthropic.</li>
+<li>L'argument que les fournisseurs n'ont aucun « moat » est contesté : les données montrent une préférence utilisateur réelle pour différents modèles selon les tâches (Opus pour frontend, GPT 5.3+ pour backend), suggérant une différenciation durable plutôt qu'une interchangeabilité complète.</li>
+<li>Les hausses de prix et restrictions reflètent une contrainte réelle de compute, nécessaire pour atteindre la rentabilité d'un service qui brûle massivement du capital, et ne constituent pas une malveillance délibérée.</li>
+</ul>
+<hr />
+<p><a href="https://docs.openclaw.ai/providers/anthropic">Article original</a> · <a href="https://news.ycombinator.com/item?id=47844269">Discussion HN</a></p>
+
+  </article>
+</main>
+<footer>
+  <a href="https://docs.openclaw.ai/providers/anthropic" rel="noopener">Article original ↗</a>
+  <a href="https://news.ycombinator.com/item?id=47844269" rel="noopener">Discussion HN ↗</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub Copilot restreint ses plans individuels face à la demande des workflows d&#x27;agents — Hacker News Best with summaries</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fafafa;
+    --fg: #222;
+    --muted: #666;
+    --border: #e5e5e5;
+    --accent: #ff6600;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e5e5e5;
+      --muted: #999;
+      --border: #333;
+    }
+  }
+  body {
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--bg);
+    color: var(--fg);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main, nav.top {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+  nav.top {
+    margin-bottom: 1rem;
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  h1 { margin: 0.25rem 0 0.75rem; font-size: 1.6rem; line-height: 1.25; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .original-title, .dates {
+    color: var(--muted);
+    margin: 0.25rem 0;
+    font-size: 0.9em;
+  }
+  article {
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  article h2 { font-size: 1.2rem; margin-top: 1.5rem; }
+  article ul { padding-left: 1.25rem; }
+  article li { margin: 0.25rem 0; }
+  article blockquote {
+    margin: 0.5rem 0 0.5rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  footer {
+    max-width: 44rem;
+    margin: 2rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  footer a { margin-right: 1rem; }
+</style>
+</head>
+<body>
+<nav class="top">
+  <a href="../archive.html">← Archive</a> ·
+  <a href="../feed.fr.xml">Flux</a>
+</nav>
+<main>
+  <h1>GitHub Copilot restreint ses plans individuels face à la demande des workflows d&#x27;agents</h1>
+  <p class="original-title">Titre original : <em>Changes to GitHub Copilot individual plans</em></p>
+  <p class="dates">Publié sur HN le 2026-04-20 18:24 · Entré dans /best le 2026-04-22 01:33 · Résumé généré le 2026-04-22 01:33</p>
+  <article>
+<h2>Résumé de l'article</h2>
+<p>GitHub Copilot introduit des changements majeurs à ses plans individuels pour maintenir la qualité de service : pause des nouvelles inscriptions, réduction des limites d'utilisation et restriction de la disponibilité des modèles. Ces mesures deviennent nécessaires en raison de la forte augmentation de la consommation de ressources liée aux workflows d'agents parallélisés et de longue durée.</p>
+<ul>
+<li>Les nouvelles inscriptions aux plans Copilot Pro, Pro+ et Student sont suspendues pour mieux servir les clients existants</li>
+<li>Les limites d'utilisation sont réduites et affichées en temps réel dans VS Code et Copilot CLI ; les utilisateurs Pro peuvent upgrader vers Pro+ qui offre plus de 5X les limites</li>
+<li>Les modèles Opus ne sont plus disponibles dans les plans Pro (Opus 4.7 reste en Pro+, tandis qu'Opus 4.5 et 4.6 seront retirés de Pro+)</li>
+<li>Les utilisateurs peuvent annuler leur abonnement avant le 20 mai et recevoir un remboursement proportionnel</li>
+<li>Les limites d'utilisation reposent sur deux mécanismes : limites de session (charge de pointe) et limites hebdomadaires (tokens consommés)</li>
+</ul>
+<h2>Discussion sur Hacker News</h2>
+<p><strong>Confirmations</strong> :</p>
+<ul>
+<li>Le changement de tarification représente une augmentation drastique : Opus 4.6 passait de 3x à 7.5x de multiplicateur pour Opus 4.7, et Pro+ passe de $10 à $40/mois, ce qui rend l'accès aux modèles premium significativement plus coûteux et insoutenable pour beaucoup d'utilisateurs.</li>
+<li>Les limites de quota par jour et par semaine sont mal adaptées aux workflows réels et créent une friction importante, empêchant même les utilisateurs payants d'accéder pleinement à leurs allocations de requêtes.</li>
+<li>GitHub Copilot fonctionnait comme un subsidy non-durable : le pricing initial était clairement au-dessous du coût réel d'accès à Opus, et cette correction était prévisible mais brutale et mal communiquée.</li>
+<li>L'absence de refund clair pour les abonnements annuels et la suppression d'une version modèle sans alternative graduelle constituent un véritable &quot;rug pull&quot; client.</li>
+</ul>
+<p><strong>Réfutations</strong> :</p>
+<ul>
+<li>Certains utilisateurs remettent en question si les modèles premium sont réellement nécessaires : Haiku et Sonnet suffisent à 90% des cas d'usage, et l'usage exclusif d'Opus résulterait souvent d'une sur-optimisation plutôt que d'une réelle nécessité technique.</li>
+<li>Le coût réel élevé d'inférence pour Opus justifie partiellement l'augmentation, qui reflète davantage les véritables frais de service qu'un arbitrage tarifaire malveillant de Microsoft.</li>
+<li>Des alternatives existent : Claude Pro direct (moins cher pour accès Opus), utilisation des APIs des fournisseurs originaux, ou migration vers Claude Code en VSCode, offrant des chemins de sortie viable aux utilisateurs.</li>
+</ul>
+<hr />
+<p><a href="https://github.blog/news-insights/company-news/changes-to-github-copilot-individual-plans/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47838508">Discussion HN</a></p>
+
+  </article>
+</main>
+<footer>
+  <a href="https://github.blog/news-insights/company-news/changes-to-github-copilot-individual-plans/" rel="noopener">Article original ↗</a>
+  <a href="https://news.ycombinator.com/item?id=47838508" rel="noopener">Discussion HN ↗</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les architectures d&#x27;agents actuels reproduisent les failles de sécurité de MS-DOS, selon ce développeur — Hacker News Best with summaries</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fafafa;
+    --fg: #222;
+    --muted: #666;
+    --border: #e5e5e5;
+    --accent: #ff6600;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e5e5e5;
+      --muted: #999;
+      --border: #333;
+    }
+  }
+  body {
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--bg);
+    color: var(--fg);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main, nav.top {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+  nav.top {
+    margin-bottom: 1rem;
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  h1 { margin: 0.25rem 0 0.75rem; font-size: 1.6rem; line-height: 1.25; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .original-title, .dates {
+    color: var(--muted);
+    margin: 0.25rem 0;
+    font-size: 0.9em;
+  }
+  article {
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  article h2 { font-size: 1.2rem; margin-top: 1.5rem; }
+  article ul { padding-left: 1.25rem; }
+  article li { margin: 0.25rem 0; }
+  article blockquote {
+    margin: 0.5rem 0 0.5rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  footer {
+    max-width: 44rem;
+    margin: 2rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  footer a { margin-right: 1rem; }
+</style>
+</head>
+<body>
+<nav class="top">
+  <a href="../archive.html">← Archive</a> ·
+  <a href="../feed.fr.xml">Flux</a>
+</nav>
+<main>
+  <h1>Les architectures d&#x27;agents actuels reproduisent les failles de sécurité de MS-DOS, selon ce développeur</h1>
+  <p class="original-title">Titre original : <em>OpenClaw isn&#x27;t fooling me. I remember MS-DOS</em></p>
+  <p class="dates">Publié sur HN le 2026-04-20 07:49 · Entré dans /best le 2026-04-21 11:50 · Résumé généré le 2026-04-21 11:57</p>
+  <article>
+<h2>Résumé de l'article</h2>
+<p><strong>TL;DR :</strong> Un développeur compare les systèmes d'agents actuels aux problèmes de sécurité de MS-DOS, arguant que les solutions populaires contournent les problèmes plutôt que de les résoudre architecturalement. Il propose une approche alternative avec séparation des processus et audit en chaîne de hachage.</p>
+<ul>
+<li>Les systèmes d'agents à token unique et sandbox global reproduisent l'absence de séparation de Unix/Linux que MS-DOS avait</li>
+<li>Le tutoriel NVIDIA pour NemoClaw utilise des contournements : liaison sur 0.0.0.0, appairage par chat, approbation au niveau réseau</li>
+<li>Wirken, la solution proposée, isole chaque canal en processus séparé avec identité Ed25519, infrastructure hors-processus et exécution shell conteneurisée</li>
+<li>Les logs d'audit en chaîne de hachage enregistrent chaque tentative d'accès et d'approbation, vérifiables cryptographiquement</li>
+<li>L'auteur appelle à appliquer les principes de sécurité Unix (séparation processus, permissions, isolation) aux architectures d'agents modernes</li>
+</ul>
+<h2>Discussion sur Hacker News</h2>
+<p><strong>Arguments en faveur</strong> :</p>
+<ul>
+<li>Les agents autonomes représentent une évolution naturelle et inévitable des LLM, comparable aux débuts d'autres technologies révolutionnaires ; le marché récompense l'action rapide plutôt que la prudence excessive</li>
+<li>La technologie offre un potentiel réel pour les tâches répétitives et l'automatisation personnelle, à condition de résoudre les problèmes actuels d'architecture et de mémoire</li>
+<li>L'approche &quot;sandbox minimal avec blast radius limité&quot; (machine dédiée, clés avec solde faible) peut être viable pour certains cas d'usage pragmatiques</li>
+<li>Des solutions techniques existent pour améliorer la sécurité (isolation par canal, authentification granulaire, audit chiffré) plutôt que de refuser complètement la technologie</li>
+<li>Le contrôle utilisateur granulaire et la liberté de &quot;hacker&quot; ses outils, comme à l'époque de DOS, représentent une valeur intrinsèque appréciée par les early adopters</li>
+</ul>
+<p><strong>Arguments contre</strong> :</p>
+<ul>
+<li>Le problème fondamental persiste : donner à un agent accès aux données personnelles ET à internet crée une vulnérabilité inévitable aux injections de prompts et exfiltration, peu importe l'isolation technique</li>
+<li>L'architecture actuelle (heartbeats/cron toutes les 5 minutes, mémoire primitive, RAG inefficace) consume énormément de tokens, rendant l'économie défaillante et sans solution élégante à court terme</li>
+<li>La majorité des utilisateurs testent puis abandonnent le produit faute de cas d'usage réel ; le hype semble artificiel et déconnecté de la valeur pratique (dépense $180/mois pour faire ce qu'une Raspberry Pi fait gratuitement)</li>
+<li>L'absence de garantie de fiabilité crée un risque existentiel (suppression accidentelle d'emails, révocation d'authentification) ; une seule erreur catastrophique détruit la réputation du service</li>
+<li>Les parallèles avec DOS ignorent que les systèmes d'exploitation modernes ont résolu 40 ans de problèmes de sécurité pour des raisons justifiées ; régresser vers cette liberté totale échange liberté contre exposition inacceptable</li>
+</ul>
+<hr />
+<p><a href="https://www.flyingpenguin.com/build-an-openclaw-free-secure-always-on-local-ai-agent/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47831437">Discussion HN</a></p>
+
+  </article>
+</main>
+<footer>
+  <a href="https://www.flyingpenguin.com/build-an-openclaw-free-secure-always-on-local-ai-agent/" rel="noopener">Article original ↗</a>
+  <a href="https://news.ycombinator.com/item?id=47831437" rel="noopener">Discussion HN ↗</a>
+</footer>
+</body>
+</html>
