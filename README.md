@@ -15,7 +15,7 @@ The generated feed is a static RSS 2.0 file, updated hourly by GitHub Actions an
 
 ## Subscribe
 
-Feed URL (French summaries):
+Feed URL (French summaries — [open an issue](https://github.com/YoannAubineau/HackerNewsBestWithSummary/issues) if you'd like to see another language supported):
 
 <https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
 
