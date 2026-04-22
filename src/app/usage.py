@@ -57,7 +57,7 @@ def _write_badge(usage: float) -> None:
         "schemaVersion": 1,
         "label": "Total LLM cost",
         "message": f"${usage:.2f}",
-        "color": "purple",
+        "color": "yellow",
     }
     _BADGE_PATH.parent.mkdir(parents=True, exist_ok=True)
     _BADGE_PATH.write_text(json.dumps(payload) + "\n", encoding="utf-8")
