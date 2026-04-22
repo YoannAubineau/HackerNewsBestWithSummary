@@ -37,9 +37,19 @@ class Settings(BaseSettings):
     max_attempts: int = 3
     user_agent: str = "hn-best-summary/0.1 (+https://github.com/)"
 
-    articles_dir: Path = Path("artefacts/articles")
-    failed_dir: Path = Path("artefacts/articles/_failed")
-    feed_output_path: Path = Path("artefacts/feed.fr.xml")
+    artefacts_dir: Path = Path("artefacts")
+
+    @property
+    def articles_dir(self) -> Path:
+        return self.artefacts_dir / "articles"
+
+    @property
+    def failed_dir(self) -> Path:
+        return self.articles_dir / "_failed"
+
+    @property
+    def feed_output_path(self) -> Path:
+        return self.artefacts_dir / "feed.fr.xml"
 
     log_level: LogLevel = "INFO"
 
