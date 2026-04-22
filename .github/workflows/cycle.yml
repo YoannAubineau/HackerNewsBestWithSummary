@@ -61,10 +61,12 @@ jobs:
             # The remote may have advanced while the cycle was running
             # (e.g., a concurrent dev push). Rebase on top and retry.
             for attempt in 1 2 3; do
-              if git pull --rebase origin main && git push; then
+              if git pull --rebase --autostash origin main && git push; then
                 echo "changed=true" >> $GITHUB_OUTPUT
                 exit 0
               fi
+              # Clear any half-done rebase state so the next attempt starts fresh.
+              git rebase --abort 2>/dev/null || true
               echo "push attempt $attempt failed, retrying"
               sleep $((attempt * 5))
             done
