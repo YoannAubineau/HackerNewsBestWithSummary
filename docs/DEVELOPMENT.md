@@ -122,6 +122,13 @@ and picks a bounded subset before calling the model.
    with `budget - 1`, applying the same triangular split one level
    deeper. The tree thins out naturally as depth increases.
 
+Allocations are a **ceiling, not a target**: unused budget from a
+sub-thread that turns out to be shorter than expected is not
+redistributed to its siblings. The real number of comments emitted can
+therefore be less than `DISCUSSION_BUDGET`. Redistributing would take a
+second pass over the tree for marginal gain — when the budget overflows
+the tree, there was already enough room for every qualifying comment.
+
 ### Why these rules
 
 - **Budget cap** keeps prompt size — and therefore latency and cost —
