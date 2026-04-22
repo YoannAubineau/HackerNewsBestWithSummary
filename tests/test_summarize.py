@@ -83,3 +83,29 @@ def test_compose_body_omits_count_when_zero():
     )
     assert "## Discussion sur Hacker News\n" in body
     assert "commentaires analysés" not in body
+
+
+def test_compose_body_includes_hn_id_in_footer():
+    body = compose_body(
+        article_summary=None,
+        discussion_summary="**Confirmations** :\n- x",
+        url="https://example.com/a",
+        hn_url="https://news.ycombinator.com/item?id=4242",
+        hn_item_id=4242,
+    )
+    assert "[HN #4242](https://news.ycombinator.com/item?id=4242)" in body
+    # sits on the same line as the existing links
+    last_line = body.strip().splitlines()[-1]
+    assert "Article original" in last_line
+    assert "Discussion HN" in last_line
+    assert "HN #4242" in last_line
+
+
+def test_compose_body_omits_hn_id_when_missing():
+    body = compose_body(
+        article_summary=None,
+        discussion_summary="**Confirmations** :\n- x",
+        url="https://example.com/a",
+        hn_url="https://news.ycombinator.com/item?id=1",
+    )
+    assert "HN #" not in body

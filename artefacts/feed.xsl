@@ -65,9 +65,6 @@
           article h2 a { color: var(--fg); text-decoration: none; }
           article h2 a:hover { color: var(--accent); }
           article time { color: var(--muted); font-size: .85rem; }
-          article .hnid { margin-top: 1rem; font-size: .8rem; color: var(--muted); opacity: .6; }
-          article .hnid a { color: inherit; text-decoration: none; }
-          article .hnid a:hover { opacity: 1; color: var(--accent); }
           article .thumb {
             float: right;
             margin: 0 0 .5rem 1rem;
@@ -116,12 +113,6 @@
                 <div class="desc">
                   <xsl:value-of select="description" disable-output-escaping="yes"/>
                 </div>
-                <footer class="hnid">
-                  <a href="{comments}">
-                    <xsl:text>HN #</xsl:text>
-                    <xsl:value-of select="substring-after(comments, 'id=')"/>
-                  </a>
-                </footer>
               </article>
             </xsl:for-each>
           </main>
