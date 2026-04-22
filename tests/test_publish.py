@@ -139,13 +139,13 @@ def test_media_thumbnail_emitted_when_image_url_set(isolated_settings):
     assert _thumbnail_url(items[0]) == "https://cdn.example.com/hero.jpg"
 
 
-def test_channel_ttl_is_sixty_minutes(isolated_settings):
+def test_channel_ttl_is_fifteen_minutes(isolated_settings):
     article = _make_article("g-ttl", hn_item_id=60)
     save(article, "body")
     root = ET.fromstring(build_feed())
     ttl = root.find(".//channel/ttl")
     assert ttl is not None
-    assert ttl.text == "60"
+    assert ttl.text == "15"
 
 
 def test_item_source_points_to_hnrss(isolated_settings):
