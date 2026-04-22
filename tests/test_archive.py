@@ -90,6 +90,15 @@ def test_archive_ignores_non_summarized_articles(isolated_settings):
     assert short_hash("g2") not in html
 
 
+def test_archive_shows_hn_id_linking_to_discussion(isolated_settings):
+    save(_make_article("g1", hn_item_id=47861270), "body")
+    html = write_archive().read_text(encoding="utf-8")
+    assert (
+        '<a href="https://news.ycombinator.com/item?id=47861270"'
+        ' rel="noopener">47861270</a>'
+    ) in html
+
+
 def test_archive_escapes_html_in_title(isolated_settings):
     article = _make_article("g1", hn_item_id=1, title="<script>boom()</script>")
     save(article, "body")
