@@ -89,9 +89,7 @@ except `OPENROUTER_API_KEY`.
 | `HTTP_TIMEOUT` | `20.0` | Timeout in seconds for outbound HTTP calls. |
 | `MAX_ATTEMPTS` | `3` | How many cycles an article may fail in a row before being moved to `_failed/`. |
 | `USER_AGENT` | `hn-best-summary/0.1 (+...)` | Sent with every outbound HTTP request. |
-| `ARTICLES_DIR` | `artefacts/articles` | Root of the partitioned article store. |
-| `FAILED_DIR` | `artefacts/articles/_failed` | Where articles that exceeded `MAX_ATTEMPTS` move. |
-| `FEED_OUTPUT_PATH` | `artefacts/feed.fr.xml` | Output path for the generated feed. |
+| `ARTEFACTS_DIR` | `artefacts` | Root of all generated output. Article store, failed-article subfolder, and the feed file are all derived from this path. |
 | `LOG_LEVEL` | `INFO` | One of `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. |
 
 ## Toolchain
