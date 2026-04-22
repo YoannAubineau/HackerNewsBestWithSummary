@@ -22,6 +22,12 @@ Feed URL (French summaries):
 Opening the feed URL in a browser renders a styled page via an embedded
 XSLT stylesheet; RSS readers receive the same file as plain RSS 2.0.
 
+Older articles that have rotated out of the feed's 200-item window are
+still reachable on the
+[archive page](https://yoannaubineau.github.io/HackerNewsBestWithSummary/archive.html),
+which is sortable by HN submission date, first appearance in `/best`, or
+entry into this feed.
+
 [Open an issue](https://github.com/YoannAubineau/HackerNewsBestWithSummary/issues)
 if you'd like to see another language supported.
 
