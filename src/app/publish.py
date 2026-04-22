@@ -1,3 +1,5 @@
+import json
+from datetime import UTC, datetime
 from pathlib import Path
 
 from feedgen.feed import FeedGenerator
@@ -6,6 +8,8 @@ from markdown_it import MarkdownIt
 from app.config import get_settings
 from app.models import Article, ContentSource
 from app.storage import iter_summarized, short_hash
+
+_LAST_REFRESH_PATH = Path("docs/last-refresh.json")
 
 # html=False escapes any raw HTML that sneaks into the LLM output (prompt
 # injection via a crafted article could otherwise emit <script> tags that
@@ -54,7 +58,25 @@ def write_feed() -> Path:
     data = build_feed()
     settings.feed_output_path.parent.mkdir(parents=True, exist_ok=True)
     settings.feed_output_path.write_bytes(data)
+    _write_last_refresh()
     return settings.feed_output_path
+
+
+def _write_last_refresh() -> None:
+    """Write a shields.io endpoint JSON with the current UTC timestamp.
+
+    Consumed by the README badge; updated only when the feed is rewritten,
+    so the badge reflects the actual content refresh time.
+    """
+    now = datetime.now(tz=UTC).strftime("%Y-%m-%d %H:%M UTC")
+    payload = {
+        "schemaVersion": 1,
+        "label": "Last feed refresh",
+        "message": now,
+        "color": "blue",
+    }
+    _LAST_REFRESH_PATH.parent.mkdir(parents=True, exist_ok=True)
+    _LAST_REFRESH_PATH.write_text(json.dumps(payload) + "\n", encoding="utf-8")
 
 
 def _collect_articles() -> list[tuple[Article, str]]:
