@@ -8,7 +8,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)</generator>
     <language>fr</language>
-    <lastBuildDate>Wed, 22 Apr 2026 00:20:10 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 01:33:53 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Claude Code supprimé de l'offre Pro d'Anthropic</title>
@@ -119,6 +119,39 @@
       <media:group>
         <media:thumbnail url="https://images.prismic.io/frameworkmarketplace/aeVG_51ZCF7ETVz5_fw13pro-link-preview.jpg?auto=format,compress"/>
       </media:group>
+    </item>
+    <item>
+      <title>Meta commencera à enregistrer les mouvements de souris et frappes clavier des employés pour l'entraînement de l'IA</title>
+      <link>https://www.reuters.com/sustainability/boards-policy-regulation/meta-start-capturing-employee-mouse-movements-keystrokes-ai-training-data-2026-04-21/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Meta prévoit de capturer les données de comportement des employés, notamment les mouvements de souris et les frappes clavier, dans le but d'entraîner ses systèmes d'intelligence artificielle.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Meta va mettre en place une surveillance des interactions au clavier et à la souris des collaborateurs&lt;/li&gt;
+&lt;li&gt;Ces données serviront directement à l'entraînement des modèles d'IA de l'entreprise&lt;/li&gt;
+&lt;li&gt;Cette initiative soulève des questions de confidentialité et de consentement des employés&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Meta capte depuis longtemps des données sur ses employés via des keyloggers ; cette surveillance de masse explicite ne fait que révéler une réalité préexistante, officialisant la fin de toute confidentialité.&lt;/li&gt;
+&lt;li&gt;La promesse que les données ne serviront pas aux évaluations de performance est incrédule : aucun employé de Meta ne devrait croire cette assurance au vu de l'historique de l'entreprise en matière de manipulation et de surveillance.&lt;/li&gt;
+&lt;li&gt;Cette initiative incarne une dystopie croissante où les entreprises tech extraient la valeur des employés (brevets, données comportementales) pour entraîner des IA qui les rendront obsolètes.&lt;/li&gt;
+&lt;li&gt;Les keystrokes et mouvements souris seuls constituent des données insuffisantes et bizarres pour l'entraînement d'IA généraliste ; capturer l'écran entier aurait plus de sens.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Meta paie bien, ce qui reste l'argument principal pour y travailler malgré la culture toxique ; le HCOL de la Silicon Valley force les talents à accepter même des conditions éthiquement douteuses faute d'alternatives raisonnables.&lt;/li&gt;
+&lt;li&gt;Contrairement à la surveillance gouvernementale (Palantir), les employés &lt;em&gt;choisissent&lt;/em&gt; techniquement d'utiliser un équipement de l'entreprise et devraient accepter la monitoring comme condition d'emploi, pas comme tyrannie.&lt;/li&gt;
+&lt;li&gt;Les données capturées présenteraient un risque de sécurité majeur : exposition accidentelle de mots de passe, clés cryptographiques et données sensibles sans qu'il soit clair que les employés puissent désactiver la capture.&lt;/li&gt;
+&lt;li&gt;Cette approche paraît inefficace : les entreprises pourraient simplement capturer le trafic réseau au lieu de surveiller l'interface humain-machine, ce qui serait techniquement supérieur.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://www.reuters.com/sustainability/boards-policy-regulation/meta-start-capturing-employee-mouse-movements-keystrokes-ai-training-data-2026-04-21/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47851948"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">76f723d1</guid>
+      <comments>https://news.ycombinator.com/item?id=47851948</comments>
+      <pubDate>Tue, 21 Apr 2026 17:40:39 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Tim Cook légue à Apple une domination financière mais des questions stratégiques non résolues</title>
@@ -508,6 +541,43 @@
       <comments>https://news.ycombinator.com/item?id=47838703</comments>
       <pubDate>Mon, 20 Apr 2026 18:39:53 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>GitHub Copilot restreint ses plans individuels face à la demande des workflows d'agents</title>
+      <link>https://github.blog/news-insights/company-news/changes-to-github-copilot-individual-plans/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;GitHub Copilot introduit des changements majeurs à ses plans individuels pour maintenir la qualité de service : pause des nouvelles inscriptions, réduction des limites d'utilisation et restriction de la disponibilité des modèles. Ces mesures deviennent nécessaires en raison de la forte augmentation de la consommation de ressources liée aux workflows d'agents parallélisés et de longue durée.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les nouvelles inscriptions aux plans Copilot Pro, Pro+ et Student sont suspendues pour mieux servir les clients existants&lt;/li&gt;
+&lt;li&gt;Les limites d'utilisation sont réduites et affichées en temps réel dans VS Code et Copilot CLI ; les utilisateurs Pro peuvent upgrader vers Pro+ qui offre plus de 5X les limites&lt;/li&gt;
+&lt;li&gt;Les modèles Opus ne sont plus disponibles dans les plans Pro (Opus 4.7 reste en Pro+, tandis qu'Opus 4.5 et 4.6 seront retirés de Pro+)&lt;/li&gt;
+&lt;li&gt;Les utilisateurs peuvent annuler leur abonnement avant le 20 mai et recevoir un remboursement proportionnel&lt;/li&gt;
+&lt;li&gt;Les limites d'utilisation reposent sur deux mécanismes : limites de session (charge de pointe) et limites hebdomadaires (tokens consommés)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le changement de tarification représente une augmentation drastique : Opus 4.6 passait de 3x à 7.5x de multiplicateur pour Opus 4.7, et Pro+ passe de $10 à $40/mois, ce qui rend l'accès aux modèles premium significativement plus coûteux et insoutenable pour beaucoup d'utilisateurs.&lt;/li&gt;
+&lt;li&gt;Les limites de quota par jour et par semaine sont mal adaptées aux workflows réels et créent une friction importante, empêchant même les utilisateurs payants d'accéder pleinement à leurs allocations de requêtes.&lt;/li&gt;
+&lt;li&gt;GitHub Copilot fonctionnait comme un subsidy non-durable : le pricing initial était clairement au-dessous du coût réel d'accès à Opus, et cette correction était prévisible mais brutale et mal communiquée.&lt;/li&gt;
+&lt;li&gt;L'absence de refund clair pour les abonnements annuels et la suppression d'une version modèle sans alternative graduelle constituent un véritable &amp;quot;rug pull&amp;quot; client.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Certains utilisateurs remettent en question si les modèles premium sont réellement nécessaires : Haiku et Sonnet suffisent à 90% des cas d'usage, et l'usage exclusif d'Opus résulterait souvent d'une sur-optimisation plutôt que d'une réelle nécessité technique.&lt;/li&gt;
+&lt;li&gt;Le coût réel élevé d'inférence pour Opus justifie partiellement l'augmentation, qui reflète davantage les véritables frais de service qu'un arbitrage tarifaire malveillant de Microsoft.&lt;/li&gt;
+&lt;li&gt;Des alternatives existent : Claude Pro direct (moins cher pour accès Opus), utilisation des APIs des fournisseurs originaux, ou migration vers Claude Code en VSCode, offrant des chemins de sortie viable aux utilisateurs.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://github.blog/news-insights/company-news/changes-to-github-copilot-individual-plans/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47838508"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">0b24255a</guid>
+      <comments>https://news.ycombinator.com/item?id=47838508</comments>
+      <pubDate>Mon, 20 Apr 2026 18:24:05 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://github.blog/wp-content/uploads/2026/01/generic-github-logo-right.png"/>
+      </media:group>
     </item>
     <item>
       <title>Un texte satirique annonce le contrôle de Global Tetrahedron sur InfoWars.com</title>
