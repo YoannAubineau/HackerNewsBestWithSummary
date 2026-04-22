@@ -8,6 +8,8 @@ Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with:
 
 The generated feed is a static RSS 2.0 file, updated hourly by GitHub Actions and served through GitHub Pages.
 
+## LLM Cost Supported by the Author
+
 ![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
 
 Daily spend on the `hn-best-summary` OpenRouter key over the last 30 days.
