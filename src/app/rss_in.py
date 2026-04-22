@@ -5,6 +5,12 @@ from time import struct_time
 
 import feedparser
 import httpx
+from tenacity import (
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from app.config import get_settings
 
@@ -23,6 +29,12 @@ class FeedEntry:
     is_ask_or_show_hn: bool
 
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=2, min=2, max=10),
+    retry=retry_if_exception_type(httpx.HTTPError),
+    reraise=True,
+)
 def fetch_source_feed() -> list[FeedEntry]:
     settings = get_settings()
     response = httpx.get(
