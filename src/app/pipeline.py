@@ -77,6 +77,7 @@ def step_fetch_discussions() -> int:
             continue
         if discussion:
             write_sidecar(path, "discussion", discussion.text)
+            article.discussion_comment_count = discussion.comment_count
         article.discussion_fetched_at = _now()
         article.status = Status.DISCUSSION_FETCHED
         save(article, body)
@@ -116,6 +117,7 @@ def step_summarize() -> int:
             final_body = compose_body(
                 article_summary=article_summary,
                 discussion_summary=discussion_summary,
+                discussion_comment_count=article.discussion_comment_count,
                 url=article.url,
                 hn_url=article.hn_url,
             )

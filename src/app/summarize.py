@@ -71,6 +71,7 @@ def compose_body(
     *,
     article_summary: str | None,
     discussion_summary: str | None,
+    discussion_comment_count: int | None = None,
     url: str,
     hn_url: str,
 ) -> str:
@@ -78,7 +79,12 @@ def compose_body(
     if article_summary:
         parts.append("## Résumé de l'article\n\n" + article_summary.strip())
     if discussion_summary:
-        parts.append("## Discussion sur Hacker News\n\n" + discussion_summary.strip())
+        heading = "## Discussion sur Hacker News"
+        if discussion_comment_count:
+            word = "commentaire" if discussion_comment_count == 1 else "commentaires"
+            heading += f" ({discussion_comment_count} {word} analysé"
+            heading += "s)" if discussion_comment_count > 1 else ")"
+        parts.append(f"{heading}\n\n" + discussion_summary.strip())
     parts.append(f"---\n\n[Article original]({url}) · [Discussion HN]({hn_url})")
     return "\n\n".join(parts) + "\n"
 

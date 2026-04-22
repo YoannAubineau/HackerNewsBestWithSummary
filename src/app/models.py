@@ -32,6 +32,7 @@ class Article(BaseModel):
     content_source: ContentSource | None = None
     article_fetched_at: datetime | None = None
     discussion_fetched_at: datetime | None = None
+    discussion_comment_count: int | None = None
     summarized_at: datetime | None = None
     image_url: str | None = None
     attempts: int = 0
