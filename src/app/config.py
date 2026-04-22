@@ -35,6 +35,11 @@ class Settings(BaseSettings):
     llm_sleep_seconds: float = 3.0
     http_timeout: float = 20.0
     max_attempts: int = 3
+    # Circuit breaker. When today's OpenRouter spend (current cumulative
+    # minus the highest cumulative seen on any earlier UTC day) exceeds
+    # this value, step_summarize bails out for the rest of the cycle.
+    # Set to 0 to disable.
+    daily_cost_limit_usd: float = 2.0
     user_agent: str = (
         "hn-best-summary/0.1 "
         "(+https://github.com/YoannAubineau/HackerNewsBestWithSummary)"
@@ -63,7 +68,9 @@ _settings: Settings | None = None
 def get_settings() -> Settings:
     global _settings
     if _settings is None:
-        _settings = Settings()
+        # pydantic-settings populates required fields from the environment;
+        # pyright can't see through that, so the call looks arg-less to it.
+        _settings = Settings()  # pyright: ignore[reportCallIssue]
     return _settings
 
 

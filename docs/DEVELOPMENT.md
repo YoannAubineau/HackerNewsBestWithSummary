@@ -92,6 +92,7 @@ except `OPENROUTER_API_KEY`.
 | `LLM_SLEEP_SECONDS` | `3.0` | Pause between two LLM calls to stay under rate limits. |
 | `HTTP_TIMEOUT` | `20.0` | Timeout in seconds for outbound HTTP calls. |
 | `MAX_ATTEMPTS` | `3` | How many cycles an article may fail in a row before being moved to `_failed/`. |
+| `DAILY_COST_LIMIT_USD` | `2.0` | Circuit breaker. When today's OpenRouter spend exceeds this value, `step_summarize` skips for the rest of the cycle. Set to `0` to disable. |
 | `USER_AGENT` | `hn-best-summary/0.1 (+...)` | Sent with every outbound HTTP request. |
 | `ARTEFACTS_DIR` | `artefacts` | Root of all generated output. Article store, failed-article subfolder, and the feed file are all derived from this path. |
 | `LOG_LEVEL` | `INFO` | One of `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. |

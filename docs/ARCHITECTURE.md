@@ -6,6 +6,29 @@ How the pipeline is laid out and what it's built with.
 
 ### Pipeline
 
+```mermaid
+flowchart LR
+    hn[hnrss.org/best]
+    pending([status:<br/>pending])
+    af([status:<br/>article_fetched])
+    df([status:<br/>discussion_fetched])
+    summ([status:<br/>summarized])
+    failed([_failed/])
+    feed[feed.fr.xml]
+    pages[GitHub Pages]
+
+    hn -->|fetch-feed| pending
+    pending -->|fetch-articles<br/>trafilatura| af
+    af -->|fetch-discussions<br/>Algolia HN API| df
+    df -->|summarize<br/>OpenRouter LLM| summ
+    summ -->|publish| feed
+    feed --> pages
+
+    af -. max_attempts .-> failed
+    df -. max_attempts .-> failed
+    summ -. max_attempts .-> failed
+```
+
 An hourly workflow walks every new HN item through five sequential stages,
 each of which only processes articles in a specific `status`. The pipeline
 is crash-resumable — if a step fails halfway, the next cron run picks it up
