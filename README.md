@@ -3,6 +3,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/YoannAubineau/HackerNewsBestWithSummary/ci.yml?label=CI)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/ci.yml)
 [![Last feed refresh](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/YoannAubineau/HackerNewsBestWithSummary/main/docs/last-refresh.json)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/cycle.yml)
 [![Total LLM cost](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/YoannAubineau/HackerNewsBestWithSummary/main/docs/llm-cost.json)](#llm-cost-supported-by-the-author)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/YoannAubineau?label=Sponsors)](https://github.com/sponsors/YoannAubineau)
 
 Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with LLM-generated content:
 
@@ -31,8 +32,8 @@ and analyze Hacker News discussions.
 ![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
 
 If the feed is useful to you, you can chip in via
-[Buy Me a Coffee](https://buymeacoffee.com/yoannaubineau) — every cup
-keeps the LLM bills covered.
+[GitHub Sponsors](https://github.com/sponsors/YoannAubineau) — every
+contribution keeps the LLM bills covered.
 
 ## Set up your own instance using Github Pages
 
