@@ -79,8 +79,6 @@
           article .desc ul { padding-left: 1.25rem; }
           article .desc li { margin: .15rem 0; }
           article .desc hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
-          article footer { margin-top: .75rem; font-size: .85rem; color: var(--muted); }
-          article footer a { color: var(--muted); }
           a { color: var(--accent); }
         </style>
       </head>
@@ -115,9 +113,6 @@
                 <div class="desc">
                   <xsl:value-of select="description" disable-output-escaping="yes"/>
                 </div>
-                <footer>
-                  <a href="{comments}">Discussion Hacker News →</a>
-                </footer>
               </article>
             </xsl:for-each>
           </main>
