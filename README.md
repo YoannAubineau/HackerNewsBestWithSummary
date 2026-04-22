@@ -8,6 +8,11 @@ Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with:
 
 The generated feed is a static RSS 2.0 file, updated hourly by GitHub Actions and served through GitHub Pages.
 
+![OpenRouter spend](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/YoannAubineau/HackerNewsBestWithSummary/main/docs/usage.json)
+
+Live spend on the `hn-best-summary` OpenRouter key. Refreshed each hour
+by the cycle workflow, cached briefly by shields.io.
+
 ## Preview
 
 Opening the feed URL in a browser renders a styled page via an embedded
