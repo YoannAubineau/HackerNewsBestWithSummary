@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Wed, 22 Apr 2026 14:00:35 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 15:11:44 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Subsystème Linux pour Windows 9x</title>
@@ -304,6 +304,42 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://www.trendmicro.com/content/dam/trendmicro/global/en/research/thumbnails/26/d/vercel-breach.png"/>
+      </media:group>
+    </item>
+    <item>
+      <title>VidStudio est un éditeur vidéo navigateur qui traite les fichiers localement sans les télécharger</title>
+      <link>https://vidstudio.app/video-editor</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;VidStudio est un outil de montage vidéo entièrement basé sur le navigateur qui exécute tous les traitements localement, sans envoyer les fichiers vers des serveurs externes. La plateforme offre une suite complète de fonctionnalités de traitement vidéo avec traitement rapide et protection de la vie privée.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Édition vidéo multi-piste avec lecture image par image et décodage WebCodecs&lt;/li&gt;
+&lt;li&gt;Redimensionnement, rognage, découpe et conversion par lot en MP4 avec compression intelligente&lt;/li&gt;
+&lt;li&gt;Traitement audio : extraction, mixage, application d'effets et conversion de format&lt;/li&gt;
+&lt;li&gt;Gestion des sous-titres, text overlays et création d'effets texte animés&lt;/li&gt;
+&lt;li&gt;Extraction d'images, création de storyboards, de prévisualisations animées et ajout de filigranes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (44 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La proposition de valeur &amp;quot;pas d'upload&amp;quot; face à l'omniprésence des solutions cloud propriétaires avec conditions d'utilisation prédatrices résonne fortement comme réponse légitime à des pratiques d'extraction de données.&lt;/li&gt;
+&lt;li&gt;L'architecture technique (WebCodecs + FFmpeg.wasm + mp4box.js) pour contourner les limitations de mémoire du WASM pur représente une décomposition ingénieuse du problème, validée par des éditeurs similaires ayant échoué sur les vidéos longues.&lt;/li&gt;
+&lt;li&gt;L'absence de compte et de cloud-sync est un avantage compétitif durable auprès d'un public conscient de la vie privée, même face à des outils plus matures (Final Cut, Premiere).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les brèches de codec critiques (HEVC 10-bit, formats iPhone/Android) rendent l'outil inutilisable pour une part significative des utilisateurs mobiles modernes ; c'est un problème structurel, pas anecdotique.&lt;/li&gt;
+&lt;li&gt;Les violations LGPL potentielles sur la distribution d'FFmpeg WASM en application fermée requièrent une solution juridique sérieuse, pas un contournement technique fragile.&lt;/li&gt;
+&lt;li&gt;La stabilité reste insuffisante pour des cas d'usage réels : exports qui s'arrêtent à 75%, absence de transformations de calques, manque de support des pistes multiples limitent fortement l'utilité pratique face aux alternatives établies.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://vidstudio.app/video-editor"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47847558"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">70e6b044</guid>
+      <comments>https://news.ycombinator.com/item?id=47847558</comments>
+      <pubDate>Tue, 21 Apr 2026 11:58:16 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://vidstudio.app/og-image.png"/>
       </media:group>
     </item>
     <item>
