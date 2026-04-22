@@ -42,7 +42,7 @@ def _render_row(article: Article) -> str:
         '<tr>'
         f'<td><a href="{escape(article.hn_url)}">{escape(title)}</a>'
         f' <a class="ext" href="{escape(article.url)}" '
-        f'title="Article original" rel="noopener">↗</a></td>'
+        f'title="Original article" rel="noopener">↗</a></td>'
         f"{_date_cell(article.summarized_at)}"
         f"{_date_cell(article.our_published_at)}"
         f"{_date_cell(article.source_published_at)}"
@@ -57,11 +57,11 @@ def _date_cell(when: datetime | None) -> str:
 
 
 def _format(when: datetime) -> str:
-    return when.strftime("%d/%m/%Y %Hh%M")
+    return when.strftime("%Y-%m-%d %H:%M")
 
 
 _TEMPLATE = """<!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -136,16 +136,16 @@ _TEMPLATE = """<!DOCTYPE html>
 <body>
 <header>
   <h1>Archive</h1>
-  <p><span id="count">{count}</span> articles résumés. Cliquez sur une colonne pour trier.</p>
-  <p><a href="feed.fr.xml">← Retour au flux</a></p>
+  <p><span id="count">{count}</span> summarised articles. Click a column header to sort.</p>
+  <p><a href="feed.fr.xml">← Back to the feed</a></p>
 </header>
 <table id="archive">
   <thead>
     <tr>
-      <th data-sort="text">Titre</th>
-      <th data-sort="date" aria-sort="descending">Entré dans le flux</th>
-      <th data-sort="date">Entré dans /best</th>
-      <th data-sort="date">Publié sur HN</th>
+      <th data-sort="text">Title</th>
+      <th data-sort="date" aria-sort="descending">Entered our feed</th>
+      <th data-sort="date">Entered /best</th>
+      <th data-sort="date">Submitted to HN</th>
     </tr>
   </thead>
   <tbody>
