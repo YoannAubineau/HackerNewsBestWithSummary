@@ -113,15 +113,71 @@ the folder locally.
 
 ## Architecture
 
-- Input: `https://hnrss.org/best`
-- Storage: one Markdown file per article in `artefacts/articles/YYYY/MM/DD/{short_hash}.md`
-- LLM: OpenRouter with cascading fallback (Claude Haiku 4.5 primary, then free-tier models)
-- HN discussion: Algolia HN API `https://hn.algolia.com/api/v1/items/{id}`
-- Output: `artefacts/feed.fr.xml` — `<link>` points at the original article, `<comments>` at the HN discussion. The `artefacts/` folder is served at the site root by GitHub Pages, so the feed's public URL is `.../feed.fr.xml`. The language suffix leaves room for a future `feed.en.xml`.
+### Pipeline
 
-Raw article HTML is never committed (copyright and repo size). Only the two summaries and metadata are.
+An hourly workflow walks every new HN item through five sequential stages,
+each of which only processes articles in a specific `status`. The pipeline
+is crash-resumable — if a step fails halfway, the next cron run picks it up
+where it left off.
 
-Title rewriting and article summarization share a single LLM call — no extra cost.
+1. **`fetch-feed`** polls `hnrss.org/best` and creates one Markdown file
+   per HN item not yet seen, at
+   `artefacts/articles/YYYY/MM/DD/{short_hash}.md` with `status: pending`.
+   The filename is the first eight hex characters of SHA-256 of the HN
+   guid, so paths are stable and re-runs are idempotent.
+2. **`fetch-articles`** HTTP-fetches the linked URL, runs `trafilatura` to
+   extract the main content, and captures the `og:image` /
+   `twitter:image` metadata. Falls back to the feed's own summary if the
+   URL isn't HTML or extraction returns nothing. → `status: article_fetched`.
+3. **`fetch-discussions`** calls the Algolia HN API for the full comment
+   tree and selects a recursive comment budget (default 500), degressively
+   allocated to root threads ranked by HN score. The story submitter's
+   own comments and their ancestor chain are always pinned — they carry
+   clarifications that are otherwise easy to miss. → `status: discussion_fetched`.
+4. **`summarize`** calls the LLM twice per article: once to produce both
+   a rewritten factual title and a structured article summary (single
+   prompt, single call), once to synthesise the discussion into
+   `Confirmations` / `Réfutations` bullets. Each article gets up to three
+   attempts with a cascading model fallback; after the third failure it
+   moves to `artefacts/articles/_failed/…`. → `status: summarized`.
+5. **`publish`** walks summarised articles newest-first (by `hn_item_id`
+   desc), takes the top 200, and regenerates `artefacts/feed.fr.xml`.
+   Only fires when at least one new summary was produced (or the feed
+   file is missing). GitHub Pages redeploys the folder after the cycle
+   commits.
+
+Title rewriting and article summary share a single LLM call, so a full
+cycle costs **two LLM calls per new article**, not three.
+
+### Storage layout
+
+Single source of truth is the filesystem, versioned by git — no database.
+
+| Path | Contents |
+|---|---|
+| `artefacts/articles/YYYY/MM/DD/{short_hash}.md` | One article per file. YAML frontmatter holds all metadata (URLs, dates, `status`, image URL, model used, attempt count); the Markdown body holds the final summaries. |
+| `artefacts/articles/_failed/…` | Articles that exceeded `MAX_ATTEMPTS`. Kept for history rather than deleted. |
+| `artefacts/articles/**/*.raw.article.txt`, `*.raw.discussion.txt` | Transient sidecars holding raw source content between stages. **Gitignored** — copyright-sensitive and would bloat the repo. Cleared once the article reaches `summarized`. |
+| `artefacts/feed.fr.xml` | The published RSS feed. |
+| `artefacts/feed.xsl` | Client-side XSLT stylesheet applied by browsers when opening the feed URL directly. |
+
+### Feed ordering
+
+Items are sorted in the XML by `hn_item_id` descending. HN IDs are
+strictly monotonic with submission time, which avoids any ambiguity
+that parsed timestamps could introduce. `<pubDate>` carries
+`source_published_at` (HN's own submission timestamp) so readers display
+a real wall-clock time rather than "the moment our pipeline ingested the
+article".
+
+### Copyright stance
+
+Only LLM-generated summaries, our own rewritten titles, and metadata
+ever reach git or the public feed. The original article text is fetched
+at runtime for the LLM prompt, kept in a gitignored sidecar for the
+duration of the cycle, and deleted as soon as the summary is written.
+HN comments are re-fetched from the public Algolia API each cycle and
+are never stored either.
 
 ## Configuration
 
