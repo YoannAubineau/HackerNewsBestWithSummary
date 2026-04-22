@@ -3,13 +3,13 @@
 <line x1="52" y1="208.0" x2="708" y2="208.0" stroke="#e5e5e5"/>
 <text x="46" y="212.0" text-anchor="end" fill="#666">$0.00</text>
 <line x1="52" y1="162.0" x2="708" y2="162.0" stroke="#e5e5e5"/>
-<text x="46" y="166.0" text-anchor="end" fill="#666">$0.28</text>
+<text x="46" y="166.0" text-anchor="end" fill="#666">$0.30</text>
 <line x1="52" y1="116.0" x2="708" y2="116.0" stroke="#e5e5e5"/>
-<text x="46" y="120.0" text-anchor="end" fill="#666">$0.55</text>
+<text x="46" y="120.0" text-anchor="end" fill="#666">$0.60</text>
 <line x1="52" y1="70.0" x2="708" y2="70.0" stroke="#e5e5e5"/>
-<text x="46" y="74.0" text-anchor="end" fill="#666">$0.83</text>
+<text x="46" y="74.0" text-anchor="end" fill="#666">$0.90</text>
 <line x1="52" y1="24.0" x2="708" y2="24.0" stroke="#e5e5e5"/>
-<text x="46" y="28.0" text-anchor="end" fill="#666">$1.10</text>
+<text x="46" y="28.0" text-anchor="end" fill="#666">$1.20</text>
 <rect x="55.3" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
 <rect x="77.1" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
 <rect x="99.0" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
@@ -39,7 +39,7 @@
 <rect x="623.8" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
 <rect x="645.7" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
 <rect x="667.5" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
-<rect x="689.4" y="54.7" width="15.3" height="153.3" fill="#ff6600" rx="1"/>
+<rect x="689.4" y="62.5" width="15.3" height="145.5" fill="#ff6600" rx="1"/>
 <text x="62.9" y="226" text-anchor="middle" fill="#666">24/03</text>
 <text x="172.3" y="226" text-anchor="middle" fill="#666">29/03</text>
 <text x="281.6" y="226" text-anchor="middle" fill="#666">03/04</text>
@@ -47,5 +47,5 @@
 <text x="500.3" y="226" text-anchor="middle" fill="#666">13/04</text>
 <text x="609.6" y="226" text-anchor="middle" fill="#666">18/04</text>
 <text x="697.1" y="226" text-anchor="middle" fill="#666">22/04</text>
-<text x="52" y="250" fill="#666">Last 30 days: $0.92 · limit $50.00</text>
+<text x="52" y="250" fill="#666">Last 30 days: $0.95 · limit $50.00</text>
 </svg>
