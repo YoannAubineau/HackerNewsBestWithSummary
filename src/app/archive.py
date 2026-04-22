@@ -147,7 +147,7 @@ _TEMPLATE = """<!DOCTYPE html>
     searchable: true,
     perPage: 20,
     labels: {{
-      perPage: "{{select}} articles per page",
+      perPage: "articles per page",
       info: "Showing {{start}} to {{end}} of {{rows}} articles"
     }},
     columns: [
