@@ -29,8 +29,8 @@ XSLT stylesheet; RSS readers receive the same file as plain RSS 2.0.
 
 Daily spend on OpenRouter over the last 30 days. Refreshed each hour by the cycle workflow.
 
-These costs cover the LLM calls used to rephrase each title, summarize the
-article, and analyze the Hacker News discussion.
+These costs cover the LLM calls used to rephrase titles, summarize articles,
+and analyze Hacker News discussions.
 
 ![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
 
