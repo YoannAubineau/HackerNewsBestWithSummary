@@ -21,6 +21,28 @@ Feed URL (French summaries):
 
 <https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
 
+## Set up your own instance
+
+The project is MIT-licensed; feel free to fork it and run a copy under your
+own Pages URL.
+
+1. **Fork the repository** on GitHub.
+2. **Create an OpenRouter account** at <https://openrouter.ai> and generate
+   an API key. Add a few dollars of credit (or restrict yourself to the
+   free-tier fallback models by setting `OPENROUTER_MODEL` to one of them).
+3. **Add the API key as a GitHub Secret** named `OPENROUTER_API_KEY`
+   under *Settings → Secrets and variables → Actions → New repository secret*.
+4. **Switch GitHub Pages to workflow deployment**: *Settings → Pages →
+   Build and deployment → Source: **GitHub Actions***.
+5. **Trigger the cycle workflow once** (*Actions → cycle → Run workflow*)
+   so the initial feed is built and deployed. The hourly cron takes over
+   after that.
+
+Estimated runtime cost at the default configuration: roughly **US$10–15 per
+month** in OpenRouter credits (Claude Haiku 4.5 at ~10 new HN Best articles
+per day). Free-tier fallback models remain available at zero cost if
+OpenRouter rate-limits the primary.
+
 ## Run locally
 
 ```bash
@@ -69,28 +91,6 @@ except `OPENROUTER_API_KEY`.
 | `FAILED_DIR` | `artefacts/articles/_failed` | Where articles that exceeded `MAX_ATTEMPTS` move. |
 | `FEED_OUTPUT_PATH` | `artefacts/feed.fr.xml` | Output path for the generated feed. |
 | `LOG_LEVEL` | `INFO` | One of `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. |
-
-## Set up your own instance
-
-The project is MIT-licensed; feel free to fork it and run a copy under your
-own Pages URL.
-
-1. **Fork the repository** on GitHub.
-2. **Create an OpenRouter account** at <https://openrouter.ai> and generate
-   an API key. Add a few dollars of credit (or restrict yourself to the
-   free-tier fallback models by setting `OPENROUTER_MODEL` to one of them).
-3. **Add the API key as a GitHub Secret** named `OPENROUTER_API_KEY`
-   under *Settings → Secrets and variables → Actions → New repository secret*.
-4. **Switch GitHub Pages to workflow deployment**: *Settings → Pages →
-   Build and deployment → Source: **GitHub Actions***.
-5. **Trigger the cycle workflow once** (*Actions → cycle → Run workflow*)
-   so the initial feed is built and deployed. The hourly cron takes over
-   after that.
-
-Estimated runtime cost at the default configuration: roughly **US$10–15 per
-month** in OpenRouter credits (Claude Haiku 4.5 at ~10 new HN Best articles
-per day). Free-tier fallback models remain available at zero cost if
-OpenRouter rate-limits the primary.
 
 ## Toolchain
 
