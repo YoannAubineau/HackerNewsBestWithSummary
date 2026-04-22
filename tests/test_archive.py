@@ -39,11 +39,12 @@ def test_archive_lists_every_summarized_article(isolated_settings):
     path = write_archive()
     html = path.read_text(encoding="utf-8")
     assert html.count("<tr>") == 3  # header + 2 articles
-    # Titles link to the per-article summary pages under a/.
+    # Titles link to the Markdown file rendered on github.com.
     from app.storage import short_hash
 
-    assert f'href="a/{short_hash("g1")}.html"' in html
-    assert f'href="a/{short_hash("g2")}.html"' in html
+    assert f"/{short_hash('g1')}.md" in html
+    assert f"/{short_hash('g2')}.md" in html
+    assert "github.com/YoannAubineau/HackerNewsBestWithSummary/blob/main" in html
 
 
 def test_archive_prefers_rewritten_title(isolated_settings):
