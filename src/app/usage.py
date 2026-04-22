@@ -22,6 +22,7 @@ log = structlog.get_logger()
 _OPENROUTER_KEY_URL = "https://openrouter.ai/api/v1/auth/key"
 _DAILY_PATH = Path("docs/usage-daily.json")
 _CHART_PATH = Path("docs/usage-chart.svg")
+_BADGE_PATH = Path("docs/llm-cost.json")
 
 
 def record_usage() -> None:
@@ -46,7 +47,27 @@ def record_usage() -> None:
     entries = _load_daily()
     entries[today] = {"cumulative": usage, "limit": limit}
     _save_daily(entries)
+    _write_badge(usage, limit)
     log.info("usage_recorded", date=today, cumulative=usage, limit=limit)
+
+
+def _write_badge(usage: float, limit: float | None) -> None:
+    """Emit a shields.io endpoint JSON for the total-cost badge."""
+    if limit is not None and limit > 0:
+        message = f"${usage:.2f} / ${limit:.2f}"
+        ratio = usage / limit
+        color = "brightgreen" if ratio < 0.5 else "yellow" if ratio < 0.8 else "red"
+    else:
+        message = f"${usage:.2f}"
+        color = "blue"
+    payload = {
+        "schemaVersion": 1,
+        "label": "LLM cost",
+        "message": message,
+        "color": color,
+    }
+    _BADGE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    _BADGE_PATH.write_text(json.dumps(payload) + "\n", encoding="utf-8")
 
 
 def generate_chart(days: int = 30) -> None:
