@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Wed, 22 Apr 2026 19:29:22 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 20:19:11 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Une startup albertaine vend des tracteurs sans technologie à moitié prix</title>
@@ -118,6 +118,40 @@
       <media:group>
         <media:thumbnail url="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/two_chips_for_the_agentic_era_hero.width-1300.png"/>
       </media:group>
+    </item>
+    <item>
+      <title>La version 2 du dataset GM-SEUS recense 3,4 millions de panneaux solaires aux États-Unis</title>
+      <link>https://tech.marksblogg.com/american-solar-farms-v2.html</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;La version 2 du Ground-Mounted Solar Energy in the United States (GM-SEUS) dataset a été publiée avec 3,4 millions de panneaux solaires, soit une augmentation de 500 000 panneaux par rapport à la version 1. Le dataset inclut désormais trois catégories distinctes : les panneaux individuels, les champs solaires et un nouveau dataset de panneaux solaires sur toiture.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le dataset contient 3,4 millions de panneaux individuels répartis dans 18 980 champs solaires et 5 822 installations sur toiture&lt;/li&gt;
+&lt;li&gt;Les données proviennent de plusieurs sources avec des méthodes de détection différentes, certaines conservatrices et d'autres plus approximatives, ce qui laisse des lacunes dans la couverture géographique&lt;/li&gt;
+&lt;li&gt;Les installations incluent des informations techniques détaillées : azimut, inclinaison, capacité en MW AC/DC, année d'installation et type de montage&lt;/li&gt;
+&lt;li&gt;Le dataset a été converti en format Parquet optimisé avec compression pour faciliter l'analyse et l'utilisation dans des outils géospatiales comme QGIS et DuckDB&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (67 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le coût des panneaux solaires a chuté dramatiquement : des témoignages rapportent $0,37-0,41/W pour des panneaux neufs en vrac aux États-Unis, confirmant la tendance à la baisse malgré les tarifs.&lt;/li&gt;
+&lt;li&gt;Les obstacles au déploiement solaire ne sont pas technologiques mais économiques, réglementaires et politiques : permis coûteux, frais de raccordement prohibitifs, capture régulatrice (Alabama), politisation des énergies renouvelables.&lt;/li&gt;
+&lt;li&gt;Les systèmes off-grid deviennent viables pour les particuliers : des témoignages montrent des installations DIY réussies avec batteries lithium, coûts inférieurs aux raccordements réseau sur longues distances.&lt;/li&gt;
+&lt;li&gt;L'expansion de la capacité réseau est possible mais freinée : comparaisons historiques montrent que le taux d'expansion des années 1980 était réalisable et devrait être reproductible aujourd'hui.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le retour sur investissement reste long en réalité : payback de 18 ans observé, pas les 5 ans optimistes annoncés, surtout hors zones très ensoleillées et avec coûts cachés (remplacement toiture, assurance).&lt;/li&gt;
+&lt;li&gt;La Chine installe 3x plus de panneaux quotidiennement que les 3,4M présentés : ce dataset ne représente qu'une fraction de la capacité annuelle américaine (~43 GW = 80M panneaux en 2025).&lt;/li&gt;
+&lt;li&gt;Les États du Sud très ensoleillés (Floride, Arizona) ont peu de panneaux non par choix mais par barrières légitimes : exigences sismiques/hurricane-proof coûteuses, refus d'assurance, lois restrictives, ce qui explique aussi pourquoi la carte ressemble à une densité de population.&lt;/li&gt;
+&lt;li&gt;L'équipement informatique du projet (96 GB RAM, refroidissement liquide) est disproportionné : 4M lignes de données est trivial pour n'importe quel PC moderne, ce qui relativise la performance technique affichée.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://tech.marksblogg.com/american-solar-farms-v2.html"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47862386"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">954f5d37</guid>
+      <comments>https://news.ycombinator.com/item?id=47862386</comments>
+      <pubDate>Wed, 22 Apr 2026 12:04:30 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>GitHub CLI collecte désormais une télémétrie pseudonyme pour améliorer le produit</title>
@@ -423,6 +457,43 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://images.prismic.io/frameworkmarketplace/aeVG_51ZCF7ETVz5_fw13pro-link-preview.jpg?auto=format,compress"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Cal.diy : édition communautaire open-source en auto-hébergement de Cal.com</title>
+      <link>https://github.com/calcom/cal.diy</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Cal.diy est une plateforme de planification de calendrier open-source et entièrement gratuite, basée sur Cal.com mais sans les fonctionnalités commerciales ni d'édition entreprise. Destinée à l'auto-hébergement, elle est licensée MIT et ne nécessite aucune clé de licence ni compte Cal.com pour fonctionner.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Licence MIT 100% open-source sans code propriétaire, contrairement au modèle &amp;quot;Open Core&amp;quot; de Cal.com&lt;/li&gt;
+&lt;li&gt;Installation requiert Node.js (≥18), PostgreSQL (≥13), Yarn et des compétences avancées en administration serveur&lt;/li&gt;
+&lt;li&gt;Déploiement possible via Docker Compose, Git clone direct, ou plateformes comme Railway, Northflank ou Vercel Pro&lt;/li&gt;
+&lt;li&gt;Intégrations disponibles avec Google Calendar, Microsoft Office 365, Zoom, Daily.co, Basecamp, HubSpot et Zoho CRM via configuration d'API&lt;/li&gt;
+&lt;li&gt;Contributions bienvenues mais n'affectent que le projet Cal.diy, pas la plateforme Cal.com commerciale&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (31 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cal.com a effectivement fermé le code source en justifiant par la sécurité, ce qui est perçu comme un argument faible : l'IA peut scanner du code fermé tout autant qu'ouvert, et l'open-source bénéficie de l'audit communautaire gratuit, rendant cette justification suspecte.&lt;/li&gt;
+&lt;li&gt;C'est clairement un bait-and-switch : il y a un an, Cal.com promouvait le déploiement on-premises open-source comme plus sûr ; aujourd'hui, ils déconseillent cette utilisation, révélant que le changement est motivé par des raisons commerciales et non de sécurité.&lt;/li&gt;
+&lt;li&gt;La vraie raison est commerciale : maximiser le contrôle pour monétiser les features enterprise (Teams, Organizations, SSO/SAML, Workflows) et attirer les investisseurs, en utilisant &amp;quot;la sécurité&amp;quot; comme couverture marketing.&lt;/li&gt;
+&lt;li&gt;L'écosystème réagit avec des alternatives (calrs, rustical) et une sentiment de trahison parmi les utilisateurs historiques, certains annulant leurs souscriptions par principe.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La restriction légale est justifiée : une licence OSS disclaime déjà toute responsabilité, mais Cal.com veut signaler que les standards de sécurité ne seront pas prioritaires pour la version libre, ce qui est une position défendable.&lt;/li&gt;
+&lt;li&gt;Les abandons de projets open-source sont courants et souvent pires qu'une fermeture contrôlée ; cal.diy offre au moins une alternative maintenue à ceux qui refusent le propriétaire.&lt;/li&gt;
+&lt;li&gt;Certains reconnaissent que les décisions commerciales sont légitimes : les projets doivent parfois fermer le code pour survivre et prospérer, même si cela déçoit l'early adopter community.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://github.com/calcom/cal.diy"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47852155"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">5a343cea</guid>
+      <comments>https://news.ycombinator.com/item?id=47852155</comments>
+      <pubDate>Tue, 21 Apr 2026 17:58:21 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://opengraph.githubassets.com/d959fc8d398d043972f4a55d826841b834783d19784a885705a343b94adc90de/calcom/cal.diy"/>
       </media:group>
     </item>
     <item>
