@@ -22,6 +22,7 @@ from app.storage import (
     write_sidecar,
 )
 from app.summarize import compose_body, summarize_article, summarize_discussion
+from app.usage import today_spend
 
 log = structlog.get_logger()
 
@@ -94,6 +95,15 @@ def step_fetch_discussions() -> int:
 
 def step_summarize() -> int:
     settings = get_settings()
+    if settings.daily_cost_limit_usd > 0:
+        spent = today_spend()
+        if spent is not None and spent >= settings.daily_cost_limit_usd:
+            log.warning(
+                "summarize_skipped_cost_breaker",
+                today_spend_usd=spent,
+                limit_usd=settings.daily_cost_limit_usd,
+            )
+            return 0
     done = 0
     for path, article, body in list(iter_by_status(Status.DISCUSSION_FETCHED)):
         article_text = read_sidecar(path, "article")

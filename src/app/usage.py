@@ -25,6 +25,37 @@ _CHART_PATH = Path("docs/usage-chart.svg")
 _BADGE_PATH = Path("docs/llm-cost.json")
 
 
+def today_spend() -> float | None:
+    """Return today's UTC spend by diffing current cumulative against history.
+
+    Fetches the current cumulative spend from OpenRouter, then subtracts the
+    highest cumulative recorded on any earlier UTC day (from
+    ``docs/usage-daily.json``). Returns ``None`` if the API call fails or no
+    prior history exists — the caller should fail open (don't trip the
+    breaker if we can't measure).
+    """
+    settings = get_settings()
+    try:
+        response = httpx.get(
+            _OPENROUTER_KEY_URL,
+            headers={"Authorization": f"Bearer {settings.openrouter_api_key}"},
+            timeout=settings.http_timeout,
+        )
+        response.raise_for_status()
+    except httpx.HTTPError as exc:
+        log.warning("usage_probe_failed", error=str(exc))
+        return None
+    payload = response.json().get("data") or {}
+    cumulative = float(payload.get("usage") or 0)
+
+    entries = _load_daily()
+    today = datetime.now(tz=UTC).date().isoformat()
+    prior = [v["cumulative"] for k, v in entries.items() if k < today]
+    if not prior:
+        return None
+    return max(0.0, cumulative - max(prior))
+
+
 def record_usage() -> None:
     """Query OpenRouter and store today's cumulative spend."""
     settings = get_settings()

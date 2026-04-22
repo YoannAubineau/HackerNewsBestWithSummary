@@ -105,3 +105,33 @@ def test_run_cycle_publishes_when_feed_missing(isolated_settings, monkeypatch):
     assert not isolated_settings.feed_output_path.exists()
     run_cycle()
     assert calls == ["publish"]
+
+
+def test_step_summarize_trips_cost_breaker(isolated_settings, monkeypatch):
+    isolated_settings.daily_cost_limit_usd = 1.0
+    monkeypatch.setattr(pipeline, "today_spend", lambda: 5.0)
+
+    def boom(*args, **kwargs):
+        raise AssertionError("iter_by_status should not be called once breaker trips")
+
+    monkeypatch.setattr(pipeline, "iter_by_status", boom)
+    assert pipeline.step_summarize() == 0
+
+
+def test_step_summarize_ignores_breaker_when_unmeasurable(isolated_settings, monkeypatch):
+    isolated_settings.daily_cost_limit_usd = 1.0
+    monkeypatch.setattr(pipeline, "today_spend", lambda: None)
+    monkeypatch.setattr(pipeline, "iter_by_status", lambda _status: iter(()))
+    # Fail open: no spend signal means we proceed, which here just finds no work.
+    assert pipeline.step_summarize() == 0
+
+
+def test_step_summarize_breaker_disabled_when_limit_is_zero(isolated_settings, monkeypatch):
+    isolated_settings.daily_cost_limit_usd = 0.0
+
+    def boom():
+        raise AssertionError("today_spend should not be probed when the breaker is off")
+
+    monkeypatch.setattr(pipeline, "today_spend", boom)
+    monkeypatch.setattr(pipeline, "iter_by_status", lambda _status: iter(()))
+    assert pipeline.step_summarize() == 0

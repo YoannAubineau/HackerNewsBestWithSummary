@@ -22,6 +22,7 @@ dependencies = [
 dev = [
     "pytest>=8.3",
     "pytest-httpx>=0.32",
+    "pyright>=1.1.390",
     "ruff>=0.9",
 ]
 
@@ -45,3 +46,8 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+[tool.pyright]
+include = ["src"]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"
