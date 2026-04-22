@@ -12,12 +12,11 @@ Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with:
 
 The generated feed is a static RSS 2.0 file, updated hourly by GitHub Actions and served through GitHub Pages.
 
-## LLM Cost Supported by the Author
+## Subscribe
 
-![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
+Feed URL (French summaries):
 
-Daily spend on the `hn-best-summary` OpenRouter key over the last 30 days.
-Refreshed each hour by the cycle workflow.
+<https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
 
 ## Preview
 
@@ -26,11 +25,12 @@ XSLT stylesheet; RSS readers receive the same file as plain RSS 2.0.
 
 ![Screenshot of the XSLT-rendered feed](docs/feed-preview.png)
 
-## Subscribe
+## LLM Cost Supported by the Author
 
-Feed URL (French summaries):
+![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
 
-<https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
+Daily spend on the `hn-best-summary` OpenRouter key over the last 30 days.
+Refreshed each hour by the cycle workflow.
 
 ## Set up your own instance using Github Pages
 
@@ -45,7 +45,7 @@ own Pages URL.
    under *Settings → Secrets and variables → Actions → New repository secret*.
 4. **Switch GitHub Pages to workflow deployment**: *Settings → Pages →
    Build and deployment → Source: **GitHub Actions***.
-5. **Trigger the cycle workflow once** (*Actions → cycle → Run workflow*)
+5. **Trigger the Feed Refresh workflow once** (*Actions → Feed Refresh → Run workflow*)
    so the initial feed is built and deployed. The hourly cron takes over
    after that.
 
