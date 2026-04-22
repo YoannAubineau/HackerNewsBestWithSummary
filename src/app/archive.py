@@ -116,17 +116,6 @@ def _format(when: datetime) -> str:
     return when.strftime("%Y-%m-%d %H:%M")
 
 
-def _render_sort_picker(current_key: str, current_page: int) -> str:
-    parts: list[str] = []
-    for view in _VIEWS:
-        target = _filename(view.key, 1)
-        if view.key == current_key and current_page == 1:
-            parts.append(f'<span class="active">{escape(view.label)}</span>')
-        else:
-            parts.append(f'<a href="{target}">{escape(view.label)}</a>')
-    return '<nav class="sort-picker">Sort by: ' + " · ".join(parts) + "</nav>"
-
-
 def _render_pagination(view_key: str, page: int, total_pages: int) -> str:
     if total_pages <= 1:
         return ""
@@ -188,15 +177,11 @@ _TEMPLATE = """<!DOCTYPE html>
   a {{ color: var(--accent); text-decoration: none; }}
   a:hover {{ text-decoration: underline; }}
   a.ext {{ color: var(--muted); font-size: 0.85em; }}
-  nav.sort-picker, nav.pagination {{
+  nav.pagination {{
     margin: 0.75rem 0 0;
     color: var(--muted);
+    display: flex; gap: 1rem; align-items: baseline;
   }}
-  nav.sort-picker .active {{
-    color: var(--fg);
-    font-weight: 600;
-  }}
-  nav.pagination {{ display: flex; gap: 1rem; align-items: baseline; }}
   nav.pagination .disabled {{ color: var(--border); }}
   nav.pagination .page-indicator {{ flex: 1; text-align: center; }}
   table {{
@@ -235,7 +220,6 @@ _TEMPLATE = """<!DOCTYPE html>
   <h1>Archive</h1>
   <p><span id="count">{count}</span> summarised articles.
   <a href="feed.fr.xml">← Back to the feed</a>.</p>
-  {sort_picker}
   {pagination}
 </header>
 <table id="archive">
@@ -272,7 +256,6 @@ def _render(
     return _TEMPLATE.format(
         count=total_articles,
         rows=rows,
-        sort_picker=_render_sort_picker(view.key, page),
         pagination=_render_pagination(view.key, page, total_pages),
         active_col_1_class="active" if view.sort_col == 1 else "",
         active_col_2_class="active" if view.sort_col == 2 else "",

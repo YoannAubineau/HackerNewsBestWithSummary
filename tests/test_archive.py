@@ -129,14 +129,15 @@ def test_archive_paginates_when_over_page_size(isolated_settings, monkeypatch):
     assert "archive-feed-2.html" in (out / "archive.html").read_text(encoding="utf-8")
 
 
-def test_archive_sort_picker_highlights_current_view(isolated_settings):
+def test_archive_column_headers_link_to_matching_view(isolated_settings):
     save(_make_article("g1", hn_item_id=1), "body")
     write_archive()
     feed_page = (isolated_settings.artefacts_dir / "archive.html").read_text(encoding="utf-8")
     best_page = (isolated_settings.artefacts_dir / "archive-best.html").read_text(encoding="utf-8")
-    # On the feed page, "Entered our feed" is rendered as a span (active), not a link.
-    assert '<span class="active">Entered our feed</span>' in feed_page
+    # Each date column header is a link to its own pre-sorted view.
+    assert '<a href="archive.html">Entered our feed</a>' in feed_page
     assert '<a href="archive-best.html">Entered /best</a>' in feed_page
-    # On the best page, it's the other way around.
-    assert '<span class="active">Entered /best</span>' in best_page
-    assert '<a href="archive.html">Entered our feed</a>' in best_page
+    assert '<a href="archive-hn.html">Submitted to HN</a>' in feed_page
+    # The active column carries a dedicated class on its <th>.
+    assert '<th class="active"><a href="archive.html">Entered our feed</a></th>' in feed_page
+    assert '<th class="active"><a href="archive-best.html">Entered /best</a></th>' in best_page
