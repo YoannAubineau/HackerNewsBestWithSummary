@@ -45,14 +45,71 @@ OpenRouter rate-limits the primary.
 
 ## Run locally
 
+### Prerequisites
+
+- **uv** (Astral) — one-shot install: `curl -LsSf https://astral.sh/uv/install.sh | sh` (or `brew install uv`). Handles Python install, virtualenv, and deps.
+- **xmllint** — ships with macOS; on Debian/Ubuntu `apt install libxml2-utils`. Only needed for the optional validation step below.
+- An **OpenRouter API key**. Create a free account at <https://openrouter.ai>, generate a key (format `sk-or-v1-…`), and add a few dollars of credit if you want to use the paid primary model. Purely free-tier usage is possible by setting `OPENROUTER_MODEL` to one of the fallbacks (e.g. `meta-llama/llama-3.3-70b-instruct:free`).
+
+### Setup
+
 ```bash
-uv sync
-cp .env.example .env                    # then set OPENROUTER_API_KEY
-uv run app cycle
-xmllint --noout artefacts/feed.fr.xml   # validation
+uv sync                      # install runtime + dev deps, matches uv.lock
+cp .env.example .env         # then edit: OPENROUTER_API_KEY=sk-or-v1-...
 ```
 
-Individual steps for debugging: `app fetch-feed`, `app fetch-articles`, `app fetch-discussions`, `app summarize`, `app publish`.
+### Run the full pipeline
+
+```bash
+uv run app cycle
+```
+
+Fetches new HN Best articles, extracts their content, pulls the HN
+discussion, summarizes both via the LLM, regenerates
+`artefacts/feed.fr.xml`. First run ingests ~30 articles at once, which
+costs roughly **US$1–2** on Claude Haiku 4.5. Each later run only
+processes genuinely new entries (typically 0–2 per hour).
+
+### Inspect the generated feed in a browser
+
+`file://` URLs don't apply the XSLT stylesheet reliably — serve the
+folder over HTTP:
+
+```bash
+python -m http.server --directory artefacts 8000
+# then open http://localhost:8000/feed.fr.xml
+```
+
+Validate the XML separately with `xmllint --noout artefacts/feed.fr.xml`.
+
+### Work without spending LLM credits
+
+Every pipeline step except `summarize` is free to call. Use a dummy
+key to explore intermediate state:
+
+```bash
+OPENROUTER_API_KEY=dummy uv run app fetch-feed         # step 1: RSS → pending files
+OPENROUTER_API_KEY=dummy uv run app fetch-articles     # step 2: HTTP + trafilatura
+OPENROUTER_API_KEY=dummy uv run app fetch-discussions  # step 3: Algolia HN API
+# step 4 (summarize) needs a real key
+OPENROUTER_API_KEY=dummy uv run app publish            # step 5: regenerate feed.fr.xml
+```
+
+### Tests and lint
+
+```bash
+uv run pytest                          # full suite (~90 tests)
+uv run ruff check src/ tests/          # lint
+uv run ruff format src/ tests/         # auto-format
+```
+
+### Git hygiene after a local run
+
+`uv run app cycle` writes new files under `artefacts/` that show up in
+`git status`. On a fork you probably don't want to commit those — they
+are produced again on every GitHub Actions cycle. If you're just
+experimenting, either reset with `git checkout artefacts/` or ignore
+the folder locally.
 
 ## Architecture
 
