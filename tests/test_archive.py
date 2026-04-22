@@ -1,9 +1,8 @@
 from datetime import UTC, datetime
 
-from app import archive
 from app.archive import write_archive
 from app.models import Article, ContentSource, Status
-from app.storage import save
+from app.storage import save, short_hash
 
 
 def _make_article(
@@ -40,8 +39,6 @@ def test_archive_lists_every_summarized_article(isolated_settings):
     html = path.read_text(encoding="utf-8")
     assert html.count("<tr>") == 3  # header + 2 articles
     # Titles link to the Markdown file rendered on github.com.
-    from app.storage import short_hash
-
     assert f"/{short_hash('g1')}.md" in html
     assert f"/{short_hash('g2')}.md" in html
     assert "github.com/YoannAubineau/HackerNewsBestWithSummary/blob/main" in html
@@ -79,8 +76,6 @@ def test_archive_formats_dates_as_iso_minute(isolated_settings):
 
 
 def test_archive_ignores_non_summarized_articles(isolated_settings):
-    from app.storage import short_hash
-
     summarized = _make_article("g1", hn_item_id=1)
     pending = _make_article("g2", hn_item_id=2)
     pending.status = Status.PENDING
@@ -108,37 +103,26 @@ def test_archive_escapes_html_in_title(isolated_settings):
     assert "&lt;script&gt;" in html
 
 
-def test_archive_emits_alternative_sort_pages(isolated_settings):
+def test_archive_wires_simple_datatables(isolated_settings):
     save(_make_article("g1", hn_item_id=1), "body")
-    write_archive()
-    assert (isolated_settings.artefacts_dir / "archive.html").exists()
-    assert (isolated_settings.artefacts_dir / "archive-best.html").exists()
-    assert (isolated_settings.artefacts_dir / "archive-hn.html").exists()
+    html = write_archive().read_text(encoding="utf-8")
+    # CSS from jsDelivr.
+    assert (
+        'https://cdn.jsdelivr.net/npm/simple-datatables@10/dist/style.css' in html
+    )
+    # JS bundle from jsDelivr.
+    assert 'https://cdn.jsdelivr.net/npm/simple-datatables@10' in html
+    # Table is initialised and the title column (index 4) is flagged non-sortable.
+    assert 'new simpleDatatables.DataTable("#archive"' in html
+    assert 'select: 4, sortable: false' in html
 
 
-def test_archive_paginates_when_over_page_size(isolated_settings, monkeypatch):
-    monkeypatch.setattr(archive, "_PAGE_SIZE", 2)
-    for i in range(1, 6):  # 5 articles → ceil(5/2) = 3 pages
-        save(_make_article(f"g{i}", hn_item_id=i), "body")
+def test_archive_emits_single_file_only(isolated_settings):
+    save(_make_article("g1", hn_item_id=1), "body")
     write_archive()
     out = isolated_settings.artefacts_dir
-    assert (out / "archive.html").exists()  # feed view, page 1
-    assert (out / "archive-feed-2.html").exists()
-    assert (out / "archive-feed-3.html").exists()
-    assert not (out / "archive-feed-4.html").exists()
-    # Page 1 has pagination links to page 2 for the feed view.
-    assert "archive-feed-2.html" in (out / "archive.html").read_text(encoding="utf-8")
-
-
-def test_archive_column_headers_link_to_matching_view(isolated_settings):
-    save(_make_article("g1", hn_item_id=1), "body")
-    write_archive()
-    feed_page = (isolated_settings.artefacts_dir / "archive.html").read_text(encoding="utf-8")
-    best_page = (isolated_settings.artefacts_dir / "archive-best.html").read_text(encoding="utf-8")
-    # Each date column header is a link to its own pre-sorted view.
-    assert '<a href="archive.html">Entered our feed</a>' in feed_page
-    assert '<a href="archive-best.html">Entered /best</a>' in feed_page
-    assert '<a href="archive-hn.html">Entered HN</a>' in feed_page
-    # The active column carries a dedicated class on its <th>.
-    assert '<th class="active"><a href="archive.html">Entered our feed</a></th>' in feed_page
-    assert '<th class="active"><a href="archive-best.html">Entered /best</a></th>' in best_page
+    assert (out / "archive.html").exists()
+    # No more pre-sorted variants.
+    assert not (out / "archive-best.html").exists()
+    assert not (out / "archive-hn.html").exists()
+    assert not list(out.glob("archive-*.html"))
