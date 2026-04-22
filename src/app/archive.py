@@ -50,7 +50,7 @@ _VIEWS = (
     ),
     _View(
         "hn",
-        "Submitted to HN",
+        "Entered HN",
         3,
         lambda a: a.source_published_at,
     ),
@@ -229,7 +229,7 @@ _TEMPLATE = """<!DOCTYPE html>
       <th>HN</th>
       <th class="{active_col_1_class}"><a href="archive.html">Entered our feed</a></th>
       <th class="{active_col_2_class}"><a href="archive-best.html">Entered /best</a></th>
-      <th class="{active_col_3_class}"><a href="archive-hn.html">Submitted to HN</a></th>
+      <th class="{active_col_3_class}"><a href="archive-hn.html">Entered HN</a></th>
     </tr>
   </thead>
   <tbody>
