@@ -29,8 +29,7 @@ XSLT stylesheet; RSS readers receive the same file as plain RSS 2.0.
 
 ![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
 
-Daily spend on the `hn-best-summary` OpenRouter key over the last 30 days.
-Refreshed each hour by the cycle workflow.
+Daily spend on OpenRouter over the last 30 days. Refreshed each hour by the cycle workflow.
 
 ## Set up your own instance using Github Pages
 
