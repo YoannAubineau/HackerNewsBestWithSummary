@@ -31,29 +31,13 @@ _EPOCH = datetime.min.replace(tzinfo=UTC)
 class _View:
     key: str
     label: str
-    sort_col: int  # 1-based column index of the date to pre-sort by
     key_fn: Callable[[Article], datetime]
 
 
 _VIEWS = (
-    _View(
-        "feed",
-        "Entered our feed",
-        1,
-        lambda a: a.summarized_at or _EPOCH,
-    ),
-    _View(
-        "best",
-        "Entered /best",
-        2,
-        lambda a: a.our_published_at,
-    ),
-    _View(
-        "hn",
-        "Entered HN",
-        3,
-        lambda a: a.source_published_at,
-    ),
+    _View("feed", "Entered our feed", lambda a: a.summarized_at or _EPOCH),
+    _View("best", "Entered /best", lambda a: a.our_published_at),
+    _View("hn", "Entered HN", lambda a: a.source_published_at),
 )
 
 
@@ -94,14 +78,14 @@ def _render_row(article: Article) -> str:
     summary_url = f"a/{short_hash(article.guid)}.html"
     return (
         "<tr>"
-        f'<td><a href="{summary_url}">{escape(title)}</a>'
-        f' <a class="ext" href="{escape(article.url)}" '
-        f'title="Original article" rel="noopener">↗</a></td>'
         f'<td><a href="{escape(article.hn_url)}" rel="noopener">'
         f"{article.hn_item_id}</a></td>"
-        f"{_date_cell(article.summarized_at)}"
-        f"{_date_cell(article.our_published_at)}"
         f"{_date_cell(article.source_published_at)}"
+        f"{_date_cell(article.our_published_at)}"
+        f"{_date_cell(article.summarized_at)}"
+        f'<td class="title"><a href="{summary_url}">{escape(title)}</a>'
+        f' <a class="ext" href="{escape(article.url)}" '
+        f'title="Original article" rel="noopener">↗</a></td>'
         "</tr>"
     )
 
@@ -204,14 +188,15 @@ _TEMPLATE = """<!DOCTYPE html>
   th a {{ color: inherit; }}
   th.active {{ color: var(--fg); }}
   th.active::after {{ content: " ↓"; }}
-  td:nth-child(n+2), th:nth-child(n+2) {{
+  th, td:not(.title) {{
     white-space: nowrap;
     color: var(--muted);
     width: 1%;
   }}
+  td.title {{ color: var(--fg); width: auto; }}
   tbody tr:nth-child(even) {{ background: var(--row-alt); }}
   @media (max-width: 640px) {{
-    th:nth-child(5), td:nth-child(5) {{ display: none; }}
+    th:nth-child(2), td:nth-child(2) {{ display: none; }}
   }}
 </style>
 </head>
@@ -225,11 +210,11 @@ _TEMPLATE = """<!DOCTYPE html>
 <table id="archive">
   <thead>
     <tr>
-      <th>Title</th>
       <th>HN</th>
-      <th class="{active_col_1_class}"><a href="archive.html">Entered our feed</a></th>
-      <th class="{active_col_2_class}"><a href="archive-best.html">Entered /best</a></th>
-      <th class="{active_col_3_class}"><a href="archive-hn.html">Entered HN</a></th>
+      <th class="{hn_class}"><a href="archive-hn.html">Entered HN</a></th>
+      <th class="{best_class}"><a href="archive-best.html">Entered /best</a></th>
+      <th class="{feed_class}"><a href="archive.html">Entered our feed</a></th>
+      <th>Title</th>
     </tr>
   </thead>
   <tbody>
@@ -257,7 +242,7 @@ def _render(
         count=total_articles,
         rows=rows,
         pagination=_render_pagination(view.key, page, total_pages),
-        active_col_1_class="active" if view.sort_col == 1 else "",
-        active_col_2_class="active" if view.sort_col == 2 else "",
-        active_col_3_class="active" if view.sort_col == 3 else "",
+        hn_class="active" if view.key == "hn" else "",
+        best_class="active" if view.key == "best" else "",
+        feed_class="active" if view.key == "feed" else "",
     )
