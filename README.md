@@ -37,7 +37,9 @@ and analyze Hacker News discussions.
 ## Set up your own instance using Github Pages
 
 The project is MIT-licensed; feel free to fork it and run a copy under your
-own Pages URL.
+own Pages URL — useful if you want summaries in a different language or
+from a different Hacker News feed (`newest`, `show`, `ask`, a tag-specific
+one, etc.).
 
 1. **Fork the repository** on GitHub.
 2. **Create an OpenRouter account** at <https://openrouter.ai> and generate
