@@ -97,6 +97,8 @@ def _render_row(article: Article) -> str:
         f'<td><a href="{summary_url}">{escape(title)}</a>'
         f' <a class="ext" href="{escape(article.url)}" '
         f'title="Original article" rel="noopener">↗</a></td>'
+        f'<td><a href="{escape(article.hn_url)}" rel="noopener">'
+        f"{article.hn_item_id}</a></td>"
         f"{_date_cell(article.summarized_at)}"
         f"{_date_cell(article.our_published_at)}"
         f"{_date_cell(article.source_published_at)}"
@@ -223,7 +225,7 @@ _TEMPLATE = """<!DOCTYPE html>
   }}
   tbody tr:nth-child(even) {{ background: var(--row-alt); }}
   @media (max-width: 640px) {{
-    th:nth-child(4), td:nth-child(4) {{ display: none; }}
+    th:nth-child(5), td:nth-child(5) {{ display: none; }}
   }}
 </style>
 </head>
@@ -239,6 +241,7 @@ _TEMPLATE = """<!DOCTYPE html>
   <thead>
     <tr>
       <th>Title</th>
+      <th>HN</th>
       <th class="{active_col_1_class}">Entered our feed</th>
       <th class="{active_col_2_class}">Entered /best</th>
       <th class="{active_col_3_class}">Submitted to HN</th>
