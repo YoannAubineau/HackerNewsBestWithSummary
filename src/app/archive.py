@@ -1,15 +1,21 @@
-"""Generate a static HTML archive of every summarized article.
+"""Generate a paginated static HTML archive of every summarized article.
 
-Rendered alongside the feed (`artefacts/archive.html`) so readers can
-browse articles that have rotated out of the 200-item window. The table
-is sortable client-side by three timestamps:
+Rendered alongside the feed so readers can browse articles that have
+rotated out of the 200-item window. The set is pre-sorted server-side
+into three views — by entry in our feed, by entry in HN's ``/best``,
+and by HN submission date — and split into pages of
+``_PAGE_SIZE`` articles.
 
-- HN submission date (``source_published_at``)
-- First-seen-in-``/best`` date (``our_published_at``)
-- Entered-our-feed date (``summarized_at``)
+URL layout:
+
+- ``archive.html``           — default (feed sort, page 1)
+- ``archive-{view}.html``    — other views, page 1
+- ``archive-{view}-N.html``  — page N > 1 (also for the feed view)
 """
 
-from datetime import datetime
+from collections.abc import Callable
+from dataclasses import dataclass
+from datetime import UTC, datetime
 from html import escape
 from pathlib import Path
 
@@ -17,29 +23,76 @@ from app.config import get_settings
 from app.models import Article
 from app.storage import iter_summarized
 
-_ARCHIVE_FILENAME = "archive.html"
+_PAGE_SIZE = 100
+_EPOCH = datetime.min.replace(tzinfo=UTC)
+
+
+@dataclass(frozen=True)
+class _View:
+    key: str
+    label: str
+    sort_col: int  # 1-based column index of the date to pre-sort by
+    key_fn: Callable[[Article], datetime]
+
+
+_VIEWS = (
+    _View(
+        "feed",
+        "Entered our feed",
+        1,
+        lambda a: a.summarized_at or _EPOCH,
+    ),
+    _View(
+        "best",
+        "Entered /best",
+        2,
+        lambda a: a.our_published_at,
+    ),
+    _View(
+        "hn",
+        "Submitted to HN",
+        3,
+        lambda a: a.source_published_at,
+    ),
+)
 
 
 def write_archive() -> Path:
-    """Generate the archive page and return its filesystem path."""
+    """Regenerate every archive page. Returns the path of ``archive.html``."""
     settings = get_settings()
     articles = [article for _path, article, _body in iter_summarized()]
-    path = settings.artefacts_dir / _ARCHIVE_FILENAME
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(_render(articles), encoding="utf-8")
-    return path
+    out_dir = settings.artefacts_dir
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    default_path = out_dir / "archive.html"
+    for view in _VIEWS:
+        ordered = sorted(articles, key=view.key_fn, reverse=True)
+        pages = [ordered[i : i + _PAGE_SIZE] for i in range(0, len(ordered), _PAGE_SIZE)] or [[]]
+        for page_index, page_articles in enumerate(pages, start=1):
+            path = out_dir / _filename(view.key, page_index)
+            html = _render(
+                view=view,
+                page=page_index,
+                total_pages=len(pages),
+                articles=page_articles,
+                total_articles=len(ordered),
+            )
+            path.write_text(html, encoding="utf-8")
+    return default_path
 
 
-def _render(articles: list[Article]) -> str:
-    rows = "\n".join(_render_row(a) for a in articles)
-    count = len(articles)
-    return _TEMPLATE.format(count=count, rows=rows)
+def _filename(view_key: str, page: int) -> str:
+    if view_key == "feed" and page == 1:
+        return "archive.html"
+    if page == 1:
+        return f"archive-{view_key}.html"
+    return f"archive-{view_key}-{page}.html"
 
 
 def _render_row(article: Article) -> str:
     title = article.rewritten_title or article.title
     return (
-        '<tr>'
+        "<tr>"
         f'<td><a href="{escape(article.hn_url)}">{escape(title)}</a>'
         f' <a class="ext" href="{escape(article.url)}" '
         f'title="Original article" rel="noopener">↗</a></td>'
@@ -52,12 +105,41 @@ def _render_row(article: Article) -> str:
 
 def _date_cell(when: datetime | None) -> str:
     if when is None:
-        return '<td data-iso=""></td>'
-    return f'<td data-iso="{when.isoformat()}">{_format(when)}</td>'
+        return "<td></td>"
+    return f"<td>{_format(when)}</td>"
 
 
 def _format(when: datetime) -> str:
     return when.strftime("%Y-%m-%d %H:%M")
+
+
+def _render_sort_picker(current_key: str, current_page: int) -> str:
+    parts: list[str] = []
+    for view in _VIEWS:
+        target = _filename(view.key, 1)
+        if view.key == current_key and current_page == 1:
+            parts.append(f'<span class="active">{escape(view.label)}</span>')
+        else:
+            parts.append(f'<a href="{target}">{escape(view.label)}</a>')
+    return '<nav class="sort-picker">Sort by: ' + " · ".join(parts) + "</nav>"
+
+
+def _render_pagination(view_key: str, page: int, total_pages: int) -> str:
+    if total_pages <= 1:
+        return ""
+    if page > 1:
+        prev_link = f'<a href="{_filename(view_key, page - 1)}">← Newer</a>'
+    else:
+        prev_link = '<span class="disabled">← Newer</span>'
+    if page < total_pages:
+        next_link = f'<a href="{_filename(view_key, page + 1)}">Older →</a>'
+    else:
+        next_link = '<span class="disabled">Older →</span>'
+    return (
+        f'<nav class="pagination">{prev_link}'
+        f'<span class="page-indicator">Page {page} / {total_pages}</span>'
+        f"{next_link}</nav>"
+    )
 
 
 _TEMPLATE = """<!DOCTYPE html>
@@ -92,15 +174,28 @@ _TEMPLATE = """<!DOCTYPE html>
     color: var(--fg);
     font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }}
-  header {{
+  header, footer {{
     max-width: 64rem;
-    margin: 0 auto 1.5rem;
+    margin: 0 auto;
   }}
+  header {{ margin-bottom: 1.5rem; }}
+  footer {{ margin-top: 1.5rem; }}
   h1 {{ margin: 0 0 0.25rem; font-size: 1.4rem; }}
   header p {{ margin: 0.25rem 0; color: var(--muted); }}
   a {{ color: var(--accent); text-decoration: none; }}
   a:hover {{ text-decoration: underline; }}
   a.ext {{ color: var(--muted); font-size: 0.85em; }}
+  nav.sort-picker, nav.pagination {{
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+  }}
+  nav.sort-picker .active {{
+    color: var(--fg);
+    font-weight: 600;
+  }}
+  nav.pagination {{ display: flex; gap: 1rem; align-items: baseline; }}
+  nav.pagination .disabled {{ color: var(--border); }}
+  nav.pagination .page-indicator {{ flex: 1; text-align: center; }}
   table {{
     width: 100%;
     max-width: 64rem;
@@ -114,14 +209,12 @@ _TEMPLATE = """<!DOCTYPE html>
     vertical-align: top;
   }}
   th {{
-    cursor: pointer;
-    user-select: none;
     font-weight: 600;
     color: var(--muted);
     white-space: nowrap;
   }}
-  th[aria-sort="ascending"]::after {{ content: " ↑"; }}
-  th[aria-sort="descending"]::after {{ content: " ↓"; }}
+  th.active {{ color: var(--fg); }}
+  th.active::after {{ content: " ↓"; }}
   td:nth-child(n+2), th:nth-child(n+2) {{
     white-space: nowrap;
     color: var(--muted);
@@ -136,50 +229,47 @@ _TEMPLATE = """<!DOCTYPE html>
 <body>
 <header>
   <h1>Archive</h1>
-  <p><span id="count">{count}</span> summarised articles. Click a column header to sort.</p>
-  <p><a href="feed.fr.xml">← Back to the feed</a></p>
+  <p><span id="count">{count}</span> summarised articles.
+  <a href="feed.fr.xml">← Back to the feed</a>.</p>
+  {sort_picker}
+  {pagination}
 </header>
 <table id="archive">
   <thead>
     <tr>
-      <th data-sort="text">Title</th>
-      <th data-sort="date" aria-sort="descending">Entered our feed</th>
-      <th data-sort="date">Entered /best</th>
-      <th data-sort="date">Submitted to HN</th>
+      <th>Title</th>
+      <th class="{active_col_1_class}">Entered our feed</th>
+      <th class="{active_col_2_class}">Entered /best</th>
+      <th class="{active_col_3_class}">Submitted to HN</th>
     </tr>
   </thead>
   <tbody>
 {rows}
   </tbody>
 </table>
-<script>
-(() => {{
-  const table = document.getElementById('archive');
-  const tbody = table.tBodies[0];
-  const headers = table.tHead.rows[0].cells;
-  const compare = (kind, dir) => (a, b) => {{
-    const i = [...headers].findIndex(h => h.getAttribute('aria-sort'));
-    const av = cellValue(a, i, kind);
-    const bv = cellValue(b, i, kind);
-    if (av < bv) return -dir;
-    if (av > bv) return dir;
-    return 0;
-  }};
-  const cellValue = (row, idx, kind) => {{
-    const cell = row.cells[idx];
-    return kind === 'date' ? cell.dataset.iso : cell.textContent.toLowerCase();
-  }};
-  [...headers].forEach((th, idx) => th.addEventListener('click', () => {{
-    const kind = th.dataset.sort;
-    const current = th.getAttribute('aria-sort');
-    const dir = current === 'ascending' ? -1 : 1;
-    [...headers].forEach(h => h.removeAttribute('aria-sort'));
-    th.setAttribute('aria-sort', dir === 1 ? 'ascending' : 'descending');
-    const rows = [...tbody.rows].sort(compare(kind, dir));
-    rows.forEach(r => tbody.appendChild(r));
-  }}));
-}})();
-</script>
+<footer>
+  {pagination}
+</footer>
 </body>
 </html>
 """
+
+
+def _render(
+    *,
+    view: _View,
+    page: int,
+    total_pages: int,
+    articles: list[Article],
+    total_articles: int,
+) -> str:
+    rows = "\n".join(_render_row(a) for a in articles)
+    return _TEMPLATE.format(
+        count=total_articles,
+        rows=rows,
+        sort_picker=_render_sort_picker(view.key, page),
+        pagination=_render_pagination(view.key, page, total_pages),
+        active_col_1_class="active" if view.sort_col == 1 else "",
+        active_col_2_class="active" if view.sort_col == 2 else "",
+        active_col_3_class="active" if view.sort_col == 3 else "",
+    )

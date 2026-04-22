@@ -1,5 +1,6 @@
 from datetime import UTC, datetime
 
+from app import archive
 from app.archive import write_archive
 from app.models import Article, ContentSource, Status
 from app.storage import save
@@ -58,7 +59,7 @@ def test_archive_falls_back_to_original_title(isolated_settings):
     assert "Le vrai" in html
 
 
-def test_archive_emits_iso_timestamps_for_sorting(isolated_settings):
+def test_archive_formats_dates_as_iso_minute(isolated_settings):
     article = _make_article(
         "g1",
         hn_item_id=1,
@@ -68,10 +69,9 @@ def test_archive_emits_iso_timestamps_for_sorting(isolated_settings):
     )
     save(article, "body")
     html = write_archive().read_text(encoding="utf-8")
-    # Every sortable date column carries a data-iso attribute.
-    assert 'data-iso="2026-01-02T03:04:00+00:00"' in html
-    assert 'data-iso="2026-02-03T04:05:00+00:00"' in html
-    assert 'data-iso="2026-03-04T05:06:00+00:00"' in html
+    assert "2026-01-02 03:04" in html
+    assert "2026-02-03 04:05" in html
+    assert "2026-03-04 05:06" in html
 
 
 def test_archive_ignores_non_summarized_articles(isolated_settings):
@@ -91,3 +91,38 @@ def test_archive_escapes_html_in_title(isolated_settings):
     html = write_archive().read_text(encoding="utf-8")
     assert "<script>boom()</script>" not in html
     assert "&lt;script&gt;" in html
+
+
+def test_archive_emits_alternative_sort_pages(isolated_settings):
+    save(_make_article("g1", hn_item_id=1), "body")
+    write_archive()
+    assert (isolated_settings.artefacts_dir / "archive.html").exists()
+    assert (isolated_settings.artefacts_dir / "archive-best.html").exists()
+    assert (isolated_settings.artefacts_dir / "archive-hn.html").exists()
+
+
+def test_archive_paginates_when_over_page_size(isolated_settings, monkeypatch):
+    monkeypatch.setattr(archive, "_PAGE_SIZE", 2)
+    for i in range(1, 6):  # 5 articles → ceil(5/2) = 3 pages
+        save(_make_article(f"g{i}", hn_item_id=i), "body")
+    write_archive()
+    out = isolated_settings.artefacts_dir
+    assert (out / "archive.html").exists()  # feed view, page 1
+    assert (out / "archive-feed-2.html").exists()
+    assert (out / "archive-feed-3.html").exists()
+    assert not (out / "archive-feed-4.html").exists()
+    # Page 1 has pagination links to page 2 for the feed view.
+    assert "archive-feed-2.html" in (out / "archive.html").read_text(encoding="utf-8")
+
+
+def test_archive_sort_picker_highlights_current_view(isolated_settings):
+    save(_make_article("g1", hn_item_id=1), "body")
+    write_archive()
+    feed_page = (isolated_settings.artefacts_dir / "archive.html").read_text(encoding="utf-8")
+    best_page = (isolated_settings.artefacts_dir / "archive-best.html").read_text(encoding="utf-8")
+    # On the feed page, "Entered our feed" is rendered as a span (active), not a link.
+    assert '<span class="active">Entered our feed</span>' in feed_page
+    assert '<a href="archive-best.html">Entered /best</a>' in feed_page
+    # On the best page, it's the other way around.
+    assert '<span class="active">Entered /best</span>' in best_page
+    assert '<a href="archive.html">Entered our feed</a>' in best_page
