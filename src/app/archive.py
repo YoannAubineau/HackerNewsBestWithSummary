@@ -21,7 +21,7 @@ from pathlib import Path
 
 from app.config import get_settings
 from app.models import Article
-from app.storage import iter_summarized
+from app.storage import iter_summarized, short_hash
 
 _PAGE_SIZE = 100
 _EPOCH = datetime.min.replace(tzinfo=UTC)
@@ -91,9 +91,10 @@ def _filename(view_key: str, page: int) -> str:
 
 def _render_row(article: Article) -> str:
     title = article.rewritten_title or article.title
+    summary_url = f"a/{short_hash(article.guid)}.html"
     return (
         "<tr>"
-        f'<td><a href="{escape(article.hn_url)}">{escape(title)}</a>'
+        f'<td><a href="{summary_url}">{escape(title)}</a>'
         f' <a class="ext" href="{escape(article.url)}" '
         f'title="Original article" rel="noopener">↗</a></td>'
         f"{_date_cell(article.summarized_at)}"

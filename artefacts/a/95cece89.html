@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Des millions d&#x27;étoiles GitHub fausses se vendent ouvertement et influencent les décisions de financement des startups — Hacker News Best with summaries</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fafafa;
+    --fg: #222;
+    --muted: #666;
+    --border: #e5e5e5;
+    --accent: #ff6600;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e5e5e5;
+      --muted: #999;
+      --border: #333;
+    }
+  }
+  body {
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--bg);
+    color: var(--fg);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main, nav.top {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+  nav.top {
+    margin-bottom: 1rem;
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  h1 { margin: 0.25rem 0 0.75rem; font-size: 1.6rem; line-height: 1.25; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .original-title, .dates {
+    color: var(--muted);
+    margin: 0.25rem 0;
+    font-size: 0.9em;
+  }
+  article {
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  article h2 { font-size: 1.2rem; margin-top: 1.5rem; }
+  article ul { padding-left: 1.25rem; }
+  article li { margin: 0.25rem 0; }
+  article blockquote {
+    margin: 0.5rem 0 0.5rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  footer {
+    max-width: 44rem;
+    margin: 2rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  footer a { margin-right: 1rem; }
+</style>
+</head>
+<body>
+<nav class="top">
+  <a href="../archive.html">← Archive</a> ·
+  <a href="../feed.fr.xml">Flux</a>
+</nav>
+<main>
+  <h1>Des millions d&#x27;étoiles GitHub fausses se vendent ouvertement et influencent les décisions de financement des startups</h1>
+  <p class="original-title">Titre original : <em>GitHub&#x27;s fake star economy</em></p>
+  <p class="dates">Publié sur HN le 2026-04-20 08:26 · Entré dans /best le 2026-04-21 11:50 · Résumé généré le 2026-04-21 11:57</p>
+  <article>
+<h2>Résumé de l'article</h2>
+<p><strong>TL;DR :</strong> Une étude de Carnegie Mellon a documenté 6 millions d'étoiles GitHub fausses vendues par des milliers de comptes, avec des étoiles coûtant entre 0,03 et 0,85 dollar chacune. Les investisseurs en capital-risque utilisent explicitement le nombre d'étoiles comme signal de sourcing pour identifier les startups, créant une boucle de rétroaction qui incite les fondateurs à acheter des fausses étoiles.</p>
+<ul>
+<li>Une recherche peer-reviewed (ICSE 2026) identifie 6 millions d'étoiles suspectes réparties sur 18 617 dépôts par 301 000 comptes, avec une accélération dramatique en 2024 (16,66 % des dépôts avec 50+ étoiles impliqués dans des campagnes)</li>
+<li>Les marchés vendant des étoiles GitHub incluent des sites web dédiés, des gigs Fiverr, des canaux Telegram et des plateformes d'échange sans nécessiter d'accès au dark web</li>
+<li>Les données de Redpoint Ventures révèlent que les VCs ciblent explicitement 2 850 étoiles à la levée de seed et 4 980 à la Series A, créant un prix public à atteindre pour les startups qui achètent des étoiles</li>
+<li>L'analyse personnelle révèle que les projets manipulés montrent 36-76 % de stargazers sans followers et des ratios fork-to-star 10 fois inférieurs aux projets organiques</li>
+<li>La FTC (2024) et la SEC appliquent des cadres de fraude aux indicateurs de traction gonflés pendant le financement, avec des pénalités jusqu'à 53 088 dollars par violation</li>
+</ul>
+<h2>Discussion sur Hacker News</h2>
+<p><strong>Arguments en faveur</strong> :</p>
+<ul>
+<li>Les stars ont historiquement servi de signal brut de popularité et restent utiles comme filtre initial pour distinguer les projets établis des nouveaux</li>
+<li>Des métriques alternatives (PageRank, contributeurs actifs, qualité des issues) sont complexes à calculer et manipuler, mais aussi potentiellement gamifiables avec les LLMs</li>
+<li>Même imparfait, un signal quantitatif est nécessaire pour les VCs justifiant leurs décisions aux comités d'investissement, plutôt que des &quot;vibes&quot; subjectifs</li>
+<li>Certains projets acquièrent organiquement beaucoup de stars (exemple : gstack avec 75k stars en 5 semaines) grâce à une réelle adoption, pas uniquement de la fraude</li>
+</ul>
+<p><strong>Arguments contre</strong> :</p>
+<ul>
+<li>Les stars sont triviales à faker et coûtent quasi rien, transformant la métrique en cible gamifiée qui perd toute signification (Goodhart's law)</li>
+<li>Les vrais indicateurs de qualité existent ailleurs : historique des commits, gestion des issues, rétention des contributeurs, téléchargements réels des packages</li>
+<li>Des études montrent que moins de 5% des top 10 000 projets dépassent 250 contributeurs actifs mensuels, invalidant la corrélation stars-adoption réelle</li>
+<li>L'écosystème entier s'est construit autour de la vente de faux stars/followers ; même des &quot;faux bugfixes&quot; générés par IA deviendraient manipulables</li>
+<li>Les VCs devraient auditer la qualité du code et l'usage réel plutôt que de dépendre d'une métrique que même GitHub n'a pas jugée digne d'être structurellement réformée</li>
+</ul>
+<hr />
+<p><a href="https://awesomeagents.ai/news/github-fake-stars-investigation/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47831621">Discussion HN</a></p>
+
+  </article>
+</main>
+<footer>
+  <a href="https://awesomeagents.ai/news/github-fake-stars-investigation/" rel="noopener">Article original ↗</a>
+  <a href="https://news.ycombinator.com/item?id=47831621" rel="noopener">Discussion HN ↗</a>
+</footer>
+</body>
+</html>

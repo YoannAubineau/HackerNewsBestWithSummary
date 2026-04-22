@@ -5,6 +5,7 @@ from pathlib import Path
 import structlog
 
 from app.archive import write_archive
+from app.article_pages import write_article_pages
 from app.config import get_settings
 from app.fetch_article import fetch_article
 from app.fetch_discussion import fetch_discussion
@@ -154,7 +155,13 @@ def step_summarize() -> int:
 def step_publish() -> str:
     feed_path = write_feed()
     archive_path = write_archive()
-    log.info("publish", feed=str(feed_path), archive=str(archive_path))
+    pages_written = write_article_pages()
+    log.info(
+        "publish",
+        feed=str(feed_path),
+        archive=str(archive_path),
+        article_pages=pages_written,
+    )
     return str(feed_path)
 
 

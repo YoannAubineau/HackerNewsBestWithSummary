@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ggsql : une implémentation de la grammaire des graphiques basée sur la syntaxe SQL — Hacker News Best with summaries</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fafafa;
+    --fg: #222;
+    --muted: #666;
+    --border: #e5e5e5;
+    --accent: #ff6600;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e5e5e5;
+      --muted: #999;
+      --border: #333;
+    }
+  }
+  body {
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--bg);
+    color: var(--fg);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main, nav.top {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+  nav.top {
+    margin-bottom: 1rem;
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  h1 { margin: 0.25rem 0 0.75rem; font-size: 1.6rem; line-height: 1.25; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .original-title, .dates {
+    color: var(--muted);
+    margin: 0.25rem 0;
+    font-size: 0.9em;
+  }
+  article {
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  article h2 { font-size: 1.2rem; margin-top: 1.5rem; }
+  article ul { padding-left: 1.25rem; }
+  article li { margin: 0.25rem 0; }
+  article blockquote {
+    margin: 0.5rem 0 0.5rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  footer {
+    max-width: 44rem;
+    margin: 2rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  footer a { margin-right: 1rem; }
+</style>
+</head>
+<body>
+<nav class="top">
+  <a href="../archive.html">← Archive</a> ·
+  <a href="../feed.fr.xml">Flux</a>
+</nav>
+<main>
+  <h1>ggsql : une implémentation de la grammaire des graphiques basée sur la syntaxe SQL</h1>
+  <p class="original-title">Titre original : <em>ggsql: A Grammar of Graphics for SQL</em></p>
+  <p class="dates">Publié sur HN le 2026-04-20 12:51 · Entré dans /best le 2026-04-21 11:50 · Résumé généré le 2026-04-21 11:57</p>
+  <article>
+<h2>Résumé de l'article</h2>
+<p><strong>TL;DR :</strong> ggsql est un nouvel outil en alpha qui permet de créer des visualisations de données directement en SQL, combinant la grammaire des graphiques avec la syntaxe SQL. Il fonctionne dans Quarto, Jupyter, Positron et VS Code.</p>
+<ul>
+<li>ggsql utilise des clauses SQL declaratives (VISUALIZE, DRAW, PLACE, SCALE, LABEL) pour construire des visualisations composables et modulables, sans types de graphiques prédéfinis</li>
+<li>L'outil cible les utilisateurs de SQL qui n'ont pas accès ou ne maîtrisent pas R ou Python, et offre une alternative aux outils BI ou aux tentatives précédentes de visualisation en SQL</li>
+<li>L'absence de dépendances externes (R/Python) permet l'intégration dans d'autres outils, le sandboxing de code malveillant, et l'exécution efficace du pipeline de données entier en une seule requête SQL par couche</li>
+<li>Les couches de visualisation (point, histogram, boxplot, smooth, etc.) héritent automatiquement des mappages de données définis dans VISUALIZE, permettant une itération ergonomique</li>
+<li>Les développeurs s'appuient sur 18 ans d'expérience ggplot2 pour concevoir ggsql comme une &quot;ardoise vierge&quot;, avec des plans futurs incluant un moteur haute performance en Rust, l'interactivité et le support des données spatiales</li>
+</ul>
+<h2>Discussion sur Hacker News</h2>
+<p><strong>Arguments en faveur</strong> :</p>
+<ul>
+<li>Comble un besoin pour les utilisateurs SQL qui ne maîtrisent pas R ou Python, en proposant une syntaxe unifiée directement intégrée au langage de requête</li>
+<li>Permet des visualisations directement depuis des bases de données sans charger les données en mémoire en dataframe, réduisant la friction et les dépendances multiples</li>
+<li>Architecture modulaire et extensible (lecteurs multiples, renderers variés) ouvre la voie à un standard de visualisation cross-backend au-delà de ggplot2</li>
+<li>Cas d'usage prometteur pour les notebooks (marimo, Jupyter) et l'analytics agentic, avec déploiement envisagé via Posit Connect</li>
+<li>Ne prétend pas remplacer ggplot2 mais plutôt le compléter en atteignant de nouveaux contextes d'utilisation</li>
+</ul>
+<p><strong>Arguments contre</strong> :</p>
+<ul>
+<li>Manque de clarté initiale sur la proposition de valeur : n'a pas justifié pourquoi créer un nouveau DSL plutôt que d'étendre les outils existants (dbplyr + ggplot2)</li>
+<li>Ajoute une dépendance supplémentaire aux projets alors que les solutions R/Python existent déjà et sont bien établies</li>
+<li>Documentation insuffisante : explications obscures sur l'architecture backend, l'interaction avec les bases de données, et les capacités d'export/rendu (PDF, SVG, PNG)</li>
+<li>Risque du problème &quot;XKCD des standards&quot; : encore un autre outil de visualisation au lieu d'une vraie standardisation</li>
+<li>Fonctionnalités actuellement limitées (Vega-Lite uniquement en output, pas d'ajustements manuels reproducibles) et en alpha, rendant l'utilité concrète difficile à évaluer</li>
+</ul>
+<hr />
+<p><a href="https://opensource.posit.co/blog/2026-04-20_ggsql_alpha_release/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47833558">Discussion HN</a></p>
+
+  </article>
+</main>
+<footer>
+  <a href="https://opensource.posit.co/blog/2026-04-20_ggsql_alpha_release/" rel="noopener">Article original ↗</a>
+  <a href="https://news.ycombinator.com/item?id=47833558" rel="noopener">Discussion HN ↗</a>
+</footer>
+</body>
+</html>

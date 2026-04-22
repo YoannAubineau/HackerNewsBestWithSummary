@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VidStudio est un éditeur vidéo navigateur qui traite les fichiers localement sans les télécharger — Hacker News Best with summaries</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fafafa;
+    --fg: #222;
+    --muted: #666;
+    --border: #e5e5e5;
+    --accent: #ff6600;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e5e5e5;
+      --muted: #999;
+      --border: #333;
+    }
+  }
+  body {
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--bg);
+    color: var(--fg);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main, nav.top {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+  nav.top {
+    margin-bottom: 1rem;
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  h1 { margin: 0.25rem 0 0.75rem; font-size: 1.6rem; line-height: 1.25; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .original-title, .dates {
+    color: var(--muted);
+    margin: 0.25rem 0;
+    font-size: 0.9em;
+  }
+  article {
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  article h2 { font-size: 1.2rem; margin-top: 1.5rem; }
+  article ul { padding-left: 1.25rem; }
+  article li { margin: 0.25rem 0; }
+  article blockquote {
+    margin: 0.5rem 0 0.5rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  footer {
+    max-width: 44rem;
+    margin: 2rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  footer a { margin-right: 1rem; }
+</style>
+</head>
+<body>
+<nav class="top">
+  <a href="../archive.html">← Archive</a> ·
+  <a href="../feed.fr.xml">Flux</a>
+</nav>
+<main>
+  <h1>VidStudio est un éditeur vidéo navigateur qui traite les fichiers localement sans les télécharger</h1>
+  <p class="original-title">Titre original : <em>Show HN: VidStudio, a browser based video editor that doesn&#x27;t upload your files</em></p>
+  <p class="dates">Publié sur HN le 2026-04-21 11:58 · Entré dans /best le 2026-04-22 15:11 · Résumé généré le 2026-04-22 15:11</p>
+  <article>
+<h2>Résumé de l'article</h2>
+<p>VidStudio est un outil de montage vidéo entièrement basé sur le navigateur qui exécute tous les traitements localement, sans envoyer les fichiers vers des serveurs externes. La plateforme offre une suite complète de fonctionnalités de traitement vidéo avec traitement rapide et protection de la vie privée.</p>
+<ul>
+<li>Édition vidéo multi-piste avec lecture image par image et décodage WebCodecs</li>
+<li>Redimensionnement, rognage, découpe et conversion par lot en MP4 avec compression intelligente</li>
+<li>Traitement audio : extraction, mixage, application d'effets et conversion de format</li>
+<li>Gestion des sous-titres, text overlays et création d'effets texte animés</li>
+<li>Extraction d'images, création de storyboards, de prévisualisations animées et ajout de filigranes</li>
+</ul>
+<h2>Discussion sur Hacker News (44 commentaires analysés)</h2>
+<p><strong>Confirmations</strong> :</p>
+<ul>
+<li>La proposition de valeur &quot;pas d'upload&quot; face à l'omniprésence des solutions cloud propriétaires avec conditions d'utilisation prédatrices résonne fortement comme réponse légitime à des pratiques d'extraction de données.</li>
+<li>L'architecture technique (WebCodecs + FFmpeg.wasm + mp4box.js) pour contourner les limitations de mémoire du WASM pur représente une décomposition ingénieuse du problème, validée par des éditeurs similaires ayant échoué sur les vidéos longues.</li>
+<li>L'absence de compte et de cloud-sync est un avantage compétitif durable auprès d'un public conscient de la vie privée, même face à des outils plus matures (Final Cut, Premiere).</li>
+</ul>
+<p><strong>Réfutations</strong> :</p>
+<ul>
+<li>Les brèches de codec critiques (HEVC 10-bit, formats iPhone/Android) rendent l'outil inutilisable pour une part significative des utilisateurs mobiles modernes ; c'est un problème structurel, pas anecdotique.</li>
+<li>Les violations LGPL potentielles sur la distribution d'FFmpeg WASM en application fermée requièrent une solution juridique sérieuse, pas un contournement technique fragile.</li>
+<li>La stabilité reste insuffisante pour des cas d'usage réels : exports qui s'arrêtent à 75%, absence de transformations de calques, manque de support des pistes multiples limitent fortement l'utilité pratique face aux alternatives établies.</li>
+</ul>
+<hr />
+<p><a href="https://vidstudio.app/video-editor">Article original</a> · <a href="https://news.ycombinator.com/item?id=47847558">Discussion HN</a></p>
+
+  </article>
+</main>
+<footer>
+  <a href="https://vidstudio.app/video-editor" rel="noopener">Article original ↗</a>
+  <a href="https://news.ycombinator.com/item?id=47847558" rel="noopener">Discussion HN ↗</a>
+</footer>
+</body>
+</html>

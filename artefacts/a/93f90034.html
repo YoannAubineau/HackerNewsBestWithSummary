@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vercel subit une cyberattaque via un outil IA tiers, des données clients exposées — Hacker News Best with summaries</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fafafa;
+    --fg: #222;
+    --muted: #666;
+    --border: #e5e5e5;
+    --accent: #ff6600;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e5e5e5;
+      --muted: #999;
+      --border: #333;
+    }
+  }
+  body {
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--bg);
+    color: var(--fg);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main, nav.top {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+  nav.top {
+    margin-bottom: 1rem;
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  h1 { margin: 0.25rem 0 0.75rem; font-size: 1.6rem; line-height: 1.25; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .original-title, .dates {
+    color: var(--muted);
+    margin: 0.25rem 0;
+    font-size: 0.9em;
+  }
+  article {
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  article h2 { font-size: 1.2rem; margin-top: 1.5rem; }
+  article ul { padding-left: 1.25rem; }
+  article li { margin: 0.25rem 0; }
+  article blockquote {
+    margin: 0.5rem 0 0.5rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  footer {
+    max-width: 44rem;
+    margin: 2rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  footer a { margin-right: 1rem; }
+</style>
+</head>
+<body>
+<nav class="top">
+  <a href="../archive.html">← Archive</a> ·
+  <a href="../feed.fr.xml">Flux</a>
+</nav>
+<main>
+  <h1>Vercel subit une cyberattaque via un outil IA tiers, des données clients exposées</h1>
+  <p class="original-title">Titre original : <em>Vercel April 2026 security incident</em></p>
+  <p class="dates">Publié sur HN le 2026-04-19 14:14 · Entré dans /best le 2026-04-21 11:50 · Résumé généré le 2026-04-21 11:51</p>
+  <article>
+<h2>Résumé de l'article</h2>
+<p><strong>TL;DR :</strong> Vercel a confirmé une faille de sécurité impliquant l'accès à des systèmes internes après le compromis du compte Google Workspace d'un employé via la plateforme Context.ai. Des variables d'environnement non chiffrées ont été exposées, bien que les services clients n'aient pas été affectés.</p>
+<ul>
+<li>L'accès initial provient du piratage du compte Google Workspace d'un employé de Vercel, lui-même compromis par une faille chez Context.ai</li>
+<li>L'attaquant a escaladé ses privilèges pour accéder aux variables d'environnement non marquées comme sensibles et donc non chiffrées au repos</li>
+<li>Vercel confirme que Next.js, Turbopack et ses projets open-source restent sécurisés ; seul un sous-ensemble limité de clients est affecté</li>
+<li>Un acteur prétendant être &quot;ShinyHunters&quot; prétend vendre les données volées (clés d'accès, codes source, données d'employés) avec une demande de rançon alléguée de 2 millions de dollars</li>
+<li>Vercel recommande aux clients de passer en revue leurs variables d'environnement et d'activer le chiffrement pour les données sensibles</li>
+</ul>
+<h2>Discussion sur Hacker News</h2>
+<p><strong>Arguments en faveur</strong> :</p>
+<ul>
+<li>La transparence post-incident s'est améliorée avec des IOCs et des explications techniques claires sur l'origine (compromission OAuth via Context.ai)</li>
+<li>Les variables d'environnement marquées &quot;sensibles&quot; n'auraient pas été exposées, offrant une couche de protection partielle</li>
+<li>L'incident révèle un problème architectural systémique (OAuth supply-chain) qui affecte potentiellement l'ensemble du secteur, pas seulement Vercel</li>
+<li>La communication de Vercel a finalement fourni des détails techniques utiles à la communauté pour auditer leurs propres environnements</li>
+<li>C'est un rappel nécessaire des risques liés à la concentration du stack web moderne</li>
+</ul>
+<p><strong>Arguments contre</strong> :</p>
+<ul>
+<li>La communication initiale était &quot;intentionnellement vague&quot; sans détails sur les systèmes compromis, les délais ou l'ampleur réelle (le &quot;subset limité&quot; reste flou)</li>
+<li>Aucun email d'alerte directe aux clients payants ; les informations proviennent de réseaux sociaux plutôt que de notifications officielles</li>
+<li>Trois incidents critiques majeurs en 12 mois (React2Shell CVSS 10, bypass middleware CVSS 9.1, celui-ci) suggèrent des failles architecturales systémiques</li>
+<li>La notion de &quot;sensibilité&quot; des variables est désactivée par défaut, créant une fausse sécurité pour les développeurs inexpérimentés</li>
+<li>L'architecture globale (une seule compromission OAuth propagant à tous les clients) révèle une isolation insuffisante et une confiance excessive envers les tiers</li>
+</ul>
+<hr />
+<p><a href="https://www.bleepingcomputer.com/news/security/vercel-confirms-breach-as-hackers-claim-to-be-selling-stolen-data/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47824463">Discussion HN</a></p>
+
+  </article>
+</main>
+<footer>
+  <a href="https://www.bleepingcomputer.com/news/security/vercel-confirms-breach-as-hackers-claim-to-be-selling-stolen-data/" rel="noopener">Article original ↗</a>
+  <a href="https://news.ycombinator.com/item?id=47824463" rel="noopener">Discussion HN ↗</a>
+</footer>
+</body>
+</html>
