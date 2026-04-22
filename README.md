@@ -18,12 +18,8 @@ Feed URL (French summaries):
 
 <https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
 
-## Preview
-
 Opening the feed URL in a browser renders a styled page via an embedded
 XSLT stylesheet; RSS readers receive the same file as plain RSS 2.0.
-
-![Screenshot of the XSLT-rendered feed](docs/feed-preview.png)
 
 ## LLM Cost Supported by the Author
 
