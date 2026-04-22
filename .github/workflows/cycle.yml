@@ -47,14 +47,16 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p docs
-          resp=$(curl -sf -H "Authorization: Bearer $OPENROUTER_API_KEY" \
-            https://openrouter.ai/api/v1/auth/key) || {
+          if ! curl -sf -o /tmp/openrouter-key.json \
+               -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+               https://openrouter.ai/api/v1/auth/key; then
             echo "OpenRouter auth/key fetch failed; keeping previous badge."
             exit 0
-          }
-          echo "$resp" | python3 - <<'PY' > docs/usage.json
-          import json, sys
-          d = json.load(sys.stdin)["data"]
+          fi
+          python3 > docs/usage.json <<'PY'
+          import json
+          with open("/tmp/openrouter-key.json") as f:
+              d = json.load(f)["data"]
           usage = d.get("usage") or 0
           limit = d.get("limit")
           if limit is not None and limit > 0:
