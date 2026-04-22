@@ -198,7 +198,7 @@ _TEMPLATE = """<!DOCTYPE html>
 <table id="archive">
   <thead>
     <tr>
-      <th><a href="archive-hn.html">HN</a></th>
+      <th class="{hn_class}"><a href="archive-hn.html">HN</a></th>
       <th class="{hn_class}"><a href="archive-hn.html">Entered HN</a></th>
       <th class="{best_class}"><a href="archive-best.html">Entered /best</a></th>
       <th class="{feed_class}"><a href="archive.html">Entered our feed</a></th>
