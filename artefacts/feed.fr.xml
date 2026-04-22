@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Wed, 22 Apr 2026 10:26:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 11:24:35 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>SpaceX acquiert Cursor pour 60 milliards de dollars selon la compagnie</title>
@@ -185,6 +185,42 @@
       <comments>https://news.ycombinator.com/item?id=47851948</comments>
       <pubDate>Tue, 21 Apr 2026 17:40:39 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>Britannica11.org propose une édition structurée et interrogeable de l'Encyclopædia Britannica de 1911</title>
+      <link>https://britannica11.org/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Britannica11.org offre un accès numérique à l'Encyclopædia Britannica de sa onzième édition (1910-1911), complètement consultable et annoté.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Édition complète de 1910-1911 de l'encyclopédie historique britannique&lt;/li&gt;
+&lt;li&gt;Interface entièrement interrogeable pour effectuer des recherches&lt;/li&gt;
+&lt;li&gt;Tous les articles sont cross-référencés pour faciliter la navigation entre les entrées&lt;/li&gt;
+&lt;li&gt;Annotations disponibles pour enrichir la consultation des contenus&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (45 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le projet remplit une fonction historique et de préservation bien définie : rendre navigable et explorable un texte public domain avec une structure granulaire, des renvois croisés et des métadonnées origines.&lt;/li&gt;
+&lt;li&gt;La qualité technique est largement appréciée (rapidité, search, navigation) et le design réussit à recréer l'expérience de consultation d'une encyclopédie physique tout en étant utilisable numériquement.&lt;/li&gt;
+&lt;li&gt;Le ton personnel et moins homogénéisé de la Britannica 1911 constitue une valeur intrinsèque : les articles reflètent des opinions de l'époque, un mélange de genres (géographie/histoire/narration), et offrent une perspective historique irremplaçable antérieure à la Première Guerre mondiale.&lt;/li&gt;
+&lt;li&gt;Il y a une forte demande pour l'accès aux données structurées (API, dataset, export XML-TEI) notamment pour l'entraînement de modèles, ce qui valide l'intérêt du travail d'ingénierie de reconstruction.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'accessibilité de la structure n'est pas optimale : certains renvois croisés comportent des bugs de désambiguïsation, les liens vers les images originales ne sont pas assez visibles, et la recherche depuis les articles ne fonctionne pas correctement (bug Firefox confirmé, bien que partiellement résolu).&lt;/li&gt;
+&lt;li&gt;La suggestion d'une vue côte-à-côte texte+images pour vérifier la fidélité de l'OCR remet en question le modèle actuel de navigation fragmentée et soulève la question de la validation de la reconstruction.&lt;/li&gt;
+&lt;li&gt;Plusieurs bugs détectés (table cassée, support de caractères spéciaux manquant, articles dupliqués avec renvois incorrects) nuancent le sentiment de finition globale du projet.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://britannica11.org/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47851885"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">bad8309a</guid>
+      <comments>https://news.ycombinator.com/item?id=47851885</comments>
+      <pubDate>Tue, 21 Apr 2026 17:33:50 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://britannica11.org/title_page.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Une compromission OAuth chez Vercel expose les risques des variables d'environnement sur les plateformes cloud</title>
