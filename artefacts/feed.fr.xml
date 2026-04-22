@@ -8,8 +8,79 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)</generator>
     <language>fr</language>
-    <lastBuildDate>Tue, 21 Apr 2026 23:13:46 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 00:20:10 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Claude Code supprimé de l'offre Pro d'Anthropic</title>
+      <link>https://claude.com/pricing</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Anthropic a restructuré son offre tarifaire en retirant Claude Code de son plan Pro. Cette fonctionnalité de génération et d'exécution de code est désormais disponible uniquement dans les plans Team et Enterprise.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Claude Code n'est plus inclus dans l'offre Pro (anciennement disponible)&lt;/li&gt;
+&lt;li&gt;La fonctionnalité reste accessible aux utilisateurs des plans Team ($25/mois en facturation mensuelle) et Enterprise&lt;/li&gt;
+&lt;li&gt;Le plan Pro conserve Claude Cowork, l'accès à Research et à plusieurs modèles Claude pour $20/mois&lt;/li&gt;
+&lt;li&gt;Les plans Free, Max et les offres éducatives/académiques conservent ou ont accès à Claude Code selon leur tier respectif&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les contraintes de capacité et la croissance insoutenable des usages (agents autonomes 24/7, tokens consommés massivement par Opus 4.7) justifient une révision des plans tarifaires, particulièrement pour les Pro plan à faible coût.&lt;/li&gt;
+&lt;li&gt;Le retrait de Claude Code du plan Pro fait économiquement sens : subsidier des accès illimités à des outils d'agents autonomes coûteux était structurellement non rentable face à la demande galopante.&lt;/li&gt;
+&lt;li&gt;Anthropic teste une réallocation des ressources vers les vrais clients (Max/entreprises payant des milliers/mois) plutôt que les utilisateurs occasionnels, stratégie classique de monétisation SaaS.&lt;/li&gt;
+&lt;li&gt;Ce changement force les utilisateurs sérieux à basculer vers des offres plus chères ou alternatives (Codex, GLM, Kimi), ce qui reflète une réalité : à $20/mois, les utilisateurs ne sont pas des clients viables pour des workloads coûteux.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Anthropic sabote sa propre acquisition client : les utilisateurs Pro ont servi de tremplin vers des upgrades (beaucoup signalent être passés de $20 à $100-200 grâce à Claude Code gratuit), supprimant cette rampe brise le flywheel de croissance.&lt;/li&gt;
+&lt;li&gt;La communication est désastreuse (modifications silencieuses sur les pages de support, A/B test secret sur 2% des utilisateurs) : cela détruit la confiance bien plus que une hausse tarifaire annoncée clairement, poussant les utilisateurs vers les concurrents.&lt;/li&gt;
+&lt;li&gt;Codex ($20 avec bien plus de quotas) et les modèles chinois (Kimi, GLM) offrent de meilleures conditions sans ces drames marketing, capturant les utilisateurs que Claude pousse dehors.&lt;/li&gt;
+&lt;li&gt;L'absence de grandfathering pour les clients existants ayant signé avec Claude Code inclus constitue une violation implicite du contrat, non l'inverse : Anthropic reçoit l'argent, change les termes après coup.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://claude.com/pricing"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47854477"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">f8f4842d</guid>
+      <comments>https://news.ycombinator.com/item?id=47854477</comments>
+      <pubDate>Tue, 21 Apr 2026 21:03:04 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://cdn.prod.website-files.com/6889473510b50328dbb70ae6/68c469d23594abeb9ab6ee48_70ed020ecf8fa028b9bc95fa819720b6_og_claude-generic.jpg"/>
+      </media:group>
+    </item>
+    <item>
+      <title>ChatGPT Images 2.0</title>
+      <link>https://openai.com/index/introducing-chatgpt-images-2-0/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;h2&gt;ChatGPT Images 2.0 lancé par OpenAI lors d'une présentation en direct&lt;/h2&gt;
+&lt;p&gt;OpenAI a présenté ChatGPT Images 2.0 lors d'une livestream officielle. Cette nouvelle version représente une mise à jour significative des capacités de génération d'images de ChatGPT.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;OpenAI a organisé un événement de présentation en direct pour annoncer les nouvelles fonctionnalités&lt;/li&gt;
+&lt;li&gt;La communauté tech réagit activement avec plus de 280 commentaires sur Hacker News&lt;/li&gt;
+&lt;li&gt;L'annonce a généré un intérêt notable avec 289 points sur la plateforme&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La qualité visuelle a fait un bond significatif, rendant très difficile la distinction entre images réelles et générées, notamment sur des sujets complexes comme les bureaux Mac ou les détails d'éclairage.&lt;/li&gt;
+&lt;li&gt;Les cas d'usage pratiques se multiplient : illustration de concepts, design graphique, création d'actifs pédagogiques personnalisés, prototypage créatif et génération d'illustrations pour livres et guides.&lt;/li&gt;
+&lt;li&gt;Les tarifs ont baissé comparé à DALL-E 1.5, particulièrement pour les résolutions non-carrées, rendant l'outil plus accessible aux utilisateurs non-programmeurs.&lt;/li&gt;
+&lt;li&gt;La génération d'images est désormais suffisamment sophistiquée pour servir de base à d'autres domaines (vidéo, jeux vidéo, animation sprite), marquant un tournant technologique majeur.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le modèle échoue sur des tâches détaillées et structurées (échecs, objets spécifiques en arrangements précis), générant des artefacts visuellement plausibles mais factuellement erronés, révélant les limites sous la surface impressionnante.&lt;/li&gt;
+&lt;li&gt;Les améliorations réelles restent marginales depuis la génération précédente, le « buzz » reflétant davantage la maturation technologique qu'une révolution, avec une fatigue croissante face aux annonces répétées.&lt;/li&gt;
+&lt;li&gt;Les implications éthiques demeurent non résolues : absence de watermarking robuste (SynthID), risques d'usurpation sur les réseaux de rencontre et médias sociaux, entraînement non consenti sur les styles d'artistes, et incapacité à refuser les modifications de visages de personnages publics.&lt;/li&gt;
+&lt;li&gt;Le manque de fonctionnalités cruciales persiste (édition d'images existantes peu fonctionnelle, pas de PNG transparent, incapacité à suivre des instructions précises dans les modifications demandées).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://openai.com/index/introducing-chatgpt-images-2-0/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47852835"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">81115cbc</guid>
+      <comments>https://news.ycombinator.com/item?id=47852835</comments>
+      <pubDate>Tue, 21 Apr 2026 18:50:00 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Framework Laptop 13 Pro</title>
       <link>https://frame.work/laptop13pro</link>
