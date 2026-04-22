@@ -8,6 +8,16 @@ Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with:
 
 The generated feed is a static RSS 2.0 file, updated hourly by GitHub Actions and served through GitHub Pages.
 
+## Subscribe
+
+Feed URL (French summaries):
+
+<https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
+
+Opening that URL in a browser renders a styled HTML view (thanks to an XSLT
+stylesheet); RSS readers like Feedly, Reeder and NetNewsWire receive the
+same file as plain RSS 2.0.
+
 ## Run locally
 
 ```bash
