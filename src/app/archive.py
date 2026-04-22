@@ -167,8 +167,6 @@ _TEMPLATE = """<!DOCTYPE html>
   nav.pagination .page-indicator {{ flex: 1; text-align: center; }}
   table {{
     width: 100%;
-    max-width: 64rem;
-    margin: 0 auto;
     border-collapse: collapse;
   }}
   th, td {{
