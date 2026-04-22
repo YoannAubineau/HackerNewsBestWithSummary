@@ -28,7 +28,13 @@ log = structlog.get_logger()
 
 def step_fetch_feed() -> int:
     ensure_articles_dir()
-    entries = fetch_source_feed()
+    try:
+        entries = fetch_source_feed()
+    except Exception as exc:  # noqa: BLE001
+        # hnrss.org or the runner's network can flake transiently. Swallow the
+        # error, skip the cycle. Next cron run will retry naturally.
+        log.warning("fetch_feed_failed", error=str(exc))
+        return 0
     created = 0
     for entry in entries:
         path = path_for(entry.guid, entry.source_published_at)
