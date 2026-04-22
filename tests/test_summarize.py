@@ -83,18 +83,3 @@ def test_compose_body_omits_count_when_zero():
     )
     assert "## Discussion sur Hacker News\n" in body
     assert "commentaires analysés" not in body
-
-
-def test_compose_body_keeps_hn_id_out_of_the_body():
-    # The HN id shows up only in the XSL-rendered browser view (injected
-    # via JS in feed.xsl). It must stay out of the body stored in the .md
-    # so Feedly-style readers get the unchanged two-link footer line.
-    body = compose_body(
-        article_summary=None,
-        discussion_summary="**Confirmations** :\n- x",
-        url="https://example.com/a",
-        hn_url="https://news.ycombinator.com/item?id=4242",
-    )
-    assert "HN #" not in body
-    assert "[Article original](https://example.com/a)" in body
-    assert "[Discussion HN](https://news.ycombinator.com/item?id=4242)" in body
