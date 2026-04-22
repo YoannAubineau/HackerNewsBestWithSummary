@@ -95,3 +95,48 @@ except `OPENROUTER_API_KEY`.
 | `USER_AGENT` | `hn-best-summary/0.1 (+...)` | Sent with every outbound HTTP request. |
 | `ARTEFACTS_DIR` | `artefacts` | Root of all generated output. Article store, failed-article subfolder, and the feed file are all derived from this path. |
 | `LOG_LEVEL` | `INFO` | One of `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. |
+
+## Comment selection budget
+
+A popular HN thread has hundreds to thousands of comments — too many to
+cram into a single LLM prompt, and most of them are short reactions that
+add little to a synthesis. `fetch_discussion.py` therefore walks the tree
+and picks a bounded subset before calling the model.
+
+### Rules
+
+1. **Leaves are dropped.** A comment with no reply is considered
+   low-signal and is never included — unless it is pinned (see 3).
+2. **Each included comment costs 1 unit of budget.** The starting budget
+   is `DISCUSSION_BUDGET` (default 500).
+3. **Submitter comments are pinned.** Any comment whose author matches
+   the story submitter is always included, along with every ancestor up
+   to the root. Pinned comments don't consume the budget — they are
+   kept for their clarifying value and would otherwise be easy to miss.
+4. **Remaining budget is split triangularly across children, by HN
+   rank.** At any level, non-pinned "branch" children (those with at
+   least one reply of their own) receive allocations weighted
+   `n, n-1, …, 1` — the top-ranked thread gets the largest slice, the
+   next a bit less, and so on. Children with no budget are skipped.
+5. **Recursion.** Each included comment walks into its own children
+   with `budget - 1`, applying the same triangular split one level
+   deeper. The tree thins out naturally as depth increases.
+
+### Why these rules
+
+- **Budget cap** keeps prompt size — and therefore latency and cost —
+  predictable regardless of how viral a thread goes.
+- **Triangular split** reflects HN's own ranking signal: top threads
+  tend to carry the most informative exchanges, so they deserve a
+  bigger share of the context window.
+- **Leaf drop** filters out pure reactions and ack-only replies.
+- **Submitter pinning** preserves the single most authoritative voice
+  in the thread (the poster's own clarifications and rebuttals).
+
+### Tuning
+
+Raising `DISCUSSION_BUDGET` lets the model see more of the deep
+sub-threads but inflates the prompt and the per-call cost. Lowering it
+tightens the focus on the top-ranked exchanges. 500 was chosen so that
+a typical front-page thread fits comfortably in a Haiku 4.5 context
+window without dominating it.
