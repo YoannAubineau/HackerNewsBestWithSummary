@@ -36,10 +36,10 @@ if you'd like to see another language supported.
 
 Daily spend on OpenRouter over the last 30 days. Refreshed each hour by the cycle workflow.
 
+![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
+
 These costs cover the LLM calls used to rephrase titles, summarize articles,
 and analyze Hacker News discussions.
-
-![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
 
 If the feed is useful to you, you can chip in via
 [GitHub Sponsors](https://github.com/sponsors/YoannAubineau) — every
