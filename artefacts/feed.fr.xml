@@ -8,7 +8,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)</generator>
     <language>fr</language>
-    <lastBuildDate>Wed, 22 Apr 2026 08:33:54 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 09:31:42 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>SpaceX acquiert Cursor pour 60 milliards de dollars selon la compagnie</title>
@@ -394,6 +394,37 @@
       <media:group>
         <media:thumbnail url="https://clawdhub.mintlify.app/mintlify-assets/_next/image?url=%2F_mintlify%2Fapi%2Fog%3Fdivision%3DProviders%26title%3DAnthropic%26logoLight%3Dhttps%253A%252F%252Fmintcdn.com%252Fclawdhub%252FdpADRo8IUoiDztzJ%252Fassets%252Fpixel-lobster.svg%253Ffit%253Dmax%2526auto%253Dformat%2526n%253DdpADRo8IUoiDztzJ%2526q%253D85%2526s%253D8fdf719fb6d3eaad7c65231385bf28e5%26logoDark%3Dhttps%253A%252F%252Fmintcdn.com%252Fclawdhub%252FdpADRo8IUoiDztzJ%252Fassets%252Fpixel-lobster.svg%253Ffit%253Dmax%2526auto%253Dformat%2526n%253DdpADRo8IUoiDztzJ%2526q%253D85%2526s%253D8fdf719fb6d3eaad7c65231385bf28e5%26primaryColor%3D%2523FF5A36%26lightColor%3D%2523FF8A6B%26darkColor%3D%2523FF5A36%26backgroundLight%3D%2523ffffff%26backgroundDark%3D%25230e0c0d&amp;w=1200&amp;q=100"/>
       </media:group>
+    </item>
+    <item>
+      <title>Une vidéo montre comment fabriquer de la mémoire RAM à la maison</title>
+      <link>https://www.youtube.com/watch?v=h6GWikWlAQA</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Une vidéo documentaire explique le processus de fabrication artisanale de mémoire RAM, détaillant les étapes et techniques nécessaires pour construire des composants mémoire à partir de zéro.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La vidéo présente une démonstration pratique de fabrication de RAM domestique&lt;/li&gt;
+&lt;li&gt;Le contenu a généré 297 points et 78 commentaires sur Hacker News&lt;/li&gt;
+&lt;li&gt;Il s'agit d'un tutoriel ou d'une explication technique accessible au format vidéo&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (35 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La démonstration du créateur montre qu'un processus technologique complexe (cleanroom, lithographie, fabrication de RAM) devient réalisable pour un individu avec les bonnes connaissances, ce qui est remarquable et fascine la communauté.&lt;/li&gt;
+&lt;li&gt;Le contenu vidéo de qualité sur des niches très spécialisées peut trouver du succès sur YouTube même pour les nouveaux créateurs, démontrant que l'accès aux technologies autrefois inaccessibles se démocratise.&lt;/li&gt;
+&lt;li&gt;Les technologies considérées comme &amp;quot;haute technologie&amp;quot; il y a 20-30 ans deviennent progressivement accessibles aux amateurs (DRAM, circuits discontinués), illustrant une démocratisation technologique réelle.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le projet reste largement incomplet : seulement 2 bytes de mémoire fonctionnelle, pas de test réel du RAM, et l'adressage logique reste du travail futur, donc les conclusions sur la viabilité pratique sont prématurées.&lt;/li&gt;
+&lt;li&gt;Malgré cette accessibilité théorique, les barrières économiques et pratiques (rendements terribles, absence d'économies d'échelle, coûts des matières premières) rendent une production commerciale non rentable comparée aux fabs établies.&lt;/li&gt;
+&lt;li&gt;Les chimies dangereuses impliquées (gaz de phosphine, acide HF) rendent ce projet risqué pour les amateurs ; les fabs professionnelles existent précisément pour gérer ces dangers de manière sécurisée.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://www.youtube.com/watch?v=h6GWikWlAQA"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47842569"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">9472ab17</guid>
+      <comments>https://news.ycombinator.com/item?id=47842569</comments>
+      <pubDate>Mon, 20 Apr 2026 23:35:06 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Le workflow megamerge dans Jujutsu permet de travailler simultanément sur plusieurs branches</title>
