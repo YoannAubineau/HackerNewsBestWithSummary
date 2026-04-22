@@ -4,7 +4,7 @@
 [![Feed Refresh](https://img.shields.io/github/actions/workflow/status/YoannAubineau/HackerNewsBestWithSummary/cycle.yml?label=Feed%20Refresh)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/cycle.yml)
 [![License: MIT](https://img.shields.io/github/license/YoannAubineau/HackerNewsBestWithSummary)](LICENSE)
 
-Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with:
+Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with LLM-generated content:
 
 - a rewritten, factual title (clickbait headlines are replaced by what the article actually says)
 - a summary of the linked article
