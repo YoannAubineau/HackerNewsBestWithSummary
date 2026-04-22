@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Wed, 22 Apr 2026 15:39:38 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 17:10:48 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Subsystème Linux pour Windows 9x</title>
@@ -71,6 +71,39 @@
       <guid isPermaLink="false">079ebc09</guid>
       <comments>https://news.ycombinator.com/item?id=47857461</comments>
       <pubDate>Wed, 22 Apr 2026 01:19:30 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>Enseignements d'un ingénieur senior après plusieurs années d'expérience</title>
+      <link>https://luminousmen.substack.com/p/drunk-post-things-ive-learned-as</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Un ingénieur senior partage les leçons clés qu'il a apprises au cours de sa carrière dans le domaine technique, révélant les réalités du métier au-delà des théories académiques.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'expérience pratique en tant qu'ingénieur senior offre une perspective différente des attentes initiales&lt;/li&gt;
+&lt;li&gt;Les apprentissages couvrent probablement les aspects techniques, managériaux et organisationnels de la profession&lt;/li&gt;
+&lt;li&gt;L'article a généré un intérêt significatif avec 253 points et 184 commentaires sur Hacker News, suggérant des réflexions pertinentes pour la communauté&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (79 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'apprentissage de LISP et des fondamentaux informatiques approfondit véritablement la compréhension du génie logiciel et transforme la façon de penser les problèmes, même si on ne l'utilise plus ensuite.&lt;/li&gt;
+&lt;li&gt;La documentation du &amp;quot;pourquoi&amp;quot; (contexte, intentions, trade-offs) est une compétence cruellement sous-estimée qui devient encore plus importante avec l'IA, car elle capture la connaissance tacite que le code seul ne révèle pas.&lt;/li&gt;
+&lt;li&gt;Changer d'entreprise est un levier de progression de carrière plus efficace que rester longtemps au même endroit, offrant diversité d'expérience et perspectives élargies.&lt;/li&gt;
+&lt;li&gt;Les héros et experts fonctionnent aussi en mode &amp;quot;essai-erreur&amp;quot; comme tout le monde : l'expérience apporte surtout une meilleure intuition des trade-offs, pas une certitude absolue.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les langages dynamiques permettent de construire des systèmes significatifs et performants (HN/Reddit tournent dessus) ; les limites viennent de décisions architecturales, pas du typage ; Python domine l'IA malgré son caractère dynamique.&lt;/li&gt;
+&lt;li&gt;Le scénario &amp;quot;100k à 23 ans, retraite à 45&amp;quot; est un outlier US irréaliste pour la majorité même en Amérique, et complètement décalé des salaires et structures sociales du reste du monde.&lt;/li&gt;
+&lt;li&gt;Les commentaires HN ne sont pas &amp;quot;sans valeur&amp;quot; : certains dépassent largement la qualité des articles, offrent des nuances essentielles et des perspectives inattendues (même si inégaux en qualité).&lt;/li&gt;
+&lt;li&gt;Retirer de l'argent avant 59,5 ans d'un 401k verrouille les gains futurs et diffère injustement les impôts à une période où on a moins besoin de déductions fiscales.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://luminousmen.substack.com/p/drunk-post-things-ive-learned-as"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47856535"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">e3b4cb84</guid>
+      <comments>https://news.ycombinator.com/item?id=47856535</comments>
+      <pubDate>Tue, 21 Apr 2026 23:53:45 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
@@ -362,6 +395,44 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://www.trendmicro.com/content/dam/trendmicro/global/en/research/thumbnails/26/d/vercel-breach.png"/>
+      </media:group>
+    </item>
+    <item>
+      <title>GrapheneOS répond aux allégations de WIRED basées sur les déclarations de James Donaldson</title>
+      <link>https://discuss.grapheneos.org/d/34369-original-grapheneos-responses-to-wired-fact-checker</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;GrapheneOS conteste vivement l'article de WIRED, affirmant qu'il repose largement sur des fabrications de James Donaldson, ancien associé qui a tenté pendant 8 ans de détruire le projet et son fondateur Daniel Micay. L'équipe du projet fournit des réponses détaillées à un vérificateur de faits pour clarifier l'histoire réelle et réfuter les allégations.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Micay a développé le projet en tant qu'open source avant de rencontrer Donaldson en 2014 ; il a explicitement conservé le contrôle du projet, des licences et des clés de signature lors de la formation de Copperhead&lt;/li&gt;
+&lt;li&gt;En 2018, Donaldson a demandé les clés de signature pour des contrats avec des clients potentiels, ce que Micay a refusé en craignant une compromission de la sécurité ; Micay a ensuite supprimé les clés et quitté l'entreprise&lt;/li&gt;
+&lt;li&gt;GrapheneOS a prospéré en tant que projet open source financé par donations, avec environ 10 développeurs à temps plein, tandis que Copperhead est devenu une entreprise zombie&lt;/li&gt;
+&lt;li&gt;Donaldson aurait volé environ 300 000 dollars en donations Bitcoin au projet open source lors de la séparation en 2018&lt;/li&gt;
+&lt;li&gt;WIRED a reçu les réponses complètes de GrapheneOS à un vérificateur de faits mais n'a que peu incorporé ces informations dans l'article publié, bien qu'il promettait initialement de ne pas se concentrer sur l'historique du projet&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (89 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GrapheneOS produit un OS techniquement excellent focalisé sur la sécurité, et les réponses du projet aux accusations contiennent des preuves substantielles (notamment sur la suppression des clés de signature face à une tentative de compromission par Raytheon via Donaldson).&lt;/li&gt;
+&lt;li&gt;Les critiques publiques du projet sont souvent motivées par des intérêts concurrents ou hostiles cherchant à discréditer un outil qui menace des acteurs puissants (états, organisations criminelles), ce qui justifie partiellement la défensivité observée.&lt;/li&gt;
+&lt;li&gt;La distinction entre &amp;quot;critique&amp;quot; et &amp;quot;attaque coordonnée&amp;quot; est pertinente : le projet distingue les vrais problèmes des campagnes de désinformation délibérées visant sa réputation.&lt;/li&gt;
+&lt;li&gt;Micay n'est pas une personne isolée ; GrapheneOS fonctionne en équipe avec plusieurs contributeurs, réduisant les risques d'une prise de contrôle ou d'une compromission par une seule personne.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La défensivité chronique et les &amp;quot;rants&amp;quot; du projet, même justifiés techniquement, produisent un effet contreproductif sur la confiance : une communication professionnelle et mesurée serait plus persuasive et crédible qu'une posture de victime constante.&lt;/li&gt;
+&lt;li&gt;Être techniquement correct n'excuse pas un comportement agressif envers les critiques, les détracteurs ou les contributeurs passés ; menancer d'action en justice pour une critique légitime dépasse la légitime défense.&lt;/li&gt;
+&lt;li&gt;La suppression des clés de signature, bien que techniquement justifiée pour bloquer une compromission, a causé des dégâts réels aux utilisateurs sans alternative claire, soulevant des questions sur le jugement et la responsabilité.&lt;/li&gt;
+&lt;li&gt;La dépendance affective du projet envers un seul leader charismatique et combatif expose la communauté à des risques long terme quant à la stabilité, la gouvernance et la vulnérabilité aux infiltrations hostiles.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://discuss.grapheneos.org/d/34369-original-grapheneos-responses-to-wired-fact-checker"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47849854"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">d244855f</guid>
+      <comments>https://news.ycombinator.com/item?id=47849854</comments>
+      <pubDate>Tue, 21 Apr 2026 15:04:24 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://discuss.grapheneos.org/opengraph.png"/>
       </media:group>
     </item>
     <item>
