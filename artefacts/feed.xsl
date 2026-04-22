@@ -65,6 +65,9 @@
           article h2 a { color: var(--fg); text-decoration: none; }
           article h2 a:hover { color: var(--accent); }
           article time { color: var(--muted); font-size: .85rem; }
+          article .hnid { margin-top: 1rem; font-size: .8rem; color: var(--muted); opacity: .6; }
+          article .hnid a { color: inherit; text-decoration: none; }
+          article .hnid a:hover { opacity: 1; color: var(--accent); }
           article .thumb {
             float: right;
             margin: 0 0 .5rem 1rem;
@@ -96,7 +99,7 @@
           </header>
           <main>
             <xsl:for-each select="channel/item">
-              <article data-hn-id="{substring-after(comments, 'id=')}">
+              <article>
                 <xsl:if test="media:group/media:thumbnail/@url">
                   <img class="thumb" src="{media:group/media:thumbnail/@url}" alt=""/>
                 </xsl:if>
@@ -113,29 +116,16 @@
                 <div class="desc">
                   <xsl:value-of select="description" disable-output-escaping="yes"/>
                 </div>
+                <footer class="hnid">
+                  <a href="{comments}">
+                    <xsl:text>HN #</xsl:text>
+                    <xsl:value-of select="substring-after(comments, 'id=')"/>
+                  </a>
+                </footer>
               </article>
             </xsl:for-each>
           </main>
         </div>
-        <!-- XSLT 1.0 can't manipulate the escaped description string, so a
-             tiny script appends 'HN #id' to the last <p> of each article's
-             description (the one that already holds 'Article original ·
-             Discussion HN'). Keeps the XML body untouched for Feedly. -->
-        <script>
-          <xsl:text>
-            for (const art of document.querySelectorAll('article[data-hn-id]')) {
-              const id = art.dataset.hnId;
-              if (!id) continue;
-              const lastP = art.querySelector('.desc p:last-child');
-              if (!lastP) continue;
-              lastP.append(' \u00b7 ');
-              const a = document.createElement('a');
-              a.href = 'https://news.ycombinator.com/item?id=' + id;
-              a.textContent = 'HN #' + id;
-              lastP.appendChild(a);
-            }
-          </xsl:text>
-        </script>
       </body>
     </html>
   </xsl:template>
