@@ -83,7 +83,7 @@ except `OPENROUTER_API_KEY`.
 | `OPENROUTER_FALLBACK_MODELS` | `nvidia/nemotron-3-super-120b-a12b:free, meta-llama/llama-3.3-70b-instruct:free` | Comma-separated list of free fallbacks tried in order when the primary 429/5xx/empties. |
 | `SOURCE_FEED_URL` | `https://hnrss.org/best` | Upstream RSS feed polled each cycle. |
 | `FEED_SELF_URL` | `http://localhost/feed.fr.xml` | URL used for `<atom:link rel="self">`. Set to the public Pages URL in CI. |
-| `FEED_ITEMS_LIMIT` | `200` | Maximum items kept in the output feed. |
+| `FEED_ITEMS_LIMIT` | `100` | Maximum items kept in the output feed. |
 | `FEED_TTL_MINUTES` | `15` | `<ttl>` advertised to polite readers. Minimum polling interval in minutes. |
 | `FEED_TITLE` | `Hacker News: Best, with Summary` | Channel `<title>`. |
 | `FEED_DESCRIPTION` | (see `config.py`) | Channel `<description>`. |

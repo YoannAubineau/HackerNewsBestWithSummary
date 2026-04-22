@@ -1,7 +1,7 @@
 """Generate a single static HTML archive of every summarized article.
 
 Rendered alongside the feed so readers can browse articles that have
-rotated out of the 200-item window. Sorting, pagination, and search
+rotated out of the 100-item window. Sorting, pagination, and search
 are handled client-side by `simple-datatables <https://github.com/
 fiduswriter/simple-datatables>`_ loaded from jsDelivr — we just emit a
 plain ``<table>`` with rows pre-sorted by entry-in-our-feed descending.

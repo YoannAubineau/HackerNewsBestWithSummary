@@ -55,7 +55,7 @@ where it left off.
    attempts with a cascading model fallback, after which it
    moves to `artefacts/articles/_failed/…`. → `status: summarized`.
 5. **`publish`** walks summarised articles newest-first (by `hn_item_id`
-   desc), takes the top 200, and regenerates `artefacts/feed.fr.xml`.
+   desc), takes the top 100, and regenerates `artefacts/feed.fr.xml`.
    Only fires when at least one new summary was produced (or the feed
    file is missing). GitHub Pages redeploys the folder after the cycle
    commits.

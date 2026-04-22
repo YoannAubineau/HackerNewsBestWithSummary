@@ -22,7 +22,7 @@ Paste the URL below into your RSS reader to subscribe:
 Opening the feed URL in a browser renders a styled page via an embedded
 XSLT stylesheet. RSS readers receive the same file as plain RSS 2.0.
 
-Older articles that have rotated out of the feed's 200-item window are
+Older articles that have rotated out of the feed's 100-item window are
 still reachable on the
 [archive page](https://yoannaubineau.github.io/HackerNewsBestWithSummary/archive.html),
 which is sortable by HN submission date, first appearance in `/best`, or
