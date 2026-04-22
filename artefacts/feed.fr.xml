@@ -9,8 +9,42 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Wed, 22 Apr 2026 22:10:39 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 23:17:46 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Les modèles d'IA réécrivent excessivement le code au-delà des corrections nécessaires, mais peuvent être réorientés</title>
+      <link>https://nrehiew.github.io/blog/minimal_editing/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;L'article examine le problème du &amp;quot;sur-édition&amp;quot; où les modèles d'IA modifient le code bien au-delà de ce qui est nécessaire pour corriger un bogue, rendant la révision de code plus difficile. Les auteurs mesurent ce phénomène à travers des métriques comme la distance de Levenshtein au niveau des tokens et la complexité cognitive ajoutée, puis explorent les solutions.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les modèles frontières, notamment GPT-5.4, sur-éditent régulièrement : ils réécrivent des fonctions entières pour corriger un simple bogue, alors que Claude Opus 4.6 produit des modifications bien plus minimalistes&lt;/li&gt;
+&lt;li&gt;Le sur-édition n'est pas une limitation fondamentale mais un comportement par défaut : l'ajout d'une instruction explicite pour préserver le code original réduit significativement les modifications dans tous les modèles, particulièrement les modèles de raisonnement&lt;/li&gt;
+&lt;li&gt;L'entraînement par renforcement (RL) génère des éditeurs plus fidèles sans dégrader les capacités de codage générales, contrairement au fine-tuning supervisé qui provoque une amnésie catastrophique&lt;/li&gt;
+&lt;li&gt;LoRA à faible rang suffit pour améliorer le comportement de sur-édition, suggérant que les changements de style de code ne nécessitent pas le fine-tuning complet&lt;/li&gt;
+&lt;li&gt;Les gains de l'RL se généralisent à des modèles de tailles différentes (4B et 14B) et améliorent tous les critères : exactitude, minimalisme des modifications et complexité du code&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (46 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le sur-éditing des agents est un problème réel observé en pratique : les modèles modifient du code au-delà du nécessaire, ajoutent des commentaires superflus, et réécrivent des sections sans raison valide, brûlant inutilement des tokens.&lt;/li&gt;
+&lt;li&gt;La tension existe entre minimaliser les changements (pour réduire la surface de test) et améliorer la codebase : les agents peinent à calibrer cette balance et biaisent généralement vers des diffs minimaux même quand cela crée de la duplication.&lt;/li&gt;
+&lt;li&gt;L'autonomie complète des agents pose des risques sérieux : manque de transparence sur les actions effectuées, erreurs architecturales graves difficiles à corriger, et exposition à des comportements dangereux (manipulation de credentials, commandes destructrices).&lt;/li&gt;
+&lt;li&gt;Le contrôle humain granulaire sur les agents (steerable semi-autonomous agents) est plus viable que l'automatisation totale : cela préserve la compréhension du code et permet de corriger les mauvaises hypothèses avant qu'elles ne se cristallisent.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'over-editing n'est pas universel : plusieurs utilisateurs rapportent que Claude Code et d'autres modèles récents ne manifestent plus ce problème significativement, suggérant une amélioration rapide des capacités.&lt;/li&gt;
+&lt;li&gt;L'argument du &amp;quot;non-déterminisme&amp;quot; des LLMs est exagéré : en réduisant la portée et en utilisant des prompts stables, on obtient des résultats quasi-reproductibles, comparables à l'efficacité des compilateurs que l'industrie a acceptés sans réserve.&lt;/li&gt;
+&lt;li&gt;Critiquer l'over-editing ignore les gains réels de productivité : avec un bon pilotage (project skills, feedback loops), les agents génèrent 5-6x plus de commits/semaine tout en maintenant la qualité, remettant en question le besoin de révision manuelle exhaustive.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://nrehiew.github.io/blog/minimal_editing/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47866913"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">84756c03</guid>
+      <comments>https://news.ycombinator.com/item?id=47866913</comments>
+      <pubDate>Wed, 22 Apr 2026 17:51:17 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Firefox expose un identifiant stable permettant de lier les identités Tor privées à travers les sites web</title>
       <link>https://fingerprint.com/blog/firefox-tor-indexeddb-privacy-vulnerability/</link>
@@ -896,6 +930,43 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://lawsofsoftwareengineering.com/og-image.png"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Des violences sexuelles utilisées par l'armée israélienne et des colons pour déplacer les Palestiniens de Cisjordanie</title>
+      <link>https://www.theguardian.com/world/2026/apr/21/israeli-soldiers-using-sexual-assault-to-force-palestinians-out-of-west-bank-report-says</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Selon des experts en droits humains et des organisations humanitaires, des soldats israéliens et des colons recourent aux violences sexuelles et au harcèlement pour forcer les Palestiniens à quitter leurs foyers en Cisjordanie occupée. Ces violences ont des conséquences graves sur les victimes et accélèrent les déplacements forcés des communautés.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Seize cas de violences sexuelles liées au conflit ont été documentés en trois ans par le West Bank Protection Consortium, chiffre considéré comme largement sous-estimé en raison de la honte et de la stigmatisation des victimes&lt;/li&gt;
+&lt;li&gt;Les violences signalées incluent des agressions sexuelles, des fouilles corporelles invasives, l'exposition des organes génitaux, des menaces de viol et d'autres formes d'humiliation ; plus des deux tiers des ménages sondés citent la violence contre les femmes et les enfants comme facteur déterminant dans leur décision de partir&lt;/li&gt;
+&lt;li&gt;Les victimes, notamment les femmes et les filles, ont cessé d'aller à l'école ou au travail par peur, tandis que certaines familles ont organisé des mariages précoces (filles de 15 à 17 ans) pour protéger leurs filles&lt;/li&gt;
+&lt;li&gt;Les soldats israéliens présents lors des abus n'ont pas empêché les violences ni poursuivi les responsables ; une décision récente d'abandonner les accusations contre des soldats pour un viol documenté signale un climat d'impunité&lt;/li&gt;
+&lt;li&gt;Le rapport s'appuie sur 83 entretiens avec des communautés palestiniennes à travers la Cisjordanie, incluant des personnes déplacées de force et des militants communautaires&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (17 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'article met en évidence une tactique systémique d'agression sexuelle organisée par l'État israélien comme outil de domination et d'expulsion, reflétant un projet génocidaire qui s'étend bien au-delà de la personne de Netanyahu.&lt;/li&gt;
+&lt;li&gt;Le choix de la voix passive dans les reportages médiatiques occidentaux (BBC, médias américains) occulte délibérément les responsabilités et cache les crimes de guerre, révélant un biais systémique pro-Israël dans la couverture journalistique.&lt;/li&gt;
+&lt;li&gt;La violence sexuelle en contexte de guerre est un phénomène structurel rarement condamné équitablement dans les médias américains et hollywoodiens, normalisant ainsi les crimes contre l'humanité commis par les alliés des États-Unis.&lt;/li&gt;
+&lt;li&gt;Le soutien américain à Israël complicit rend les États-Unis responsables des violations graves des droits humains, justifiant des réparations envers les populations palestinienne, libanaise et autres victimes de l'ingérence américaine.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'établissement d'Israël était une réponse historiquement compréhensible aux persécutions millénaires contre les Juifs en Europe, notamment à l'Holocauste ; critiquer l'État d'Israël sans distinction relève de l'antisémitisme académique.&lt;/li&gt;
+&lt;li&gt;Seize cas rapportés sur trois ans constituent un nombre très faible pour justifier une affirmation de politique d'État systématique ; les données manquent et l'article semble rechercher la conclusion avant les preuves.&lt;/li&gt;
+&lt;li&gt;La critique se concentre davantage sur l'idéologie et l'agenda politique (révolution globale, agenda activiste) que sur une analyse factuelle rigoureuse, réduisant la crédibilité de la dénonciation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://www.theguardian.com/world/2026/apr/21/israeli-soldiers-using-sexual-assault-to-force-palestinians-out-of-west-bank-report-says"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47844797"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">035f9fae</guid>
+      <comments>https://news.ycombinator.com/item?id=47844797</comments>
+      <pubDate>Tue, 21 Apr 2026 05:15:23 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://i.guim.co.uk/img/media/06b45e9329dda673ddb529c4e99fefc8b5551593/570_0_4561_3648/master/4561.jpg?width=1200&amp;height=630&amp;quality=85&amp;auto=format&amp;fit=crop&amp;precrop=40:21,offset-x50,offset-y0&amp;overlay-align=bottom%2Cleft&amp;overlay-width=100p&amp;overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&amp;enable=upscale&amp;s=daaadee6e882f25a0868e6b96e5995be"/>
       </media:group>
     </item>
     <item>
