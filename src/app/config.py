@@ -35,7 +35,10 @@ class Settings(BaseSettings):
     llm_sleep_seconds: float = 3.0
     http_timeout: float = 20.0
     max_attempts: int = 3
-    user_agent: str = "hn-best-summary/0.1 (+https://github.com/)"
+    user_agent: str = (
+        "hn-best-summary/0.1 "
+        "(+https://github.com/YoannAubineau/HackerNewsBestWithSummary)"
+    )
 
     artefacts_dir: Path = Path("artefacts")
 
