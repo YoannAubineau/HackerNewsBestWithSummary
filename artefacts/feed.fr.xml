@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Wed, 22 Apr 2026 20:19:11 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 21:17:45 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Une startup albertaine vend des tracteurs sans technologie à moitié prix</title>
@@ -882,6 +882,40 @@
       <media:group>
         <media:thumbnail url="https://clawdhub.mintlify.app/mintlify-assets/_next/image?url=%2F_mintlify%2Fapi%2Fog%3Fdivision%3DProviders%26title%3DAnthropic%26logoLight%3Dhttps%253A%252F%252Fmintcdn.com%252Fclawdhub%252FdpADRo8IUoiDztzJ%252Fassets%252Fpixel-lobster.svg%253Ffit%253Dmax%2526auto%253Dformat%2526n%253DdpADRo8IUoiDztzJ%2526q%253D85%2526s%253D8fdf719fb6d3eaad7c65231385bf28e5%26logoDark%3Dhttps%253A%252F%252Fmintcdn.com%252Fclawdhub%252FdpADRo8IUoiDztzJ%252Fassets%252Fpixel-lobster.svg%253Ffit%253Dmax%2526auto%253Dformat%2526n%253DdpADRo8IUoiDztzJ%2526q%253D85%2526s%253D8fdf719fb6d3eaad7c65231385bf28e5%26primaryColor%3D%2523FF5A36%26lightColor%3D%2523FF8A6B%26darkColor%3D%2523FF5A36%26backgroundLight%3D%2523ffffff%26backgroundDark%3D%25230e0c0d&amp;w=1200&amp;q=100"/>
       </media:group>
+    </item>
+    <item>
+      <title>Optimiser un interpréteur de langage dynamique de 16 fois en utilisant la représentation des valeurs, les caches inline et le modèle objet</title>
+      <link>https://zef-lang.dev/implementation</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Un développeur décrit comment il a optimisé un interpréteur AST-walking pour le langage Zef, en le rendant compétitif avec Lua, QuickJS et CPython malgré un point de départ très basique. Les techniques appliquées, sans JIT ni compilateur, ont permis un gain de performance de 16,6 fois.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Représentation des valeurs : utilisation de valeurs 64-bit taguées (NaN tagging) pour éviter les allocations heap pour les nombres, combiné à des choix de langage comme C++ permettant les optimisations bas niveau.&lt;/li&gt;
+&lt;li&gt;Caches inline : mémorisation des types et offsets d'accès précédents, avec compilation dynamique de nœuds AST spécialisés pour éviter les hashtables et les comparaisons de chaînes.&lt;/li&gt;
+&lt;li&gt;Modèle objet et watchpoints : remplacement des hashtables par un système de Storage avec offsets fixes et utilisation de watchpoints pour détecter les surcharges dans les hiérarchies de classe.&lt;/li&gt;
+&lt;li&gt;Optimisations progressives : spécialisation des getters/setters, déduplication des arguments, élimination des allocations inutiles et ajustements du compilateur pour accélérer encore le code.&lt;/li&gt;
+&lt;li&gt;Résultat final : sur Yolo-C++, Zef atteint 1,9 fois plus rapide que CPython 3.10 et 3 fois plus rapide que QuickJS 0.14, pour un gain global de 67 fois depuis le point de départ.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (31 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'optimisation de la recherche de propriétés (inline caches + hidden-class object model) est cruciale pour les performances des interpréteurs dynamiques, confirmant que la résolution de dispatch sur accès propriété est le goulot d'étranglement principal.&lt;/li&gt;
+&lt;li&gt;Lua est intrinsèquement plus performant que Python et JavaScript (QuickJS) grâce à son design minimaliste avec moins de niveaux de dynamisme (nombres non-boxés, pas tout en objet), ce qui facilite les optimisations JIT.&lt;/li&gt;
+&lt;li&gt;Le design du langage lui-même est aussi important que l'implémentation de l'interpréteur pour atteindre les performances ; les contraintes de conception (comme l'absence de dynamic object shapes) peuvent paradoxalement améliorer la vitesse.&lt;/li&gt;
+&lt;li&gt;Fil-C++ s'avère utile en pratique pour la détection de bugs mémoire et comme modèle de programmation (GC précis en C++), tout en permettant une migration progressive vers du C++ non-instrumenté sans réécriture complète.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Contrairement à l'idée que Python est intrinsèquement difficile à compiler, c'est principalement une question de ressources : PyPy et GraalPy ont démontré qu'une JIT rapide était possible ; le problème de CPython vient surtout des bindings natifs et du manque de priorité historique, non du langage lui-même.&lt;/li&gt;
+&lt;li&gt;Le benchmark d'nbody présenté ne représente pas le code réel typique ; les gains mesurés (1,6% sur sqrt) masquent que ce résultat est spécifique à ce benchmark très calcul-intensif plutôt que démonstratif des gains généralisables.&lt;/li&gt;
+&lt;li&gt;La dynamicité complète (monkey-patching, ajout de méthodes à la construction) n'est pas idiosomatique partout : c'est une pratique acceptée en Ruby mais problématique pour la maintenabilité et traçabilité du code dans les bases de code importantes.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://zef-lang.dev/implementation"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47843194"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">fa3bfe47</guid>
+      <comments>https://news.ycombinator.com/item?id=47843194</comments>
+      <pubDate>Tue, 21 Apr 2026 00:48:07 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Une vidéo montre comment fabriquer de la mémoire RAM à la maison</title>
