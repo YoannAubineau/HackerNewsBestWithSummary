@@ -96,7 +96,7 @@
           </header>
           <main>
             <xsl:for-each select="channel/item">
-              <article>
+              <article data-hn-id="{substring-after(comments, 'id=')}">
                 <xsl:if test="media:group/media:thumbnail/@url">
                   <img class="thumb" src="{media:group/media:thumbnail/@url}" alt=""/>
                 </xsl:if>
@@ -117,6 +117,25 @@
             </xsl:for-each>
           </main>
         </div>
+        <!-- XSLT 1.0 can't manipulate the escaped description string, so a
+             tiny script appends 'HN #id' to the last <p> of each article's
+             description (the one that already holds 'Article original ·
+             Discussion HN'). Keeps the XML body untouched for Feedly. -->
+        <script>
+          <xsl:text>
+            for (const art of document.querySelectorAll('article[data-hn-id]')) {
+              const id = art.dataset.hnId;
+              if (!id) continue;
+              const lastP = art.querySelector('.desc p:last-child');
+              if (!lastP) continue;
+              lastP.append(' \u00b7 ');
+              const a = document.createElement('a');
+              a.href = 'https://news.ycombinator.com/item?id=' + id;
+              a.textContent = 'HN #' + id;
+              lastP.appendChild(a);
+            }
+          </xsl:text>
+        </script>
       </body>
     </html>
   </xsl:template>

@@ -74,7 +74,6 @@ def compose_body(
     discussion_comment_count: int | None = None,
     url: str,
     hn_url: str,
-    hn_item_id: int | None = None,
 ) -> str:
     parts: list[str] = []
     if article_summary:
@@ -86,10 +85,7 @@ def compose_body(
             heading += f" ({discussion_comment_count} {word} analysé"
             heading += "s)" if discussion_comment_count > 1 else ")"
         parts.append(f"{heading}\n\n" + discussion_summary.strip())
-    footer = f"[Article original]({url}) · [Discussion HN]({hn_url})"
-    if hn_item_id is not None:
-        footer += f" · [HN #{hn_item_id}]({hn_url})"
-    parts.append(f"---\n\n{footer}")
+    parts.append(f"---\n\n[Article original]({url}) · [Discussion HN]({hn_url})")
     return "\n\n".join(parts) + "\n"
 
 
