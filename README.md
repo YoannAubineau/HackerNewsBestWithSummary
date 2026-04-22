@@ -28,7 +28,7 @@ Feed URL (French summaries):
 
 <https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
 
-## Set up your own instance
+## Set up your own instance using Github Pages
 
 The project is MIT-licensed; feel free to fork it and run a copy under your
 own Pages URL.
