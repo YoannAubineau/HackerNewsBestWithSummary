@@ -6,8 +6,8 @@ How to run the pipeline locally and which environment variables steer it.
 
 ### Prerequisites
 
-- **uv** (Astral) — one-shot install: `curl -LsSf https://astral.sh/uv/install.sh | sh` (or `brew install uv`). Handles Python install, virtualenv, and deps.
-- **xmllint** — ships with macOS; on Debian/Ubuntu `apt install libxml2-utils`. Only needed for the optional validation step below.
+- **uv** (Astral), one-shot install: `curl -LsSf https://astral.sh/uv/install.sh | sh` (or `brew install uv`). Handles Python install, virtualenv, and deps.
+- **xmllint**, ships with macOS. On Debian/Ubuntu `apt install libxml2-utils`. Only needed for the optional validation step below.
 - An **OpenRouter API key**. Create a free account at <https://openrouter.ai>, generate a key (format `sk-or-v1-…`), and add a few dollars of credit if you want to use the paid primary model. Purely free-tier usage is possible by setting `OPENROUTER_MODEL` to one of the fallbacks (e.g. `meta-llama/llama-3.3-70b-instruct:free`).
 
 ### Setup
@@ -31,7 +31,7 @@ processes genuinely new entries (typically 0–2 per hour).
 
 ### Inspect the generated feed in a browser
 
-`file://` URLs don't apply the XSLT stylesheet reliably — serve the
+`file://` URLs don't apply the XSLT stylesheet reliably, so serve the
 folder over HTTP:
 
 ```bash
@@ -65,7 +65,7 @@ uv run ruff format src/ tests/         # auto-format
 ### Git hygiene after a local run
 
 `uv run app cycle` writes new files under `artefacts/` that show up in
-`git status`. On a fork you probably don't want to commit those — they
+`git status`. On a fork you probably don't want to commit those. They
 are produced again on every GitHub Actions cycle. If you're just
 experimenting, either reset with `git checkout artefacts/` or ignore
 the folder locally.
@@ -84,7 +84,7 @@ except `OPENROUTER_API_KEY`.
 | `SOURCE_FEED_URL` | `https://hnrss.org/best` | Upstream RSS feed polled each cycle. |
 | `FEED_SELF_URL` | `http://localhost/feed.fr.xml` | URL used for `<atom:link rel="self">`. Set to the public Pages URL in CI. |
 | `FEED_ITEMS_LIMIT` | `200` | Maximum items kept in the output feed. |
-| `FEED_TTL_MINUTES` | `15` | `<ttl>` advertised to polite readers — minimum polling interval in minutes. |
+| `FEED_TTL_MINUTES` | `15` | `<ttl>` advertised to polite readers. Minimum polling interval in minutes. |
 | `FEED_TITLE` | `Hacker News: Best, with Summary` | Channel `<title>`. |
 | `FEED_DESCRIPTION` | (see `config.py`) | Channel `<description>`. |
 | `CHANNEL_SITE_URL` | `https://news.ycombinator.com/best` | URL used for the channel's plain `<link>`. Readers resolve the feed's icon from this page's favicon. |
@@ -99,7 +99,7 @@ except `OPENROUTER_API_KEY`.
 
 ## Comment selection budget
 
-A popular HN thread has hundreds to thousands of comments — too many to
+A popular HN thread has hundreds to thousands of comments, too many to
 cram into a single LLM prompt, and most of them are short reactions that
 add little to a synthesis. `fetch_discussion.py` therefore walks the tree
 and picks a bounded subset before calling the model.
@@ -107,32 +107,32 @@ and picks a bounded subset before calling the model.
 ### Rules
 
 1. **Leaves are dropped.** A comment with no reply is considered
-   low-signal and is never included — unless it is pinned (see 3).
+   low-signal and is never included, unless it is pinned (see 3).
 2. **Each included comment costs 1 unit of budget.** The starting budget
    is `DISCUSSION_BUDGET` (default 500).
 3. **Submitter comments are pinned.** Any comment whose author matches
    the story submitter is always included, along with every ancestor up
-   to the root. Pinned comments don't consume the budget — they are
+   to the root. Pinned comments don't consume the budget, since they are
    kept for their clarifying value and would otherwise be easy to miss.
 4. **Remaining budget is split triangularly across children, by HN
    rank.** At any level, non-pinned "branch" children (those with at
    least one reply of their own) receive allocations weighted
-   `n, n-1, …, 1` — the top-ranked thread gets the largest slice, the
+   `n, n-1, …, 1`. The top-ranked thread gets the largest slice, the
    next a bit less, and so on. Children with no budget are skipped.
 5. **Recursion.** Each included comment walks into its own children
    with `budget - 1`, applying the same triangular split one level
    deeper. The tree thins out naturally as depth increases.
 
-Allocations are a **ceiling, not a target**: unused budget from a
+Allocations are a **ceiling, not a target**. Unused budget from a
 sub-thread that turns out to be shorter than expected is not
 redistributed to its siblings. The real number of comments emitted can
 therefore be less than `DISCUSSION_BUDGET`. Redistributing would take a
-second pass over the tree for marginal gain — when the budget overflows
+second pass over the tree for marginal gain. When the budget overflows
 the tree, there was already enough room for every qualifying comment.
 
 ### Why these rules
 
-- **Budget cap** keeps prompt size — and therefore latency and cost —
+- **Budget cap** keeps prompt size (and therefore latency and cost)
   predictable regardless of how viral a thread goes.
 - **Triangular split** reflects HN's own ranking signal: top threads
   tend to carry the most informative exchanges, so they deserve a

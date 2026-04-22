@@ -1,9 +1,9 @@
 # Set up your own instance using GitHub Pages
 
-The project is MIT-licensed; feel free to fork it and run a copy under your
-own Pages URL — useful if you want summaries in a different language or
-from a different Hacker News feed (`newest`, `show`, `ask`, a tag-specific
-one, etc.).
+The project is MIT-licensed. Feel free to fork it and run a copy under your
+own Pages URL if you want summaries in a different language, or from a
+different Hacker News feed (`newest`, `show`, `ask`, a tag-specific one,
+etc.).
 
 1. **Fork the repository** on GitHub.
 2. **Create an OpenRouter account** at <https://openrouter.ai> and generate

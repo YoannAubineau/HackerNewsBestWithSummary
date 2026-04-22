@@ -31,7 +31,7 @@ flowchart LR
 
 An hourly workflow walks every new HN item through five sequential stages,
 each of which only processes articles in a specific `status`. The pipeline
-is crash-resumable — if a step fails halfway, the next cron run picks it up
+is crash-resumable. If a step fails halfway, the next cron run picks it up
 where it left off.
 
 1. **`fetch-feed`** polls `hnrss.org/best` and creates one Markdown file
@@ -46,13 +46,13 @@ where it left off.
 3. **`fetch-discussions`** calls the Algolia HN API for the full comment
    tree and selects a recursive comment budget (default 500), degressively
    allocated to root threads ranked by HN score. The story submitter's
-   own comments and their ancestor chain are always pinned — they carry
-   clarifications that are otherwise easy to miss. → `status: discussion_fetched`.
+   own comments and their ancestor chain are always pinned, since they
+   carry clarifications that are otherwise easy to miss. → `status: discussion_fetched`.
 4. **`summarize`** calls the LLM twice per article: once to produce both
    a rewritten factual title and a structured article summary (single
    prompt, single call), once to synthesise the discussion into
    `Confirmations` / `Réfutations` bullets. Each article gets up to three
-   attempts with a cascading model fallback; after the third failure it
+   attempts with a cascading model fallback, after which it
    moves to `artefacts/articles/_failed/…`. → `status: summarized`.
 5. **`publish`** walks summarised articles newest-first (by `hn_item_id`
    desc), takes the top 200, and regenerates `artefacts/feed.fr.xml`.
@@ -65,13 +65,13 @@ cycle costs **two LLM calls per new article**, not three.
 
 ### Storage layout
 
-Single source of truth is the filesystem, versioned by git — no database.
+Single source of truth is the filesystem, versioned by git, with no database.
 
 | Path | Contents |
 |---|---|
-| `artefacts/articles/YYYY/MM/DD/{short_hash}.md` | One article per file. YAML frontmatter holds all metadata (URLs, dates, `status`, image URL, model used, attempt count); the Markdown body holds the final summaries. |
+| `artefacts/articles/YYYY/MM/DD/{short_hash}.md` | One article per file. YAML frontmatter holds all metadata (URLs, dates, `status`, image URL, model used, attempt count). The Markdown body holds the final summaries. |
 | `artefacts/articles/_failed/…` | Articles that exceeded `MAX_ATTEMPTS`. Kept for history rather than deleted. |
-| `artefacts/articles/**/*.raw.article.txt`, `*.raw.discussion.txt` | Transient sidecars holding raw source content between stages. **Gitignored** — copyright-sensitive and would bloat the repo. Cleared once the article reaches `summarized`. |
+| `artefacts/articles/**/*.raw.article.txt`, `*.raw.discussion.txt` | Transient sidecars holding raw source content between stages. **Gitignored** because they are copyright-sensitive and would bloat the repo. Cleared once the article reaches `summarized`. |
 | `artefacts/feed.fr.xml` | The published RSS feed. |
 | `artefacts/feed.xsl` | Client-side XSLT stylesheet applied by browsers when opening the feed URL directly. |
 
@@ -150,7 +150,7 @@ are never stored either.
 | Choice | Rationale |
 |---|---|
 | **Filesystem + git** | Articles are Markdown files under `artefacts/articles/YYYY/MM/DD/{short_hash}.md`. Git provides history, idempotency (deterministic filename), and deployment in one. |
-| **No database** | Unwarranted at this scale; the repository itself is the data layer. |
+| **No database** | Unwarranted at this scale. The repository itself is the data layer. |
 | **Gitignored sidecar files** | `.raw.article.txt` and `.raw.discussion.txt` cache raw content between pipeline stages and are never committed. |
 
 ### CI/CD
@@ -159,7 +159,7 @@ are never stored either.
 |---|---|
 | **`.github/workflows/cycle.yml`** | Hourly cron plus manual `workflow_dispatch`. Runs the pipeline end-to-end and deploys to Pages. |
 | **`.github/workflows/ci.yml`** | Runs ruff and pytest on every push to `main` and every pull request (skipped for commits that only touch `artefacts/`). |
-| **Dependabot** | Weekly batched PRs for Python deps (via `uv`) and GitHub Actions versions; real-time PRs for security advisories. |
+| **Dependabot** | Weekly batched PRs for Python deps (via `uv`) and GitHub Actions versions, plus real-time PRs for security advisories. |
 
 ### Actions used in the workflows
 
@@ -183,7 +183,7 @@ are never stored either.
 | Component | Role |
 |---|---|
 | **`artefacts/feed.xsl`** | XSLT 1.0 stylesheet applied by the browser when the feed URL is opened directly. Transforms the RSS into a styled HTML page. |
-| **Browser-native XSLT engine** | Chrome, Firefox, and Safari all implement XSLT 1.0 client-side — no extra runtime required. |
+| **Browser-native XSLT engine** | Chrome, Firefox, and Safari all implement XSLT 1.0 client-side, so no extra runtime is required. |
 | **Inline CSS** (in the stylesheet) | Light/dark theme via `prefers-color-scheme`, responsive single-column layout. |
 | **Inline JavaScript** (in the stylesheet) | Appends the HN item ID to each article footer at render time, without touching the stored body. |
 

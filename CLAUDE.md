@@ -26,7 +26,7 @@ hourly on a public repo, so minutes are free.
 
 - **Language**: all repo artifacts (commit messages, README, code comments,
   PR text, CLAUDE.md, docs) must be in **English**. The conversation with the
-  user happens in French — don't conflate the two. User-facing content inside
+  user happens in French, don't conflate the two. User-facing content inside
   the feed (summary text, feed title, section headings like "Résumé de
   l'article", "Confirmations", "Réfutations") stays in **French** because
   that's the user's target reading language.
@@ -40,13 +40,13 @@ hourly on a public repo, so minutes are free.
 
 - **No database**. One Markdown file per article, frontmatter for metadata,
   body for the LLM output. Files partitioned
-  `artefacts/articles/YYYY/MM/DD/` by the article's HN submission date;
-  filename is a 8-char SHA-256 short hash of the `guid` for deterministic
+  `artefacts/articles/YYYY/MM/DD/` by the article's HN submission date.
+  Filename is a 8-char SHA-256 short hash of the `guid` for deterministic
   idempotent naming.
 - **No backend**. The whole pipeline runs inside a single Actions job that
   reads/writes the repo and pushes back. The `artefacts/` folder is
-  uploaded by a dedicated Actions workflow and served statically by Pages
-  — its contents are exposed at the site root, so the feed URL is
+  uploaded by a dedicated Actions workflow and served statically by Pages.
+  Its contents are exposed at the site root, so the feed URL is
   `https://.../feed.fr.xml` (no `/artefacts/` in the path).
 - **No queue, no retry service**. The pipeline keeps state via a `status`
   field in each article's frontmatter (`pending` → `article_fetched` →
@@ -60,24 +60,24 @@ hourly on a public repo, so minutes are free.
 
 ## Key files
 
-- `src/app/pipeline.py` — orchestration of the five steps and the retry
+- `src/app/pipeline.py`, orchestration of the five steps and the retry
   bookkeeping (`_record_attempt`).
-- `src/app/storage.py` — filesystem layout. `iter_summarized()` walks the
+- `src/app/storage.py`, filesystem layout. `iter_summarized()` walks the
   date tree newest-first and sorts by `hn_item_id` desc within each day, so
   publish can break as soon as it has 200 items without scanning old files.
-- `src/app/rss_in.py` — parses the hnrss feed; detects Ask HN / Show HN
+- `src/app/rss_in.py`, parses the hnrss feed and detects Ask HN / Show HN
   (when `entry.link == entry.comments`).
-- `src/app/fetch_article.py` — HTTP + trafilatura; falls back to the feed's
+- `src/app/fetch_article.py`, HTTP + trafilatura, falls back to the feed's
   own summary if extraction fails or the URL isn't HTML.
-- `src/app/fetch_discussion.py` — Algolia API + comment selection: recursive
+- `src/app/fetch_discussion.py`, Algolia API + comment selection: recursive
   degressive comment budget (default 500), plus pinning of the HN submitter's
   own comments and their full ancestor chain.
-- `src/app/llm.py` — OpenRouter client with model cascade on 429 / 5xx /
-  empty body; logs token usage per call.
-- `src/app/summarize.py` — two prompts (article + title rewrite in one call,
+- `src/app/llm.py`, OpenRouter client with model cascade on 429 / 5xx /
+  empty body. Logs token usage per call.
+- `src/app/summarize.py`, two prompts (article + title rewrite in one call,
   and discussion synthesis). French output, strict `## Titre` / `## Résumé`
   format that we parse back.
-- `src/app/publish.py` — builds `feed.fr.xml` with `feedgen`. Items ordered by
+- `src/app/publish.py`, builds `feed.fr.xml` with `feedgen`. Items ordered by
   `hn_item_id` desc. `<link>` = article URL (or HN URL for Ask/Show HN),
   `<comments>` = HN URL. Description is markdown rendered with
   `markdown-it-py` (CommonMark-compliant, unlike the older `markdown`
@@ -88,16 +88,16 @@ hourly on a public repo, so minutes are free.
 - **OpenRouter 200 with error body**: some failures come back as HTTP 200
   with `{"error": {...}}` in the JSON. `llm._call` treats "no choices" as a
   `_Retryable` and falls through to the next model. The cascade design is
-  load-bearing — don't bypass it.
+  load-bearing, don't bypass it.
 - **hnrss "best" is not "newest"**: articles in `/best` rotate based on
-  score decay, typically 1–4 days old. Sort by `hn_item_id` desc reflects
+  score decay, typically 1 to 4 days old. Sort by `hn_item_id` desc reflects
   submission order because HN IDs are strictly monotonic.
 - **Python-Markdown is not CommonMark**: don't switch back. Bullets directly
   under a non-blank line rendered as flat text. `markdown-it-py` handles it.
 - **Feed dedup is by `<guid>`**: we expose `short_hash` there, not the
   raw HN URL. Changing that field makes every reader treat every item as
-  new — avoid unless you mean it.
-- **Cron is best-effort**: GitHub schedules run 5–15 min late under load.
+  new, so avoid unless you mean it.
+- **Cron is best-effort**: GitHub schedules run 5 to 15 min late under load.
   Not an issue at our cadence.
 
 ## Commands
@@ -119,7 +119,7 @@ for the workflow.
 We test **rules that can regress**, not plumbing. Good coverage on: comment
 selection (budget, pinning, degressive split), LLM cascade, feed structure,
 storage invariants, retry state machine. Skipped: CLI wiring (trivial),
-logging setup (no logic), full mocked `run_cycle()` — real Actions runs catch
+logging setup (no logic), full mocked `run_cycle()`. Real Actions runs catch
 integration bugs (like the two we already hit: wrong sort key, broken
 markdown rendering) better than mocks ever would.
 

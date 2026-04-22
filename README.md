@@ -20,7 +20,7 @@ Paste the URL below into your RSS reader to subscribe:
 <https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
 
 Opening the feed URL in a browser renders a styled page via an embedded
-XSLT stylesheet; RSS readers receive the same file as plain RSS 2.0.
+XSLT stylesheet. RSS readers receive the same file as plain RSS 2.0.
 
 Older articles that have rotated out of the feed's 200-item window are
 still reachable on the
@@ -42,16 +42,16 @@ These costs cover the LLM calls used to rephrase titles, summarize articles,
 and analyze Hacker News discussions.
 
 If the feed is useful to you, you can chip in via
-[GitHub Sponsors](https://github.com/sponsors/YoannAubineau) — every
-contribution keeps the LLM bills covered.
+[GitHub Sponsors](https://github.com/sponsors/YoannAubineau).
+Every contribution keeps the LLM bills covered.
 
 ## Set up your own instance using Github Pages
 
-The project is MIT-licensed; feel free to fork it and run a copy under your
-own Pages URL — useful if you want summaries in a different language or
-from a different Hacker News feed (`newest`, `show`, `ask`, a tag-specific
-one, etc.). Step-by-step instructions, including how to swap the source
-feed or translate the output, are in
+The project is MIT-licensed. Feel free to fork it and run a copy under your
+own Pages URL if you want summaries in a different language, or from a
+different Hacker News feed (`newest`, `show`, `ask`, a tag-specific one,
+etc.). Step-by-step instructions, including how to swap the source feed
+or translate the output, are in
 [docs/SELF_HOSTING.md](docs/SELF_HOSTING.md).
 
 ## Development
@@ -64,10 +64,10 @@ the full list of environment variables are in
 
 A five-stage hourly pipeline writes one Markdown file per article under
 `artefacts/articles/YYYY/MM/DD/` and regenerates `feed.fr.xml`. No
-database, no backend — git is the data layer, GitHub Pages is the CDN.
+database, no backend. Git is the data layer, GitHub Pages is the CDN.
 Full breakdown of the pipeline stages, storage layout, dependencies,
 and external services in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).
