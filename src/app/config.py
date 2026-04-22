@@ -19,11 +19,13 @@ class Settings(BaseSettings):
     source_feed_url: str = "https://hnrss.org/best"
     feed_self_url: str = "http://localhost/feed.fr.xml"
     feed_items_limit: int = 200
+    feed_ttl_minutes: int = 15
     feed_title: str = "Hacker News: Best, with Summary"
     feed_description: str = (
         "Hacker News highest-voted recent links with article and discussion summaries "
         "in French."
     )
+    channel_site_url: str = "https://news.ycombinator.com/best"
 
     # Max comments sent to the LLM for the discussion summary. Spent recursively:
     # degressive split across root comments (those with ≥1 reply), the top-ranked
