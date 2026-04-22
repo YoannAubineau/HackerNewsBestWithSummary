@@ -200,8 +200,7 @@ _TEMPLATE = """<!DOCTYPE html>
 <body>
 <header>
   <h1>Archive</h1>
-  <p><span id="count">{count}</span> summarised articles.
-  <a href="feed.fr.xml">← Back to the feed</a>.</p>
+  <p><span id="count">{count}</span> summarised articles.</p>
   {pagination}
 </header>
 <table id="archive">
