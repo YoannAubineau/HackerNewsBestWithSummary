@@ -62,9 +62,15 @@ OpenRouter rate-limits the primary.
 
 Set `SOURCE_FEED_URL` to any feed served by [hnrss.org](https://hnrss.org),
 for example `https://hnrss.org/newest`, `/ask`, `/show`, `/frontpage`, or
-a tag/keyword query like `https://hnrss.org/newest?q=rust`. You can set it
-either in the workflow's `env:` block or by editing the default in
-`src/app/config.py`.
+a tag/keyword query like `https://hnrss.org/newest?q=rust`.
+
+You should also update `CHANNEL_SITE_URL` to the matching HN page (e.g.
+`https://news.ycombinator.com/newest`): it is emitted as the channel's
+`<link>`, and RSS readers fetch that page to extract its favicon as the
+feed's icon.
+
+Both variables can be set in the workflow's `env:` block or by editing
+the defaults in `src/app/config.py`.
 
 ### Translate the output into a different language
 
