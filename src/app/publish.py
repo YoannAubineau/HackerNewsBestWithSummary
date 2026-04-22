@@ -31,9 +31,7 @@ def build_feed() -> bytes:
     fg.link(href="https://news.ycombinator.com/best")
     fg.description(settings.feed_description)
     fg.language("fr")
-    fg.generator(
-        "hn-best-summary 0.1 (https://github.com/YoannAubineau/HackerNewsBestWithSummary)"
-    )
+    fg.generator("hn-best-summary")
     fg.ttl(15)
     for article, body in articles:
         _add_entry(fg, article, body)
