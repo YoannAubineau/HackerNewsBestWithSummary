@@ -30,6 +30,10 @@ and analyze Hacker News discussions.
 
 ![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
 
+If the feed is useful to you, you can chip in via
+[Buy Me a Coffee](https://buymeacoffee.com/yoannaubineau) — every cup
+keeps the LLM bills covered.
+
 ## Set up your own instance using Github Pages
 
 The project is MIT-licensed; feel free to fork it and run a copy under your
