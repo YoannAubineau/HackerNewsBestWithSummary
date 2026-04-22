@@ -107,7 +107,7 @@ Running the pipeline locally, testing without spending LLM credits, and
 the full list of environment variables are in
 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
-## Architecture and toolchain
+## Architecture
 
 A five-stage hourly pipeline writes one Markdown file per article under
 `artefacts/articles/YYYY/MM/DD/` and regenerates `feed.fr.xml`. No
