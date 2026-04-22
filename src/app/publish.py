@@ -35,7 +35,18 @@ def build_feed() -> bytes:
     fg.ttl(15)
     for article, body in articles:
         _add_entry(fg, article, body)
-    return fg.rss_str(pretty=True)
+    return _inject_xsl_stylesheet(fg.rss_str(pretty=True))
+
+
+def _inject_xsl_stylesheet(rss_bytes: bytes) -> bytes:
+    """Insert a <?xml-stylesheet?> PI so browsers render the feed via feed.xsl.
+
+    feedgen has no built-in way to declare a processing instruction; we just
+    splice it right after the `<?xml ... ?>` declaration.
+    """
+    pi = b'<?xml-stylesheet type="text/xsl" href="feed.xsl"?>\n'
+    xml_decl_end = rss_bytes.find(b"?>") + 2
+    return rss_bytes[:xml_decl_end] + b"\n" + pi + rss_bytes[xml_decl_end + 1 :]
 
 
 def write_feed() -> Path:

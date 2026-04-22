@@ -198,3 +198,13 @@ def test_description_escapes_raw_html_in_body(isolated_settings):
     description = items[0].findtext("description") or ""
     assert "<script>" not in description
     assert "&lt;script&gt;" in description
+
+
+def test_feed_declares_xsl_stylesheet_for_browser_rendering(isolated_settings):
+    article = _make_article("g-xsl", hn_item_id=88)
+    save(article, "body")
+    raw = build_feed()
+    first_200 = raw[:200].decode("utf-8")
+    assert '<?xml-stylesheet type="text/xsl" href="feed.xsl"?>' in first_200
+    assert first_200.index("<?xml version") < first_200.index("<?xml-stylesheet")
+    assert first_200.index("<?xml-stylesheet") < first_200.index("<rss")
