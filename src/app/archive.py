@@ -83,9 +83,7 @@ def _render_row(article: Article) -> str:
         f"{_date_cell(article.source_published_at)}"
         f"{_date_cell(article.our_published_at)}"
         f"{_date_cell(article.summarized_at)}"
-        f'<td class="title"><a href="{summary_url}">{escape(title)}</a>'
-        f' <a class="ext" href="{escape(article.url)}" '
-        f'title="Original article" rel="noopener">↗</a></td>'
+        f'<td class="title"><a href="{summary_url}">{escape(title)}</a></td>'
         "</tr>"
     )
 
@@ -160,7 +158,6 @@ _TEMPLATE = """<!DOCTYPE html>
   header p {{ margin: 0.25rem 0; color: var(--muted); }}
   a {{ color: var(--accent); text-decoration: none; }}
   a:hover {{ text-decoration: underline; }}
-  a.ext {{ color: var(--muted); font-size: 0.85em; }}
   nav.pagination {{
     margin: 0.75rem 0 0;
     color: var(--muted);
