@@ -9,8 +9,43 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Wed, 22 Apr 2026 11:24:35 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 14:00:35 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Subsystème Linux pour Windows 9x</title>
+      <link>https://social.hails.org/@hailey/116446826733136456</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Il n'y a pas de contenu d'article disponible dans le texte fourni, seulement un message technique de Mastodon indiquant que JavaScript est requis.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le texte ne contient que des instructions techniques relatives à l'activation de JavaScript&lt;/li&gt;
+&lt;li&gt;Aucune information substantielle n'est fournie sur le sujet annoncé (Windows 9x Subsystem for Linux)&lt;/li&gt;
+&lt;li&gt;Il n'est pas possible de générer un résumé pertinent sans le contenu réel de l'article&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (35 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le projet répond à des besoins réels et niche : maintien de systèmes industriels legacy (circuits de traitement DOS/Windows 95), compatibilité avec du matériel ancien encore fonctionnel 24/7.&lt;/li&gt;
+&lt;li&gt;La continuité historique de Microsoft avec les subsystèmes (POSIX 1993, Services for UNIX 1999, maintenant Linux) confirme que cette approche de compatibilité par couche logicielle est un pattern établi chez Microsoft.&lt;/li&gt;
+&lt;li&gt;L'absence de virtualisation matérielle et l'utilisation du mode virtuel 8086 rendent le projet techniquement impressionnant et pertinent pour du matériel contraint en ressources.&lt;/li&gt;
+&lt;li&gt;Les précédents comme CoLinux (2004) et Cygwin (1995) montrent que des solutions de ce type ont toujours eu une demande, même niche.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le choix de nommer &amp;quot;Windows 9x Subsystem for Linux&amp;quot; plutôt que &amp;quot;Linux Subsystem for Windows 9x&amp;quot; crée une confusion persistante sur la terminologie et la direction du portage, bien que techniquement justifié par la convention Microsoft.&lt;/li&gt;
+&lt;li&gt;Les cas d'usage pratiques sont extrêmement limités : à l'ère moderne (2026), les contraintes mémoire et l'obsolescence matérielle rendent ce projet surtout une curiosité historique sans utilité professionnelle réelle.&lt;/li&gt;
+&lt;li&gt;Le projet demeure avant tout un &amp;quot;hack-value&amp;quot; nostalgique plutôt qu'une solution architecturalement nécessaire—les problèmes réels se resolvent mieux via migration ou VM moderne plutôt que ce type de compatibilité rétro.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://social.hails.org/@hailey/116446826733136456"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47861270"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">4243564d</guid>
+      <comments>https://news.ycombinator.com/item?id=47861270</comments>
+      <pubDate>Wed, 22 Apr 2026 09:52:52 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://social.hails.org/system/media_attachments/files/116/446/788/929/856/640/original/51e9df0c2c78e05c.png"/>
+      </media:group>
+    </item>
     <item>
       <title>SpaceX acquiert Cursor pour 60 milliards de dollars selon la compagnie</title>
       <link>https://twitter.com/spacex/status/2046713419978453374</link>
