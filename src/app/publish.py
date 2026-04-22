@@ -28,11 +28,11 @@ def build_feed() -> bytes:
     # the *last* link without `rel` as the RSS <link>, so rel="self" must
     # be declared first.
     fg.link(href=settings.feed_self_url, rel="self")
-    fg.link(href="https://news.ycombinator.com/best")
+    fg.link(href=settings.channel_site_url)
     fg.description(settings.feed_description)
     fg.language("fr")
     fg.generator("hn-best-summary")
-    fg.ttl(15)
+    fg.ttl(settings.feed_ttl_minutes)
     for article, body in articles:
         _add_entry(fg, article, body)
     return _inject_xsl_stylesheet(fg.rss_str(pretty=True))

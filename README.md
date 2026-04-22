@@ -80,8 +80,10 @@ except `OPENROUTER_API_KEY`.
 | `SOURCE_FEED_URL` | `https://hnrss.org/best` | Upstream RSS feed polled each cycle. |
 | `FEED_SELF_URL` | `http://localhost/feed.fr.xml` | URL used for `<atom:link rel="self">`. Set to the public Pages URL in CI. |
 | `FEED_ITEMS_LIMIT` | `200` | Maximum items kept in the output feed. |
+| `FEED_TTL_MINUTES` | `15` | `<ttl>` advertised to polite readers — minimum polling interval in minutes. |
 | `FEED_TITLE` | `Hacker News: Best, with Summary` | Channel `<title>`. |
 | `FEED_DESCRIPTION` | (see `config.py`) | Channel `<description>`. |
+| `CHANNEL_SITE_URL` | `https://news.ycombinator.com/best` | URL used for the channel's plain `<link>`. Readers resolve the feed's icon from this page's favicon. |
 | `DISCUSSION_BUDGET` | `500` | Max number of HN comments sent to the LLM. Split recursively across root threads, decreasing by rank. |
 | `LLM_SLEEP_SECONDS` | `3.0` | Pause between two LLM calls to stay under rate limits. |
 | `HTTP_TIMEOUT` | `20.0` | Timeout in seconds for outbound HTTP calls. |
