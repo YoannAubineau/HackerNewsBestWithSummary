@@ -10,6 +10,7 @@ from app.pipeline import (
     step_publish,
     step_summarize,
 )
+from app.usage import generate_chart, record_usage
 
 app = typer.Typer(
     add_completion=False,
@@ -62,3 +63,10 @@ def publish() -> None:
 def backfill_images_cmd() -> None:
     """Fill missing image_url on past summarized articles (no LLM calls)."""
     backfill_images()
+
+
+@app.command("update-usage")
+def update_usage_cmd() -> None:
+    """Record today's OpenRouter spend and regenerate the 30-day bar chart."""
+    record_usage()
+    generate_chart()

@@ -41,39 +41,11 @@ jobs:
           export FEED_SELF_URL="https://${owner_lc}.github.io/${{ github.event.repository.name }}/feed.fr.xml"
           uv run app cycle
 
-      - name: Refresh OpenRouter usage badge
+      - name: Refresh OpenRouter usage chart
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         continue-on-error: true
-        run: |
-          mkdir -p docs
-          if ! curl -sf -o /tmp/openrouter-key.json \
-               -H "Authorization: Bearer $OPENROUTER_API_KEY" \
-               https://openrouter.ai/api/v1/auth/key; then
-            echo "OpenRouter auth/key fetch failed; keeping previous badge."
-            exit 0
-          fi
-          python3 > docs/usage.json <<'PY'
-          import json
-          with open("/tmp/openrouter-key.json") as f:
-              d = json.load(f)["data"]
-          usage = d.get("usage") or 0
-          limit = d.get("limit")
-          if limit is not None and limit > 0:
-              msg = f"${usage:.2f} / ${limit:.2f}"
-              ratio = usage / limit
-              color = "brightgreen" if ratio < 0.5 else "yellow" if ratio < 0.8 else "red"
-          else:
-              msg = f"${usage:.2f} spent"
-              color = "blue"
-          print(json.dumps({
-              "schemaVersion": 1,
-              "label": "OpenRouter",
-              "message": msg,
-              "color": color,
-          }))
-          PY
-          cat docs/usage.json
+        run: uv run app update-usage
 
       - name: Commit & push
         id: commit
