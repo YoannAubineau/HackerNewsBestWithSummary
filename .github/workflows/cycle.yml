@@ -22,12 +22,12 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
 
@@ -56,14 +56,14 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
         with:
           path: artefacts
 
       - id: deploy
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
