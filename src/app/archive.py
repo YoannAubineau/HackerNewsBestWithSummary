@@ -148,14 +148,9 @@ _TEMPLATE = """<!DOCTYPE html>
     color: var(--fg);
     font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }}
-  header, footer {{
-    max-width: 64rem;
-    margin: 0 auto;
-  }}
   header {{ margin-bottom: 1.5rem; }}
   footer {{ margin-top: 1.5rem; }}
   h1 {{ margin: 0 0 0.25rem; font-size: 1.4rem; }}
-  header p {{ margin: 0.25rem 0; color: var(--muted); }}
   a {{ color: var(--accent); text-decoration: none; }}
   a:hover {{ text-decoration: underline; }}
   nav.pagination {{
@@ -197,8 +192,7 @@ _TEMPLATE = """<!DOCTYPE html>
 </head>
 <body>
 <header>
-  <h1>Archive</h1>
-  <p><span id="count">{count}</span> summarised articles.</p>
+  <h1>Archive of {count} articles</h1>
   {pagination}
 </header>
 <table id="archive">
