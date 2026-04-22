@@ -1,8 +1,11 @@
+from datetime import UTC, datetime
+
 from app.rss_in import parse_feed_bytes
 
 _FEED_SAMPLE = b"""<?xml version="1.0"?>
 <rss version="2.0"><channel>
   <title>HN Best</title>
+  <lastBuildDate>Tue, 21 Apr 2026 10:15:30 GMT</lastBuildDate>
   <item>
     <title>Un article externe</title>
     <link>https://example.com/article</link>
@@ -47,6 +50,13 @@ def test_ask_hn_flagged_when_link_equals_comments():
 def test_feed_summary_captured():
     entries = parse_feed_bytes(_FEED_SAMPLE)
     assert "Points: 120" in entries[0].feed_summary
+
+
+def test_observed_at_carries_channel_last_build_date():
+    entries = parse_feed_bytes(_FEED_SAMPLE)
+    expected = datetime(2026, 4, 21, 10, 15, 30, tzinfo=UTC)
+    assert entries[0].observed_at == expected
+    assert entries[1].observed_at == expected  # same for every entry
 
 
 def test_published_at_parsed_as_utc():

@@ -27,6 +27,10 @@ class FeedEntry:
     source_published_at: datetime
     feed_summary: str
     is_ask_or_show_hn: bool
+    # The channel-level <lastBuildDate> — hnrss's own "I just looked at /best"
+    # timestamp. For a brand-new article, this is within ~5–10 min of when it
+    # actually entered /best, which is a tighter bound than our poll cadence.
+    observed_at: datetime
 
 
 @retry(
@@ -49,15 +53,16 @@ def fetch_source_feed() -> list[FeedEntry]:
 
 def parse_feed_bytes(data: bytes) -> list[FeedEntry]:
     parsed = feedparser.parse(data)
+    observed_at = _parse_build_date(parsed.feed)
     entries: list[FeedEntry] = []
     for entry in parsed.entries:
-        mapped = _map_entry(entry)
+        mapped = _map_entry(entry, observed_at)
         if mapped is not None:
             entries.append(mapped)
     return entries
 
 
-def _map_entry(entry) -> FeedEntry | None:
+def _map_entry(entry, observed_at: datetime) -> FeedEntry | None:
     guid = entry.get("id") or entry.get("guid") or entry.get("link")
     if not guid:
         return None
@@ -78,12 +83,22 @@ def _map_entry(entry) -> FeedEntry | None:
         source_published_at=_parse_published(entry),
         feed_summary=(entry.get("summary") or "").strip(),
         is_ask_or_show_hn=is_ask_or_show,
+        observed_at=observed_at,
     )
 
 
 def _parse_published(entry) -> datetime:
     for key in ("published_parsed", "updated_parsed"):
         value = entry.get(key)
+        if isinstance(value, struct_time):
+            return datetime(*value[:6], tzinfo=UTC)
+    return datetime.now(tz=UTC)
+
+
+def _parse_build_date(feed) -> datetime:
+    """Return the channel's ``<lastBuildDate>`` — or ``now`` as fallback."""
+    for key in ("updated_parsed", "published_parsed"):
+        value = feed.get(key)
         if isinstance(value, struct_time):
             return datetime(*value[:6], tzinfo=UTC)
     return datetime.now(tz=UTC)

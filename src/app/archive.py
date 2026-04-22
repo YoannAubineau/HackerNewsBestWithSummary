@@ -144,7 +144,7 @@ _TEMPLATE = """<!DOCTYPE html>
     <tr>
       <th data-sort="text">Titre</th>
       <th data-sort="date" aria-sort="descending">Entré dans le flux</th>
-      <th data-sort="date">Vu dans /best</th>
+      <th data-sort="date">Entré dans /best</th>
       <th data-sort="date">Publié sur HN</th>
     </tr>
   </thead>

@@ -209,7 +209,10 @@ def _create_pending(entry: FeedEntry) -> None:
         hn_item_id=entry.hn_item_id,
         title=entry.title,
         source_published_at=entry.source_published_at,
-        our_published_at=_now(),
+        # Use the feed's lastBuildDate as the "entered /best" approximation
+        # rather than our local wall-clock — it is anchored on the server's
+        # view of /best and tighter than our polling cadence.
+        our_published_at=entry.observed_at,
         status=Status.PENDING,
         is_ask_or_show_hn=entry.is_ask_or_show_hn,
         feed_summary=entry.feed_summary,
