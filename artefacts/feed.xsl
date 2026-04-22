@@ -107,7 +107,11 @@
                     <xsl:value-of select="title"/>
                   </a>
                 </h2>
-                <time><xsl:value-of select="pubDate"/></time>
+                <time>
+                  <xsl:call-template name="french-date">
+                    <xsl:with-param name="pubDate" select="pubDate"/>
+                  </xsl:call-template>
+                </time>
                 <div class="desc">
                   <xsl:value-of select="description" disable-output-escaping="yes"/>
                 </div>
@@ -120,5 +124,37 @@
         </div>
       </body>
     </html>
+  </xsl:template>
+
+  <!-- Reformats an RFC 822 pubDate ("Tue, 21 Apr 2026 22:13:18 +0000")
+       into a French readable form ("21 avril 2026 à 22:13"). XSLT 1.0 has
+       no date library, so we pull pieces out with substring-before/after. -->
+  <xsl:template name="french-date">
+    <xsl:param name="pubDate"/>
+    <xsl:variable name="afterDow" select="substring-after($pubDate, ', ')"/>
+    <xsl:variable name="day" select="substring-before($afterDow, ' ')"/>
+    <xsl:variable name="afterDay" select="substring-after($afterDow, ' ')"/>
+    <xsl:variable name="monthEn" select="substring-before($afterDay, ' ')"/>
+    <xsl:variable name="afterMonth" select="substring-after($afterDay, ' ')"/>
+    <xsl:variable name="year" select="substring-before($afterMonth, ' ')"/>
+    <xsl:variable name="timeFull" select="substring-after($afterMonth, ' ')"/>
+    <xsl:variable name="hhmm" select="substring(substring-before($timeFull, ' '), 1, 5)"/>
+    <xsl:variable name="monthFr">
+      <xsl:choose>
+        <xsl:when test="$monthEn = 'Jan'">janvier</xsl:when>
+        <xsl:when test="$monthEn = 'Feb'">février</xsl:when>
+        <xsl:when test="$monthEn = 'Mar'">mars</xsl:when>
+        <xsl:when test="$monthEn = 'Apr'">avril</xsl:when>
+        <xsl:when test="$monthEn = 'May'">mai</xsl:when>
+        <xsl:when test="$monthEn = 'Jun'">juin</xsl:when>
+        <xsl:when test="$monthEn = 'Jul'">juillet</xsl:when>
+        <xsl:when test="$monthEn = 'Aug'">août</xsl:when>
+        <xsl:when test="$monthEn = 'Sep'">septembre</xsl:when>
+        <xsl:when test="$monthEn = 'Oct'">octobre</xsl:when>
+        <xsl:when test="$monthEn = 'Nov'">novembre</xsl:when>
+        <xsl:when test="$monthEn = 'Dec'">décembre</xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:value-of select="concat($day, ' ', $monthFr, ' ', $year, ' à ', $hhmm)"/>
   </xsl:template>
 </xsl:stylesheet>
