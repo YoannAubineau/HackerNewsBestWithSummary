@@ -41,12 +41,44 @@ jobs:
           export FEED_SELF_URL="https://${owner_lc}.github.io/${{ github.event.repository.name }}/feed.fr.xml"
           uv run app cycle
 
+      - name: Refresh OpenRouter usage badge
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        continue-on-error: true
+        run: |
+          mkdir -p docs
+          resp=$(curl -sf -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+            https://openrouter.ai/api/v1/auth/key) || {
+            echo "OpenRouter auth/key fetch failed; keeping previous badge."
+            exit 0
+          }
+          echo "$resp" | python3 - <<'PY' > docs/usage.json
+          import json, sys
+          d = json.load(sys.stdin)["data"]
+          usage = d.get("usage") or 0
+          limit = d.get("limit")
+          if limit is not None and limit > 0:
+              msg = f"${usage:.2f} / ${limit:.2f}"
+              ratio = usage / limit
+              color = "brightgreen" if ratio < 0.5 else "yellow" if ratio < 0.8 else "red"
+          else:
+              msg = f"${usage:.2f} spent"
+              color = "blue"
+          print(json.dumps({
+              "schemaVersion": 1,
+              "label": "OpenRouter",
+              "message": msg,
+              "color": color,
+          }))
+          PY
+          cat docs/usage.json
+
       - name: Commit & push
         id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add artefacts/
+          git add artefacts/ docs/
           if git diff --cached --quiet; then
             echo "Nothing to commit."
             echo "changed=false" >> $GITHUB_OUTPUT
