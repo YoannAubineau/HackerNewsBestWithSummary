@@ -15,12 +15,15 @@ The generated feed is a static RSS 2.0 file, updated hourly by GitHub Actions an
 
 ## Subscribe
 
-Feed URL (French summaries — [open an issue](https://github.com/YoannAubineau/HackerNewsBestWithSummary/issues) if you'd like to see another language supported):
+Feed URL (French summaries):
 
 <https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
 
 Opening the feed URL in a browser renders a styled page via an embedded
 XSLT stylesheet; RSS readers receive the same file as plain RSS 2.0.
+
+[Open an issue](https://github.com/YoannAubineau/HackerNewsBestWithSummary/issues)
+if you'd like to see another language supported.
 
 ## LLM Cost Supported by the Author
 
