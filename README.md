@@ -8,15 +8,18 @@ Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with:
 
 The generated feed is a static RSS 2.0 file, updated hourly by GitHub Actions and served through GitHub Pages.
 
+## Preview
+
+Opening the feed URL in a browser renders a styled page via an embedded
+XSLT stylesheet; RSS readers receive the same file as plain RSS 2.0.
+
+![Screenshot of the XSLT-rendered feed](docs/feed-preview.png)
+
 ## Subscribe
 
 Feed URL (French summaries):
 
 <https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml>
-
-Opening that URL in a browser renders a styled HTML view (thanks to an XSLT
-stylesheet); RSS readers like Feedly, Reeder and NetNewsWire receive the
-same file as plain RSS 2.0.
 
 ## Run locally
 
@@ -40,6 +43,54 @@ Individual steps for debugging: `app fetch-feed`, `app fetch-articles`, `app fet
 Raw article HTML is never committed (copyright and repo size). Only the two summaries and metadata are.
 
 Title rewriting and article summarization share a single LLM call — no extra cost.
+
+## Configuration
+
+All settings are read from environment variables (locally from `.env`, in CI
+from GitHub Secrets / workflow `env:`). Every value has a sensible default
+except `OPENROUTER_API_KEY`.
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `OPENROUTER_API_KEY` | *required* | Auth token for OpenRouter. |
+| `OPENROUTER_MODEL` | `anthropic/claude-haiku-4.5` | Primary LLM called for each summary. |
+| `OPENROUTER_FALLBACK_MODELS` | `nvidia/nemotron-3-super-120b-a12b:free, meta-llama/llama-3.3-70b-instruct:free` | Comma-separated list of free fallbacks tried in order when the primary 429/5xx/empties. |
+| `SOURCE_FEED_URL` | `https://hnrss.org/best` | Upstream RSS feed polled each cycle. |
+| `FEED_SELF_URL` | `http://localhost/feed.fr.xml` | URL used for `<atom:link rel="self">`. Set to the public Pages URL in CI. |
+| `FEED_ITEMS_LIMIT` | `200` | Maximum items kept in the output feed. |
+| `FEED_TITLE` | `Hacker News: Best, with Summary` | Channel `<title>`. |
+| `FEED_DESCRIPTION` | (see `config.py`) | Channel `<description>`. |
+| `DISCUSSION_BUDGET` | `500` | Max number of HN comments sent to the LLM. Split recursively across root threads, decreasing by rank. |
+| `LLM_SLEEP_SECONDS` | `3.0` | Pause between two LLM calls to stay under rate limits. |
+| `HTTP_TIMEOUT` | `20.0` | Timeout in seconds for outbound HTTP calls. |
+| `MAX_ATTEMPTS` | `3` | How many cycles an article may fail in a row before being moved to `_failed/`. |
+| `USER_AGENT` | `hn-best-summary/0.1 (+...)` | Sent with every outbound HTTP request. |
+| `ARTICLES_DIR` | `artefacts/articles` | Root of the partitioned article store. |
+| `FAILED_DIR` | `artefacts/articles/_failed` | Where articles that exceeded `MAX_ATTEMPTS` move. |
+| `FEED_OUTPUT_PATH` | `artefacts/feed.fr.xml` | Output path for the generated feed. |
+| `LOG_LEVEL` | `INFO` | One of `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. |
+
+## Set up your own instance
+
+The project is MIT-licensed; feel free to fork it and run a copy under your
+own Pages URL.
+
+1. **Fork the repository** on GitHub.
+2. **Create an OpenRouter account** at <https://openrouter.ai> and generate
+   an API key. Add a few dollars of credit (or restrict yourself to the
+   free-tier fallback models by setting `OPENROUTER_MODEL` to one of them).
+3. **Add the API key as a GitHub Secret** named `OPENROUTER_API_KEY`
+   under *Settings → Secrets and variables → Actions → New repository secret*.
+4. **Switch GitHub Pages to workflow deployment**: *Settings → Pages →
+   Build and deployment → Source: **GitHub Actions***.
+5. **Trigger the cycle workflow once** (*Actions → cycle → Run workflow*)
+   so the initial feed is built and deployed. The hourly cron takes over
+   after that.
+
+Estimated runtime cost at the default configuration: roughly **US$10–15 per
+month** in OpenRouter credits (Claude Haiku 4.5 at ~10 new HN Best articles
+per day). Free-tier fallback models remain available at zero cost if
+OpenRouter rate-limits the primary.
 
 ## Toolchain
 
@@ -142,3 +193,7 @@ Title rewriting and article summarization share a single LLM call — no extra c
 | **`OPENROUTER_API_KEY`** (local) | `.env` at repo root (gitignored). Loaded by `pydantic-settings`. |
 | **`OPENROUTER_API_KEY`** (production) | GitHub Secret injected into the cycle workflow as an environment variable. |
 | **`GITHUB_TOKEN`** | Provided automatically by GitHub Actions, scoped to `contents: write`, `pages: write`, `id-token: write`. |
+
+## License
+
+MIT — see [LICENSE](LICENSE).
