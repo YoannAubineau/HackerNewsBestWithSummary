@@ -12,9 +12,14 @@ concurrency:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   run:
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,13 +42,28 @@ jobs:
           uv run app cycle
 
       - name: Commit & push
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add artefacts/
           if git diff --cached --quiet; then
             echo "Nothing to commit."
+            echo "changed=false" >> $GITHUB_OUTPUT
           else
             git commit -m "cycle: update feed"
             git push
+            echo "changed=true" >> $GITHUB_OUTPUT
           fi
+
+      - uses: actions/configure-pages@v5
+        if: steps.commit.outputs.changed == 'true'
+
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.commit.outputs.changed == 'true'
+        with:
+          path: artefacts
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
+        if: steps.commit.outputs.changed == 'true'
