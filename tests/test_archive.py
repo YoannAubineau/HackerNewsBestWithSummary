@@ -137,7 +137,7 @@ def test_archive_column_headers_link_to_matching_view(isolated_settings):
     # Each date column header is a link to its own pre-sorted view.
     assert '<a href="archive.html">Entered our feed</a>' in feed_page
     assert '<a href="archive-best.html">Entered /best</a>' in feed_page
-    assert '<a href="archive-hn.html">Submitted to HN</a>' in feed_page
+    assert '<a href="archive-hn.html">Entered HN</a>' in feed_page
     # The active column carries a dedicated class on its <th>.
     assert '<th class="active"><a href="archive.html">Entered our feed</a></th>' in feed_page
     assert '<th class="active"><a href="archive-best.html">Entered /best</a></th>' in best_page
