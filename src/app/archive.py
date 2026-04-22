@@ -216,6 +216,7 @@ _TEMPLATE = """<!DOCTYPE html>
     color: var(--muted);
     white-space: nowrap;
   }}
+  th a {{ color: inherit; }}
   th.active {{ color: var(--fg); }}
   th.active::after {{ content: " ↓"; }}
   td:nth-child(n+2), th:nth-child(n+2) {{
@@ -242,9 +243,9 @@ _TEMPLATE = """<!DOCTYPE html>
     <tr>
       <th>Title</th>
       <th>HN</th>
-      <th class="{active_col_1_class}">Entered our feed</th>
-      <th class="{active_col_2_class}">Entered /best</th>
-      <th class="{active_col_3_class}">Submitted to HN</th>
+      <th class="{active_col_1_class}"><a href="archive.html">Entered our feed</a></th>
+      <th class="{active_col_2_class}"><a href="archive-best.html">Entered /best</a></th>
+      <th class="{active_col_3_class}"><a href="archive-hn.html">Submitted to HN</a></th>
     </tr>
   </thead>
   <tbody>
