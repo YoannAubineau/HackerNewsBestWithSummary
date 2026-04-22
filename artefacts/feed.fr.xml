@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Wed, 22 Apr 2026 15:11:44 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 15:39:38 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Subsystème Linux pour Windows 9x</title>
@@ -44,6 +44,64 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://social.hails.org/system/media_attachments/files/116/446/788/929/856/640/original/51e9df0c2c78e05c.png"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Tell HN: I'm sick of AI everything</title>
+      <link>https://news.ycombinator.com/item?id=47857461</link>
+      <description>&lt;h2&gt;Discussion sur Hacker News (56 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La surexposition médiatique et marketing autour de l'IA crée une fatigue légitime : les offres d'emploi, les contenus marketing et les articles HN sont saturés de promesses IA sans substance, rappelant les excès de la bulle dot-com.&lt;/li&gt;
+&lt;li&gt;L'IA génère massivement du contenu médiocre (&amp;quot;slop&amp;quot;) qui pollue les réseaux sociaux et dégrades la qualité générale d'Internet, particulièrement via les fausses voix, images générées et bots de service client inefficaces.&lt;/li&gt;
+&lt;li&gt;L'adoption d'outils IA par des utilisateurs peu qualifiés produit du travail sans compréhension réelle : les gens publient des contenus dont ils ignorent la validité, ce qui est &amp;quot;novateur et inconfortable&amp;quot; comparé à avant.&lt;/li&gt;
+&lt;li&gt;Même les technologues qui ont travaillé sur l'IA reconnaissent le burnout : la technologie n'était pas prête commercialement, et les promesses marketing amplifient la frustration.&lt;/li&gt;
+&lt;li&gt;Les filtres et exclusions d'IA sur HN/RSS sont devenus nécessaires pour retrouver une diversité éditoriale acceptable sur le site.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'IA est un outil puissant aux mains de professionnels compétents : elle accélère l'apprentissage, révolutionne le développement logiciel, assiste l'éducation médicale et résout des problèmes auparavant intractables.&lt;/li&gt;
+&lt;li&gt;La fatigue envers l'IA reflète une réaction récurrente face à toute technologie transformatrice (voitures vs chevaux, internet, etc.) : les &amp;quot;doomers&amp;quot; seront aussi obsolètes que leurs critiques.&lt;/li&gt;
+&lt;li&gt;Les critiques sont intellectuellement paresseuses : plutôt que de rejeter l'IA globalement, il faudrait distinguer les mauvaises implémentations (responsabilité managériale) de la technologie elle-même.&lt;/li&gt;
+&lt;li&gt;Le problème n'est pas l'IA mais la consommation passive de contenu social : ceux qui filtrent les buzzwords ou délaissent les réseaux retrouvent une expérience satisfaisante.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://news.ycombinator.com/item?id=47857461"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47857461"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">079ebc09</guid>
+      <comments>https://news.ycombinator.com/item?id=47857461</comments>
+      <pubDate>Wed, 22 Apr 2026 01:19:30 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>Anthropic semble retirer Claude Code de son abonnement Pro à 20 dollars par mois</title>
+      <link>https://bsky.app/profile/edzitron.com/post/3mjzxwfx3qs2a</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Anthropic aurait supprimé l'accès à Claude Code de son offre d'abonnement Pro facturée 20 dollars mensuels, selon les modifications observées sur sa page tarifaire.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La fonctionnalité Claude Code disparaîtrait de l'abonnement Pro à 20 $/mois&lt;/li&gt;
+&lt;li&gt;Le changement serait visible sur la page de tarification d'Anthropic (claude.com/pricing)&lt;/li&gt;
+&lt;li&gt;La confirmation est recherchée auprès des utilisateurs actuels du plan Pro&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (1 commentaire analysé)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le fil pointe vers un doublon existant, confirmant que la question a déjà été soulevée et discutée sur la plateforme&lt;/li&gt;
+&lt;li&gt;Il y a une inquiétude légitime au sein de la communauté concernant les modifications tarifaires d'Anthropic&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pas de réfutation substantielle identifiée dans les commentaires fournis ; le fil est principalement redirigé vers la discussion originale sans arguments contradictoires développés&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://bsky.app/profile/edzitron.com/post/3mjzxwfx3qs2a"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47855565"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">c765a884</guid>
+      <comments>https://news.ycombinator.com/item?id=47855565</comments>
+      <pubDate>Tue, 21 Apr 2026 22:36:24 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:qc6xzgctorfsm35w6i3vdebx/bafkreiddpkqpxwsi42rgzrktvrzurcwjcmwbegqouwd5u3qsz5c5c4drte"/>
       </media:group>
     </item>
     <item>
@@ -304,6 +362,40 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://www.trendmicro.com/content/dam/trendmicro/global/en/research/thumbnails/26/d/vercel-breach.png"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Anthropic reçoit 5 milliards de dollars d'Amazon et s'engage à dépenser 100 milliards sur AWS en dix ans</title>
+      <link>https://techcrunch.com/2026/04/20/anthropic-takes-5b-from-amazon-and-pledges-100b-in-cloud-spending-in-return/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Amazon investit 5 milliards de dollars supplémentaires dans Anthropic, portant son investissement total à 13 milliards, tandis qu'Anthropic s'engage à dépenser plus de 100 milliards de dollars sur les services cloud AWS au cours des dix prochaines années pour accéder à jusqu'à 5 GW de capacité informatique.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Anthropic obtiendra des puces Trainium (générations 2 à 4) et Graviton d'Amazon, avec option d'accès à de futures générations de puces&lt;/li&gt;
+&lt;li&gt;L'accord reprend le modèle utilisé par Amazon avec OpenAI deux mois plus tôt, où l'investissement combine capital liquide et services cloud plutôt que fonds directs&lt;/li&gt;
+&lt;li&gt;Anthropic aurait des négociations en cours avec des investisseurs en capital-risque pour une levée de fonds l'évaluant à 800 milliards de dollars ou plus&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (68 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La demande pour les modèles d'IA explose, notamment pour les agents de codage déployés à grande échelle en entreprise, validant les projections de revenus ($30B ARR pour Anthropic) et justifiant les investissements massifs en infrastructure.&lt;/li&gt;
+&lt;li&gt;L'accès exclusif aux puces custom d'Amazon (Trainium, Graviton) et l'intégration verticale du hardware/software constituent un avantage compétitif réel, similaire à l'approche de DeepSeek ou xAI, créant des barrières à l'entrée difficiles à reproduire rapidement.&lt;/li&gt;
+&lt;li&gt;L'utilisation de fournisseurs tiers plutôt que de construire ses propres datacenters réduit les risques opérationnels majeurs (permis, supply chain, lead times de 5+ ans, expertise absente) et permet à Anthropic de se concentrer sur son cœur de métier.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les modèles d'IA sont en train de devenir des commodités face aux alternatives open-source croissantes (Qwen, Gemma); la prime tarifaire de Anthropic/OpenAI deviendra intenable quand les modèles locaux seront suffisants pour la majorité des usages.&lt;/li&gt;
+&lt;li&gt;Cette structure de financement circulaire (Amazon finance Anthropic qui paie Amazon) masque une dynamique de &amp;quot;ponzi&amp;quot; où les hyperscalers gonflent mutuellement leurs valorisations avant un effondrement prévisible du modèle économique.&lt;/li&gt;
+&lt;li&gt;L'hypothèse que l'IA déverrouillera une productivité massive ignore que l'intelligence n'a jamais été le facteur limitant réel (régulation, legacy systems, procurement, politique interne constituent les véritables goulets); les gains seront marginaux comparés aux révolutions énergétiques ou infrastructurelles passées.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://techcrunch.com/2026/04/20/anthropic-takes-5b-from-amazon-and-pledges-100b-in-cloud-spending-in-return/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47848276"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">1615faee</guid>
+      <comments>https://news.ycombinator.com/item?id=47848276</comments>
+      <pubDate>Tue, 21 Apr 2026 13:08:25 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://techcrunch.com/wp-content/uploads/2024/11/GettyImages-1445867611.jpg?w=1024"/>
       </media:group>
     </item>
     <item>
