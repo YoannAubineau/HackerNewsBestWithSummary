@@ -69,6 +69,7 @@
     color: var(--muted);
     white-space: nowrap;
   }
+  th a { color: inherit; }
   th.active { color: var(--fg); }
   th.active::after { content: " ↓"; }
   td:nth-child(n+2), th:nth-child(n+2) {
@@ -95,9 +96,9 @@
     <tr>
       <th>Title</th>
       <th>HN</th>
-      <th class="">Entered our feed</th>
-      <th class="">Entered /best</th>
-      <th class="active">Submitted to HN</th>
+      <th class=""><a href="archive.html">Entered our feed</a></th>
+      <th class=""><a href="archive-best.html">Entered /best</a></th>
+      <th class="active"><a href="archive-hn.html">Submitted to HN</a></th>
     </tr>
   </thead>
   <tbody>
