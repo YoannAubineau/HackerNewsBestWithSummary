@@ -1,4 +1,4 @@
-# Hacker News Best — with summaries
+# Hacker News Best with summaries
 
 Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with:
 
