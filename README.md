@@ -58,6 +58,24 @@ month** in OpenRouter credits (Claude Haiku 4.5 at ~10 new HN Best articles
 per day). Free-tier fallback models remain available at zero cost if
 OpenRouter rate-limits the primary.
 
+### Overriding configuration in the workflow
+
+Most of the settings listed in
+[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md#configuration) can be overridden
+without touching the code, by adding lines to the `env:` block of the
+`Run cycle` step in `.github/workflows/cycle.yml`:
+
+```yaml
+      - name: Run cycle
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          SOURCE_FEED_URL: https://hnrss.org/newest
+          CHANNEL_SITE_URL: https://news.ycombinator.com/newest
+```
+
+This is cleaner than editing the defaults in `src/app/config.py` because
+your fork stays rebase-friendly with upstream.
+
 ### Use a different Hacker News feed
 
 Set `SOURCE_FEED_URL` to any feed served by [hnrss.org](https://hnrss.org),
@@ -68,9 +86,6 @@ You should also update `CHANNEL_SITE_URL` to the matching HN page (e.g.
 `https://news.ycombinator.com/newest`): it is emitted as the channel's
 `<link>`, and RSS readers fetch that page to extract its favicon as the
 feed's icon.
-
-Both variables can be set in the workflow's `env:` block or by editing
-the defaults in `src/app/config.py`.
 
 ### Translate the output into a different language
 
@@ -86,8 +101,8 @@ requires two small code edits:
    (`"en"`, `"es"`, `"de"`, …).
 
 You will probably also want to override `FEED_TITLE`, `FEED_DESCRIPTION`,
-and `FEED_SELF_URL` (the default filename is `feed.fr.xml`) via the
-workflow `env:` block so the feed's metadata matches the new language.
+and `FEED_SELF_URL` (the default filename is `feed.fr.xml`) so the feed's
+metadata matches the new language.
 
 ## Development
 
