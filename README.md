@@ -58,6 +58,31 @@ month** in OpenRouter credits (Claude Haiku 4.5 at ~10 new HN Best articles
 per day). Free-tier fallback models remain available at zero cost if
 OpenRouter rate-limits the primary.
 
+### Use a different Hacker News feed
+
+Set `SOURCE_FEED_URL` to any feed served by [hnrss.org](https://hnrss.org),
+for example `https://hnrss.org/newest`, `/ask`, `/show`, `/frontpage`, or
+a tag/keyword query like `https://hnrss.org/newest?q=rust`. You can set it
+either in the workflow's `env:` block or by editing the default in
+`src/app/config.py`.
+
+### Translate the output into a different language
+
+The summaries are in French because the prompts are. Switching language
+requires two small code edits:
+
+1. In `src/app/summarize.py`, rewrite `_ARTICLE_SYSTEM` and
+   `_DISCUSSION_SYSTEM` to instruct the model in your target language,
+   and update the section headings (`## Titre`, `## Résumé`,
+   `Confirmations`, `Réfutations`) to match.
+2. In `src/app/publish.py`, replace `fg.language("fr")` with your
+   [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646) language tag
+   (`"en"`, `"es"`, `"de"`, …).
+
+You will probably also want to override `FEED_TITLE`, `FEED_DESCRIPTION`,
+and `FEED_SELF_URL` (the default filename is `feed.fr.xml`) via the
+workflow `env:` block so the feed's metadata matches the new language.
+
 ## Development
 
 Running the pipeline locally, testing without spending LLM credits, and
