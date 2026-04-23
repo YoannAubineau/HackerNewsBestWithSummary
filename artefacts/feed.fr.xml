@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 00:13:24 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2026 00:37:08 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Apple corrige un bug permettant aux forces de l'ordre d'extraire les messages supprimés des iPhones</title>
@@ -1104,27 +1104,29 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
-      <title>Une vidéo montre comment fabriquer de la mémoire RAM à la maison</title>
+      <title>Fabriquer de la mémoire vive à domicile</title>
       <link>https://www.youtube.com/watch?v=h6GWikWlAQA</link>
       <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
-&lt;p&gt;Une vidéo documentaire explique le processus de fabrication artisanale de mémoire RAM, détaillant les étapes et techniques nécessaires pour construire des composants mémoire à partir de zéro.&lt;/p&gt;
+&lt;p&gt;Une vidéo montre le processus de fabrication de RAM (mémoire vive) à partir de composants basiques, accessible à titre expérimental depuis un environnement domestique.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;La vidéo présente une démonstration pratique de fabrication de RAM domestique&lt;/li&gt;
-&lt;li&gt;Le contenu a généré 297 points et 78 commentaires sur Hacker News&lt;/li&gt;
-&lt;li&gt;Il s'agit d'un tutoriel ou d'une explication technique accessible au format vidéo&lt;/li&gt;
+&lt;li&gt;Démonstration pratique de construction de mémoire informatique à petite échelle&lt;/li&gt;
+&lt;li&gt;Processus vulgarisé pour comprendre le fonctionnement interne de la RAM&lt;/li&gt;
+&lt;li&gt;Contenu générant un fort intérêt communautaire (297 points, 78 commentaires sur Hacker News)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;Discussion sur Hacker News (35 commentaires analysés)&lt;/h2&gt;
+&lt;h2&gt;Discussion sur Hacker News (65 commentaires analysés)&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;La démonstration du créateur montre qu'un processus technologique complexe (cleanroom, lithographie, fabrication de RAM) devient réalisable pour un individu avec les bonnes connaissances, ce qui est remarquable et fascine la communauté.&lt;/li&gt;
-&lt;li&gt;Le contenu vidéo de qualité sur des niches très spécialisées peut trouver du succès sur YouTube même pour les nouveaux créateurs, démontrant que l'accès aux technologies autrefois inaccessibles se démocratise.&lt;/li&gt;
-&lt;li&gt;Les technologies considérées comme &amp;quot;haute technologie&amp;quot; il y a 20-30 ans deviennent progressivement accessibles aux amateurs (DRAM, circuits discontinués), illustrant une démocratisation technologique réelle.&lt;/li&gt;
+&lt;li&gt;La construction d'une clean room domestique est techniquement tractable et impressionnante, démontrant qu'un passionné peut réaliser ce qui semblait réservé aux industries ; c'est une prouesse d'ingénierie accessible.&lt;/li&gt;
+&lt;li&gt;Le contenu de niche de qualité trouve son audience sur YouTube même pour les nouveaux créateurs ; cette vidéo a bénéficié de recommandations algorithmiques remarquables.&lt;/li&gt;
+&lt;li&gt;Le sujet est pleinement pertinent pour Hacker News (« news for nerds ») : fabriquer de la RAM maison relève de projets techniques et inspirants pour la communauté.&lt;/li&gt;
+&lt;li&gt;Cette démonstration de principes de base (transistors et capacités fonctionnels) ouvre des perspectives fascinantes sur la fabrication de technologies obsolètes ou discontinuées.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Le projet reste largement incomplet : seulement 2 bytes de mémoire fonctionnelle, pas de test réel du RAM, et l'adressage logique reste du travail futur, donc les conclusions sur la viabilité pratique sont prématurées.&lt;/li&gt;
-&lt;li&gt;Malgré cette accessibilité théorique, les barrières économiques et pratiques (rendements terribles, absence d'économies d'échelle, coûts des matières premières) rendent une production commerciale non rentable comparée aux fabs établies.&lt;/li&gt;
-&lt;li&gt;Les chimies dangereuses impliquées (gaz de phosphine, acide HF) rendent ce projet risqué pour les amateurs ; les fabs professionnelles existent précisément pour gérer ces dangers de manière sécurisée.&lt;/li&gt;
+&lt;li&gt;Il ne s'agit que d'une preuve de concept non fonctionnelle : l'absence de circuits de lecture/écriture, les rendements terribles et l'absence d'économies d'échelle rendent toute production compétitive impossible, même artisanale.&lt;/li&gt;
+&lt;li&gt;Le créateur n'est pas un « régulier » mais un ingénieur en semiconducteurs exceptionnel avec équipement professionnel, fonctionnant 24/7 avec maintenance quotidienne intensive ; reproduire cela reste inaccessible pour le commun.&lt;/li&gt;
+&lt;li&gt;La production domestique de semiconductors modernes (7nm ou moins) n'est pas réaliste : seules les technologies obsolètes d'il y a décennies sont envisageables, avec des résultats médiocres.&lt;/li&gt;
+&lt;li&gt;Les dangers chimiques réels (acide fluorhydrique, phosphine) rendent ces projets périlleux ; la romanticisation du DIY occulte des risques mortels bien documentés.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr /&gt;
 &lt;p&gt;&lt;a href="https://www.youtube.com/watch?v=h6GWikWlAQA"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47842569"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
@@ -1133,6 +1135,9 @@
       <comments>https://news.ycombinator.com/item?id=47842569</comments>
       <pubDate>Mon, 20 Apr 2026 23:35:06 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://img.youtube.com/vi/h6GWikWlAQA/hqdefault.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Le workflow megamerge dans Jujutsu permet de travailler simultanément sur plusieurs branches</title>
