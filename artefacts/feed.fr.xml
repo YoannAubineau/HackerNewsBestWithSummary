@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 06:37:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2026 07:33:51 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Apple corrige un bug permettant aux forces de l'ordre d'extraire les messages supprimés des iPhones</title>
@@ -45,6 +45,40 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://techcrunch.com/wp-content/uploads/2026/04/iphone-pop-up-notifications.jpg?resize=1200,900"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Un site web diffusé en direct directement depuis un modèle d'IA</title>
+      <link>https://flipbook.page/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Un développeur a créé une démonstration où un site web est généré et diffusé en direct par un modèle d'IA, sans serveur web traditionnel.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le projet montre qu'un modèle d'IA peut générer du contenu HTML/CSS en temps réel et le servir directement&lt;/li&gt;
+&lt;li&gt;La démonstration a suscité 243 points et 69 commentaires sur Hacker News, indiquant un intérêt notable de la communauté tech&lt;/li&gt;
+&lt;li&gt;Cette approche élimine le besoin d'une infrastructure serveur classique pour certains types de sites dynamiques&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (17 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le concept est innovant et créatif, offrant une expérience interactive unique pour explorer des sujets (comparé à des encyclopédies statiques, utile pour les enfants avec leurs questions infinies).&lt;/li&gt;
+&lt;li&gt;La démo fonctionne remarquablement bien pour certains cas d'usage pratiques comme la génération de diagrammes techniques détaillés avec spécifications consultables (ex. manuels d'atelier interactifs).&lt;/li&gt;
+&lt;li&gt;C'est un projet personnel financé par passion plutôt que par des ressources illimitées, montrant que l'innovation reste accessible même avec des budgets de loisir modestes.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les LLMs ne sont fondamentalement pas adaptés aux tâches exigeant de la précision : les diagrammes contiennent régulièrement des erreurs factuelles graves (composants mal placés, mauvaises étiquettes) qui semblent convaincantes mais sont fausses.&lt;/li&gt;
+&lt;li&gt;Performance insuffisante : la génération lente est un gaspillage de ressources computationnelles massives comparé à des solutions existantes plus rapides et fiables (Encarta, manuels).&lt;/li&gt;
+&lt;li&gt;Limitation structurelle des modèles : incapable de gérer les concepts créatifs complexes ou les détails fins (texte garbled, grammaire défaillante), rendant le résultat un simple jouet non fiable plutôt qu'un outil exploitable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://flipbook.page/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47867048"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">8b135866</guid>
+      <comments>https://news.ycombinator.com/item?id=47867048</comments>
+      <pubDate>Wed, 22 Apr 2026 18:01:18 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://flipbook.page/flipbook-unfurl.jpg"/>
       </media:group>
     </item>
     <item>
