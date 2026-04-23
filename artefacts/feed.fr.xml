@@ -5,11 +5,11 @@
     <title>Hacker News: Best, with Summary</title>
     <link>https://news.ycombinator.com/best</link>
     <description>Hacker News highest-voted recent links with article and discussion summaries in French.</description>
-    <atom:link href="https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml" rel="self"/>
+    <atom:link href="http://localhost/feed.fr.xml" rel="self"/>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 01:07:32 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2026 01:38:29 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Apple corrige un bug permettant aux forces de l'ordre d'extraire les messages supprimés des iPhones</title>
@@ -374,33 +374,6 @@
       <media:group>
         <media:thumbnail url="https://social.hails.org/system/media_attachments/files/116/446/788/929/856/640/original/51e9df0c2c78e05c.png"/>
       </media:group>
-    </item>
-    <item>
-      <title>Tell HN: I'm sick of AI everything</title>
-      <link>https://news.ycombinator.com/item?id=47857461</link>
-      <description>&lt;h2&gt;Discussion sur Hacker News (56 commentaires analysés)&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;La surexposition médiatique et marketing autour de l'IA crée une fatigue légitime : les offres d'emploi, les contenus marketing et les articles HN sont saturés de promesses IA sans substance, rappelant les excès de la bulle dot-com.&lt;/li&gt;
-&lt;li&gt;L'IA génère massivement du contenu médiocre (&amp;quot;slop&amp;quot;) qui pollue les réseaux sociaux et dégrades la qualité générale d'Internet, particulièrement via les fausses voix, images générées et bots de service client inefficaces.&lt;/li&gt;
-&lt;li&gt;L'adoption d'outils IA par des utilisateurs peu qualifiés produit du travail sans compréhension réelle : les gens publient des contenus dont ils ignorent la validité, ce qui est &amp;quot;novateur et inconfortable&amp;quot; comparé à avant.&lt;/li&gt;
-&lt;li&gt;Même les technologues qui ont travaillé sur l'IA reconnaissent le burnout : la technologie n'était pas prête commercialement, et les promesses marketing amplifient la frustration.&lt;/li&gt;
-&lt;li&gt;Les filtres et exclusions d'IA sur HN/RSS sont devenus nécessaires pour retrouver une diversité éditoriale acceptable sur le site.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;L'IA est un outil puissant aux mains de professionnels compétents : elle accélère l'apprentissage, révolutionne le développement logiciel, assiste l'éducation médicale et résout des problèmes auparavant intractables.&lt;/li&gt;
-&lt;li&gt;La fatigue envers l'IA reflète une réaction récurrente face à toute technologie transformatrice (voitures vs chevaux, internet, etc.) : les &amp;quot;doomers&amp;quot; seront aussi obsolètes que leurs critiques.&lt;/li&gt;
-&lt;li&gt;Les critiques sont intellectuellement paresseuses : plutôt que de rejeter l'IA globalement, il faudrait distinguer les mauvaises implémentations (responsabilité managériale) de la technologie elle-même.&lt;/li&gt;
-&lt;li&gt;Le problème n'est pas l'IA mais la consommation passive de contenu social : ceux qui filtrent les buzzwords ou délaissent les réseaux retrouvent une expérience satisfaisante.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;a href="https://news.ycombinator.com/item?id=47857461"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47857461"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
-</description>
-      <guid isPermaLink="false">079ebc09</guid>
-      <comments>https://news.ycombinator.com/item?id=47857461</comments>
-      <pubDate>Wed, 22 Apr 2026 01:19:30 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Enseignements d'un ingénieur senior après plusieurs années d'expérience</title>
