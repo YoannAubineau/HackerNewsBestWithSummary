@@ -1,8 +1,8 @@
 from datetime import UTC, datetime
 
 from app import pipeline
-from app.models import Article, Status
-from app.pipeline import _record_attempt, run_cycle
+from app.models import Article, ContentSource, Status
+from app.pipeline import _record_attempt, run_cycle, step_fetch_articles
 from app.storage import load, save, sidecar_path, write_sidecar
 
 
@@ -16,6 +16,20 @@ def _make_article(guid: str = "https://news.ycombinator.com/item?id=1") -> Artic
         source_published_at=datetime(2026, 4, 21, 8, 0, tzinfo=UTC),
         our_published_at=datetime(2026, 4, 21, 9, 0, tzinfo=UTC),
         status=Status.PENDING,
+    )
+
+
+def _make_ask_hn_article(hn_item_id: int = 42) -> Article:
+    return Article(
+        guid=f"https://news.ycombinator.com/item?id={hn_item_id}",
+        url=f"https://news.ycombinator.com/item?id={hn_item_id}",
+        hn_url=f"https://news.ycombinator.com/item?id={hn_item_id}",
+        hn_item_id=hn_item_id,
+        title="Ask HN: what's your X?",
+        source_published_at=datetime(2026, 4, 21, 8, 0, tzinfo=UTC),
+        our_published_at=datetime(2026, 4, 21, 9, 0, tzinfo=UTC),
+        status=Status.PENDING,
+        is_ask_or_show_hn=True,
     )
 
 
@@ -124,6 +138,48 @@ def test_step_summarize_ignores_breaker_when_unmeasurable(isolated_settings, mon
     monkeypatch.setattr(pipeline, "iter_by_status", lambda _status: iter(()))
     # Fail open: no spend signal means we proceed, which here just finds no work.
     assert pipeline.step_summarize() == 0
+
+
+def test_step_fetch_articles_writes_submitter_sidecar_for_ask_hn(
+    isolated_settings, httpx_mock
+):
+    article = _make_ask_hn_article(hn_item_id=42)
+    path = save(article)
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/42",
+        json={
+            "author": "op",
+            "text": "<p>First paragraph.</p><p>Second paragraph.</p>",
+            "children": [],
+        },
+    )
+
+    assert step_fetch_articles() == 1
+
+    sidecar = sidecar_path(path, "article")
+    assert sidecar.exists()
+    assert sidecar.read_text(encoding="utf-8") == "First paragraph.\n\nSecond paragraph."
+    reloaded, _ = load(path)
+    assert reloaded.status == Status.ARTICLE_FETCHED
+    assert reloaded.content_source == ContentSource.ASK_SHOW_HN
+
+
+def test_step_fetch_articles_skips_sidecar_when_submitter_text_empty(
+    isolated_settings, httpx_mock
+):
+    article = _make_ask_hn_article(hn_item_id=43)
+    path = save(article)
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/43",
+        json={"author": "op", "text": None, "children": []},
+    )
+
+    assert step_fetch_articles() == 1
+
+    assert not sidecar_path(path, "article").exists()
+    reloaded, _ = load(path)
+    assert reloaded.status == Status.ARTICLE_FETCHED
+    assert reloaded.content_source == ContentSource.ASK_SHOW_HN
 
 
 def test_step_summarize_breaker_disabled_when_limit_is_zero(isolated_settings, monkeypatch):
