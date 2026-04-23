@@ -7,7 +7,7 @@ fiduswriter/simple-datatables>`_ loaded from jsDelivr — we just emit a
 plain ``<table>`` with rows pre-sorted by entry-in-our-feed descending.
 """
 
-from datetime import datetime
+from datetime import UTC, datetime
 from html import escape
 from pathlib import Path
 
@@ -24,6 +24,10 @@ def write_archive() -> Path:
     """Regenerate ``archive.html`` and return its path."""
     settings = get_settings()
     articles = [article for _path, article, _body in iter_summarized()]
+    articles.sort(
+        key=lambda a: a.summarized_at or datetime.min.replace(tzinfo=UTC),
+        reverse=True,
+    )
     path = settings.artefacts_dir / "archive.html"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(_render(articles), encoding="utf-8")
@@ -151,6 +155,7 @@ _TEMPLATE = """<!DOCTYPE html>
       info: "Showing {{start}} to {{end}} of {{rows}} articles"
     }},
     columns: [
+      {{ select: 3, sort: "desc" }},
       {{ select: 4, sortable: false }}
     ]
   }});
