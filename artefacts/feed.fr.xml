@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 21:16:15 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2026 22:14:54 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Meta supprime 10% de ses effectifs, soit 8 000 employés</title>
@@ -957,6 +957,44 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://perthirtysix.com/img/gps-cover.png"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Meta installe un logiciel de surveillance sur les ordinateurs de ses employés pour entraîner ses modèles d'IA</title>
+      <link>https://www.theregister.com/2026/04/22/meta_employee_surveillance_software/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Meta déploie un outil appelé &amp;quot;Model Capability Initiative&amp;quot; qui enregistre les frappes clavier, mouvements de souris et captures d'écran des employés sur leurs ordinateurs professionnels. L'entreprise justifie cette surveillance par le besoin de collecter des données réelles sur la façon dont les gens utilisent les ordinateurs pour développer des agents IA autonomes.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le logiciel de surveillance cible les applications professionnelles comme Gmail, GChat, VCode et l'application interne &amp;quot;Metamate&amp;quot;&lt;/li&gt;
+&lt;li&gt;Meta affirme que ses modèles d'IA manquent de données sur le comportement réel des utilisateurs informatiques pour créer des agents capables de réaliser des tâches autonomes&lt;/li&gt;
+&lt;li&gt;La surveillance permettrait de développer une &amp;quot;superintelligence personnelle&amp;quot; capable de gérer des tâches comme les réservations de vols ou les achats en ligne&lt;/li&gt;
+&lt;li&gt;L'ironie réside dans le fait que Meta, qui a construit son empire sur la surveillance massive de ses utilisateurs, impose maintenant cette même surveillance à ses propres employés&lt;/li&gt;
+&lt;li&gt;Anthropic et OpenAI développent des technologies similaires d'agents IA autonomes, tandis que Microsoft crée des PC cloud spécialisés pour ces agents&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (67 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La surveillance des employés reflète l'ironie d'une entreprise de surveillance qui impose à ses propres salariés ce qu'elle impose aux utilisateurs ; c'est un cas classique de &amp;quot;les masques tombent&amp;quot;.&lt;/li&gt;
+&lt;li&gt;Les ingénieurs chez Meta et autres géantes technologiques ont réellement du pouvoir de façonner les produits et ne sont pas aussi &amp;quot;powerless&amp;quot; qu'ils le prétendent ; beaucoup savent pertinemment les implications éthiques de leur travail mais acceptent la cognitive dissonance en échange de salaires élevés.&lt;/li&gt;
+&lt;li&gt;Le parallèle avec la construction historique d'infrastructures de répression (Death Star, surveillance d'État) montre que l'argument &amp;quot;je ne fais que mon travail&amp;quot; ne suffit pas ; les exécutants techniques portent une responsabilité réelle.&lt;/li&gt;
+&lt;li&gt;Seule une pression réglementaire gouvernementale et une action collective des employés peuvent créer du changement ; les démissions individuelles ne font qu'être remplacées sans friction pour l'entreprise.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Blâmer uniformément tous les 100 000 employés de Meta confond les responsables réels de la stratégie avec des contributeurs passifs sans prise de décision ; c'est injuste moralement d'appliquer le même jugement au personnel informatique qu'aux cadres dirigeants.&lt;/li&gt;
+&lt;li&gt;&amp;quot;Juste démissionner&amp;quot; ignore les réalités économiques : marché du travail difficile (12+ mois de chômage estimé), obligations familiales, dettes, et le fait que presque toutes les grandes entreprises sont moralement problématiques d'une manière ou d'une autre.&lt;/li&gt;
+&lt;li&gt;La surveillance n'est pas nouvelle en entreprise ; les contrats de travail incluent déjà ces dispositions depuis longtemps, donc ce n'est pas une rupture majeure et l'indignation semble disproportionnée.&lt;/li&gt;
+&lt;li&gt;L'article original ne cite pas réellement de preuves d'employés malheureux ; c'est un résumé d'autres articles sans vérification indépendante de la réaction réelle du personnel.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://www.theregister.com/2026/04/22/meta_employee_surveillance_software/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47860742"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">34af4596</guid>
+      <comments>https://news.ycombinator.com/item?id=47860742</comments>
+      <pubDate>Wed, 22 Apr 2026 08:33:17 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://regmedia.co.uk/2025/08/28/shutterstock_surprised_man.jpg"/>
       </media:group>
     </item>
     <item>
