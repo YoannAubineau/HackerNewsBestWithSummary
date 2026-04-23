@@ -1,11 +1,38 @@
+from dataclasses import dataclass
+
+import pytest
+
+from app import fetch_article as fetch_article_module
 from app.fetch_article import (
     _collect_noscript_text,
     _extract_image_url,
+    _extract_youtube_video_id,
     _is_js_required_notice,
     _NoscriptCollector,
     fetch_article,
 )
 from app.models import ContentSource
+
+
+@dataclass
+class _FakeSnippet:
+    text: str
+
+
+class _FakeTranscriptApi:
+    def __init__(self, snippets=None, exc=None):
+        self._snippets = snippets or []
+        self._exc = exc
+
+    def fetch(self, video_id, languages=None):  # noqa: ARG002
+        if self._exc is not None:
+            raise self._exc
+        return self._snippets
+
+
+def _patch_transcript_api(monkeypatch, *, snippets=None, exc=None):
+    fake = _FakeTranscriptApi(snippets=snippets, exc=exc)
+    monkeypatch.setattr(fetch_article_module, "YouTubeTranscriptApi", lambda: fake)
 
 
 def test_http_error_falls_back_to_feed_summary(httpx_mock):
@@ -213,3 +240,65 @@ def test_fetch_article_captures_image_url(httpx_mock):
     )
     result = fetch_article("https://example.com/article", feed_fallback="x")
     assert result.image_url == "https://cdn.example.com/hero.jpg"
+
+
+@pytest.mark.parametrize(
+    "url,expected",
+    [
+        ("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "dQw4w9WgXcQ"),
+        ("https://youtube.com/watch?v=dQw4w9WgXcQ&t=42s", "dQw4w9WgXcQ"),
+        ("https://m.youtube.com/watch?v=dQw4w9WgXcQ", "dQw4w9WgXcQ"),
+        ("https://music.youtube.com/watch?v=dQw4w9WgXcQ", "dQw4w9WgXcQ"),
+        ("https://youtu.be/dQw4w9WgXcQ", "dQw4w9WgXcQ"),
+        ("https://youtu.be/dQw4w9WgXcQ?si=abc", "dQw4w9WgXcQ"),
+        ("https://www.youtube.com/shorts/dQw4w9WgXcQ", "dQw4w9WgXcQ"),
+        ("https://www.youtube.com/embed/dQw4w9WgXcQ", "dQw4w9WgXcQ"),
+        ("https://www.youtube.com/v/dQw4w9WgXcQ", "dQw4w9WgXcQ"),
+        ("https://www.youtube.com/watch", None),
+        ("https://www.youtube.com/watch?v=tooShort", None),
+        ("https://www.youtube.com/channel/UC123", None),
+        ("https://example.com/watch?v=dQw4w9WgXcQ", None),
+        ("https://vimeo.com/12345", None),
+    ],
+)
+def test_extract_youtube_video_id(url, expected):
+    assert _extract_youtube_video_id(url) == expected
+
+
+def test_fetch_article_youtube_returns_transcript(monkeypatch):
+    _patch_transcript_api(
+        monkeypatch,
+        snippets=[
+            _FakeSnippet(text="Bonjour tout le monde."),
+            _FakeSnippet(text="  Aujourd'hui on parle de Python.  "),
+            _FakeSnippet(text=""),
+        ],
+    )
+    result = fetch_article(
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        feed_fallback="summary from RSS",
+    )
+    assert result.source == ContentSource.VIDEO_TRANSCRIPT
+    assert result.text == "Bonjour tout le monde. Aujourd'hui on parle de Python."
+    assert result.image_url == "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
+
+
+def test_fetch_article_youtube_falls_back_when_transcript_unavailable(monkeypatch):
+    _patch_transcript_api(monkeypatch, exc=RuntimeError("no transcript"))
+    result = fetch_article(
+        "https://youtu.be/dQw4w9WgXcQ",
+        feed_fallback="summary from RSS",
+    )
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == "summary from RSS"
+    assert result.image_url == "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
+
+
+def test_fetch_article_youtube_falls_back_when_transcript_empty(monkeypatch):
+    _patch_transcript_api(monkeypatch, snippets=[_FakeSnippet(text="   ")])
+    result = fetch_article(
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        feed_fallback="summary from RSS",
+    )
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == "summary from RSS"

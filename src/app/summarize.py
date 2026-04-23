@@ -3,11 +3,12 @@ from dataclasses import dataclass
 
 from app.llm import complete
 
-_ARTICLE_SYSTEM = """Tu es un rédacteur francophone. Tu reçois le texte d'un article.
+_ARTICLE_SYSTEM = """Tu es un rédacteur francophone. Tu reçois le texte d'un article, \
+ou la transcription d'une vidéo.
 
 Ton travail a deux parties :
 
-1. Un titre réécrit de 6 à 15 mots qui énonce factuellement ce que l'article \
+1. Un titre réécrit de 6 à 15 mots qui énonce factuellement ce que le contenu \
 apprend au lecteur. Évite tout style putaclic, toute question, toute promesse vague \
 ("ce qu'il faut savoir", "ce qui va changer"). Pas de majuscule partout, pas de point final. \
 Si le titre original est déjà factuel et informatif, réutilise-le tel quel.
