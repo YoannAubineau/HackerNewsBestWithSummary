@@ -1,1 +1,2 @@
-artefacts/**/*.html linguist-generated=true
+artefacts/** linguist-generated=true
+artefacts/feed.xsl linguist-generated=false
