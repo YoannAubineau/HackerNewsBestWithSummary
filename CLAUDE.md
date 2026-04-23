@@ -118,6 +118,10 @@ hourly on a public repo, so minutes are free.
   residential pool. Locally (unblocked home IP) the variables can stay
   empty. The failure is logged as `youtube_transcript_failed` and falls
   through to `ContentSource.FEED_FALLBACK`, never crashes the pipeline.
+  The proxy is a workaround for the GitHub Actions hosting, not a hard
+  dependency of the pipeline. If the service ever moves to a VPS or a
+  home server whose IP YouTube does not block, both variables can stay
+  unset and the direct transcript fetch will work.
 
 ## Commands
 

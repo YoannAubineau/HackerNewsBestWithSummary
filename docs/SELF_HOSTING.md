@@ -101,3 +101,15 @@ goes out directly, which is fine from a home IP but guaranteed to fail
 from a runner. A YouTube video that can't be transcribed still gets an
 entry in the feed, just with the generic feed-summary text and the
 YouTube thumbnail.
+
+The proxy is only needed when the host IP sits in a range YouTube
+refuses. GitHub Actions runners always do, so the secrets are required
+there. Other hosting options vary: a home server typically works
+without the proxy, while a VPS depends on the provider and sometimes on
+the specific IP assigned (some providers mix datacenter and
+residential-style ranges). If you later move your fork off GitHub
+Actions onto a host whose IP YouTube accepts, leave
+`WEBSHARE_PROXY_USERNAME` and `WEBSHARE_PROXY_PASSWORD` unset and the
+pipeline will fetch transcripts directly. If the new host turns out to
+be blocked too, plug the Webshare secrets back in and the same code
+path routes through the proxy again.
