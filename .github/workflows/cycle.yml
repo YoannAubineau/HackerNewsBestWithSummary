@@ -14,6 +14,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write
 
 jobs:
   run:
@@ -35,6 +36,7 @@ jobs:
       - run: uv sync --frozen
 
       - name: Run cycle
+        id: cycle
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           WEBSHARE_PROXY_USERNAME: ${{ secrets.WEBSHARE_PROXY_USERNAME }}
@@ -43,6 +45,27 @@ jobs:
           owner_lc="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
           export FEED_SELF_URL="https://${owner_lc}.github.io/${{ github.event.repository.name }}/feed.fr.xml"
           uv run app cycle
+
+      - name: Report cycle failure
+        if: failure() && steps.cycle.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create cycle-failure --force --color B60205 --description "Hourly cycle workflow failed"
+          timestamp="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          existing="$(gh issue list --label cycle-failure --state open --json number --jq '.[0].number')"
+          body=$(cat <<EOF
+          Cycle run failed at ${timestamp} (UTC).
+
+          Run: ${RUN_URL}
+          EOF
+          )
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "Hourly cycle failed" --label cycle-failure --body "$body"
+          fi
 
       - name: Refresh OpenRouter usage chart
         env:
