@@ -67,6 +67,32 @@ jobs:
             gh issue create --title "Hourly cycle failed" --label cycle-failure --body "$body"
           fi
 
+      - name: Report article failures
+        if: steps.cycle.outputs.failures_count != '' && steps.cycle.outputs.failures_count != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          FAILURES_JSON: ${{ steps.cycle.outputs.failures_json }}
+        run: |
+          gh label create failed-article --force --color D93F0B --description "One or more articles moved to _failed/"
+          timestamp="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          existing="$(gh issue list --label failed-article --state open --json number --jq '.[0].number')"
+          bullets="$(echo "$FAILURES_JSON" | jq -r '.[] | "- `\(.guid)`: \(.error)"')"
+          body=$(cat <<EOF
+          Article(s) moved to _failed/ during cycle at ${timestamp} (UTC).
+
+          Run: ${RUN_URL}
+
+          Failures:
+          ${bullets}
+          EOF
+          )
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "Article(s) failed during cycle" --label failed-article --body "$body"
+          fi
+
       - name: Refresh OpenRouter usage chart
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}

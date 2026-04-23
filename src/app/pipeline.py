@@ -1,6 +1,7 @@
 import time
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import NamedTuple
 
 import structlog
 
@@ -33,6 +34,10 @@ from app.usage import today_spend
 log = structlog.get_logger()
 
 
+class CycleResult(NamedTuple):
+    failures: list[tuple[str, str]]
+
+
 def step_fetch_feed() -> int:
     ensure_articles_dir()
     try:
@@ -53,14 +58,14 @@ def step_fetch_feed() -> int:
     return created
 
 
-def step_fetch_articles() -> int:
+def step_fetch_articles(failures: list[tuple[str, str]] | None = None) -> int:
     done = 0
     for path, article, body in list(iter_by_status(Status.PENDING)):
         if article.is_ask_or_show_hn:
             try:
                 submitter_text = fetch_submitter_text(article.hn_item_id)
             except Exception as exc:  # noqa: BLE001
-                _record_attempt(path, article, body, f"fetch_submitter_text: {exc}")
+                _record_attempt(path, article, body, f"fetch_submitter_text: {exc}", failures)
                 continue
             if submitter_text:
                 write_sidecar(path, "article", submitter_text)
@@ -73,7 +78,7 @@ def step_fetch_articles() -> int:
         try:
             result = fetch_article(article.url, article.feed_summary)
         except Exception as exc:  # noqa: BLE001
-            _record_attempt(path, article, body, f"fetch_article: {exc}")
+            _record_attempt(path, article, body, f"fetch_article: {exc}", failures)
             continue
         if result.text:
             write_sidecar(path, "article", result.text)
@@ -87,13 +92,13 @@ def step_fetch_articles() -> int:
     return done
 
 
-def step_fetch_discussions() -> int:
+def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int:
     done = 0
     for path, article, body in list(iter_by_status(Status.ARTICLE_FETCHED)):
         try:
             discussion = fetch_discussion(article.hn_item_id)
         except Exception as exc:  # noqa: BLE001
-            _record_attempt(path, article, body, f"fetch_discussion: {exc}")
+            _record_attempt(path, article, body, f"fetch_discussion: {exc}", failures)
             continue
         if discussion:
             write_sidecar(path, "discussion", discussion.text)
@@ -106,7 +111,7 @@ def step_fetch_discussions() -> int:
     return done
 
 
-def step_summarize() -> int:
+def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
     settings = get_settings()
     if settings.daily_cost_limit_usd > 0:
         spent = today_spend()
@@ -148,7 +153,7 @@ def step_summarize() -> int:
                 time.sleep(settings.llm_sleep_seconds)
 
             if not article_summary and not discussion_summary:
-                _record_attempt(path, article, body, "nothing to summarize")
+                _record_attempt(path, article, body, "nothing to summarize", failures)
                 continue
 
             final_body = compose_body(
@@ -169,7 +174,7 @@ def step_summarize() -> int:
             clear_sidecars(path)
             done += 1
         except (AllModelsFailedError, LLMError) as exc:
-            _record_attempt(path, article, body, str(exc))
+            _record_attempt(path, article, body, str(exc), failures)
     log.info("summarize", processed=done)
     return done
 
@@ -181,16 +186,18 @@ def step_publish() -> str:
     return str(feed_path)
 
 
-def run_cycle() -> None:
+def run_cycle() -> CycleResult:
+    failures: list[tuple[str, str]] = []
     step_fetch_feed()
-    step_fetch_articles()
-    step_fetch_discussions()
-    newly_summarized = step_summarize()
+    step_fetch_articles(failures)
+    step_fetch_discussions(failures)
+    newly_summarized = step_summarize(failures)
     feed_exists = get_settings().feed_output_path.exists()
     if newly_summarized > 0 or not feed_exists:
         step_publish()
     else:
         log.info("publish_skipped", reason="no new summaries, feed up to date")
+    return CycleResult(failures=failures)
 
 
 def backfill_images() -> int:
@@ -243,7 +250,13 @@ def _create_pending(entry: FeedEntry) -> None:
     save(article)
 
 
-def _record_attempt(path: Path, article: Article, body: str, error: str) -> None:
+def _record_attempt(
+    path: Path,
+    article: Article,
+    body: str,
+    error: str,
+    failures: list[tuple[str, str]] | None = None,
+) -> bool:
     settings = get_settings()
     article.attempts += 1
     article.error = error
@@ -251,9 +264,12 @@ def _record_attempt(path: Path, article: Article, body: str, error: str) -> None
         move_to_failed(path, article, body)
         clear_sidecars(path)
         log.warning("article_failed", guid=article.guid, error=error, attempts=article.attempts)
-        return
+        if failures is not None:
+            failures.append((article.guid, error))
+        return True
     save(article, body)
     log.warning("article_retry", guid=article.guid, error=error, attempts=article.attempts)
+    return False
 
 
 def _now() -> datetime:
