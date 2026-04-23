@@ -1,4 +1,10 @@
-from app.fetch_article import _extract_image_url, fetch_article
+from app.fetch_article import (
+    _collect_noscript_text,
+    _extract_image_url,
+    _is_js_required_notice,
+    _NoscriptCollector,
+    fetch_article,
+)
 from app.models import ContentSource
 
 
@@ -99,6 +105,96 @@ def test_extract_image_url_prefers_og_over_twitter():
 def test_extract_image_url_returns_none_when_absent():
     html = "<html><head><title>no meta</title></head><body>x</body></html>"
     assert _extract_image_url(html, "https://example.com/a") is None
+
+
+def test_noscript_collector_concatenates_blocks():
+    collector = _NoscriptCollector()
+    collector.feed(
+        "<html><body>"
+        "<noscript>Enable JS.</noscript>"
+        "<div>ignored</div>"
+        "<noscript>Another notice.</noscript>"
+        "</body></html>"
+    )
+    assert collector.text() == "Enable JS. Another notice."
+
+
+def test_noscript_collector_handles_nesting():
+    collector = _NoscriptCollector()
+    collector.feed(
+        "<noscript>outer <noscript>inner</noscript> outer-tail</noscript>"
+    )
+    text = collector.text()
+    assert "outer" in text
+    assert "inner" in text
+
+
+def test_noscript_collector_empty_when_absent():
+    collector = _NoscriptCollector()
+    collector.feed("<html><body><p>no noscript here</p></body></html>")
+    assert collector.text() == ""
+
+
+def test_collect_noscript_text_strips_malformed_html():
+    # HTMLParser tolerates malformed input; the helper should not raise.
+    text = _collect_noscript_text("<noscript>hello</noscript")
+    assert "hello" in text
+
+
+def test_is_js_required_notice_exact_match():
+    html = (
+        "<html><body>"
+        "<noscript>You need to enable JavaScript to run this app.</noscript>"
+        "</body></html>"
+    )
+    extracted = "You need to enable JavaScript to run this app."
+    assert _is_js_required_notice(extracted, html) is True
+
+
+def test_is_js_required_notice_tolerates_trailing_punctuation():
+    html = (
+        "<html><body>"
+        "<noscript>You need to enable JavaScript to run this app.</noscript>"
+        "</body></html>"
+    )
+    extracted = "You need to enable JavaScript to run this app"
+    assert _is_js_required_notice(extracted, html) is True
+
+
+def test_is_js_required_notice_rejects_real_articles():
+    html = (
+        "<html><body>"
+        "<noscript>You need to enable JavaScript to run this app.</noscript>"
+        "<article><p>A long article paragraph covering many topics.</p></article>"
+        "</body></html>"
+    )
+    extracted = (
+        "A long article paragraph covering many topics and going into a lot "
+        "of detail about the subject matter at hand."
+    )
+    assert _is_js_required_notice(extracted, html) is False
+
+
+def test_is_js_required_notice_false_without_noscript():
+    html = "<html><body><p>short content</p></body></html>"
+    assert _is_js_required_notice("short content", html) is False
+
+
+def test_fetch_article_detects_js_required_noscript(httpx_mock):
+    html = (
+        "<html><body>"
+        "<noscript>You need to enable JavaScript to run this app.</noscript>"
+        "</body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://social.example/@user/1",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=html,
+    )
+    result = fetch_article("https://social.example/@user/1", feed_fallback="x")
+    assert result.source == ContentSource.JS_REQUIRED
+    assert result.text == ""
 
 
 def test_fetch_article_captures_image_url(httpx_mock):

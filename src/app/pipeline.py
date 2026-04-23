@@ -22,7 +22,12 @@ from app.storage import (
     save,
     write_sidecar,
 )
-from app.summarize import compose_body, summarize_article, summarize_discussion
+from app.summarize import (
+    compose_body,
+    summarize_article,
+    summarize_discussion,
+    translate_title,
+)
 from app.usage import today_spend
 
 log = structlog.get_logger()
@@ -115,7 +120,13 @@ def step_summarize() -> int:
             discussion_summary: str | None = None
             model: str | None = None
 
-            if article.content_source != ContentSource.ASK_SHOW_HN and article_text:
+            if article.content_source == ContentSource.JS_REQUIRED:
+                translated, model = translate_title(article.title)
+                if translated:
+                    article.rewritten_title = translated
+                article_summary = "(no content)"
+                time.sleep(settings.llm_sleep_seconds)
+            elif article.content_source != ContentSource.ASK_SHOW_HN and article_text:
                 summary = summarize_article(article_text, article.title)
                 article_summary = summary.summary_markdown
                 model = summary.model

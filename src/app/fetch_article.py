@@ -1,4 +1,6 @@
+import re
 from dataclasses import dataclass
+from difflib import SequenceMatcher
 from html.parser import HTMLParser
 from urllib.parse import urljoin
 
@@ -9,6 +11,7 @@ from app.config import get_settings
 from app.models import ContentSource
 
 _FETCHABLE_CONTENT_TYPES = ("text/html", "application/xhtml+xml")
+_JS_NOTICE_SIMILARITY_THRESHOLD = 0.9
 
 
 @dataclass
@@ -45,6 +48,12 @@ def fetch_article(url: str, feed_fallback: str) -> ArticleContent:
         favor_precision=True,
     )
     if extracted and extracted.strip():
+        if _is_js_required_notice(extracted, response.text):
+            return ArticleContent(
+                text="",
+                source=ContentSource.JS_REQUIRED,
+                image_url=image_url,
+            )
         return ArticleContent(
             text=extracted.strip(),
             source=ContentSource.EXTRACTED,
@@ -55,6 +64,56 @@ def fetch_article(url: str, feed_fallback: str) -> ArticleContent:
         source=ContentSource.FEED_FALLBACK,
         image_url=image_url,
     )
+
+
+def _is_js_required_notice(extracted: str, html: str) -> bool:
+    """True when trafilatura's output matches the raw HTML's <noscript> text."""
+    noscript_text = _collect_noscript_text(html)
+    if not noscript_text:
+        return False
+    a = _normalize(extracted)
+    b = _normalize(noscript_text)
+    if not a or not b:
+        return False
+    return SequenceMatcher(None, a, b).ratio() >= _JS_NOTICE_SIMILARITY_THRESHOLD
+
+
+_WHITESPACE_RE = re.compile(r"\s+")
+
+
+def _normalize(text: str) -> str:
+    return _WHITESPACE_RE.sub(" ", text.strip().lower())
+
+
+def _collect_noscript_text(html: str) -> str:
+    collector = _NoscriptCollector()
+    try:
+        collector.feed(html)
+    except Exception:  # noqa: BLE001
+        return ""
+    return collector.text()
+
+
+class _NoscriptCollector(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self._depth = 0
+        self._chunks: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "noscript":
+            self._depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "noscript" and self._depth > 0:
+            self._depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        if self._depth > 0 and data.strip():
+            self._chunks.append(data)
+
+    def text(self) -> str:
+        return " ".join(chunk.strip() for chunk in self._chunks if chunk.strip())
 
 
 class _MetaImageExtractor(HTMLParser):
