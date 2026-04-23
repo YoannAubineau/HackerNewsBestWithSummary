@@ -1,4 +1,4 @@
-from app.fetch_discussion import _degressive_split, fetch_discussion
+from app.fetch_discussion import _degressive_split, fetch_discussion, fetch_submitter_text
 
 
 def _comment(author, text, children=None, points=None):
@@ -352,5 +352,31 @@ def test_fetch_discussion_returns_none_when_no_qualifying_roots(httpx_mock, isol
     payload = {"children": [_comment("alice", "leaf 1"), _comment("bob", "leaf 2")]}
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/77", json=payload)
     assert fetch_discussion(77) is None
+
+
+def test_fetch_submitter_text_strips_html_and_entities(httpx_mock):
+    payload = {
+        "author": "op",
+        "text": "<p>Hello &#x27;world&#x27;</p><p>second <i>para</i><br>with break</p>",
+        "children": [],
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/10", json=payload)
+    assert fetch_submitter_text(10) == "Hello 'world'\n\nsecond para\nwith break"
+
+
+def test_fetch_submitter_text_empty_when_root_has_no_text(httpx_mock):
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/11",
+        json={"author": "op", "text": None, "children": []},
+    )
+    assert fetch_submitter_text(11) == ""
+
+
+def test_fetch_submitter_text_empty_on_http_error(httpx_mock):
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/12",
+        status_code=500,
+    )
+    assert fetch_submitter_text(12) == ""
 
 

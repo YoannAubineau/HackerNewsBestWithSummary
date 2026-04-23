@@ -11,6 +11,9 @@ from app.config import get_settings
 
 _ALGOLIA_URL = "https://hn.algolia.com/api/v1/items/{id}"
 _TAG_RE = re.compile(r"<[^>]+>")
+_BLOCK_BREAK_RE = re.compile(r"</(p|div|pre|blockquote|li)\s*>", re.IGNORECASE)
+_LINE_BREAK_RE = re.compile(r"<br\s*/?>", re.IGNORECASE)
+_BLANK_LINES_RE = re.compile(r"\n{3,}")
 
 log = structlog.get_logger()
 
@@ -41,6 +44,30 @@ class Discussion:
 
 
 def fetch_discussion(hn_item_id: int) -> Discussion | None:
+    payload = _fetch_algolia_item(hn_item_id)
+    if payload is None:
+        return None
+    settings = get_settings()
+    comments = list(_iter_comments(payload, settings.discussion_budget))
+    if not comments:
+        return None
+    return Discussion(comment_count=len(comments), text=_render_comments(comments))
+
+
+def fetch_submitter_text(hn_item_id: int) -> str:
+    """Return the HTML-stripped text the HN submitter posted with the story.
+
+    Used for Ask HN / Tell HN entries, where the interesting "article" content
+    is the submitter's own post rather than an external URL. Empty string on
+    any HTTP or validation error, or when the root item has no body.
+    """
+    payload = _fetch_algolia_item(hn_item_id)
+    if payload is None or not payload.text:
+        return ""
+    return _strip_html_preserving_paragraphs(payload.text)
+
+
+def _fetch_algolia_item(hn_item_id: int) -> AlgoliaItem | None:
     settings = get_settings()
     try:
         response = httpx.get(
@@ -52,14 +79,10 @@ def fetch_discussion(hn_item_id: int) -> Discussion | None:
     except httpx.HTTPError:
         return None
     try:
-        payload = AlgoliaItem.model_validate(response.json())
+        return AlgoliaItem.model_validate(response.json())
     except ValidationError as exc:
         log.warning("algolia_payload_invalid", hn_item_id=hn_item_id, error=str(exc))
         return None
-    comments = list(_iter_comments(payload, settings.discussion_budget))
-    if not comments:
-        return None
-    return Discussion(comment_count=len(comments), text=_render_comments(comments))
 
 
 def _iter_comments(root: AlgoliaItem, budget: int) -> Iterator[dict]:
@@ -152,6 +175,22 @@ def _degressive_split(budget: int, n: int) -> list[int]:
 
 def _strip_html(text: str) -> str:
     return html.unescape(_TAG_RE.sub("", text))
+
+
+def _strip_html_preserving_paragraphs(text: str) -> str:
+    """Like ``_strip_html`` but keeps block boundaries as blank lines.
+
+    HN submitter posts are typically wrapped in ``<p>...</p>`` blocks; the
+    plain tag-strip would glue consecutive paragraphs into a single run
+    (``Para 1Para 2``), which the summarization LLM then parses as one
+    mashed token. Converting block-level closers and ``<br>`` into
+    newlines before stripping keeps the prose readable.
+    """
+    text = _BLOCK_BREAK_RE.sub("\n\n", text)
+    text = _LINE_BREAK_RE.sub("\n", text)
+    text = _TAG_RE.sub("", text)
+    text = html.unescape(text)
+    return _BLANK_LINES_RE.sub("\n\n", text).strip()
 
 
 def _render_comments(comments: Iterable[dict]) -> str:

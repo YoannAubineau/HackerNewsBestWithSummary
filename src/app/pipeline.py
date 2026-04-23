@@ -7,7 +7,7 @@ import structlog
 from app.archive import write_archive
 from app.config import get_settings
 from app.fetch_article import fetch_article
-from app.fetch_discussion import fetch_discussion
+from app.fetch_discussion import fetch_discussion, fetch_submitter_text
 from app.llm import AllModelsFailedError, LLMError
 from app.models import Article, ContentSource, Status
 from app.publish import write_feed
@@ -57,6 +57,13 @@ def step_fetch_articles() -> int:
     done = 0
     for path, article, body in list(iter_by_status(Status.PENDING)):
         if article.is_ask_or_show_hn:
+            try:
+                submitter_text = fetch_submitter_text(article.hn_item_id)
+            except Exception as exc:  # noqa: BLE001
+                _record_attempt(path, article, body, f"fetch_submitter_text: {exc}")
+                continue
+            if submitter_text:
+                write_sidecar(path, "article", submitter_text)
             article.content_source = ContentSource.ASK_SHOW_HN
             article.status = Status.ARTICLE_FETCHED
             article.article_fetched_at = _now()
@@ -126,7 +133,7 @@ def step_summarize() -> int:
                     article.rewritten_title = translated
                 article_summary = "(no content)"
                 time.sleep(settings.llm_sleep_seconds)
-            elif article.content_source != ContentSource.ASK_SHOW_HN and article_text:
+            elif article_text:
                 summary = summarize_article(article_text, article.title)
                 article_summary = summary.summary_markdown
                 model = summary.model
