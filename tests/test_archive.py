@@ -115,6 +115,25 @@ def test_archive_wires_simple_datatables(isolated_settings):
     # Table is initialised and the title column (index 4) is flagged non-sortable.
     assert 'new simpleDatatables.DataTable("#archive"' in html
     assert 'select: 4, sortable: false' in html
+    # "Entered our feed" (index 3) drives the default sort indicator.
+    assert 'select: 3, sort: "desc"' in html
+
+
+def test_archive_rows_sorted_by_summarized_at_desc(isolated_settings):
+    older = _make_article(
+        "g-older",
+        hn_item_id=1,
+        summarized_at=datetime(2026, 4, 20, 10, 0, tzinfo=UTC),
+    )
+    newer = _make_article(
+        "g-newer",
+        hn_item_id=2,
+        summarized_at=datetime(2026, 4, 22, 10, 0, tzinfo=UTC),
+    )
+    save(older, "body")
+    save(newer, "body")
+    html = write_archive().read_text(encoding="utf-8")
+    assert html.index(short_hash("g-newer")) < html.index(short_hash("g-older"))
 
 
 def test_archive_emits_single_file_only(isolated_settings):
