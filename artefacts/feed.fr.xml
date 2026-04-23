@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 13:33:26 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2026 14:44:37 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>I am building a cloud</title>
@@ -562,6 +562,53 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://social.hails.org/system/media_attachments/files/116/446/788/929/856/640/original/51e9df0c2c78e05c.png"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Le fonctionnement du GPS : conversion du temps en position via satellites</title>
+      <link>https://perthirtysix.com/how-the-heck-does-gps-work</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Le GPS fonctionne en mesurant le temps que met un signal radio à voyager d'un satellite jusqu'à votre téléphone, ce qui permet de calculer la distance. En combinant les mesures de plusieurs satellites et en corrigeant les imprécisions de l'horloge du téléphone, le système peut déterminer une position précise en trois dimensions.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Trilatération avec trois satellites&lt;/strong&gt; : un satellite donne une distance (un anneau de positions possibles), deux satellites donnent deux points d'intersection, trois satellites donnent un point unique. Cette méthode s'appelle la trilatération.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Nécessité d'un quatrième satellite&lt;/strong&gt; : les horloges des téléphones ne sont pas assez précises, donc un quatrième satellite permet au récepteur de calculer et corriger l'erreur d'horloge commune à tous les satellites simultanément.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Corrections relativistes obligatoires&lt;/strong&gt; : les satellites se déplacent vite (relativité restreinte) et orbitent loin de la Terre (relativité générale), ce qui modifie la vitesse d'écoulement du temps. Sans correction des horloges par rapport à la théorie d'Einstein, le GPS deviendrait inutilisable en quelques heures.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Amélioration avec plusieurs satellites&lt;/strong&gt; : les récepteurs modernes utilisent 8 à 12 satellites simultanément pour moyenner les erreurs, et peuvent capter les signaux américains (GPS), russes (GLONASS), européens (Galileo) et chinois (BeiDou).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Obstacles en milieu urbain&lt;/strong&gt; : les signaux rebondissent sur les bâtiments, créant des erreurs de mesure appelées « multipath error », ce qui réduit la précision en zones densément construites.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (20 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les visualisations 3D interactives natives du navigateur apportent une dimension pédagogique supérieure à un article texte classique et rendent le contenu plus engageant.&lt;/li&gt;
+&lt;li&gt;L'article explique bien les approximations d'ingénierie sous-jacentes, notamment la correction de temps et la précision suffisante de l'horloge du récepteur sur des périodes courtes.&lt;/li&gt;
+&lt;li&gt;Le sujet fascine : GPS démontre que nous vivons dans le futur, avec une technologie fiable et omniprésente malgré sa complexité mathématique remarquable.&lt;/li&gt;
+&lt;li&gt;Le contexte systémique est captivant : les stations fondamentales qui mesurent continuellement leur position via interférométrie et télémétrie laser, les réseaux RTK pour une précision centimétrique.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'article manque de clarté sur des points cruciaux : la correction temporelle n'est pas bien expliquée (durée de la fenêtre, précision réelle de l'horloge du récepteur) et les équations mathématiques sont effondrées par défaut plutôt que visibles.&lt;/li&gt;
+&lt;li&gt;La comparaison avec l'article de Ciechanowski suggère que cette pièce pourrait être une réinterprétation moins approfondie, bien que l'auteur dément toute implication d'IA.&lt;/li&gt;
+&lt;li&gt;Le post a rencontré des problèmes techniques (erreur 404), ce qui remet en question sa fiabilité ou accessibilité.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://perthirtysix.com/how-the-heck-does-gps-work"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47861087"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">8984de03</guid>
+      <comments>https://news.ycombinator.com/item?id=47861087</comments>
+      <pubDate>Wed, 22 Apr 2026 09:22:05 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://perthirtysix.com/img/gps-cover.png"/>
       </media:group>
     </item>
     <item>
