@@ -57,7 +57,7 @@ OPENROUTER_API_KEY=dummy uv run app publish            # step 5: regenerate feed
 ### Tests and lint
 
 ```bash
-uv run pytest                          # full suite (~90 tests)
+uv run pytest                          # full suite (~110 tests)
 uv run ruff check src/ tests/          # lint
 uv run ruff format src/ tests/         # auto-format
 ```
