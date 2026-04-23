@@ -39,7 +39,7 @@
 <rect x="623.8" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
 <rect x="645.7" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
 <rect x="667.5" y="110.9" width="15.3" height="97.1" fill="#ff6600" rx="1"/>
-<rect x="689.4" y="185.6" width="15.3" height="22.4" fill="#ff6600" rx="1"/>
+<rect x="689.4" y="181.1" width="15.3" height="26.9" fill="#ff6600" rx="1"/>
 <text x="62.9" y="226" text-anchor="middle" fill="#666">25/03</text>
 <text x="172.3" y="226" text-anchor="middle" fill="#666">30/03</text>
 <text x="281.6" y="226" text-anchor="middle" fill="#666">04/04</text>
@@ -47,5 +47,5 @@
 <text x="500.3" y="226" text-anchor="middle" fill="#666">14/04</text>
 <text x="609.6" y="226" text-anchor="middle" fill="#666">19/04</text>
 <text x="697.1" y="226" text-anchor="middle" fill="#666">23/04</text>
-<text x="52" y="250" fill="#666">Last 30 days: $1.30 · limit $50.00</text>
+<text x="52" y="250" fill="#666">Last 30 days: $1.35 · limit $50.00</text>
 </svg>
