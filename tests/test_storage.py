@@ -47,7 +47,7 @@ def test_save_and_load_roundtrip(isolated_settings):
     article.status = Status.SUMMARIZED
     article.content_source = ContentSource.EXTRACTED
     article.summarized_at = datetime(2026, 4, 21, 9, 5, tzinfo=UTC)
-    article.model = "deepseek/deepseek-chat-v3:free"
+    article.llm_models_used = ["deepseek/deepseek-chat-v3:free"]
     body = "## Résumé\n\nCorps markdown."
     path = save(article, body)
     assert path.exists()
@@ -55,7 +55,7 @@ def test_save_and_load_roundtrip(isolated_settings):
     assert loaded.guid == article.guid
     assert loaded.status == Status.SUMMARIZED
     assert loaded.content_source == ContentSource.EXTRACTED
-    assert loaded.model == "deepseek/deepseek-chat-v3:free"
+    assert loaded.llm_models_used == ["deepseek/deepseek-chat-v3:free"]
     assert loaded_body.strip() == body.strip()
 
 

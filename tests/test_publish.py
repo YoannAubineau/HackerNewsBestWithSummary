@@ -30,7 +30,6 @@ def _make_article(
         is_ask_or_show_hn=ask_show,
         content_source=ContentSource.ASK_SHOW_HN if ask_show else ContentSource.EXTRACTED,
         summarized_at=datetime(2026, 4, 21, 9, 5, tzinfo=UTC),
-        model="test/model:free",
     )
 
 

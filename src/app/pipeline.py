@@ -8,7 +8,7 @@ from app.archive import write_archive
 from app.config import get_settings
 from app.fetch_article import fetch_article
 from app.fetch_discussion import fetch_discussion, fetch_submitter_text
-from app.llm import AllModelsFailedError, LLMError
+from app.llm import AllModelsFailedError, LLMCallResult, LLMError
 from app.models import Article, ContentSource, Status
 from app.publish import write_feed
 from app.rss_in import FeedEntry, fetch_source_feed
@@ -125,24 +125,26 @@ def step_summarize() -> int:
         try:
             article_summary: str | None = None
             discussion_summary: str | None = None
-            model: str | None = None
+            calls: list[LLMCallResult] = []
 
             if article.content_source == ContentSource.JS_REQUIRED:
-                translated, model = translate_title(article.title)
+                translated, call = translate_title(article.title)
+                calls.append(call)
                 if translated:
                     article.rewritten_title = translated
                 article_summary = "(no content)"
                 time.sleep(settings.llm_sleep_seconds)
             elif article_text:
-                summary = summarize_article(article_text, article.title)
+                summary, call = summarize_article(article_text, article.title)
+                calls.append(call)
                 article_summary = summary.summary_markdown
-                model = summary.model
                 if summary.rewritten_title:
                     article.rewritten_title = summary.rewritten_title
                 time.sleep(settings.llm_sleep_seconds)
 
             if discussion_text:
-                discussion_summary, model = summarize_discussion(discussion_text, article.title)
+                discussion_summary, call = summarize_discussion(discussion_text, article.title)
+                calls.append(call)
                 time.sleep(settings.llm_sleep_seconds)
 
             if not article_summary and not discussion_summary:
@@ -158,7 +160,10 @@ def step_summarize() -> int:
             )
             article.status = Status.SUMMARIZED
             article.summarized_at = _now()
-            article.model = model
+            article.llm_models_used = list(dict.fromkeys(c.model for c in calls))
+            article.llm_input_tokens = sum(c.input_tokens for c in calls)
+            article.llm_output_tokens = sum(c.output_tokens for c in calls)
+            article.llm_latency_ms = sum(c.latency_ms for c in calls)
             article.error = None
             save(article, final_body)
             clear_sidecars(path)

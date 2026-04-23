@@ -1,6 +1,22 @@
 from app import summarize
-from app.llm import LLMResult
-from app.summarize import _split_title_and_summary, compose_body, translate_title
+from app.llm import LLMCallResult
+from app.summarize import (
+    _split_title_and_summary,
+    compose_body,
+    summarize_article,
+    summarize_discussion,
+    translate_title,
+)
+
+
+def _call_result(content: str, model: str = "m") -> LLMCallResult:
+    return LLMCallResult(
+        content=content,
+        model=model,
+        input_tokens=10,
+        output_tokens=5,
+        latency_ms=42,
+    )
 
 
 def test_splits_well_formed_response():
@@ -77,22 +93,60 @@ def test_compose_body_omits_count_when_none():
 
 def test_translate_title_returns_first_line(monkeypatch):
     def fake_complete(system, user):
-        return LLMResult(text="  Sous-système Windows 9x pour Linux  \n", model="m")
+        return _call_result("  Sous-système Windows 9x pour Linux  \n")
 
     monkeypatch.setattr(summarize, "complete", fake_complete)
-    translated, model = translate_title("Windows 9x Subsystem for Linux")
+    translated, call = translate_title("Windows 9x Subsystem for Linux")
     assert translated == "Sous-système Windows 9x pour Linux"
-    assert model == "m"
+    assert call.model == "m"
 
 
 def test_translate_title_none_on_empty_response(monkeypatch):
     def fake_complete(system, user):
-        return LLMResult(text="   \n\n", model="m")
+        return _call_result("   \n\n")
 
     monkeypatch.setattr(summarize, "complete", fake_complete)
-    translated, model = translate_title("whatever")
+    translated, call = translate_title("whatever")
     assert translated is None
-    assert model == "m"
+    assert call.model == "m"
+
+
+def test_summarize_article_propagates_call_metrics(monkeypatch):
+    def fake_complete(system, user):
+        return LLMCallResult(
+            content="## Titre\nun titre\n\n## Résumé\n- point",
+            model="anthropic/claude-haiku-4.5",
+            input_tokens=1000,
+            output_tokens=200,
+            latency_ms=1234,
+        )
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    summary, call = summarize_article("texte", "titre original")
+    assert summary.rewritten_title == "un titre"
+    assert call.model == "anthropic/claude-haiku-4.5"
+    assert call.input_tokens == 1000
+    assert call.output_tokens == 200
+    assert call.latency_ms == 1234
+
+
+def test_summarize_discussion_propagates_call_metrics(monkeypatch):
+    def fake_complete(system, user):
+        return LLMCallResult(
+            content="**Avis positifs** :\n- ok",
+            model="z-ai/glm-4.6:free",
+            input_tokens=300,
+            output_tokens=80,
+            latency_ms=900,
+        )
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    summary_markdown, call = summarize_discussion("commentaires", "titre")
+    assert summary_markdown.startswith("**Avis positifs**")
+    assert call.model == "z-ai/glm-4.6:free"
+    assert call.input_tokens == 300
+    assert call.output_tokens == 80
+    assert call.latency_ms == 900
 
 
 def test_compose_body_omits_count_when_zero():

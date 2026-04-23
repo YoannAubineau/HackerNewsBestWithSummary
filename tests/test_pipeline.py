@@ -1,9 +1,11 @@
 from datetime import UTC, datetime
 
 from app import pipeline
+from app.llm import LLMCallResult
 from app.models import Article, ContentSource, Status
 from app.pipeline import _record_attempt, run_cycle, step_fetch_articles
 from app.storage import load, save, sidecar_path, write_sidecar
+from app.summarize import ArticleSummary
 
 
 def _make_article(guid: str = "https://news.ycombinator.com/item?id=1") -> Article:
@@ -180,6 +182,53 @@ def test_step_fetch_articles_skips_sidecar_when_submitter_text_empty(
     reloaded, _ = load(path)
     assert reloaded.status == Status.ARTICLE_FETCHED
     assert reloaded.content_source == ContentSource.ASK_SHOW_HN
+
+
+def test_step_summarize_records_llm_metrics(isolated_settings, monkeypatch):
+    isolated_settings.llm_sleep_seconds = 0
+    article = _make_article("guid-metrics")
+    article.status = Status.DISCUSSION_FETCHED
+    article.content_source = ContentSource.EXTRACTED
+    path = save(article)
+    write_sidecar(path, "article", "raw article")
+    write_sidecar(path, "discussion", "raw discussion")
+
+    def fake_summarize_article(text, title):
+        return ArticleSummary(
+            rewritten_title="titre réécrit",
+            summary_markdown="- point",
+        ), LLMCallResult(
+            content="ignored",
+            model="anthropic/claude-haiku-4.5",
+            input_tokens=1000,
+            output_tokens=200,
+            latency_ms=1500,
+        )
+
+    def fake_summarize_discussion(text, title):
+        return "**Avis positifs** :\n- ok", LLMCallResult(
+            content="ignored",
+            model="z-ai/glm-4.6:free",
+            input_tokens=300,
+            output_tokens=80,
+            latency_ms=900,
+        )
+
+    monkeypatch.setattr(pipeline, "summarize_article", fake_summarize_article)
+    monkeypatch.setattr(pipeline, "summarize_discussion", fake_summarize_discussion)
+    monkeypatch.setattr(pipeline, "today_spend", lambda: None)
+
+    assert pipeline.step_summarize() == 1
+
+    reloaded, _ = load(path)
+    assert reloaded.status == Status.SUMMARIZED
+    assert reloaded.llm_models_used == [
+        "anthropic/claude-haiku-4.5",
+        "z-ai/glm-4.6:free",
+    ]
+    assert reloaded.llm_input_tokens == 1300
+    assert reloaded.llm_output_tokens == 280
+    assert reloaded.llm_latency_ms == 2400
 
 
 def test_step_summarize_breaker_disabled_when_limit_is_zero(isolated_settings, monkeypatch):
