@@ -42,7 +42,12 @@ where it left off.
 2. **`fetch-articles`** HTTP-fetches the linked URL, runs `trafilatura` to
    extract the main content, and captures the `og:image` /
    `twitter:image` metadata. Falls back to the feed's own summary if the
-   URL isn't HTML or extraction returns nothing. → `status: article_fetched`.
+   URL isn't HTML or extraction returns nothing. Pages that only serve a
+   "JavaScript required" shell (Mastodon, X/Twitter, Reddit, and other
+   SPA-only sites) are detected by fuzzy-matching trafilatura's output
+   against the raw HTML's `<noscript>` block, and flagged
+   `content_source: js_required` with no stored body text.
+   → `status: article_fetched`.
 3. **`fetch-discussions`** calls the Algolia HN API for the full comment
    tree and selects a recursive comment budget (default 500), degressively
    allocated to root threads ranked by HN score. The story submitter's
@@ -51,9 +56,13 @@ where it left off.
 4. **`summarize`** calls the LLM twice per article: once to produce both
    a rewritten factual title and a structured article summary (single
    prompt, single call), once to synthesise the discussion into
-   `Confirmations` / `Réfutations` bullets. Each article gets up to three
-   attempts with a cascading model fallback, after which it
-   moves to `artefacts/articles/_failed/…`. → `status: summarized`.
+   `Confirmations` / `Réfutations` bullets. Articles flagged
+   `js_required` skip the article-summary call altogether and fall back
+   to a cheap title-translation call plus a `(no content)` placeholder
+   under the article-summary heading, while the discussion synthesis
+   runs as usual. Each article gets up to three attempts with a
+   cascading model fallback, after which it moves to
+   `artefacts/articles/_failed/…`. → `status: summarized`.
 5. **`publish`** walks summarised articles newest-first (by `hn_item_id`
    desc), takes the top 100, and regenerates `artefacts/feed.fr.xml`.
    Only fires when at least one new summary was produced (or the feed

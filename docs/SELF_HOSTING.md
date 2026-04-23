@@ -53,10 +53,11 @@ feed's icon.
 The summaries are in French because the prompts are. Switching language
 requires two small code edits:
 
-1. In `src/app/summarize.py`, rewrite `_ARTICLE_SYSTEM` and
-   `_DISCUSSION_SYSTEM` to instruct the model in your target language,
-   and update the section headings (`## Titre`, `## Résumé`,
-   `Confirmations`, `Réfutations`) to match.
+1. In `src/app/summarize.py`, rewrite `_ARTICLE_SYSTEM`,
+   `_DISCUSSION_SYSTEM`, and `_TITLE_TRANSLATION_SYSTEM` to instruct the
+   model in your target language, and update the section headings
+   (`## Titre`, `## Résumé`, `Confirmations`, `Réfutations`) plus the
+   `(no content)` placeholder in `src/app/pipeline.py` to match.
 2. In `src/app/publish.py`, replace `fg.language("fr")` with your
    [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646) language tag
    (`"en"`, `"es"`, `"de"`, …).

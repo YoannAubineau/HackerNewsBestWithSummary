@@ -68,15 +68,20 @@ hourly on a public repo, so minutes are free.
 - `src/app/rss_in.py`, parses the hnrss feed and detects Ask HN / Show HN
   (when `entry.link == entry.comments`).
 - `src/app/fetch_article.py`, HTTP + trafilatura, falls back to the feed's
-  own summary if extraction fails or the URL isn't HTML.
+  own summary if extraction fails or the URL isn't HTML. Also detects
+  JavaScript-required SPA pages by fuzzy-matching trafilatura's output
+  against the raw HTML's `<noscript>` block (ratio ≥ 0.9 via
+  `difflib.SequenceMatcher`), in which case it returns
+  `ContentSource.JS_REQUIRED` with empty text.
 - `src/app/fetch_discussion.py`, Algolia API + comment selection: recursive
   degressive comment budget (default 500), plus pinning of the HN submitter's
   own comments and their full ancestor chain.
 - `src/app/llm.py`, OpenRouter client with model cascade on 429 / 5xx /
   empty body. Logs token usage per call.
-- `src/app/summarize.py`, two prompts (article + title rewrite in one call,
-  and discussion synthesis). French output, strict `## Titre` / `## Résumé`
-  format that we parse back.
+- `src/app/summarize.py`, three prompts (article + title rewrite in one
+  call, discussion synthesis, and a cheap title-only translation used when
+  the article is `js_required`). French output, strict `## Titre` /
+  `## Résumé` format that we parse back.
 - `src/app/publish.py`, builds `feed.fr.xml` with `feedgen`. Items ordered by
   `hn_item_id` desc. `<link>` = article URL (or HN URL for Ask/Show HN),
   `<comments>` = HN URL. Description is markdown rendered with
