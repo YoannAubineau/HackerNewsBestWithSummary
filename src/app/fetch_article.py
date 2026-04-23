@@ -8,6 +8,7 @@ import httpx
 import structlog
 import trafilatura
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.proxies import WebshareProxyConfig
 
 from app.config import get_settings
 from app.models import ContentSource
@@ -114,8 +115,16 @@ def _extract_youtube_video_id(url: str) -> str | None:
 
 
 def _fetch_youtube_transcript(video_id: str) -> str | None:
+    settings = get_settings()
+    proxy_config = None
+    if settings.webshare_proxy_username and settings.webshare_proxy_password:
+        proxy_config = WebshareProxyConfig(
+            proxy_username=settings.webshare_proxy_username,
+            proxy_password=settings.webshare_proxy_password,
+        )
     try:
-        fetched = YouTubeTranscriptApi().fetch(video_id, languages=_TRANSCRIPT_LANGUAGES)
+        api = YouTubeTranscriptApi(proxy_config=proxy_config)
+        fetched = api.fetch(video_id, languages=_TRANSCRIPT_LANGUAGES)
     except Exception as exc:  # noqa: BLE001
         log.warning(
             "youtube_transcript_failed",
