@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 01:42:14 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2026 03:03:25 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Apple corrige un bug permettant aux forces de l'ordre d'extraire les messages supprimés des iPhones</title>
@@ -540,6 +540,41 @@
       <media:group>
         <media:thumbnail url="https://cdn.prod.website-files.com/6889473510b50328dbb70ae6/68c469d23594abeb9ab6ee48_70ed020ecf8fa028b9bc95fa819720b6_og_claude-generic.jpg"/>
       </media:group>
+    </item>
+    <item>
+      <title>Un mainteneur explique pourquoi les pull requests des contributeurs externes deviennent moins utiles avec les LLM</title>
+      <link>https://dpc.pw/posts/i-dont-want-your-prs-anymore/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Un mainteneur de logiciel open source explique qu'il préfère cesser de fusionner les pull requests d'contributeurs externes, car les LLM rendent l'implémentation de code plus rapide et moins risquée que de reviewer les contributions d'inconnus. Le travail réel de maintenance a fondamentalement changé : la génération de code n'est plus le goulot d'étranglement, mais plutôt la compréhension du code existant, la conception architecturale et la review.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les PRs d'contributeurs inconnus posent des risques de sécurité et impliquent des allers-retours synchrones inefficaces, tandis que les LLM générés peuvent être reviewés sans ces préoccupations&lt;/li&gt;
+&lt;li&gt;Le goulot d'étranglement du développement est maintenant la compréhension du code existant, la conception et la review, pas l'écriture&lt;/li&gt;
+&lt;li&gt;Les contributeurs peuvent mieux aider en donnant des retours utilisateurs, en discutant des idées, en signalant et enquêtant sur les bugs&lt;/li&gt;
+&lt;li&gt;Envoyer des prototypes de code avec les prompts LLM correspondants est utile comme référence, même si le code ne sera pas fusionné&lt;/li&gt;
+&lt;li&gt;Forker le projet et faire ses propres modifications est encouragé, permettant aux contributeurs de tester leurs idées sans ralentir le mainteneur&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (58 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les maintainers ont le droit de fixer des limites claires : accepter uniquement des rapports de bugs/demandes de features plutôt que des PRs est un choix légitime et aide à clarifier les règles de contribution.&lt;/li&gt;
+&lt;li&gt;Avec les LLMs, le coût de régénération du code est désormais inférieur au coût de review : il est rationnel pour un maintainer de réimplémenter lui-même une feature guidée par une issue plutôt que de superviser un PR.&lt;/li&gt;
+&lt;li&gt;Cette tendance reflète une évolution naturelle du développement open source : accepter que les forks et réutilisations locales deviennent plus viables économiquement sans obligation de synchronisation upstream.&lt;/li&gt;
+&lt;li&gt;Les PRs générées par LLM sont souvent de qualité médiocre ou mal comprises par leurs auteurs, justifiant cette friction accrue et le passage à un modèle &amp;quot;issues-only&amp;quot;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cette approche risque de fragmenter l'écosystème en multiples forks incompatibles, réduisant la sécurité collective lors des patches critiques et créant une &amp;quot;tour de Babel&amp;quot; de clones défectueux avec des bugs de sécurité divergents.&lt;/li&gt;
+&lt;li&gt;L'abandon de la collaboration directe détruit un bénéfice historique majeur du FOSS : l'apprentissage mutuel entre mainteneurs et contributeurs, qui a formé d'excellents développeurs et amélioré la qualité globale du code.&lt;/li&gt;
+&lt;li&gt;Si personne ne soumet plus de PRs ni d'issues (faute de raison de le faire), l'écosystème s'atomise : plus de maintenance centralisée, plus de sécurité partagée, retour à la fragmentation et à l'obsolescence rapide.&lt;/li&gt;
+&lt;li&gt;Cette mentalité &amp;quot;take-it-home OSS&amp;quot; est shortsighted et insoutenable à long terme : elle ignore que la collaboration distribuée produit des solutions supérieures et que les mainteneurs bénéficient aussi des contributions externes d'amélioration continue.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://dpc.pw/posts/i-dont-want-your-prs-anymore/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47854051"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">b28cdd93</guid>
+      <comments>https://news.ycombinator.com/item?id=47854051</comments>
+      <pubDate>Tue, 21 Apr 2026 20:21:40 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>ChatGPT Images 2.0</title>
