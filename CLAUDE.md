@@ -28,7 +28,7 @@ hourly on a public repo, so minutes are free.
   PR text, CLAUDE.md, docs) must be in **English**. The conversation with the
   user happens in French, don't conflate the two. User-facing content inside
   the feed (summary text, feed title, section headings like "Résumé de
-  l'article", "Confirmations", "Réfutations") stays in **French** because
+  l'article", "Avis positifs", "Avis négatifs") stays in **French** because
   that's the user's target reading language.
 - **No comments unless a reader would be surprised**. No "this line does X"
   comments. Add a comment only when there's a non-obvious invariant, a
