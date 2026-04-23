@@ -1,10 +1,10 @@
 # Hacker News Best with summaries
 
-![vibe coded: 100%](https://img.shields.io/badge/vibe%20coded-100%25-blueviolet)
 [![CI](https://img.shields.io/github/actions/workflow/status/YoannAubineau/HackerNewsBestWithSummary/ci.yml?label=CI)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/ci.yml)
 [![Last feed refresh](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/YoannAubineau/HackerNewsBestWithSummary/main/docs/last-refresh.json)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/cycle.yml)
 [![Total LLM cost](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/YoannAubineau/HackerNewsBestWithSummary/main/docs/llm-cost.json)](#llm-cost-supported-by-the-author)
 [![Sponsors](https://img.shields.io/github/sponsors/YoannAubineau?label=Sponsors&color=pink)](https://github.com/sponsors/YoannAubineau)
+![Vibe-coded: 100%](https://img.shields.io/badge/Vibe--coded-100%25-blueviolet)
 
 Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with LLM-generated content:
 
