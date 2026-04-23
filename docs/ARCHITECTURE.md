@@ -46,7 +46,14 @@ where it left off.
    "JavaScript required" shell (Mastodon, X/Twitter, Reddit, and other
    SPA-only sites) are detected by fuzzy-matching trafilatura's output
    against the raw HTML's `<noscript>` block, and flagged
-   `content_source: js_required` with no stored body text.
+   `content_source: js_required` with no stored body text. When the URL
+   points to a YouTube video (`youtube.com/watch`, `youtu.be`, `shorts`,
+   `embed`, or `v`), the HTTP fetch is skipped entirely and the pipeline
+   pulls the video transcript via `youtube-transcript-api` (preferring
+   French then English, auto-generated captions accepted), stored with
+   `content_source: video_transcript`. A fresh `img.youtube.com`
+   thumbnail is always used as `image_url`, so the feed card still gets
+   an illustration even when the transcript fetch fails.
    → `status: article_fetched`.
 3. **`fetch-discussions`** calls the Algolia HN API for the full comment
    tree and selects a recursive comment budget (default 500), degressively
@@ -143,6 +150,7 @@ are never stored either.
 | **tenacity** | Declarative retry with backoff for flaky network calls. |
 | **structlog** | Structured logging with key/value pairs surfaced in workflow logs. |
 | **python-frontmatter** | Reads and writes Markdown files with YAML frontmatter. |
+| **youtube-transcript-api** | Pulls auto-generated and human transcripts for YouTube videos, with optional Webshare residential proxy. |
 
 ### External services
 
@@ -153,6 +161,8 @@ are never stored either.
 | **OpenRouter** | `https://openrouter.ai/api/v1/chat/completions` | Gateway routing to the configured LLM with cascading fallback between providers. |
 | **Anthropic Claude Haiku 4.5** | via OpenRouter | Default LLM used for title rewriting and both summaries. |
 | Article publishers | per-article URL | Fetched to extract the article text. |
+| **YouTube** | `youtube.com`, `img.youtube.com` | Scraped by `youtube-transcript-api` for video transcripts and used directly for thumbnails. |
+| **Webshare residential proxy** | `p.webshare.io:80` | Optional outbound proxy for YouTube transcript requests. Required from GitHub Actions runners, whose datacenter IPs YouTube blocks. |
 
 ### Storage
 
@@ -202,4 +212,5 @@ are never stored either.
 |---|---|
 | **`OPENROUTER_API_KEY`** (local) | `.env` at repo root (gitignored). Loaded by `pydantic-settings`. |
 | **`OPENROUTER_API_KEY`** (production) | GitHub Secret injected into the cycle workflow as an environment variable. |
+| **`WEBSHARE_PROXY_USERNAME`**, **`WEBSHARE_PROXY_PASSWORD`** | Optional GitHub Secrets. Forwarded to the cycle workflow so YouTube transcript requests can tunnel through Webshare's residential pool. Leave unset to skip the proxy (fine from a non-blocked home IP). |
 | **`GITHUB_TOKEN`** | Provided automatically by GitHub Actions, scoped to `contents: write`, `pages: write`, `id-token: write`. |

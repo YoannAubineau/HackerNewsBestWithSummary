@@ -11,9 +11,16 @@ etc.).
    free-tier fallback models by setting `OPENROUTER_MODEL` to one of them).
 3. **Add the API key as a GitHub Secret** named `OPENROUTER_API_KEY`
    under *Settings → Secrets and variables → Actions → New repository secret*.
-4. **Switch GitHub Pages to workflow deployment**: *Settings → Pages →
+4. **(Optional) Add Webshare proxy secrets** `WEBSHARE_PROXY_USERNAME` and
+   `WEBSHARE_PROXY_PASSWORD` if you want article summaries for YouTube
+   videos. YouTube blocks datacenter IPs including GitHub Actions runners,
+   so the transcript path needs a residential proxy to work from CI. See
+   the [YouTube transcript support](#youtube-transcript-support) section
+   below for the full picture. Without these secrets the pipeline still
+   works, videos just fall back to the feed's own summary.
+5. **Switch GitHub Pages to workflow deployment**: *Settings → Pages →
    Build and deployment → Source: **GitHub Actions***.
-5. **Trigger the Feed Refresh workflow once** (*Actions → Feed Refresh → Run workflow*)
+6. **Trigger the Feed Refresh workflow once** (*Actions → Feed Refresh → Run workflow*)
    so the initial feed is built and deployed. The hourly cron takes over
    after that.
 
@@ -65,3 +72,32 @@ requires two small code edits:
 You will probably also want to override `FEED_TITLE`, `FEED_DESCRIPTION`,
 and `FEED_SELF_URL` (the default filename is `feed.fr.xml`) so the feed's
 metadata matches the new language.
+
+## YouTube transcript support
+
+When an HN story links to a YouTube video, the pipeline tries to pull
+the video transcript via `youtube-transcript-api` and summarise that,
+rather than falling back to the hnrss blurb. YouTube blocks requests
+from cloud-provider IP ranges, which includes every GitHub Actions
+runner, so this path only works from CI when routed through a
+residential proxy.
+
+The project is wired for [Webshare](https://www.webshare.io/) residential
+proxies specifically. To enable it:
+
+1. Create a Webshare account and purchase a **"Residential"** plan. Do
+   **not** pick "Proxy Server" (datacenter) or "Static Residential", both
+   are rejected by this endpoint.
+2. Open <https://dashboard.webshare.io/proxy/settings> and copy the
+   *Proxy Username* and *Proxy Password* (these are distinct from the
+   account login).
+3. Add them as GitHub Secrets named `WEBSHARE_PROXY_USERNAME` and
+   `WEBSHARE_PROXY_PASSWORD` under *Settings → Secrets and variables →
+   Actions*.
+
+The cycle workflow forwards both values to `uv run app cycle` as
+environment variables. When either is missing, the transcript request
+goes out directly, which is fine from a home IP but guaranteed to fail
+from a runner. A YouTube video that can't be transcribed still gets an
+entry in the feed, just with the generic feed-summary text and the
+YouTube thumbnail.

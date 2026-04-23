@@ -8,7 +8,7 @@
 Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with LLM-generated content:
 
 - a rewritten, factual title (clickbait headlines are replaced by what the article actually says)
-- a summary of the linked article
+- a summary of the linked article, or of the linked video's transcript when the URL points to YouTube
 - a synthesis of the main pro / con arguments from the Hacker News discussion
 
 The generated feed is a static RSS 2.0 file, updated hourly by GitHub Actions and served through GitHub Pages.
