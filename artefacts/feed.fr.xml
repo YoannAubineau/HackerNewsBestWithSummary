@@ -5,11 +5,11 @@
     <title>Hacker News: Best, with Summary</title>
     <link>https://news.ycombinator.com/best</link>
     <description>Hacker News highest-voted recent links with article and discussion summaries in French.</description>
-    <atom:link href="http://localhost/feed.fr.xml" rel="self"/>
+    <atom:link href="https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml" rel="self"/>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 01:38:29 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2026 01:42:14 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Apple corrige un bug permettant aux forces de l'ordre d'extraire les messages supprimés des iPhones</title>
@@ -374,6 +374,39 @@
       <media:group>
         <media:thumbnail url="https://social.hails.org/system/media_attachments/files/116/446/788/929/856/640/original/51e9df0c2c78e05c.png"/>
       </media:group>
+    </item>
+    <item>
+      <title>Un utilisateur exprime sa fatigue face à l'omniprésence de l'IA et souhaite la bloquer au niveau du navigateur</title>
+      <link>https://news.ycombinator.com/item?id=47857461</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Un utilisateur compare sa lassitude envers l'IA à celle qu'il a ressentie avec Facebook, déclarant son désir de filtrer complètement le contenu lié à l'IA à la source.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'auteur souhaite que tout contenu relatif à l'IA soit bloqué automatiquement au niveau du navigateur&lt;/li&gt;
+&lt;li&gt;Il établit un parallèle avec son abandon de Facebook, causé par une saturation similaire&lt;/li&gt;
+&lt;li&gt;Son malaise reflète une fatigue croissante face à l'omniprésence et la promotion de l'IA dans les contenus en ligne&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (60 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Confirmations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La sur-saturation médiatique d'IA crée une fatigue légitime : omniprésence dans les offres d'emploi, les réseaux sociaux, les contenus générés en masse (voix synthétiques, images, texte) qui dégrade la qualité globale du discours.&lt;/li&gt;
+&lt;li&gt;L'IA amplifie les problèmes organisationnels existants plutôt que de les résoudre ; les entreprises la mettent en avant sans stratégie réelle, rappelant la bulle dot-com.&lt;/li&gt;
+&lt;li&gt;Les voix synthétiques et contenus &amp;quot;slop&amp;quot; AI sont effectivement devenus omniprésents et irritants, générant un sentiment d'inauthenticité croissante sur internet.&lt;/li&gt;
+&lt;li&gt;L'absence de clarté conceptuelle aggrave le débat : beaucoup confondent &amp;quot;IA&amp;quot; générale avec IA générative, rendant la discussion superficielle et fatigante.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Réfutations&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pour les professionnels qui l'utilisent correctement, l'IA est révolutionnaire et utile (développement, apprentissage accéléré, diagnostic médical, résolution de problèmes) ; c'est un outil comme les autres technologies avant lui.&lt;/li&gt;
+&lt;li&gt;La fatigue est aussi une question de consommation médiatique personnelle : on peut filtrer le contenu AI ou simplement l'ignorer ; le problème n'est pas la technologie mais l'exposition volontaire.&lt;/li&gt;
+&lt;li&gt;Les craintes de surveillance/oppression existaient bien avant l'IA (Chine 2018, Corée du Nord) ; l'IA n'est pas l'élément révolutionnaire présupposé.&lt;/li&gt;
+&lt;li&gt;L'IA ne fait que continuer une tendance historique (chevaux → automobiles) ; se plaindre de &amp;quot;tout AI&amp;quot; équivaut à se plaindre du progrès technologique en général.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://news.ycombinator.com/item?id=47857461"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47857461"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">079ebc09</guid>
+      <comments>https://news.ycombinator.com/item?id=47857461</comments>
+      <pubDate>Wed, 22 Apr 2026 01:19:30 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Enseignements d'un ingénieur senior après plusieurs années d'expérience</title>
