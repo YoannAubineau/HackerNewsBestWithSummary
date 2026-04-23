@@ -72,7 +72,13 @@ hourly on a public repo, so minutes are free.
   JavaScript-required SPA pages by fuzzy-matching trafilatura's output
   against the raw HTML's `<noscript>` block (ratio ≥ 0.9 via
   `difflib.SequenceMatcher`), in which case it returns
-  `ContentSource.JS_REQUIRED` with empty text.
+  `ContentSource.JS_REQUIRED` with empty text. YouTube URLs
+  (`youtube.com/watch`, `youtu.be`, `shorts`, `embed`, `v`) short-circuit
+  the HTML path: the video transcript is pulled via
+  `youtube-transcript-api` (`fr` then `en`, auto-generated accepted) and
+  returned as `ContentSource.VIDEO_TRANSCRIPT`. `img.youtube.com`
+  thumbnail is always used as `image_url`, even when the transcript
+  fetch fails.
 - `src/app/fetch_discussion.py`, Algolia API + comment selection: recursive
   degressive comment budget (default 500), plus pinning of the HN submitter's
   own comments and their full ancestor chain.
@@ -104,12 +110,20 @@ hourly on a public repo, so minutes are free.
   new, so avoid unless you mean it.
 - **Cron is best-effort**: GitHub schedules run 5 to 15 min late under load.
   Not an issue at our cadence.
+- **YouTube transcripts need a residential proxy in CI**: YouTube blocks
+  cloud-provider IP ranges, so any direct transcript fetch from a GitHub
+  Actions runner raises `RequestBlocked`. `_fetch_youtube_transcript`
+  reads `WEBSHARE_PROXY_USERNAME` / `WEBSHARE_PROXY_PASSWORD` from
+  settings and, when both are set, routes through Webshare's rotating
+  residential pool. Locally (unblocked home IP) the variables can stay
+  empty. The failure is logged as `youtube_transcript_failed` and falls
+  through to `ContentSource.FEED_FALLBACK`, never crashes the pipeline.
 
 ## Commands
 
 ```bash
 uv sync                             # install deps
-uv run pytest                       # full test suite (65 tests today)
+uv run pytest                       # full test suite (~125 tests today)
 uv run ruff check src/ tests/       # lint
 uv run app cycle                    # run the whole pipeline once
 uv run app fetch-feed               # step 1 only (no LLM)

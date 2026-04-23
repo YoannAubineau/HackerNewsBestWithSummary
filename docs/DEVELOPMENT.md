@@ -57,7 +57,7 @@ OPENROUTER_API_KEY=dummy uv run app publish            # step 5: regenerate feed
 ### Tests and lint
 
 ```bash
-uv run pytest                          # full suite (~110 tests)
+uv run pytest                          # full suite (~125 tests)
 uv run ruff check src/ tests/          # lint
 uv run ruff format src/ tests/         # auto-format
 ```
@@ -95,6 +95,8 @@ except `OPENROUTER_API_KEY`.
 | `DAILY_COST_LIMIT_USD` | `2.0` | Circuit breaker. When today's OpenRouter spend exceeds this value, `step_summarize` skips for the rest of the cycle. Set to `0` to disable. |
 | `USER_AGENT` | `hn-best-summary/0.1 (+...)` | Sent with every outbound HTTP request. |
 | `ARTEFACTS_DIR` | `artefacts` | Root of all generated output. Article store, failed-article subfolder, and the feed file are all derived from this path. |
+| `WEBSHARE_PROXY_USERNAME` | *unset* | Optional. Proxy Username from <https://dashboard.webshare.io/proxy/settings> (Residential plan only). When set together with `WEBSHARE_PROXY_PASSWORD`, YouTube transcript requests tunnel through Webshare's rotating residential pool. Required from GitHub Actions, whose datacenter IPs YouTube blocks. Ignored locally unless your own IP is blocked. |
+| `WEBSHARE_PROXY_PASSWORD` | *unset* | Optional. Proxy Password paired with `WEBSHARE_PROXY_USERNAME`. Both must be set for the proxy to be used. |
 | `LOG_LEVEL` | `INFO` | One of `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. |
 
 ## Comment selection budget
