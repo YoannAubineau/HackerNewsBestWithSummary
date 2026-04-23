@@ -5,11 +5,14 @@ from html.parser import HTMLParser
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
+import structlog
 import trafilatura
 from youtube_transcript_api import YouTubeTranscriptApi
 
 from app.config import get_settings
 from app.models import ContentSource
+
+log = structlog.get_logger()
 
 _FETCHABLE_CONTENT_TYPES = ("text/html", "application/xhtml+xml")
 _JS_NOTICE_SIMILARITY_THRESHOLD = 0.9
@@ -113,7 +116,13 @@ def _extract_youtube_video_id(url: str) -> str | None:
 def _fetch_youtube_transcript(video_id: str) -> str | None:
     try:
         fetched = YouTubeTranscriptApi().fetch(video_id, languages=_TRANSCRIPT_LANGUAGES)
-    except Exception:  # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
+        log.warning(
+            "youtube_transcript_failed",
+            video_id=video_id,
+            exc_type=type(exc).__name__,
+            error=str(exc),
+        )
         return None
     parts = [snippet.text.strip() for snippet in fetched if snippet.text and snippet.text.strip()]
     return " ".join(parts) if parts else None
