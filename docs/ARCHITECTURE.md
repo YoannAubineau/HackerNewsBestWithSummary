@@ -63,7 +63,7 @@ where it left off.
 4. **`summarize`** calls the LLM twice per article: once to produce both
    a rewritten factual title and a structured article summary (single
    prompt, single call), once to synthesise the discussion into
-   `Confirmations` / `Réfutations` bullets. Articles flagged
+   `Avis positifs` / `Avis négatifs` bullets. Articles flagged
    `js_required` skip the article-summary call altogether and fall back
    to a cheap title-translation call plus a `(no content)` placeholder
    under the article-summary heading, while the discussion synthesis

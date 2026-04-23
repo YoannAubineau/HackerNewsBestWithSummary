@@ -37,11 +37,11 @@ uniquement par le titre traduit, sur une seule ligne."""
 _DISCUSSION_SYSTEM = """Tu synthétises en français une discussion Hacker News.
 Produis exactement deux blocs Markdown :
 
-**Confirmations** :
+**Avis positifs** :
 - 3 à 5 bullets concis regroupant les commentaires qui confirment, appuient ou \
 complètent les thèses de l'article.
 
-**Réfutations** :
+**Avis négatifs** :
 - 3 à 5 bullets concis regroupant les commentaires qui contredisent, nuancent \
 fortement ou réfutent les thèses de l'article.
 
