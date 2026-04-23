@@ -45,6 +45,14 @@ class Settings(BaseSettings):
         "(+https://github.com/YoannAubineau/HackerNewsBestWithSummary)"
     )
 
+    # Webshare residential proxy credentials. Optional. Only used by the
+    # YouTube transcript path — YouTube blocks datacenter IPs (GitHub
+    # Actions runners included), so transcript fetching from CI requires
+    # routing through a residential IP. When either value is empty, the
+    # request is made directly (fine from a non-blocked home IP).
+    webshare_proxy_username: str = ""
+    webshare_proxy_password: str = ""
+
     artefacts_dir: Path = Path("artefacts")
 
     @property

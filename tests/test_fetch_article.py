@@ -32,7 +32,9 @@ class _FakeTranscriptApi:
 
 def _patch_transcript_api(monkeypatch, *, snippets=None, exc=None):
     fake = _FakeTranscriptApi(snippets=snippets, exc=exc)
-    monkeypatch.setattr(fetch_article_module, "YouTubeTranscriptApi", lambda: fake)
+    monkeypatch.setattr(
+        fetch_article_module, "YouTubeTranscriptApi", lambda **_kwargs: fake
+    )
 
 
 def test_http_error_falls_back_to_feed_summary(httpx_mock):
