@@ -38,7 +38,10 @@ class Article(BaseModel):
     summarized_at: datetime | None = None
     image_url: str | None = None
     attempts: int = 0
-    model: str | None = None
+    llm_models_used: list[str] | None = None
+    llm_input_tokens: int | None = None
+    llm_output_tokens: int | None = None
+    llm_latency_ms: int | None = None
     error: str | None = None
     feed_summary: str = Field(
         default="",

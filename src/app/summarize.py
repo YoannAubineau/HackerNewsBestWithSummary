@@ -1,7 +1,7 @@
 import re
 from dataclasses import dataclass
 
-from app.llm import complete
+from app.llm import LLMCallResult, complete
 
 _ARTICLE_SYSTEM = """Tu es un rédacteur francophone. Tu reçois le texte d'un article, \
 ou la transcription d'une vidéo.
@@ -54,33 +54,26 @@ préambule."""
 class ArticleSummary:
     rewritten_title: str | None
     summary_markdown: str
-    model: str
 
 
-def summarize_article(text: str, title: str) -> ArticleSummary:
+def summarize_article(text: str, title: str) -> tuple[ArticleSummary, LLMCallResult]:
     user = f"Titre original : {title}\n\nContenu :\n{text}"
     result = complete(_ARTICLE_SYSTEM, user)
-    rewritten, summary = _split_title_and_summary(result.text)
-    return ArticleSummary(
-        rewritten_title=rewritten,
-        summary_markdown=summary,
-        model=result.model,
-    )
+    rewritten, summary = _split_title_and_summary(result.content)
+    return ArticleSummary(rewritten_title=rewritten, summary_markdown=summary), result
 
 
-def translate_title(title: str) -> tuple[str | None, str]:
-    """Return (translated_title, model_name). None title on empty result."""
+def translate_title(title: str) -> tuple[str | None, LLMCallResult]:
     result = complete(_TITLE_TRANSLATION_SYSTEM, title)
-    raw = result.text.strip()
+    raw = result.content.strip()
     translated = raw.splitlines()[0].strip() if raw else ""
-    return (translated or None), result.model
+    return (translated or None), result
 
 
-def summarize_discussion(text: str, title: str) -> tuple[str, str]:
-    """Return (summary markdown, model name)."""
+def summarize_discussion(text: str, title: str) -> tuple[str, LLMCallResult]:
     user = f"Titre : {title}\n\nCommentaires (indentation = fil de réponse) :\n{text}"
     result = complete(_DISCUSSION_SYSTEM, user)
-    return result.text, result.model
+    return result.content, result
 
 
 def compose_body(

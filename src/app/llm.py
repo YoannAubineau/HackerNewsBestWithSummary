@@ -1,3 +1,4 @@
+import time
 from dataclasses import dataclass
 
 import httpx
@@ -19,14 +20,15 @@ class AllModelsFailedError(LLMError):
 
 
 @dataclass
-class LLMResult:
-    text: str
+class LLMCallResult:
+    content: str
     model: str
-    prompt_tokens: int | None = None
-    completion_tokens: int | None = None
+    input_tokens: int
+    output_tokens: int
+    latency_ms: int
 
 
-def complete(system_prompt: str, user_prompt: str) -> LLMResult:
+def complete(system_prompt: str, user_prompt: str) -> LLMCallResult:
     """Call OpenRouter, trying the primary model then each fallback.
 
     A 429 or 5xx triggers the next model; any other 4xx aborts.
@@ -46,7 +48,7 @@ def complete(system_prompt: str, user_prompt: str) -> LLMResult:
     raise AllModelsFailedError(f"all models failed: {last_error}")
 
 
-def _call(model: str, system_prompt: str, user_prompt: str) -> LLMResult:
+def _call(model: str, system_prompt: str, user_prompt: str) -> LLMCallResult:
     settings = get_settings()
     payload = {
         "model": model,
@@ -60,6 +62,7 @@ def _call(model: str, system_prompt: str, user_prompt: str) -> LLMResult:
         "Content-Type": "application/json",
         "User-Agent": settings.user_agent,
     }
+    start = time.monotonic()
     response = httpx.post(
         _OPENROUTER_URL,
         json=payload,
@@ -74,23 +77,27 @@ def _call(model: str, system_prompt: str, user_prompt: str) -> LLMResult:
     if not choices:
         raise _Retryable(f"{model}: response without choices")
     message = choices[0].get("message") or {}
-    text = (message.get("content") or "").strip()
-    if not text:
+    content = (message.get("content") or "").strip()
+    if not content:
         raise _Retryable(f"{model}: empty content")
+    latency_ms = int((time.monotonic() - start) * 1000)
     usage = data.get("usage") or {}
-    prompt_tokens = usage.get("prompt_tokens")
-    completion_tokens = usage.get("completion_tokens")
+    input_tokens = int(usage.get("prompt_tokens") or 0)
+    output_tokens = int(usage.get("completion_tokens") or 0)
+    actual_model = data.get("model") or model
     log.info(
         "llm_call",
-        model=model,
-        prompt_tokens=prompt_tokens,
-        completion_tokens=completion_tokens,
+        model=actual_model,
+        input_tokens=input_tokens,
+        output_tokens=output_tokens,
+        latency_ms=latency_ms,
     )
-    return LLMResult(
-        text=text,
-        model=model,
-        prompt_tokens=prompt_tokens,
-        completion_tokens=completion_tokens,
+    return LLMCallResult(
+        content=content,
+        model=actual_model,
+        input_tokens=input_tokens,
+        output_tokens=output_tokens,
+        latency_ms=latency_ms,
     )
 
 
