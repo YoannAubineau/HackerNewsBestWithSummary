@@ -39,7 +39,10 @@ def test_record_attempt_first_failure_keeps_article_in_place(isolated_settings):
     isolated_settings.max_attempts = 3
     article = _make_article()
     path = save(article)
-    _record_attempt(path, article, "body", "network glitch")
+    failures: list[tuple[str, str]] = []
+    moved = _record_attempt(path, article, "body", "network glitch", failures)
+    assert moved is False
+    assert failures == []
     assert path.exists()
     reloaded, _ = load(path)
     assert reloaded.attempts == 1
@@ -51,11 +54,12 @@ def test_record_attempt_moves_to_failed_at_last_attempt(isolated_settings):
     isolated_settings.max_attempts = 3
     article = _make_article()
     path = save(article)
-    _record_attempt(path, article, "body", "fail 1")
+    failures: list[tuple[str, str]] = []
+    assert _record_attempt(path, article, "body", "fail 1", failures) is False
     reloaded_1, _ = load(path)
-    _record_attempt(path, reloaded_1, "body", "fail 2")
+    assert _record_attempt(path, reloaded_1, "body", "fail 2", failures) is False
     reloaded_2, _ = load(path)
-    _record_attempt(path, reloaded_2, "body", "fail 3")
+    assert _record_attempt(path, reloaded_2, "body", "fail 3", failures) is True
     assert not path.exists()
     failed_files = list(isolated_settings.failed_dir.rglob("*.md"))
     assert len(failed_files) == 1
@@ -63,6 +67,7 @@ def test_record_attempt_moves_to_failed_at_last_attempt(isolated_settings):
     assert recovered.status == Status.FAILED
     assert recovered.attempts == 3
     assert recovered.error == "fail 3"
+    assert failures == [(article.guid, "fail 3")]
 
 
 def test_record_attempt_clears_sidecars_when_moving_to_failed(isolated_settings):
@@ -95,9 +100,9 @@ def _neutralize_steps(monkeypatch, *, summarize_count: int = 0) -> list[str]:
     whether publish was invoked."""
     calls: list[str] = []
     monkeypatch.setattr(pipeline, "step_fetch_feed", lambda: 0)
-    monkeypatch.setattr(pipeline, "step_fetch_articles", lambda: 0)
-    monkeypatch.setattr(pipeline, "step_fetch_discussions", lambda: 0)
-    monkeypatch.setattr(pipeline, "step_summarize", lambda: summarize_count)
+    monkeypatch.setattr(pipeline, "step_fetch_articles", lambda _failures=None: 0)
+    monkeypatch.setattr(pipeline, "step_fetch_discussions", lambda _failures=None: 0)
+    monkeypatch.setattr(pipeline, "step_summarize", lambda _failures=None: summarize_count)
     monkeypatch.setattr(pipeline, "step_publish", lambda: calls.append("publish") or "")
     return calls
 
@@ -121,6 +126,38 @@ def test_run_cycle_publishes_when_feed_missing(isolated_settings, monkeypatch):
     assert not isolated_settings.feed_output_path.exists()
     run_cycle()
     assert calls == ["publish"]
+
+
+def test_run_cycle_returns_empty_failures_when_all_steps_clean(
+    isolated_settings, monkeypatch
+):
+    _neutralize_steps(monkeypatch, summarize_count=0)
+    isolated_settings.feed_output_path.write_text("<rss/>", encoding="utf-8")
+    result = run_cycle()
+    assert result.failures == []
+
+
+def test_run_cycle_collects_failures_from_steps(isolated_settings, monkeypatch):
+    isolated_settings.feed_output_path.write_text("<rss/>", encoding="utf-8")
+
+    def fake_fetch_articles(failures=None):
+        if failures is not None:
+            failures.append(("guid://a", "boom a"))
+        return 0
+
+    def fake_fetch_discussions(failures=None):
+        if failures is not None:
+            failures.append(("guid://b", "boom b"))
+        return 0
+
+    monkeypatch.setattr(pipeline, "step_fetch_feed", lambda: 0)
+    monkeypatch.setattr(pipeline, "step_fetch_articles", fake_fetch_articles)
+    monkeypatch.setattr(pipeline, "step_fetch_discussions", fake_fetch_discussions)
+    monkeypatch.setattr(pipeline, "step_summarize", lambda _failures=None: 0)
+    monkeypatch.setattr(pipeline, "step_publish", lambda: "")
+
+    result = run_cycle()
+    assert result.failures == [("guid://a", "boom a"), ("guid://b", "boom b")]
 
 
 def test_step_summarize_trips_cost_breaker(isolated_settings, monkeypatch):

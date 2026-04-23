@@ -1,7 +1,13 @@
+import json
+import os
+from pathlib import Path
+
+import structlog
 import typer
 
 from app.logging_setup import setup_logging
 from app.pipeline import (
+    CycleResult,
     backfill_images,
     run_cycle,
     step_fetch_articles,
@@ -11,6 +17,8 @@ from app.pipeline import (
     step_summarize,
 )
 from app.usage import generate_chart, record_usage
+
+log = structlog.get_logger()
 
 app = typer.Typer(
     add_completion=False,
@@ -26,7 +34,24 @@ def _main() -> None:
 @app.command()
 def cycle() -> None:
     """Run the full pipeline: fetch → summarize → publish."""
-    run_cycle()
+    result = run_cycle()
+    _emit_failures(result)
+
+
+def _emit_failures(result: CycleResult) -> None:
+    count = len(result.failures)
+    if count:
+        log.warning("cycle_article_failures", count=count, failures=result.failures)
+    github_output = os.environ.get("GITHUB_OUTPUT")
+    if not github_output:
+        return
+    failures_data = [{"guid": guid, "error": error} for guid, error in result.failures]
+    # json.dumps with these separators is guaranteed single-line, so a plain
+    # key=value entry in $GITHUB_OUTPUT is safe (no heredoc needed).
+    payload = json.dumps(failures_data, separators=(",", ":"))
+    with Path(github_output).open("a", encoding="utf-8") as handle:
+        handle.write(f"failures_count={count}\n")
+        handle.write(f"failures_json={payload}\n")
 
 
 @app.command("fetch-feed")
