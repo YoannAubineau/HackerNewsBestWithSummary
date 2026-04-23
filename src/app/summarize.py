@@ -26,6 +26,13 @@ Format de réponse EXACT, sans rien d'autre :
 ## Résumé
 <ton résumé markdown ici>"""
 
+_TITLE_TRANSLATION_SYSTEM = """Tu reçois un titre d'article en anglais \
+(ou dans une autre langue). Traduis-le fidèlement en français. Ne réécris pas, \
+ne reformule pas, ne synthétise pas : traduis aussi littéralement que possible \
+tout en produisant un français naturel. Pas de majuscule partout, pas de point \
+final. Si le titre est déjà en français, réutilise-le tel quel. Réponds \
+uniquement par le titre traduit, sur une seule ligne."""
+
 _DISCUSSION_SYSTEM = """Tu synthétises en français une discussion Hacker News.
 Produis exactement deux blocs Markdown :
 
@@ -58,6 +65,14 @@ def summarize_article(text: str, title: str) -> ArticleSummary:
         summary_markdown=summary,
         model=result.model,
     )
+
+
+def translate_title(title: str) -> tuple[str | None, str]:
+    """Return (translated_title, model_name). None title on empty result."""
+    result = complete(_TITLE_TRANSLATION_SYSTEM, title)
+    raw = result.text.strip()
+    translated = raw.splitlines()[0].strip() if raw else ""
+    return (translated or None), result.model
 
 
 def summarize_discussion(text: str, title: str) -> tuple[str, str]:

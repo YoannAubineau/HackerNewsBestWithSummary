@@ -1,4 +1,6 @@
-from app.summarize import _split_title_and_summary, compose_body
+from app import summarize
+from app.llm import LLMResult
+from app.summarize import _split_title_and_summary, compose_body, translate_title
 
 
 def test_splits_well_formed_response():
@@ -71,6 +73,26 @@ def test_compose_body_omits_count_when_none():
     )
     assert "## Discussion sur Hacker News\n" in body
     assert "commentaires analysés" not in body
+
+
+def test_translate_title_returns_first_line(monkeypatch):
+    def fake_complete(system, user):
+        return LLMResult(text="  Sous-système Windows 9x pour Linux  \n", model="m")
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    translated, model = translate_title("Windows 9x Subsystem for Linux")
+    assert translated == "Sous-système Windows 9x pour Linux"
+    assert model == "m"
+
+
+def test_translate_title_none_on_empty_response(monkeypatch):
+    def fake_complete(system, user):
+        return LLMResult(text="   \n\n", model="m")
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    translated, model = translate_title("whatever")
+    assert translated is None
+    assert model == "m"
 
 
 def test_compose_body_omits_count_when_zero():
