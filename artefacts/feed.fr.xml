@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 05:52:18 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2026 06:37:00 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Apple corrige un bug permettant aux forces de l'ordre d'extraire les messages supprimés des iPhones</title>
@@ -577,6 +577,43 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://cdn.prod.website-files.com/6889473510b50328dbb70ae6/68c469d23594abeb9ab6ee48_70ed020ecf8fa028b9bc95fa819720b6_og_claude-generic.jpg"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Tim Cook cède la direction d'Apple à John Ternus dans une transition ordonnée et planifiée</title>
+      <link>https://daringfireball.net/2026/04/another_day_has_come</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Tim Cook quitte la présidence d'Apple à 65 ans après 15 ans à la tête de l'entreprise pour devenir président exécutif, tandis que John Ternus, ingénieur de 25 ans chez Apple, prend la direction générale. Cette transition contraste fortement avec celle de 2011, où Steve Jobs, malade, avait dû céder son poste dans la crise et la tristesse.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cook réalise une transition entièrement maîtrisée, sans urgence ni drame, tandis qu'Apple connaît un apogée commercial avec un iPhone performant, un Mac en hausse et des produits solides dans tous les segments&lt;/li&gt;
+&lt;li&gt;Ternus, ingénieur et innovateur, semble bien positionné pour amener Apple à créer de nouveaux produits, là où Cook s'était concentré sur l'optimisation et l'expansion des produits existants&lt;/li&gt;
+&lt;li&gt;En tant que président exécutif, Cook conservera un rôle influent notamment dans les relations avec les décideurs politiques mondiaux&lt;/li&gt;
+&lt;li&gt;La transition est calendrisée de façon symbolique : Cook préside le dernier WWDC en juin, puis Ternus prend la direction avant l'annonce des nouveaux iPhone en septembre&lt;/li&gt;
+&lt;li&gt;Cook transforme Apple en institution pérenne et bien gérée, la laissant en meilleur état qu'il ne l'a reçue&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (53 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'accessibilité pour les personnes en situation de handicap est un domaine où Apple a eu un impact réel et durable (VoiceOver, détection de portes, OCR intégrés), améliorant concrètement l'indépendance des utilisateurs malvoyants et aveugles.&lt;/li&gt;
+&lt;li&gt;Apple Silicon représente une innovation matérielle solide et les MacBook Neo à ~500$ offrent enfin un produit grand public compétitif, comblant le fossé tarifaire depuis des années.&lt;/li&gt;
+&lt;li&gt;Le leadership technique d'une personne issue du hardware (Ternus) pourrait ramener l'esprit d'innovation et les moments &amp;quot;wow&amp;quot; qui ont marqué les générations précédentes, au-delà de l'itération incrémentale.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les appareils Apple (iPhone, iPad, Apple Watch) ne respectent probablement pas les régulations EU sur les batteries remplaçables, contrairement aux affirmations de conformité facile ; la conception étroitement couplée aux batteries de formes bizarres rend le changement techniquement difficile.&lt;/li&gt;
+&lt;li&gt;Tim Cook s'est montré opportuniste sur l'accessibilité et les principes éthiques (contraste avec sa rhétorique 2014 vs. les manœuvres agressives contre les paiements tiers dans l'UE et la manipulation des avertissements aux utilisateurs).&lt;/li&gt;
+&lt;li&gt;Le VisionPro et autres initiatives logicielles majeures souffrent d'un manque d'investissement Apple dans les applications &amp;quot;tueuses&amp;quot; ; c'est du hardware en quête de raison d'être plutôt que des solutions répondant à des besoins réels.&lt;/li&gt;
+&lt;li&gt;Les bugs systémiques affectant les utilisateurs lambda (sélection de texte incohérente, autocorrect dégradé, VoiceOver sur macOS instable) restent non résolus pendant des années, révélant des priorités décalées malgré les ressources colossales.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://daringfireball.net/2026/04/another_day_has_come"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47854365"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">80f2114a</guid>
+      <comments>https://news.ycombinator.com/item?id=47854365</comments>
+      <pubDate>Tue, 21 Apr 2026 20:52:19 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://daringfireball.net/graphics/df-wide-card.png"/>
       </media:group>
     </item>
     <item>
