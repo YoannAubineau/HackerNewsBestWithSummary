@@ -38,14 +38,14 @@
 <rect x="601.9" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
 <rect x="623.8" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
 <rect x="645.7" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
-<rect x="667.5" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
-<rect x="689.4" y="110.9" width="15.3" height="97.1" fill="#ff6600" rx="1"/>
-<text x="62.9" y="226" text-anchor="middle" fill="#666">24/03</text>
-<text x="172.3" y="226" text-anchor="middle" fill="#666">29/03</text>
-<text x="281.6" y="226" text-anchor="middle" fill="#666">03/04</text>
-<text x="390.9" y="226" text-anchor="middle" fill="#666">08/04</text>
-<text x="500.3" y="226" text-anchor="middle" fill="#666">13/04</text>
-<text x="609.6" y="226" text-anchor="middle" fill="#666">18/04</text>
-<text x="697.1" y="226" text-anchor="middle" fill="#666">22/04</text>
-<text x="52" y="250" fill="#666">Last 30 days: $1.06 · limit $50.00</text>
+<rect x="667.5" y="110.9" width="15.3" height="97.1" fill="#ff6600" rx="1"/>
+<rect x="689.4" y="203.1" width="15.3" height="4.9" fill="#ff6600" rx="1"/>
+<text x="62.9" y="226" text-anchor="middle" fill="#666">25/03</text>
+<text x="172.3" y="226" text-anchor="middle" fill="#666">30/03</text>
+<text x="281.6" y="226" text-anchor="middle" fill="#666">04/04</text>
+<text x="390.9" y="226" text-anchor="middle" fill="#666">09/04</text>
+<text x="500.3" y="226" text-anchor="middle" fill="#666">14/04</text>
+<text x="609.6" y="226" text-anchor="middle" fill="#666">19/04</text>
+<text x="697.1" y="226" text-anchor="middle" fill="#666">23/04</text>
+<text x="52" y="250" fill="#666">Last 30 days: $1.11 · limit $50.00</text>
 </svg>
