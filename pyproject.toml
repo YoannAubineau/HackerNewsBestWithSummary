@@ -16,6 +16,7 @@ dependencies = [
     "typer>=0.15",
     "tenacity>=9.0",
     "structlog>=24.4",
+    "youtube-transcript-api>=1.2.4",
 ]
 
 [dependency-groups]

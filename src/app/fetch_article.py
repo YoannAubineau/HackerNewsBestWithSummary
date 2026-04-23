@@ -2,16 +2,22 @@ import re
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 from html.parser import HTMLParser
-from urllib.parse import urljoin
+from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
 import trafilatura
+from youtube_transcript_api import YouTubeTranscriptApi
 
 from app.config import get_settings
 from app.models import ContentSource
 
 _FETCHABLE_CONTENT_TYPES = ("text/html", "application/xhtml+xml")
 _JS_NOTICE_SIMILARITY_THRESHOLD = 0.9
+_YOUTUBE_HOSTS = {"youtube.com", "youtu.be"}
+_YOUTUBE_HOST_PREFIXES = ("www.", "m.", "music.")
+_VIDEO_ID_RE = re.compile(r"^[A-Za-z0-9_-]{11}$")
+_YOUTUBE_PATH_VIDEO_ID_RE = re.compile(r"^/(?:shorts|embed|v)/([A-Za-z0-9_-]{11})(?:/|$)")
+_TRANSCRIPT_LANGUAGES = ("fr", "en")
 
 
 @dataclass
@@ -23,6 +29,22 @@ class ArticleContent:
 
 def fetch_article(url: str, feed_fallback: str) -> ArticleContent:
     """Fetch and extract the URL's main content, falling back to the feed's summary."""
+    video_id = _extract_youtube_video_id(url)
+    if video_id is not None:
+        thumbnail = f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg"
+        transcript = _fetch_youtube_transcript(video_id)
+        if transcript:
+            return ArticleContent(
+                text=transcript,
+                source=ContentSource.VIDEO_TRANSCRIPT,
+                image_url=thumbnail,
+            )
+        return ArticleContent(
+            text=feed_fallback.strip(),
+            source=ContentSource.FEED_FALLBACK,
+            image_url=thumbnail,
+        )
+
     settings = get_settings()
     try:
         response = httpx.get(
@@ -64,6 +86,37 @@ def fetch_article(url: str, feed_fallback: str) -> ArticleContent:
         source=ContentSource.FEED_FALLBACK,
         image_url=image_url,
     )
+
+
+def _extract_youtube_video_id(url: str) -> str | None:
+    try:
+        parsed = urlparse(url)
+    except ValueError:
+        return None
+    host = (parsed.hostname or "").lower()
+    for prefix in _YOUTUBE_HOST_PREFIXES:
+        if host.startswith(prefix):
+            host = host[len(prefix):]
+            break
+    if host not in _YOUTUBE_HOSTS:
+        return None
+    if host == "youtu.be":
+        candidate = parsed.path.lstrip("/").split("/", 1)[0]
+        return candidate if _VIDEO_ID_RE.fullmatch(candidate) else None
+    if parsed.path == "/watch":
+        candidate = (parse_qs(parsed.query).get("v") or [""])[0]
+        return candidate if _VIDEO_ID_RE.fullmatch(candidate) else None
+    match = _YOUTUBE_PATH_VIDEO_ID_RE.match(parsed.path)
+    return match.group(1) if match else None
+
+
+def _fetch_youtube_transcript(video_id: str) -> str | None:
+    try:
+        fetched = YouTubeTranscriptApi().fetch(video_id, languages=_TRANSCRIPT_LANGUAGES)
+    except Exception:  # noqa: BLE001
+        return None
+    parts = [snippet.text.strip() for snippet in fetched if snippet.text and snippet.text.strip()]
+    return " ".join(parts) if parts else None
 
 
 def _is_js_required_notice(extracted: str, html: str) -> bool:

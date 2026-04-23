@@ -17,6 +17,7 @@ class ContentSource(StrEnum):
     FEED_FALLBACK = "feed_fallback"
     ASK_SHOW_HN = "ask_show_hn"
     JS_REQUIRED = "js_required"
+    VIDEO_TRANSCRIPT = "video_transcript"
 
 
 class Article(BaseModel):
