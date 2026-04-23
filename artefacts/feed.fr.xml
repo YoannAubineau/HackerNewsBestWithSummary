@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 08:35:11 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2026 13:33:26 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>I am building a cloud</title>
@@ -149,6 +149,44 @@
       <comments>https://news.ycombinator.com/item?id=47866913</comments>
       <pubDate>Wed, 22 Apr 2026 17:51:17 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>Zed introduit l'exécution parallèle de plusieurs agents dans une même fenêtre avec une barre de threads</title>
+      <link>https://zed.dev/blog/parallel-agents</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Zed permet désormais d'orchestrer plusieurs agents s'exécutant en parallèle dans la même fenêtre, avec une nouvelle Threads Sidebar pour contrôler l'accès aux dossiers et référentiels, et monitorer leur activité en temps réel à 120 fps.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La Threads Sidebar regroupe les threads par projet et permet de combiner différents agents, de travailler entre plusieurs projets et d'isoler les worktrees selon les besoins&lt;/li&gt;
+&lt;li&gt;L'interface a été repensée avec la Threads Sidebar ancrée à gauche par défaut pour placer les threads au centre du flux de travail&lt;/li&gt;
+&lt;li&gt;La fonction repose sur le concept d'« agentic engineering » : combiner l'assistance IA avec l'engagement direct du développeur dans le code plutôt que de générer automatiquement des lignes de code&lt;/li&gt;
+&lt;li&gt;Les opérations courantes comme arrêter, archiver ou lancer des threads sont accessibles instantanément depuis la Sidebar&lt;/li&gt;
+&lt;li&gt;La fonctionnalité est disponible dans la dernière version de Zed, accessible via l'icône en bas à gauche ou les raccourcis clavier option-cmd-j (macOS) et ctrl-option-j (Linux/Windows)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (47 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Zed propose une implémentation d'agents parallèles plus logique que ses concurrents (Warp, Conductor), avec support agent-agnostic, worktrees multiples, et une UI de qualité supérieure aux wrappers CLI.&lt;/li&gt;
+&lt;li&gt;Les hooks de cycle de vie des worktrees (création/suppression) offrent des possibilités puissantes : configuration locale, duplication de bases de données, isolation automatique—une vraie avancée par rapport aux outils existants.&lt;/li&gt;
+&lt;li&gt;Zed reste un excellent éditeur rapide et puissant en lui-même, avec des fonctionnalités de base solides et la possibilité de désactiver complètement les features IA si souhaité.&lt;/li&gt;
+&lt;li&gt;Le système de threads parallèles améliore le workflow en permettant de basculer entre investigations secondaires sans perdre le contexte du travail principal, plutôt que simplement &amp;quot;paralléliser&amp;quot;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La nouvelle disposition par défaut repousse l'arborescence de fichiers et le code sur les côtés pour privilégier le panneau d'agents, ce qui déplaît à de nombreux utilisateurs et risque de repousser les nouveaux venus cherchant un éditeur classique.&lt;/li&gt;
+&lt;li&gt;Zed manque de fonctionnalités importantes par rapport à Claude et ses concurrents : pas d'intégration MCP, absence de plugins/skills, et outils de review de code insuffisants pour valider des changements générés par agents.&lt;/li&gt;
+&lt;li&gt;Les utilisateurs expriment des préoccupations quant au pivot stratégique vers les agents aux dépens de l'expérience d'édition traditionnelle : plusieurs QoL manquent (git avancé, débogage TS lent, configuration fine de l'UI).&lt;/li&gt;
+&lt;li&gt;Les agents parallèles créent une dette cognitive importante et ne conviennent pas à tous les workflows ; beaucoup préfèrent revoir manuellement chaque modification pour éviter que les agents n'inscrivent des bugs dans le code ou ne compliquent inutilement l'architecture.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://zed.dev/blog/parallel-agents"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47866750"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">fd185871</guid>
+      <comments>https://news.ycombinator.com/item?id=47866750</comments>
+      <pubDate>Wed, 22 Apr 2026 17:38:57 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://zed.dev/img/post/parallel-agents/thumbnail.webp"/>
+      </media:group>
     </item>
     <item>
       <title>Firefox expose un identifiant stable permettant de lier les identités Tor privées à travers les sites web</title>
@@ -304,6 +342,50 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://adriankrebs.ch/_astro/og-default.B6BqwTMP.svg"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Des chercheurs documentent pour la première fois des décharges de corona ultraviolettes sur les cimes d'arbres lors d'orages</title>
+      <link>https://www.psu.edu/news/earth-and-mineral-sciences/story/treetops-glowing-during-storms-captured-film-first-time</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Une équipe de Penn State a réalisé la première observation directe de décharges de corona en conditions naturelles, un phénomène atmosphérique longtemps théorisé où des impulsions électriques minuscules font briller les feuilles des arbres en ultraviolet pendant les orages.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Les chercheurs ont parcouru la côte est des États-Unis en juin 2024 avec un équipement météorologique spécialisé pour observer ce phénomène en Floride, connu pour ses orages fréquents.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Après trois semaines infructueuses, l'équipe a capturé les décharges de corona sur les cimes d'un sweetgum et d'un loblolly pine lors d'un orage massif près de Pembroke, en Caroline du Nord.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Cette observation confirme une hypothèse formulée il y a plus de 70 ans : les champs électriques générés lors des orages provoquent des décharges électriques à la surface des feuilles.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Les résultats ont été publiés dans Geophysical Research Letters, marquant une avancée majeure en science de la découverte atmosphérique.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (12 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'article confirme expérimentalement un phénomène observé sur le terrain : les décharges corona causent effectivement des brûlures aux pointes des feuilles, expliquant les observations historiques d'aiguilles brûlées sur les sapins du Pacifique-Nord.&lt;/li&gt;
+&lt;li&gt;Le phénomène rejoint des manifestations naturelles bien connues comme le feu de Saint-Elme, offrant une compréhension scientifique d'une électricité atmosphérique réelle et mesurable.&lt;/li&gt;
+&lt;li&gt;Les témoignages directs de lecteurs ayant observé des phénomènes similaires (cheveux hérissés, décharges visibles) valident l'occurrence réelle de ces manifestations lors d'orages.&lt;/li&gt;
+&lt;li&gt;La découverte établit un lien intéressant entre électricité atmosphérique et réponses biologiques (exemple des champignons stimulés par les décharges électriques).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les images présentées ne sont pas des photographies au sens strict du phénomène visible à l'œil nu, mais des vidéos en ultraviolet et des reconstructions numériques avec points rouges superposés, ce qui minore la portée visuelle réelle.&lt;/li&gt;
+&lt;li&gt;Le phénomène des décharges corona pendant les orages n'est pas nouveau : Saint-Elme est documenté depuis des siècles et la corona est scientifiquement connue de longue date, questionnant la nouveauté réelle de cette recherche.&lt;/li&gt;
+&lt;li&gt;Il existe une contradiction non résolue : l'article affirme que la corona n'est pas visible à l'œil nu, contredisant les témoignages de lecteurs qui rapportent l'avoir distinctement observée.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://www.psu.edu/news/earth-and-mineral-sciences/story/treetops-glowing-during-storms-captured-film-first-time"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47863324"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">ad3d9599</guid>
+      <comments>https://news.ycombinator.com/item?id=47863324</comments>
+      <pubDate>Wed, 22 Apr 2026 13:28:40 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://psu-gatsby-files-prod.s3.amazonaws.com/s3fs-public/styles/16_9_1000w/public/2026/04/corona-news-1.jpg?h=84071268&amp;itok=bocHWT_2"/>
       </media:group>
     </item>
     <item>
