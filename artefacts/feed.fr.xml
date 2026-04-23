@@ -9,8 +9,43 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 07:33:51 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2026 08:35:11 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>I am building a cloud</title>
+      <link>https://crawshaw.io/blog/building-a-cloud</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;h2&gt;exe.dev : une nouvelle infrastructure cloud repensée depuis ses fondations&lt;/h2&gt;
+&lt;p&gt;Un entrepreneur lance exe.dev, une nouvelle plateforme cloud construite à partir de zéro pour résoudre les problèmes fondamentaux des clouds actuels : mauvaise abstraction des VMs, performance insuffisante du stockage distant sur SSD, et coûts réseau prohibitifs.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les clouds actuels forcent une isolation par VM liée aux ressources CPU/mémoire, alors que l'auteur souhaite acheter des ressources brutes et y exécuter autant de VMs qu'il le souhaite sans surcharge de virtualisation imbriquée&lt;/li&gt;
+&lt;li&gt;Le stockage distant (block devices) optimisé pour les disques durs (10ms de latence) pénalise gravement les SSD (20µs de latence), créant un surcoût de plus de 10x sur les IOPS là où un MacBook offre naturellement 500k IOPS&lt;/li&gt;
+&lt;li&gt;Les prix de sortie réseau des hyperscalers sont 10x supérieurs au coût réel du rackage en datacenter standard, limitant intentionnellement l'affordabilité des projets&lt;/li&gt;
+&lt;li&gt;exe.dev propose une approche alternative : allocation de CPU/mémoire brute avec VMs locales, stockage NVMe local avec réplication asynchrone, TLS et authentification intégrées, et couverture mondiale avec anycast pour faible latence&lt;/li&gt;
+&lt;li&gt;Cette solution répond à l'augmentation du volume de code logiciel due aux agents IA, qui nécessitent des abstractions plus simples et une gestion plus facile du calcul distribué&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (48 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les problèmes identifiés sont réels : les tarifs cloud traditionnels (IOPS, bande passante) sont mal calibrés par rapport aux coûts réels, et des alternatives comme Hetzner offrent des performances similaires à fraction du prix.&lt;/li&gt;
+&lt;li&gt;Il y a une demande légitime pour simplifier l'infrastructure : des développeurs trouvent la complexité de Kubernetes et des abstractions cloud frustrante et inefficace pour la plupart des usages réels (une VM avec Docker suffit à beaucoup).&lt;/li&gt;
+&lt;li&gt;L'intégration avec les agents LLM et une interface SSH simple répond à un vrai besoin d'accessibilité pour les développeurs modernes qui veulent du contrôle sans surcharge opérationnelle.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Exe.dev s'exécute sur l'infrastructure AWS (IP Amazon), ce qui soulève des questions sur comment un service coûteux peut vraiment être plus efficace que les alternatives tout en payant les tarifs cloud standards.&lt;/li&gt;
+&lt;li&gt;Par rapport à Hetzner avec un wrapper hcloud ou à une simple VM Debian avec Docker Compose, la valeur ajoutée n'est pas évidente : le core du service semble être une couche cosmétique sur du provisioning basique que les devops maîtrisent déjà.&lt;/li&gt;
+&lt;li&gt;L'expérience avec Tailscale (société du fondateur) montre que même avec bonnes intentions, les abstractions peuvent se transformer en outils fragiles et mal pensés une fois en production, alimentant le scepticisme sur les promesses du nouveau projet.&lt;/li&gt;
+&lt;li&gt;À $20/mo avec seulement 100 Go de transfert, le modèle tarifaire paraît minimaliste ou irréaliste à l'échelle, et le succès repose davantage sur le financement et les relations que sur la viabilité technologique réelle.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://crawshaw.io/blog/building-a-cloud"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47872324"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">e1afe265</guid>
+      <comments>https://news.ycombinator.com/item?id=47872324</comments>
+      <pubDate>Thu, 23 Apr 2026 04:44:19 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Apple corrige un bug permettant aux forces de l'ordre d'extraire les messages supprimés des iPhones</title>
       <link>https://techcrunch.com/2026/04/22/apple-fixes-bug-that-cops-used-to-extract-deleted-chat-messages-from-iphones/</link>
