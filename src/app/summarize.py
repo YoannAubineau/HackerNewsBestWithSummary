@@ -79,6 +79,7 @@ def compose_body(
     article_summary: str | None,
     discussion_summary: str | None,
     discussion_comment_count: int | None = None,
+    top_comments_markdown: str | None = None,
     url: str,
     hn_url: str,
 ) -> str:
@@ -91,7 +92,10 @@ def compose_body(
             word = "commentaire" if discussion_comment_count == 1 else "commentaires"
             heading += f" ({discussion_comment_count} {word} analysé"
             heading += "s)" if discussion_comment_count > 1 else ")"
-        parts.append(f"{heading}\n\n" + discussion_summary.strip())
+        block = discussion_summary.strip()
+        if top_comments_markdown and top_comments_markdown.strip():
+            block += "\n\n" + top_comments_markdown.strip()
+        parts.append(f"{heading}\n\n" + block)
     parts.append(f"---\n\n[Article original]({url}) · [Discussion HN]({hn_url})")
     return "\n\n".join(parts) + "\n"
 

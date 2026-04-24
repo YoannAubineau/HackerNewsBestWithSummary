@@ -1,3 +1,4 @@
+import heapq
 import html
 import re
 from collections.abc import Iterable, Iterator
@@ -28,6 +29,7 @@ class AlgoliaItem(BaseModel):
 
     model_config = ConfigDict(extra="ignore")
 
+    id: int | None = None
     author: str | None = None
     text: str | None = None
     points: int | None = None
@@ -38,9 +40,18 @@ AlgoliaItem.model_rebuild()
 
 
 @dataclass
+class TopComment:
+    id: int
+    author: str
+    points: int
+    text: str
+
+
+@dataclass
 class Discussion:
     comment_count: int
     text: str
+    top_comments_markdown: str
 
 
 def fetch_discussion(hn_item_id: int) -> Discussion | None:
@@ -51,7 +62,12 @@ def fetch_discussion(hn_item_id: int) -> Discussion | None:
     comments = list(_iter_comments(payload, settings.discussion_budget))
     if not comments:
         return None
-    return Discussion(comment_count=len(comments), text=_render_comments(comments))
+    top_comments = _collect_top_comments(payload)
+    return Discussion(
+        comment_count=len(comments),
+        text=_render_comments(comments),
+        top_comments_markdown=render_top_comments(top_comments),
+    )
 
 
 def fetch_submitter_text(hn_item_id: int) -> str:
@@ -200,3 +216,62 @@ def _render_comments(comments: Iterable[dict]) -> str:
         points = f", {c['points']} pts" if c["points"] is not None else ""
         parts.append(f"{indent}[{c['author']}{points}] {c['text'].strip()}")
     return "\n".join(parts)
+
+
+_WHITESPACE_RE = re.compile(r"\s+")
+_HN_ITEM_URL = "https://news.ycombinator.com/item?id={id}"
+
+
+def _collect_top_comments(
+    root: AlgoliaItem, n: int = 3, max_chars: int = 300
+) -> list[TopComment]:
+    """Return the ``n`` highest-scored comments in the whole tree.
+
+    Scans every node (the budget / pinning logic used to feed the LLM is
+    a separate concern — we want the truly top-voted comments, even ones
+    the LLM never saw). Deleted/dead nodes (missing ``id``, ``author``,
+    ``text``, or ``points``) are skipped. Text is HTML-stripped, internal
+    whitespace collapsed, and truncated to ``max_chars`` with a single
+    ``…`` (U+2026) on overflow.
+
+    Uses ``heapq.nlargest`` so the top-N list is maintained as a min-heap
+    of size ``n`` during the walk — memory stays O(n) rather than O(tree).
+    """
+    return heapq.nlargest(n, _iter_candidates(root, max_chars), key=lambda c: c.points)
+
+
+def _iter_candidates(root: AlgoliaItem, max_chars: int) -> Iterator[TopComment]:
+    for node in _walk_all(root):
+        if (
+            node.id is None
+            or node.author is None
+            or node.text is None
+            or node.points is None
+        ):
+            continue
+        cleaned = _WHITESPACE_RE.sub(" ", _strip_html(node.text)).strip()
+        if not cleaned:
+            continue
+        if len(cleaned) > max_chars:
+            cleaned = cleaned[: max_chars - 1].rstrip() + "\u2026"
+        yield TopComment(
+            id=node.id, author=node.author, points=node.points, text=cleaned
+        )
+
+
+def _walk_all(node: AlgoliaItem) -> Iterator[AlgoliaItem]:
+    stack: list[AlgoliaItem] = list(reversed(node.children))
+    while stack:
+        current = stack.pop()
+        yield current
+        stack.extend(reversed(current.children))
+
+
+def render_top_comments(comments: list[TopComment]) -> str:
+    if not comments:
+        return ""
+    lines = ["**Meilleurs commentaires** :", ""]
+    for c in comments:
+        url = _HN_ITEM_URL.format(id=c.id)
+        lines.append(f"- [{c.author}, {c.points} pts]({url}) : « {c.text} »")
+    return "\n".join(lines)

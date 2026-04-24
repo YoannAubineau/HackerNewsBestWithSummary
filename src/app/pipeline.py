@@ -101,6 +101,8 @@ def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int
             continue
         if discussion:
             write_sidecar(path, "discussion", discussion.text)
+            if discussion.top_comments_markdown:
+                write_sidecar(path, "top_comments", discussion.top_comments_markdown)
             article.discussion_comment_count = discussion.comment_count
         article.discussion_fetched_at = _now()
         article.status = Status.DISCUSSION_FETCHED
@@ -125,6 +127,7 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
     for path, article, body in list(iter_by_status(Status.DISCUSSION_FETCHED)):
         article_text = read_sidecar(path, "article")
         discussion_text = read_sidecar(path, "discussion")
+        top_comments_md = read_sidecar(path, "top_comments")
 
         try:
             article_summary: str | None = None
@@ -159,6 +162,7 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
                 article_summary=article_summary,
                 discussion_summary=discussion_summary,
                 discussion_comment_count=article.discussion_comment_count,
+                top_comments_markdown=top_comments_md,
                 url=article.url,
                 hn_url=article.hn_url,
             )
