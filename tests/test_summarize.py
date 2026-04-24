@@ -51,6 +51,28 @@ def test_parse_article_response_missing_title_keeps_summary():
     assert summary == "le corps"
 
 
+def test_parse_article_response_accepts_markdown_json_fence():
+    text = (
+        "```json\n"
+        '{"title": "titre", "summary": "corps"}\n'
+        "```"
+    )
+    title, summary = _parse_article_response(text)
+    assert title == "titre"
+    assert summary == "corps"
+
+
+def test_parse_article_response_accepts_bare_markdown_fence():
+    text = (
+        "```\n"
+        '{"title": "titre", "summary": "corps"}\n'
+        "```"
+    )
+    title, summary = _parse_article_response(text)
+    assert title == "titre"
+    assert summary == "corps"
+
+
 def test_compose_body_shows_discussion_comment_count():
     body = compose_body(
         article_summary="**Note.**\n\n- point",
