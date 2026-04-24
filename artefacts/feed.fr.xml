@@ -9,8 +9,81 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 24 Apr 2026 17:20:01 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 18:14:33 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Guide interactif sur le fonctionnement des modèles de langage basé sur la conférence de Karpathy</title>
+      <link>https://ynarwal.github.io/how-llms-work/</link>
+      <description>ynarwal.github.io/how-llms-work/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Ce guide explique comment les modèles de langage de grande taille comme ChatGPT sont construits, du téléchargement de données brutes jusqu'à l'assistant conversationnel. Le processus comprend deux phases majeures : le pré-entraînement sur 15 trillions de tokens pour créer un modèle de base, puis le post-entraînement supervisé et l'apprentissage par renforcement pour transformer ce simulateur d'autocomplétage en assistant utile.</p>
+<ul>
+<li>Le pré-entraînement collecte environ 44 téraoctets de texte filtré (Common Crawl), élimine les doublons, le contenu indésirable et les informations personnelles, puis convertit le texte brut en tokens via l'algorithme Byte Pair Encoding (100 000 vocabulaire)</li>
+<li>Un réseau Transformer avec des milliards de paramètres apprend à prédire le token suivant en ajustant ses poids via descente de gradient sur des mois de calcul GPU</li>
+<li>Le modèle de base résultant est un simulateur de document internet capable d'autocomplétion mais pas encore un assistant ; il génère du texte en échantillonnant probabilistiquement parmi les tokens possibles</li>
+<li>L'entraînement supervisé fine-tune le modèle sur des millions de conversations étiquetées par des humains, suivi d'un apprentissage par renforcement (RLHF) pour optimiser les réponses selon les préférences humaines</li>
+<li>Les modèles hallucinent confidemment, n'ont pas de mémoire persistante entre conversations, et leur connaissance s'arrête à la date de coupure des données d'entraînement ; la génération augmentée par récupération (RAG) atténue ces limitations en injectant des documents pertinents dans le contexte</li>
+</ul>
+<h2>Discussion sur Hacker News (26 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Les explications visuelles interactives sont claires et bien structurées, notamment sur les embeddings, l'attention et le processus d'inférence vs entraînement.</li>
+<li>Le contenu s'appuie directement sur la transcription de la conférence de Karpathy, garantissant une base solide et fidèle à la source.</li>
+<li>Les corrections apportées (44 TB corrigés en 10 disques durs, meilleure navigation, lien vers tiktokenizer) montrent une volonté d'amélioration continue et de responsabilité face aux retours.</li>
+<li>Les visualisations interactives du tokenization et de l'architecture offrent une approche pédagogique utile pour comprendre le fonctionnement des LLMs.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Le design utilise les tropes visuels génériques associés au contenu généré par IA (gradients, typographie de &quot;slop&quot;), donnant l'impression d'un manque d'effort personnel dans le style et la curation.</li>
+<li>La publication de contenu purement généré par LLM soulève des questions sur la valeur ajoutée : n'importe qui pourrait reproduire le même résultat avec le même prompt.</li>
+<li>Des erreurs factuelles notables (44 TB sur &quot;un seul disque dur&quot;) et des faiblesses techniques (mauvais tokenization d'exemples) réduisent la confiance malgré l'affichage proéminent de ces chiffres.</li>
+<li>Existent déjà des ressources humaines de référence mieux établies (« The Illustrated GPT-2 » de Jay Alammar) qui offrent une expertise et une réflexion pédagogique plus originale.</li>
+</ul>
+<hr />
+<p><a href="https://ynarwal.github.io/how-llms-work/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47886517">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">e640312d</guid>
+      <comments>https://news.ycombinator.com/item?id=47886517</comments>
+      <pubDate>Fri, 24 Apr 2026 06:48:53 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>Un utilisateur abandonne Claude Pro après problèmes de support, qualité dégradée et limites de tokens confuses</title>
+      <link>https://nickyreinert.de/en/2026/2026-04-24-claude-critics/</link>
+      <description>nickyreinert.de/en/2026/2026-04-24-claude-critics/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Un abonné à Claude Code rapporte son mécontentement après trois semaines d'utilisation satisfaisante suivies de problèmes croissants : support client automatisé inefficace, dégradation de la qualité des réponses du modèle, et gestion confuse des limites de tokens. L'utilisateur a finalement résilié son abonnement malgré son appréciation initiale du produit.</p>
+<ul>
+<li>Support client défaillant : réponses génériques en copier-coller sans traiter le problème réel, ticket fermé automatiquement sans résolution</li>
+<li>Qualité déclinante : suggestions de mauvaises pratiques (workarounds) coûteuses en tokens, modèle adoptant un comportement « lazy » plutôt que de produire du code de qualité</li>
+<li>Système de limites de tokens opaque : réinitialisation du calendrier sans justification, apparition soudaine d'une limite mensuelle non documentée, cache conversations effacé forçant une recharge coûteuse après interruption</li>
+<li>Efficacité énergétique vs expérience utilisateur : modèle optimisé pour réduire les coûts d'inférence au détriment de l'expérience client</li>
+<li>Raison de la résiliation : l'utilisateur estime qu'Anthropic ne peut pas gérer la croissance rapide du nombre de clients tout en maintenant la qualité</li>
+</ul>
+<h2>Discussion sur Hacker News (64 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Certains utilisateurs rapportent une expérience positive inchangée avec Claude, particulièrement ceux adoptant une approche &quot;copilot&quot; avec révision attentive plutôt que &quot;autopilot&quot;, et ne rencontrant pas de limites avec les plans mid-tier.</li>
+<li>Anthropic a montré de la transparence en reconnaissant les problèmes de régression de qualité et en publiant un post-mortem détaillé, dépassant ainsi la communication d'autres fournisseurs IA majeurs.</li>
+<li>Le modèle reste suffisamment compétent pour des tâches bien délimitées et l'optimisation des coûts par token continue, même si les prix globaux restent élevés.</li>
+<li>Des alternatives comme Kimi 2.6 ou Qwen 3.5-Coder-Next deviennent viables et offrent un meilleur rapport qualité-prix pour certains cas d'usage.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Régression cognitive documentée et reproduite : Claude 4.6 était performant, mais 4.7 et les récentes versions oublient des détails critiques, font des choix architecturaux simplistes, et dégradent silencieusement le &quot;level of effort&quot; sans consentement utilisateur.</li>
+<li>Consommation de tokens excessivement inconsistante et opaque : des sessions identiques produisent des usages radicalement différents; soupçons que l'acheminement vers des modèles bon marché (&quot;adaptive reasoning&quot;) déguisés en Opus/4.7 est une pratique habituelle.</li>
+<li>Modèle commercial pervers d'incitation aux hauts usages : Anthropic bénéficie des sessions qui n'accomplissent pas leur tâche; les limitations forcent les utilisateurs engagés vers des plans premium coûteux, transformant l'outil en &quot;boiled frog&quot; commercial.</li>
+<li>Support quasi inexistant, documentation opaque sur les politiques d'usage, et retrait de Claude Code du plan Pro malgré son utilisation publicisée crée une sensation de &quot;false advertising&quot;.</li>
+<li>La dépendance à des produits propriétaires sans transparency risque un délitement brutal de valeur une fois le lock-in établi, poussant utilisateurs vers open-source ou concurrents (OpenAI, Deepseek).</li>
+</ul>
+<hr />
+<p><a href="https://nickyreinert.de/en/2026/2026-04-24-claude-critics/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47892019">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">6265ec5f</guid>
+      <comments>https://news.ycombinator.com/item?id=47892019</comments>
+      <pubDate>Fri, 24 Apr 2026 15:59:19 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Spinel compile Ruby en binaires natifs avec inférence de types et optimisations C</title>
       <link>https://github.com/matz/spinel</link>
@@ -3771,45 +3844,6 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://www.apple.com/newsroom/images/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/tile/Apple-John-Ternus-Tim-Cook_lp.jpg.og.jpg?202604210034"/>
-      </media:group>
-    </item>
-    <item>
-      <title>StackAdapt propose des publicités dans ChatGPT à bas coûts en ciblant la pertinence des requêtes utilisateurs</title>
-      <link>https://www.adweek.com/media/exclusive-leaked-deck-reveals-stackadapts-playbook-for-chatgpt-ads/</link>
-      <description>www.adweek.com/media/exclusive-leaked-deck-reveals-stackadapts-playbook-for-chatgpt-ads/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> StackAdapt, partenaire publicitaire d'OpenAI, recrute des annonceurs pour tester des publicités dans ChatGPT en proposant des tarifs très compétitifs et un ciblage basé sur la pertinence des prompts utilisateurs.</p>
-<ul>
-<li>StackAdapt propose des CPM à partir de 15 dollars avec des frais de plateforme et de gestion réduits</li>
-<li>L'offre est présentée comme un accès anticipé à une nouvelle « couche de découverte » capturant les utilisateurs en phase de recherche et comparaison de produits</li>
-<li>Un programme pilote limité a été présenté à des acheteurs sélectionnés le 27 mars 2024</li>
-<li>StackAdapt positionne ChatGPT comme l'une des plateformes de consommation à la croissance la plus rapide au monde</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>Les publicités ciblées par pertinence des requêtes pourraient être plus utiles que les annonces génériques, offrant aux utilisateurs des produits réellement pertinents</li>
-<li>C'est une approche logique pour monétiser une plateforme avec des centaines de millions d'utilisateurs sans surcharger immédiatement les annonces payantes</li>
-<li>Les LLM peuvent naturellement devenir de meilleurs assistants d'achat que les moteurs de recherche s'ils fournissent des liens et recommandations fiables</li>
-<li>La concurrence existe (Claude, LLM locaux) ce qui peut freiner les dérives si OpenAI abuse de son pouvoir de marché</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>OpenAI aurait menti aux investisseurs en affirmant que les données de prompts ne seraient pas utilisées pour les annonces (potentielle fraude)</li>
-<li>Les ingénieurs sont poussés à implémenter des fonctionnalités contraires à l'éthique sous pression commerciale ; ce modèle reproduit les erreurs de Google/Meta</li>
-<li>Une fois l'habitude créée, OpenAI manipulera graduellement les résultats pour maximiser les revenus publicitaires (effet &quot;A/B testing cult&quot; : établir la confiance avant d'injecter des annonces non-évidentes)</li>
-<li>Les LLM ont une mission inhérente de vérité qui entre en conflit fondamental avec la monétisation par publicités manipulatrices</li>
-<li>Le partenariat avec un tiers (StackAdapt) plutôt qu'une plateforme interne sacrifie le contrôle et les marges pour une solution inférieure</li>
-</ul>
-<hr />
-<p><a href="https://www.adweek.com/media/exclusive-leaked-deck-reveals-stackadapts-playbook-for-chatgpt-ads/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47840980">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">d0652d0e</guid>
-      <comments>https://news.ycombinator.com/item?id=47840980</comments>
-      <pubDate>Mon, 20 Apr 2026 21:20:52 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://static-www.adweek.com/wp-content/uploads/2025/05/open-ai-data-chatgpt-2025.jpg?w=600&amp;h=315&amp;crop=1"/>
       </media:group>
     </item>
   </channel>
