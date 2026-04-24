@@ -17,6 +17,7 @@ from app.pipeline import (
     step_publish,
     step_summarize,
 )
+from app.storage import migrate_partitions
 from app.usage import generate_chart, record_usage
 
 log = structlog.get_logger()
@@ -104,3 +105,14 @@ def check_llm_versions_cmd() -> None:
     code = check_llm_versions()
     if code != 0:
         raise typer.Exit(code=code)
+
+
+@app.command("migrate-partitions")
+def migrate_partitions_cmd() -> None:
+    """Move article files to partitions keyed on ``our_published_at``.
+
+    One-shot, idempotent. Run after switching the partition scheme; a
+    second run is a no-op once every file sits in the right folder.
+    """
+    moved = migrate_partitions()
+    log.info("migrate_partitions", moved=moved)

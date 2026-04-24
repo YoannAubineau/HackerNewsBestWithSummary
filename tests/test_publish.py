@@ -57,13 +57,28 @@ def test_ask_hn_uses_hn_url_as_link(isolated_settings):
     assert items[0].findtext("comments") == "https://news.ycombinator.com/item?id=20"
 
 
-def test_feed_sorted_by_hn_item_id_desc(isolated_settings):
-    older = _make_article("old", hn_item_id=100, title="Ancien")
-    newer = _make_article("new", hn_item_id=200, title="Récent")
-    save(older, "body")
-    save(newer, "body")
+def test_feed_sorted_by_our_published_at_desc(isolated_settings):
+    # Deliberately choose hn_item_id order OPPOSITE to our_published_at
+    # order to prove the feed is sorted on the right field.
+    first_entered = _make_article(
+        "first",
+        hn_item_id=200,
+        title="Ancien dans notre flux",
+        our_published_at=datetime(2026, 4, 21, 8, 0, tzinfo=UTC),
+    )
+    last_entered = _make_article(
+        "last",
+        hn_item_id=100,
+        title="Récent dans notre flux",
+        our_published_at=datetime(2026, 4, 22, 8, 0, tzinfo=UTC),
+    )
+    save(first_entered, "body")
+    save(last_entered, "body")
     items = _parse(build_feed())
-    assert [i.findtext("title") for i in items] == ["Récent", "Ancien"]
+    assert [i.findtext("title") for i in items] == [
+        "Récent dans notre flux",
+        "Ancien dans notre flux",
+    ]
 
 
 def test_pubdate_is_source_published_at(isolated_settings):

@@ -40,9 +40,10 @@ hourly on a public repo, so minutes are free.
 
 - **No database**. One Markdown file per article, frontmatter for metadata,
   body for the LLM output. Files partitioned
-  `artefacts/articles/YYYY/MM/DD/` by the article's HN submission date.
-  Filename is a 8-char SHA-256 short hash of the `guid` for deterministic
-  idempotent naming.
+  `artefacts/articles/YYYY/MM/DD/` by `our_published_at` (the date the
+  article first appeared in our feed, captured from hnrss's
+  `lastBuildDate`), not by its HN submission date. Filename is a 8-char
+  SHA-256 short hash of the `guid` for deterministic idempotent naming.
 - **No backend**. The whole pipeline runs inside a single Actions job that
   reads/writes the repo and pushes back. The `artefacts/` folder is
   uploaded by a dedicated Actions workflow and served statically by Pages.
@@ -69,8 +70,12 @@ hourly on a public repo, so minutes are free.
 - `src/app/pipeline.py`, orchestration of the five steps and the retry
   bookkeeping (`_record_attempt`).
 - `src/app/storage.py`, filesystem layout. `iter_summarized()` walks the
-  date tree newest-first and sorts by `hn_item_id` desc within each day, so
-  publish can break as soon as it has 100 items without scanning old files.
+  date tree newest-first and sorts by `our_published_at` desc within each
+  day, so publish can break as soon as it has 100 items without scanning
+  old files. `find_existing(guid)` is a hash-based lookup used by
+  `step_fetch_feed` to detect already-seen entries — needed because the
+  partition is now based on a timestamp we cannot recompute from a fresh
+  feed poll.
 - `src/app/rss_in.py`, parses the hnrss feed and detects Ask HN / Show HN
   (when `entry.link == entry.comments`).
 - `src/app/fetch_article.py`, HTTP + trafilatura, falls back to the feed's
@@ -99,8 +104,11 @@ hourly on a public repo, so minutes are free.
   call, discussion synthesis, and a cheap title-only translation used when
   the article is `js_required`). French output, strict `## Titre` /
   `## Résumé` format that we parse back.
-- `src/app/publish.py`, builds `feed.fr.xml` with `feedgen`. Items ordered by
-  `hn_item_id` desc. `<link>` = article URL (or HN URL for Ask/Show HN),
+- `src/app/publish.py`, builds `feed.fr.xml` with `feedgen`. Items ordered
+  by `our_published_at` desc (date of entry in our feed), so the XSLT
+  preview shows the most recently ingested articles on top. Per-item
+  `<pubDate>` stays at `source_published_at` (HN submission date) on
+  purpose. `<link>` = article URL (or HN URL for Ask/Show HN),
   `<comments>` = HN URL. Description is markdown rendered with
   `markdown-it-py` (CommonMark-compliant, unlike the older `markdown`
   library which broke bullet lists).
@@ -112,8 +120,10 @@ hourly on a public repo, so minutes are free.
   `_Retryable` and falls through to the next model. The cascade design is
   load-bearing, don't bypass it.
 - **hnrss "best" is not "newest"**: articles in `/best` rotate based on
-  score decay, typically 1 to 4 days old. Sort by `hn_item_id` desc reflects
-  submission order because HN IDs are strictly monotonic.
+  score decay, typically 1 to 4 days old. That is why the feed is
+  ordered by `our_published_at` (when the item first hit our ingest)
+  rather than by `hn_item_id` — HN IDs are strictly monotonic in
+  submission time, not in when the article became interesting to us.
 - **Python-Markdown is not CommonMark**: don't switch back. Bullets directly
   under a non-blank line rendered as flat text. `markdown-it-py` handles it.
 - **Feed dedup is by `<guid>`**: we expose `short_hash` there, not the
