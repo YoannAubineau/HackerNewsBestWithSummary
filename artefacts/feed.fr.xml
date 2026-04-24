@@ -9,8 +9,44 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 24 Apr 2026 18:14:33 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 19:18:42 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>La Norvège s'apprête à interdire les réseaux sociaux aux moins de 16 ans</title>
+      <link>https://www.bloomberg.com/news/articles/2026-04-24/norway-wants-kids-to-be-kids-with-social-media-ban-for-under-16s</link>
+      <description>www.bloomberg.com/news/articles/2026-04-24/norway-wants-kids-to-be-kids-with-social-media-ban-for-under-16s</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>La Norvège rejoint d'autres pays en mettant en place une interdiction législative d'accès aux réseaux sociaux pour les enfants de moins de 16 ans. Cette mesure vise à protéger le bien-être et le développement des jeunes utilisateurs.</p>
+<ul>
+<li>La Norvège devient le dernier pays à adopter une loi restreignant l'accès aux plateformes de réseaux sociaux pour les mineurs de moins de 16 ans</li>
+<li>Cette interdiction s'inscrit dans une tendance croissante de régulation gouvernementale sur l'utilisation des médias sociaux par les enfants</li>
+<li>La mesure reflète les préoccupations concernant les impacts négatifs des réseaux sociaux sur la santé mentale et le développement des jeunes</li>
+</ul>
+<h2>Discussion sur Hacker News (100 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Les interdictions d'âge sur l'alcool et le tabac ont montré des résultats mesurables (baisse des accidents, réduction à long terme de la consommation adulte) ; les preuves scientifiques soutiennent que les restrictions fonctionnent mieux que le mythe selon lequel elles attireraient les jeunes.</li>
+<li>C'est un problème d'action collective : les parents bien intentionnés ne peuvent pas maintenir seuls des restrictions quand tous les pairs des enfants utilisent les plateformes, créant une pression sociale inévitable que seule la loi peut contrebalancer.</li>
+<li>La responsabilité devrait incomber aux entreprises, pas aux parents : Meta et autres doivent implémenter une vérification d'âge robuste plutôt que de laisser les parents gérer une bataille impossible contre des algorithmes conçus pour créer de la dépendance.</li>
+<li>Les effets du réseau jouent en faveur du ban : même si certains contournent les restrictions, à mesure que 75-90% des pairs quittent les plateformes, l'attrait diminue naturellement.</li>
+<li>Supprimer la publicité ciblée aux mineurs est un bénéfice collatéral significatif, réduisant l'exploitation commerciale des enfants.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>L'absence de preuves solides : une étude majeure n'a trouvé aucune corrélation entre réseaux sociaux/jeux vidéo et effets négatifs ; la discussion est devenue de la « panique morale » où les conclusions sont assumées avant les faits.</li>
+<li>Le vrai problème est l'architecture addictive (algorithmes de recommandation), pas l'âge : bloquer l'accès à 16 ans ne résout rien si les adultes restent piégés ; il faudrait réguler les algorithmes, pas les utilisateurs.</li>
+<li>C'est un cheval de Troie pour la surveillance obligatoire : les vérifications d'âge au niveau OS/gouvernemental creusent un précédent techniquement et légalement pour tracer tous les citoyens, détruire l'anonymat et justifier un contrôle de type « 1984 ».</li>
+<li>L'efficacité pratique est illusoire : les mineurs contourneront facilement avec des VPN, faux identifiants ou comptes parentaux ; l'Australie a tenté cela, les résultats sont contestés.</li>
+<li>Cela délègue la responsabilité parentale à l'État et aux entreprises : les parents doivent éduquer et établir des limites (parental controls existent déjà) plutôt que d'accepter une identification numérique généralisée coercitive.</li>
+</ul>
+<hr />
+<p><a href="https://www.bloomberg.com/news/articles/2026-04-24/norway-wants-kids-to-be-kids-with-social-media-ban-for-under-16s">Article original</a> · <a href="https://news.ycombinator.com/item?id=47891019">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">8b914210</guid>
+      <comments>https://news.ycombinator.com/item?id=47891019</comments>
+      <pubDate>Fri, 24 Apr 2026 14:45:10 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Guide interactif sur le fonctionnement des modèles de langage basé sur la conférence de Karpathy</title>
       <link>https://ynarwal.github.io/how-llms-work/</link>
@@ -3804,47 +3840,6 @@
       <comments>https://news.ycombinator.com/item?id=47839951</comments>
       <pubDate>Mon, 20 Apr 2026 20:19:13 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-    </item>
-    <item>
-      <title>Tim Cook devient président directeur général d'Apple, John Ternus lui succède à partir de septembre 2026</title>
-      <link>https://www.apple.com/newsroom/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/</link>
-      <description>www.apple.com/newsroom/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> Apple annonce une transition de direction le 1er septembre 2026 : Tim Cook devient président exécutif du conseil d'administration et John Ternus, vice-président de l'ingénierie matérielle, devient directeur général.</p>
-<ul>
-<li>John Ternus, 25 ans d'ancienneté chez Apple, prendra les fonctions de PDG à compter du 1er septembre 2026, tandis que Tim Cook restera en poste jusqu'à l'été pour assurer une transition en douceur</li>
-<li>Tim Cook devient président exécutif et continuera à contribuer aux relations avec les décideurs politiques mondiaux</li>
-<li>Arthur Levinson, président indépendant depuis 15 ans, devient directeur indépendant principal</li>
-<li>Ternus a dirigé l'ingénierie matérielle de produits phares (iPad, AirPods, iPhone, Mac) et a mis l'accent sur la durabilité et l'accessibilité</li>
-<li>Sous la direction de Cook (depuis 2011), Apple a multiplié sa capitalisation boursière par 12 et ses revenus annuels par 3,8</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>Ternus a prouvé son excellence dans la gestion matérielle (transition Apple Silicon, redesign des Mac), domaine où Apple excelle déjà</li>
-<li>La transition interne préserve la culture d'entreprise et évite les bouleversements ; elle s'accompagne de préparations managériales en coulisses depuis longtemps</li>
-<li>À 50-51 ans, il a l'âge idéal pour mener l'entreprise sur une longue durée, contrairement à Cook qui quitte à son apogée</li>
-<li>Son profil d'ingénieur matériel contraste avec celui de Cook (logisticien) et pourrait raviver l'innovation produit et réduire les services envahissants</li>
-<li>Le timing de septembre permet une première keynote sous son leadership et crée une dynamique positive dès le départ</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Les dirigeants matériels ont historiquement échoué dans la gestion des logiciels ; rien ne garantit que Ternus inverserait la tendance macOS/iOS</li>
-<li>Apple manque d'innovation logicielle depuis des années (bugs mineurs persistants, Siri stagnant, Liquid Glass inutile) : un seul changement de leadership peut ne pas suffire</li>
-<li>Cook a livré des résultats exceptionnels (4 T$ de capitalisation, Apple Silicon) ; les attentes vis-à-vis de Ternus seront démesurées</li>
-<li>L'absence de vision claire sur l'IA et les services (notamment les publicités intrusives dans l'OS) suggère que des problèmes structurels persisteront au-delà du changement de CEO</li>
-<li>Le départ précipité de Cook soulève des questions ; certains craignent une transition forcée plutôt que volontaire, pouvant indiquer des tensions internes</li>
-</ul>
-<hr />
-<p><a href="https://www.apple.com/newsroom/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47840219">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">73ab13af</guid>
-      <comments>https://news.ycombinator.com/item?id=47840219</comments>
-      <pubDate>Mon, 20 Apr 2026 20:39:32 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://www.apple.com/newsroom/images/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/tile/Apple-John-Ternus-Tim-Cook_lp.jpg.og.jpg?202604210034"/>
-      </media:group>
     </item>
   </channel>
 </rss>
