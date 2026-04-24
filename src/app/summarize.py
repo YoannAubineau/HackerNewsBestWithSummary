@@ -104,7 +104,7 @@ def _parse_article_response(text: str) -> tuple[str | None, str]:
     original title and the raw model output as the body.
     """
     try:
-        data = json.loads(text)
+        data = json.loads(_strip_code_fence(text))
     except json.JSONDecodeError:
         return None, text.strip()
     if not isinstance(data, dict):
@@ -116,3 +116,17 @@ def _parse_article_response(text: str) -> tuple[str | None, str]:
     title = raw_title.strip() if isinstance(raw_title, str) else ""
     summary = raw_summary.strip()
     return (title or None), summary
+
+
+def _strip_code_fence(text: str) -> str:
+    """Drop a surrounding ```json ... ``` markdown fence if the LLM added one."""
+    s = text.strip()
+    if not s.startswith("```"):
+        return s
+    first_nl = s.find("\n")
+    if first_nl == -1:
+        return s
+    s = s[first_nl + 1 :]
+    if s.endswith("```"):
+        s = s[:-3]
+    return s.strip()
