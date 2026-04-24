@@ -3,8 +3,9 @@ from datetime import UTC, datetime
 from app import pipeline
 from app.llm import LLMCallResult
 from app.models import Article, ContentSource, Status
-from app.pipeline import _record_attempt, run_cycle, step_fetch_articles
-from app.storage import load, save, sidecar_path, write_sidecar
+from app.pipeline import _record_attempt, run_cycle, step_fetch_articles, step_fetch_feed
+from app.rss_in import FeedEntry
+from app.storage import load, move_to_failed, save, sidecar_path, write_sidecar
 from app.summarize import ArticleSummary
 
 
@@ -268,6 +269,54 @@ def test_step_summarize_records_llm_metrics(isolated_settings, monkeypatch):
     assert reloaded.llm_input_tokens == 1300
     assert reloaded.llm_output_tokens == 280
     assert reloaded.llm_latency_ms == 2400
+
+
+def _make_feed_entry(guid: str, hn_item_id: int = 42) -> FeedEntry:
+    return FeedEntry(
+        guid=guid,
+        title="t",
+        url="https://example.com/a",
+        hn_url=f"https://news.ycombinator.com/item?id={hn_item_id}",
+        hn_item_id=hn_item_id,
+        source_published_at=datetime(2026, 4, 21, 8, 0, tzinfo=UTC),
+        feed_summary="",
+        is_ask_or_show_hn=False,
+        observed_at=datetime(2026, 4, 22, 9, 0, tzinfo=UTC),
+    )
+
+
+def test_step_fetch_feed_skips_already_seen_guid(isolated_settings, monkeypatch):
+    # An existing article saved under a DIFFERENT our_published_at than the
+    # feed's observed_at must still be recognised as already-seen. The
+    # former bug: path-based check with source_published_at happened to
+    # work because source_published_at is stable; with our_published_at
+    # based partitioning, only a guid-wide lookup works.
+    existing = _make_article("guid-seen")
+    save(existing)
+    entry = _make_feed_entry(
+        "guid-seen",
+        hn_item_id=1,
+    )
+    # Feed's observed_at is a different day than the saved our_published_at.
+    entry.observed_at = datetime(2026, 5, 1, 12, 0, tzinfo=UTC)
+    monkeypatch.setattr(pipeline, "fetch_source_feed", lambda: [entry])
+    assert step_fetch_feed() == 0
+
+
+def test_step_fetch_feed_skips_failed_guid(isolated_settings, monkeypatch):
+    article = _make_article("guid-prev-failed")
+    article.status = Status.PENDING
+    path = save(article)
+    move_to_failed(path, article, "body")
+    entry = _make_feed_entry("guid-prev-failed", hn_item_id=1)
+    monkeypatch.setattr(pipeline, "fetch_source_feed", lambda: [entry])
+    assert step_fetch_feed() == 0
+
+
+def test_step_fetch_feed_creates_new_pending(isolated_settings, monkeypatch):
+    entry = _make_feed_entry("guid-fresh", hn_item_id=777)
+    monkeypatch.setattr(pipeline, "fetch_source_feed", lambda: [entry])
+    assert step_fetch_feed() == 1
 
 
 def test_step_summarize_breaker_disabled_when_limit_is_zero(isolated_settings, monkeypatch):

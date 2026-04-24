@@ -16,9 +16,9 @@ from app.rss_in import FeedEntry, fetch_source_feed
 from app.storage import (
     clear_sidecars,
     ensure_articles_dir,
+    find_existing,
     iter_by_status,
     move_to_failed,
-    path_for,
     read_sidecar,
     save,
     write_sidecar,
@@ -49,8 +49,7 @@ def step_fetch_feed() -> int:
         return 0
     created = 0
     for entry in entries:
-        path = path_for(entry.guid, entry.source_published_at)
-        if path.exists():
+        if find_existing(entry.guid) is not None:
             continue
         _create_pending(entry)
         created += 1

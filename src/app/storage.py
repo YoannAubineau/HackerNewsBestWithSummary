@@ -18,10 +18,29 @@ def _partition_path(articles_dir: Path, when: datetime) -> Path:
     return articles_dir / f"{when.year:04d}" / f"{when.month:02d}" / f"{when.day:02d}"
 
 
-def path_for(guid: str, source_published_at: datetime, *, failed: bool = False) -> Path:
+def path_for(guid: str, our_published_at: datetime, *, failed: bool = False) -> Path:
     settings = get_settings()
     base = settings.failed_dir if failed else settings.articles_dir
-    return _partition_path(base, source_published_at) / f"{short_hash(guid)}.md"
+    return _partition_path(base, our_published_at) / f"{short_hash(guid)}.md"
+
+
+def find_existing(guid: str) -> Path | None:
+    """Return the on-disk path of an article matching ``guid`` if one exists.
+
+    Searches the whole ``articles_dir`` tree (active + ``_failed``), because
+    the partition is now based on ``our_published_at`` — which is the
+    timestamp *we recorded the first time we saw the item*, not a value we
+    can recompute from a fresh feed entry (hnrss's ``lastBuildDate`` drifts
+    between polls). The filename is deterministic (``short_hash(guid)``),
+    so a ``rglob`` unambiguously finds the file wherever it sits.
+    """
+    settings = get_settings()
+    if not settings.articles_dir.exists():
+        return None
+    target = f"{short_hash(guid)}.md"
+    for match in settings.articles_dir.rglob(target):
+        return match
+    return None
 
 
 def sidecar_path(article_path: Path, kind: str) -> Path:
@@ -51,7 +70,7 @@ def clear_sidecars(article_path: Path) -> None:
 
 
 def save(article: Article, body: str = "") -> Path:
-    path = path_for(article.guid, article.source_published_at)
+    path = path_for(article.guid, article.our_published_at)
     path.parent.mkdir(parents=True, exist_ok=True)
     post = frontmatter.Post(body, **_serialize_metadata(article))
     path.write_text(frontmatter.dumps(post) + "\n", encoding="utf-8")
@@ -78,7 +97,7 @@ def iter_by_status(status: Status) -> Iterator[tuple[Path, Article, str]]:
 
 def move_to_failed(path: Path, article: Article, body: str) -> Path:
     article.status = Status.FAILED
-    dest = path_for(article.guid, article.source_published_at, failed=True)
+    dest = path_for(article.guid, article.our_published_at, failed=True)
     dest.parent.mkdir(parents=True, exist_ok=True)
     post = frontmatter.Post(body, **_serialize_metadata(article))
     dest.write_text(frontmatter.dumps(post) + "\n", encoding="utf-8")
@@ -91,13 +110,14 @@ def dates_in_feed(entries_dates: list[datetime]) -> set[date]:
 
 
 def iter_summarized() -> Iterator[tuple[Path, Article, str]]:
-    """Yield summarized articles in descending order of HN item ID.
+    """Yield summarized articles in descending order of ``our_published_at``.
 
     Walks the YYYY/MM/DD partition newest-first and sorts within each day
-    folder by ``hn_item_id`` desc. Since HN IDs are monotonic in submission
-    time, no article in an earlier day can outrank an article in a later
-    day — callers can break out of the loop as soon as they have enough
-    items without scanning the rest of the repository.
+    folder by ``our_published_at`` desc. Since the partition itself is keyed
+    on ``our_published_at`` (the timestamp we recorded the first time we
+    saw the item in our feed), no article in an earlier day can outrank an
+    article in a later day — callers can break out of the loop as soon as
+    they have enough items without scanning the rest of the repository.
     """
     settings = get_settings()
     root = settings.articles_dir
@@ -109,7 +129,7 @@ def iter_summarized() -> Iterator[tuple[Path, Article, str]]:
             article, body = load(path)
             if article.status == Status.SUMMARIZED:
                 batch.append((path, article, body))
-        batch.sort(key=lambda t: t[1].hn_item_id, reverse=True)
+        batch.sort(key=lambda t: t[1].our_published_at, reverse=True)
         yield from batch
 
 
@@ -144,3 +164,45 @@ def ensure_articles_dir() -> None:
 def purge_tree(root: Path) -> None:
     if root.exists():
         shutil.rmtree(root)
+
+
+def migrate_partitions() -> int:
+    """Move every article file to the partition matching its ``our_published_at``.
+
+    One-shot helper for the switch from ``source_published_at``-based
+    partitioning to ``our_published_at``-based partitioning. Idempotent —
+    files already in the right place are left alone, and a second run is
+    a no-op. Sidecars (``<stem>.raw.*.txt``) travel with the ``.md`` they
+    belong to. Source directories that become empty after the move are
+    removed (up to the articles root).
+    """
+    settings = get_settings()
+    if not settings.articles_dir.exists():
+        return 0
+    moved = 0
+    source_dirs: set[Path] = set()
+    for path in list(settings.articles_dir.rglob("*.md")):
+        article, _body = load(path)
+        failed = path.is_relative_to(settings.failed_dir)
+        target = path_for(article.guid, article.our_published_at, failed=failed)
+        if target == path:
+            continue
+        target.parent.mkdir(parents=True, exist_ok=True)
+        sidecars = list(path.parent.glob(f"{path.stem}.raw.*.txt"))
+        path.rename(target)
+        for sidecar in sidecars:
+            sidecar.rename(target.parent / sidecar.name)
+        source_dirs.add(path.parent)
+        moved += 1
+    for directory in sorted(source_dirs, key=lambda d: len(d.parts), reverse=True):
+        _prune_empty_dirs(directory, stop_at=settings.articles_dir)
+    return moved
+
+
+def _prune_empty_dirs(start: Path, *, stop_at: Path) -> None:
+    current = start
+    while current != stop_at and current.is_relative_to(stop_at):
+        if not current.exists() or any(current.iterdir()):
+            return
+        current.rmdir()
+        current = current.parent
