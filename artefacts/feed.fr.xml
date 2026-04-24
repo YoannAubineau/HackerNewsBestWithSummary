@@ -9,8 +9,47 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 24 Apr 2026 21:25:34 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 22:14:46 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Raylib 6.0 ajoute un moteur de rendu logiciel et restructure ses APIs</title>
+      <link>https://github.com/raysan5/raylib/releases/tag/6.0</link>
+      <description>github.com/raysan5/raylib/releases/tag/6.0</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Raylib 6.0 représente la plus grande version depuis la création de la bibliothèque, avec 330 nouveaux problèmes fermés, 2000 commits et 20 nouvelles fonctions ajoutées à l'API. Cette version introduit un moteur de rendu entièrement logiciel (rlsw) permettant une exécution sur CPU sans GPU, ainsi que plusieurs nouveaux systèmes de gestion et de nouvelles architectures de plateforme.</p>
+<ul>
+<li>Un nouveau moteur de rendu logiciel (rlsw) exécute raylib sur CPU pur, sans GPU requis, permettant le support de microcontrôleurs comme l'ESP32 et des appareils RISC-V</li>
+<li>Nouvelles architectures de plateforme : backends Win32 natif, Emscripten/web, mémoire headless, et support réorganisé pour SDL, RGFW et DRM</li>
+<li>Système d'animation squelettique repensé avec blending d'animations, transitions temporisées et support GPU-skinning amélioré</li>
+<li>API complète de gestion de fichiers (+40 fonctions) et de texte (+30 fonctions) intégrées dans un seul module rcore</li>
+<li>Support redessiné des modes fullscreen et haute résolution (High-DPI) testé sur Windows, Linux et macOS avec plusieurs moniteurs et résolutions 4K</li>
+<li>Nouvel outil rexm de gestion d'exemples simplifiant l'ajout/suppression/renommage des +70 nouveaux exemples créés dans cette version</li>
+</ul>
+<h2>Discussion sur Hacker News (17 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Le nouveau moteur de rendu logiciel ouvre des possibilités intéressantes, notamment sur des plateformes contraintes comme l'ESP32S3.</li>
+<li>Raylib excelle comme bibliothèque minimaliste pour les prototypes et les jeux 2D : pas d'opinions imposées, flexibilité maximale et excellente ergonomie avec certains langages (Swift avec C-interop, Odin).</li>
+<li>La nouvelle API de gestion de texte (+30 fonctions) résout enfin un problème historique de performance sur les scènes texte-intensives.</li>
+<li>L'accessibilité cross-platform (gestion d'entrée, rendu, fenêtrage) en fait un excellent point de départ pour les game jams et projets créatifs.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Raylib n'est pas un concurrent direct d'Unreal/Unity : il manque de briques essentielles (éclairage avancé, ray-tracing, pathfinding) et nécessite de recoder soi-même des systèmes complexes, allongeant significativement le développement.</li>
+<li>Le scope du projet semble limité à la 2D ; le support 3D complet avec skinned meshes n'apparaît pas envisagé, ce qui limite la durée de vie des projets au-delà d'une certaine complexité.</li>
+<li>Malgré les améliorations, la question de la viabilité à long terme de Raylib pour les jeux ambitieux reste ouverte, comparé à des engines plus matures.</li>
+</ul>
+<hr />
+<p><a href="https://github.com/raysan5/raylib/releases/tag/6.0">Article original</a> · <a href="https://news.ycombinator.com/item?id=47874854">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">713c05f6</guid>
+      <comments>https://news.ycombinator.com/item?id=47874854</comments>
+      <pubDate>Thu, 23 Apr 2026 12:16:16 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://opengraph.githubassets.com/0ced67c6358522b6db8a616b36e431bf8c9aa30cab10aeadbce505ac56079579/raysan5/raylib/releases/tag/6.0"/>
+      </media:group>
+    </item>
     <item>
       <title>Les comportements qui isolent socialement et créent des expériences relationnelles incoérentes</title>
       <link>https://nate.leaflet.pub/3mk4xkaxobc2p</link>
@@ -3842,47 +3881,6 @@
       <comments>https://news.ycombinator.com/item?id=47836730</comments>
       <pubDate>Mon, 20 Apr 2026 16:34:25 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-    </item>
-    <item>
-      <title>Les ordinateurs quantiques ne menacent pas les clés symétriques de 128 bits</title>
-      <link>https://words.filippo.io/128-bits/</link>
-      <description>words.filippo.io/128-bits/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> Contrairement à une idée fausse répandue, les ordinateurs quantiques n'affaiblissent pas la sécurité des clés symétriques de 128 bits comme AES-128. L'algorithme de Grover, bien qu'offrant une accélération quadratique théorique, ne peut pas être parallélisé efficacement, ce qui rend les attaques pratiquement infaisables même avec une technologie quantique avancée.</p>
-<ul>
-<li>L'algorithme de Grover ne peut fonctionner que séquentiellement ; la parallélisation nécessaire pour le rendre pratique détruit son avantage quadratique et augmente considérablement le coût total de l'attaque.</li>
-<li>Briser AES-128 par Grover nécessiterait 140 billions de circuits quantiques de 724 qubits logiques fonctionnant en parallèle pendant 10 ans, soit 430 quadrillions de fois plus coûteux que de casser les courbes elliptiques par Shor.</li>
-<li>Le NIST, la BSI et des experts en cryptographie quantique (dont Samuel Jaques) s'accordent à dire que tous les types de clés AES (128, 192, 256 bits) restent sûrs contre les ordinateurs quantiques.</li>
-<li>Augmenter les tailles de clés symétriques constituerait un effort inutile qui détournerait les ressources de la transition réelle urgente vers la cryptographie post-quantique pour les algorithmes asymétriques.</li>
-<li>NIST a intégré AES-128 comme référence de sécurité Category 1 pour la cryptographie post-quantique, reconnaissant explicitement que Grover ne réduit pas de moitié la sécurité des clés symétriques.</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>128-bit symmetric keys restent sûres contre les ordinateurs quantiques même avec l'algorithme de Grover, qui nécessiterait 140 trillions de circuits quantiques de 724 qubits logiques fonctionnant 10 ans</li>
-<li>La puissance de calcul requise pour une attaque quantique dépasse les limites physiques possibles (chaleur, énergie) même avec des améliorations technologiques exponentielles</li>
-<li>Les menaces pratiques actuelles proviennent d'autres vecteurs d'attaque ; une rotation agressif des clés et l'utilisation de TLS réduisent significativement les risques</li>
-<li>Grover's algorithm est mathématiquement prouvé optimal et ne peut pas être amélioré de façon disruptive pour casser AES rapidement</li>
-<li>Les changements de clés astuces (OAuth rotatif très fréquent) offrent des mitigations pratiques contre même les attaques quantiques</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>L'incertitude persiste sur les futures percées quantiques au-delà de Grover et sur les faiblesses structurelles spécifiques des ciphers (ex: attaques quantiques contre réseaux Feistel 3-4 rounds)</li>
-<li>Les rumeurs suggèrent des ordinateurs quantiques fonctionnels possibles dans 5 ans ; cette timeline imprévisible justifie la migration préventive</li>
-<li>La transition vers la cryptographie post-quantique (ML-KEM, SNTRUP) implique des coûts d'adoption élevés mais le report risque d'être coûteux à long terme</li>
-<li>Les données sensibles capturées aujourd'hui (&quot;harvest now, decrypt later&quot;) pourraient devenir compromises lors d'avancées quantiques futures</li>
-<li>Pour les systèmes sans rotation régulière de clés, aucune garantie réelle existe contre une attaque quantique retardée</li>
-</ul>
-<hr />
-<p><a href="https://words.filippo.io/128-bits/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47836784">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">05126279</guid>
-      <comments>https://news.ycombinator.com/item?id=47836784</comments>
-      <pubDate>Mon, 20 Apr 2026 16:37:48 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://assets.buttondown.email/images/4de912cf-5147-4672-9800-4510d734d5ec.jpeg?w=960&amp;fit=max"/>
-      </media:group>
     </item>
   </channel>
 </rss>
