@@ -107,11 +107,13 @@ def _neutralize_steps(monkeypatch, *, summarize_count: int = 0) -> list[str]:
     return calls
 
 
-def test_run_cycle_skips_publish_when_nothing_new(isolated_settings, monkeypatch):
+def test_run_cycle_publishes_even_when_nothing_new(isolated_settings, monkeypatch):
+    # Always republishing lets publish-side code changes propagate on the
+    # next cycle without waiting for a fresh HN submission.
     calls = _neutralize_steps(monkeypatch, summarize_count=0)
     isolated_settings.feed_output_path.write_text("<rss/>", encoding="utf-8")
     run_cycle()
-    assert calls == []
+    assert calls == ["publish"]
 
 
 def test_run_cycle_publishes_when_new_summaries(isolated_settings, monkeypatch):

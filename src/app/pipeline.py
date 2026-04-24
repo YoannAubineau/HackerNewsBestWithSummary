@@ -191,12 +191,11 @@ def run_cycle() -> CycleResult:
     step_fetch_feed()
     step_fetch_articles(failures)
     step_fetch_discussions(failures)
-    newly_summarized = step_summarize(failures)
-    feed_exists = get_settings().feed_output_path.exists()
-    if newly_summarized > 0 or not feed_exists:
-        step_publish()
-    else:
-        log.info("publish_skipped", reason="no new summaries, feed up to date")
+    step_summarize(failures)
+    # Always publish, even when no new articles were summarized: a code-only
+    # change on the publish side (description format, feed structure, …) must
+    # flow through on the next cycle without waiting for a fresh HN submission.
+    step_publish()
     return CycleResult(failures=failures)
 
 
