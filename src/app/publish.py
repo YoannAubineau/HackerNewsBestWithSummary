@@ -104,8 +104,7 @@ def _add_entry(fg: FeedGenerator, article: Article, body: str) -> None:
     entry.comments(article.hn_url)
     entry.pubDate(article.source_published_at)
     entry.source(url=settings.source_feed_url, title="Hacker News Best via hnrss.org")
-    excerpt = _extract_excerpt(body, fallback=article.rewritten_title or article.title)
-    entry.description(excerpt)
+    entry.description(_display_url(link))
     entry.content(content=_md.render(body), type="CDATA")
     if article.image_url:
         # `media` is attached to FeedEntry at runtime by fg.load_extension("media");
@@ -113,18 +112,9 @@ def _add_entry(fg: FeedGenerator, article: Article, body: str) -> None:
         entry.media.thumbnail({"url": article.image_url})  # type: ignore[attr-defined]
 
 
-def _extract_excerpt(body: str, fallback: str) -> str:
-    """First plain paragraph of the Markdown body, for the <description> preview.
-
-    Short French excerpt so RSS readers (Feedly in particular) can treat
-    <description> as the list-view preview and the full HTML sits in
-    <content:encoded>.
-    """
-    for block in body.split("\n\n"):
-        stripped = block.strip()
-        if not stripped:
-            continue
-        if stripped.startswith(("#", "-", "*", "---", ">", "|")):
-            continue
-        return stripped
-    return fallback
+def _display_url(url: str) -> str:
+    for prefix in ("https://", "http://"):
+        if url.startswith(prefix):
+            url = url[len(prefix) :]
+            break
+    return url.split("?", 1)[0]
