@@ -78,7 +78,7 @@
             object-fit: cover;
           }
           article .desc { margin-top: .75rem; font-size: .96rem; }
-          article .desc h2 { font-size: 1rem; margin-top: 1.25rem; color: var(--muted); }
+          article .desc h2 { font-size: 1.1rem; margin-top: 1.25rem; color: var(--muted); }
           article .desc p { margin: .5rem 0; }
           article .desc ul { padding-left: 1.25rem; }
           article .desc li { margin: .15rem 0; }
