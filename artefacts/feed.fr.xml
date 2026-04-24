@@ -9,7 +9,11 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
+<<<<<<< HEAD
     <lastBuildDate>Fri, 24 Apr 2026 21:04:18 +0000</lastBuildDate>
+=======
+    <lastBuildDate>Fri, 24 Apr 2026 21:08:32 +0000</lastBuildDate>
+>>>>>>> a3a7f38 (Refresh four more articles with HN-ordered top comments)
     <ttl>15</ttl>
     <item>
       <title>Les comportements qui isolent socialement et créent des expériences relationnelles incoérentes</title>
@@ -129,9 +133,9 @@
 </ul>
 <p><strong>Meilleurs commentaires</strong> :</p>
 <ul>
-<li><a href="https://news.ycombinator.com/item?id=47890900">1-6</a> : « Interesting read but the author's thoughts were all over the place. »</li>
-<li><a href="https://news.ycombinator.com/item?id=47891119">rafram</a> : « I think this should've been two separate blog posts. »</li>
 <li><a href="https://news.ycombinator.com/item?id=47891121">bennettnate5</a> : « Incidentally, this describes what I believe to be the great difficulty of PhD research. You have to take a topic you find interesting and read all possible related work in it, which tends to result in significant scope creep as you realize just how much there is that already does you want to do. Ha… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47892218">tra3</a> : « In one of his speeches, Obama said &quot;Better is good&quot;. I think about this a lot. It feels like better compounds over time, too. Small improvements add up. From experience, nothing new is perfect the first go round, so sitting around trying to come up with a perfect design is counterproductive because… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47892089">tyleo</a> : « Our CEO at Rec Room put this a way I really like, &quot;Teams are always telling me they wish they did shorter projects. I've almost never heard a team say, 'we wish we delayed launch, did something more complex, polished more'&quot;I don't think it holds in 100% of situations but I do think if you're going… »</li>
 </ul>
 <hr />
 <p><a href="https://kevinlynagh.com/newsletter/2026_04_overthinking/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47890799">Discussion HN</a></p>
@@ -169,9 +173,9 @@
 </ul>
 <p><strong>Meilleurs commentaires</strong> :</p>
 <ul>
-<li><a href="https://news.ycombinator.com/item?id=47880286">codezero</a> : « It amazes me she chanced upon it at the right time and even knew exactly what it was. »</li>
-<li><a href="https://news.ycombinator.com/item?id=47880547">mikestew</a> : « Sooo, if they are/were popular as pets, how come there's less than 1000 left worldwide? Those two facts don't reconcile for me. »</li>
-<li><a href="https://news.ycombinator.com/item?id=47880588">nom</a> : « This is so unlikely to happen. There is a good chance that they are not as rare as we currently think, at least in that particular area. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47880783">janalsncm</a> : « Indeed, most axolotls in Wales are Welsh axolotls.But I do wonder how many do live in Wales. If it’s not just an abandoned pet that would be really interesting. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47886348">pkphilip</a> : « Amazing to see all of the things kids have been finding these days!Middle schooler finds coin from Troy in Berlin https://www.thehistoryblog.com/archives/75848‘It Had Teeth’: A 3-Year-Old Discovers Ancient Treasure in Israel While on a hike with her family, a child stumbled across a 3,800-year-old… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47887197">pidgeon_lover</a> : « &gt; &quot;This is a quite a unique situation, and I think the young female has a keen eye to actually spot it,&quot; [Chris Newman, director of the National Centre for Reptile Welfare, said]What an odd thing to say. »</li>
 </ul>
 <hr />
 <p><a href="https://www.bbc.com/news/articles/c9d4zgnqpqeo">Article original</a> · <a href="https://news.ycombinator.com/item?id=47880189">Discussion HN</a></p>
@@ -185,6 +189,97 @@
       </media:group>
     </item>
     <item>
+<<<<<<< HEAD
+=======
+      <title>Retrouver une utilisation intentionnelle d'Internet en adoptant les pratiques des années 1990</title>
+      <link>https://joshblais.com/blog/using-the-internet-like-its-1999/</link>
+      <description>joshblais.com/blog/using-the-internet-like-its-1999/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>L'article défend un retour à une utilisation décentralisée et intentionnelle d'Internet, loin des algorithmes et des plateformes de réseaux sociaux modernes qui fragmentent l'attention. L'auteur propose de s'inspirer des technologies et protocoles des années 1990 et 2000 pour reprendre le contrôle de notre expérience en ligne.</p>
+<ul>
+<li>Utiliser les flux RSS pour suivre manuellement les créateurs et contenus sans algorithme, plutôt que de dépendre des recommandations des plateformes</li>
+<li>Préférer les protocoles textuels comme IRC et XMPP (ou héberger soi-même XMPP) pour des échanges avec un meilleur signal-bruit que les réseaux sociaux modernes</li>
+<li>Télécharger et archiver localement les contenus importants pour éviter la pourriture des liens et conserver une copie personnelle</li>
+<li>Privilégier l'email comme canal de communication personnel plutôt que les messages sur les réseaux sociaux, et utiliser le chiffrement PGP</li>
+<li>Adopter la méthode POSSE (publier sur son site personnel puis distribuer) et chercher activement les créateurs authentiques plutôt que du contenu généré par IA</li>
+</ul>
+<h2>Discussion sur Hacker News (45 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>La nostalgie du Web 1999 reflète surtout un besoin légitime de retrouver l'agentivité utilisateur et de réduire le bloat technologique : des sites rapides et légers sont tout à fait possibles sans sacrifier la modernité.</li>
+<li>Le Web ancien présentait une diversité authentique et un esprit expérimental (passion projects, webrings, découverte) que les silos algorithmiques actuels ont étouffé, rendant l'information moins accessible malgré son abondance.</li>
+<li>Des solutions existent déjà pour recréer cette expérience (RSS readers, Lemmy, Neocities, DNS blocklists, offline-first apps) : le problème n'est pas technique mais relève de choix commerciaux privilégiant la captation de données sur l'expérience utilisateur.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Le Web 1999 était en réalité rempli de contenu malveillant, de spam, de malware et de prédation, simplement moins visible faute de régulation ; la comparaison idéalisée ignore les dysfonctionnements réels d'alors (pop-ups, crashes, incompatibilité des navigateurs).</li>
+<li>La nostalgie du Web 1999 est largement un biais de mémoire sélective : les gens confondent la technologie avec le sentiment d'être jeune et d'expérimenter la découverte pour la première fois, plutôt que d'évaluer objectivement la qualité actuelle (documentation gratuite, cours en ligne, accès à l'information).</li>
+<li>Le contrôle technique réel des dispositifs par les entreprises (notamment téléphones versus PCs) est un problème bien plus fondamental que la esthétique du Web, et replonger dans le HTML simple ne résout pas le manque d'agentivité des utilisateurs modernes.</li>
+</ul>
+<p><strong>Meilleurs commentaires</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47891527">keepamovin</a> : « Probably sounds really weird but I get almost teary eyed when I see those Windows teal-background era graphics and a Netscape browser. Those days! These are the nights that never die. (https://www.youtube.com/watch?v=UtF6Jej8yb4) I don't know if you felt it, but I felt it. Back then, in those days.… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47890501">vovanidze</a> : « the nostalgia for 1999 isnt really about missing dial up or basic html, its about mourning the loss of user agency. back then the browser actually worked for you. today the client is basically a hostile enviroment running megabytes of third party js just to track telemetry.going back to gopher or t… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47893936">fasterik</a> : « I've come to the conclusion that nostalgia is almost never about the objective quality of something. It's about the associations we make between a certain time in our lives and the media/technology that surrounded us at the time. It's also filtered through selective memory, emphasizing the positive… »</li>
+</ul>
+<hr />
+<p><a href="https://joshblais.com/blog/using-the-internet-like-its-1999/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47881198">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">5ab55a89</guid>
+      <comments>https://news.ycombinator.com/item?id=47881198</comments>
+      <pubDate>Thu, 23 Apr 2026 20:14:29 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://joshblais.com/og-images/netscape.jpeg"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Les comportements qui isolent socialement et créent des expériences relationnelles incoérentes</title>
+      <link>https://nate.leaflet.pub/3mk4xkaxobc2p</link>
+      <description>nate.leaflet.pub/3mk4xkaxobc2p</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Cet article décrit les mécanismes psychologiques et comportementaux qui poussent les individus à l'isolement social et à des interactions dysfonctionnelles, notamment l'interprétation biaisée des intentions d'autrui et le renforcement de leurs propres convictions.</p>
+<ul>
+<li>Attribuer automatiquement des motivations négatives ou irrationnelles aux autres sans chercher à comprendre leur point de vue</li>
+<li>Interpréter l'ambiguïté en supposant la malveillance, l'ignorance ou l'amoralité plutôt que de poser des questions clarificatrices</li>
+<li>Éviter de remettre en question ses propres hypothèses et accorder une confiance absolue à ses intuitions et émotions</li>
+<li>Fuir les conversations en changeant de sujet quand ses assomptions sont contestées, plutôt que d'engager un dialogue authentique</li>
+<li>Refuser d'accorder la grâce aux erreurs d'autrui et se replier sur soi-même lorsque la compréhension mutuelle devient impossible</li>
+</ul>
+<h2>Discussion sur Hacker News (94 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>La distinction entre &quot;asocial&quot; (évite les gens, manque de repères sociaux) et &quot;antisocial&quot; (hostile, perturbateur) est utile et souvent confondue ; beaucoup reconnaissent que la liste décrit davantage des comportements contre-productifs que véritablement antisocial.</li>
+<li>Les conseils pratiques résonnent : chercher un terrain d'entente même en désaccord, écouter plutôt que de convaincre, interpréter les actions des autres avec bienveillance plutôt que malveillance. L'idée que &quot;l'unité permet le changement&quot; trouve du soutien.</li>
+<li>Pour les personnes autistes ou socially anxious, plusieurs commentateurs témoignent que apprendre les dynamiques sociales (même si c'est laborieux) et pratiquer l'interaction authentique paie à long terme, plus que de s'isoler.</li>
+<li>La mise en garde contre &quot;l'esprit de rectitude&quot; est valide : avoir raison n'est pas toujours plus important que maintenir les relations ; choisir ses batailles est une sagesse reconnue.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Plusieurs trouvent l'article condescendant et hypocrite : il critique exactement les comportements qu'il commet lui-même (jugement sans charité, mauvaise foi attribuée aux autres, absence de compréhension de perspectives différentes).</li>
+<li>La liste confond désaccord fondamental en valeurs avec &quot;antisocialité&quot; ; certains défendent légitimement leurs principes moraux (même si cela isole), ce qui n'est pas une pathologie sociale.</li>
+<li>Les solutions proposées ignorent les réalités neurobiologiques et environnementales : l'anxiété sociale, la neurodivergence, ou des années d'expériences négatives ne se règlent pas par &quot;être au présent&quot; ou de la pensée positive.</li>
+<li>L'article semble écrit en réaction à des conflits personnels spécifiques (famille, réseaux sociaux) plutôt que comme guide général ; il projette des intentions malveillantes sur des désaccords qui pourraient être simples divergences de valeurs.</li>
+</ul>
+<p><strong>Meilleurs commentaires</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47892785">poemxo</a> : « I am guessing the author is either criticizing people who are anti-social (in the pop culture definition) or believes he was before and after some thinking arrived at the conclusion that antisociety was not the way. But I don't feel it describes my internal motivations, so I've translated them to m… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47889037">foo12bar</a> : « How about the old fashioned freezing with a face contorted in fear like your being held at knife point unable to think of anything to say and just waiting to be able to leave? When you get asked a question, fumble over your words and say something stupid. Later on, you can reflexively watch the mem… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47894599">notthemessiah</a> : « the author wrote this in the Leaflet comments sections:&quot;&quot;&quot;through some upsetting turn of events, someone put this on hackernews and started a piranha feeding frenzy of speculation about what / who im referring to here. so just to be clear:i wrote this bulleted list in a couple minutes as a way to r… »</li>
+</ul>
+<hr />
+<p><a href="https://nate.leaflet.pub/3mk4xkaxobc2p">Article original</a> · <a href="https://news.ycombinator.com/item?id=47888372">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">70d1232c</guid>
+      <comments>https://news.ycombinator.com/item?id=47888372</comments>
+      <pubDate>Fri, 24 Apr 2026 10:48:14 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://leaflet.pub/lish/did%3Aplc%3Axbtmt2zjwlrfegqvch7fboei/3lxksvuhk3s2j/3mk4xkaxobc2p/opengraph-image?edc23816ae45539e"/>
+      </media:group>
+    </item>
+    <item>
+>>>>>>> a3a7f38 (Refresh four more articles with HN-ordered top comments)
       <title>La Norvège s'apprête à interdire les réseaux sociaux aux moins de 16 ans</title>
       <link>https://www.bloomberg.com/news/articles/2026-04-24/norway-wants-kids-to-be-kids-with-social-media-ban-for-under-16s</link>
       <description>www.bloomberg.com/news/articles/2026-04-24/norway-wants-kids-to-be-kids-with-social-media-ban-for-under-16s</description>
