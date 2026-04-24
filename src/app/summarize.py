@@ -1,4 +1,4 @@
-import re
+import json
 from dataclasses import dataclass
 
 from app.llm import LLMCallResult, complete
@@ -18,13 +18,12 @@ ou autre étiquette),
    - saute une ligne,
    - puis donne 3 à 5 bullets synthétiques (préfixe "- ") avec les points clés.
 
-Format de réponse EXACT, sans rien d'autre :
+Réponds uniquement par un objet JSON valide avec exactement deux champs string :
+- "title" : le titre réécrit, une seule ligne, sans préfixe ni en-tête.
+- "summary" : le résumé Markdown (les sauts de ligne et les bullets doivent être \
+échappés correctement dans la chaîne JSON).
 
-## Titre
-<ton titre ici, une seule ligne>
-
-## Résumé
-<ton résumé markdown ici>"""
+Aucun texte hors du JSON, pas de bloc de code, pas de commentaire."""
 
 _TITLE_TRANSLATION_SYSTEM = """Tu reçois un titre d'article en anglais \
 (ou dans une autre langue). Traduis-le fidèlement en français. Ne réécris pas, \
@@ -57,8 +56,8 @@ class ArticleSummary:
 
 def summarize_article(text: str, title: str) -> tuple[ArticleSummary, LLMCallResult]:
     user = f"Titre original : {title}\n\nContenu :\n{text}"
-    result = complete(_ARTICLE_SYSTEM, user)
-    rewritten, summary = _split_title_and_summary(result.content)
+    result = complete(_ARTICLE_SYSTEM, user, json=True)
+    rewritten, summary = _parse_article_response(result.content)
     return ArticleSummary(rewritten_title=rewritten, summary_markdown=summary), result
 
 
@@ -97,24 +96,23 @@ def compose_body(
     return "\n\n".join(parts) + "\n"
 
 
-_TITLE_HEADING_RE = re.compile(r"^\s*#{1,3}\s*Titre\s*$", re.IGNORECASE | re.MULTILINE)
-_SUMMARY_HEADING_RE = re.compile(r"^\s*#{1,3}\s*Résumé\s*$", re.IGNORECASE | re.MULTILINE)
+def _parse_article_response(text: str) -> tuple[str | None, str]:
+    """Parse the LLM's JSON article response.
 
-
-def _split_title_and_summary(text: str) -> tuple[str | None, str]:
-    """Parse LLM output. On unexpected format: title=None, summary=raw text."""
-    summary_match = _SUMMARY_HEADING_RE.search(text)
-    if not summary_match:
+    On any malformed JSON, missing key, or wrong type: return
+    ``(None, text.strip())`` so the article still publishes with the
+    original title and the raw model output as the body.
+    """
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError:
         return None, text.strip()
-    title_match = _TITLE_HEADING_RE.search(text)
-    if title_match is None:
-        # Some responses skip '## Titre' and jump straight to the title as a
-        # heading. Treat anything before '## Résumé' as the title in that case.
-        raw_title = text[: summary_match.start()].strip().lstrip("#").strip()
-    elif title_match.end() > summary_match.start():
+    if not isinstance(data, dict):
         return None, text.strip()
-    else:
-        raw_title = text[title_match.end() : summary_match.start()].strip()
-    title = raw_title.splitlines()[0].strip() if raw_title else ""
-    summary = text[summary_match.end() :].strip()
+    raw_title = data.get("title")
+    raw_summary = data.get("summary")
+    if not isinstance(raw_summary, str):
+        return None, text.strip()
+    title = raw_title.strip() if isinstance(raw_title, str) else ""
+    summary = raw_summary.strip()
     return (title or None), summary

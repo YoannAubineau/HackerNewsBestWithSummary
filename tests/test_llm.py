@@ -1,3 +1,5 @@
+import json as json_mod
+
 import pytest
 
 from app.llm import AllModelsFailedError, complete
@@ -89,6 +91,28 @@ def test_empty_content_is_retryable(httpx_mock, isolated_settings):
     result = complete("system", "user")
     assert result.model == "secondary/free"
     assert result.content == "contenu"
+
+
+def test_complete_omits_response_format_by_default(httpx_mock, isolated_settings):
+    httpx_mock.add_response(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        json=_openrouter_response("OK"),
+    )
+    complete("system", "user")
+    sent = json_mod.loads(httpx_mock.get_request().content)
+    assert "response_format" not in sent
+
+
+def test_complete_sets_json_object_response_format_when_requested(
+    httpx_mock, isolated_settings
+):
+    httpx_mock.add_response(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        json=_openrouter_response('{"k": "v"}'),
+    )
+    complete("system", "user", json=True)
+    sent = json_mod.loads(httpx_mock.get_request().content)
+    assert sent["response_format"] == {"type": "json_object"}
 
 
 def test_complete_exposes_usage_and_latency(httpx_mock, isolated_settings):

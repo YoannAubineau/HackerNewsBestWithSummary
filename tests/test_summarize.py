@@ -1,7 +1,7 @@
 from app import summarize
 from app.llm import LLMCallResult
 from app.summarize import (
-    _split_title_and_summary,
+    _parse_article_response,
     compose_body,
     summarize_article,
     summarize_discussion,
@@ -19,62 +19,36 @@ def _call_result(content: str, model: str = "m") -> LLMCallResult:
     )
 
 
-def test_splits_well_formed_response():
+def test_parse_article_response_well_formed_json():
     text = (
-        "## Titre\n"
-        "un titre factuel réécrit\n"
-        "\n"
-        "## Résumé\n"
-        "**TL;DR** : phrase.\n"
-        "- bullet 1\n"
-        "- bullet 2"
+        '{"title": "un titre factuel", '
+        '"summary": "**TL;DR** : phrase.\\n- bullet 1\\n- bullet 2"}'
     )
-    title, summary = _split_title_and_summary(text)
-    assert title == "un titre factuel réécrit"
+    title, summary = _parse_article_response(text)
+    assert title == "un titre factuel"
     assert summary.startswith("**TL;DR**")
     assert "bullet 2" in summary
 
 
-def test_handles_leading_whitespace_and_extra_lines():
-    text = (
-        "\n## Titre\n\n  un titre   \n\n## Résumé\n\nle corps\n"
-    )
-    title, summary = _split_title_and_summary(text)
-    assert title == "un titre"
-    assert summary == "le corps"
-
-
-def test_returns_none_title_when_format_unexpected():
-    text = "Juste un résumé sans les bonnes en-têtes"
-    title, summary = _split_title_and_summary(text)
+def test_parse_article_response_invalid_json_falls_back_to_raw():
+    text = "Juste du texte sans JSON"
+    title, summary = _parse_article_response(text)
     assert title is None
     assert summary == text
 
 
-def test_returns_none_title_if_sections_out_of_order():
-    text = "## Résumé\ncorps\n\n## Titre\nun titre"
-    title, summary = _split_title_and_summary(text)
+def test_parse_article_response_missing_summary_falls_back_to_raw():
+    text = '{"title": "un titre"}'
+    title, summary = _parse_article_response(text)
     assert title is None
-    assert "## Titre" in summary
+    assert summary == text
 
 
-def test_recovers_title_when_titre_header_is_missing():
-    text = (
-        "## OpenAI annonce GPT-5.5\n"
-        "\n"
-        "## Résumé\n"
-        "Le corps du résumé."
-    )
-    title, summary = _split_title_and_summary(text)
-    assert title == "OpenAI annonce GPT-5.5"
-    assert summary == "Le corps du résumé."
-
-
-def test_recovers_plain_title_line_when_titre_header_is_missing():
-    text = "OpenAI annonce GPT-5.5\n\n## Résumé\nLe corps."
-    title, summary = _split_title_and_summary(text)
-    assert title == "OpenAI annonce GPT-5.5"
-    assert summary == "Le corps."
+def test_parse_article_response_missing_title_keeps_summary():
+    text = '{"summary": "le corps"}'
+    title, summary = _parse_article_response(text)
+    assert title is None
+    assert summary == "le corps"
 
 
 def test_compose_body_shows_discussion_comment_count():
@@ -131,9 +105,12 @@ def test_translate_title_none_on_empty_response(monkeypatch):
 
 
 def test_summarize_article_propagates_call_metrics(monkeypatch):
-    def fake_complete(system, user):
+    captured: dict = {}
+
+    def fake_complete(system, user, *, json=False):
+        captured["json"] = json
         return LLMCallResult(
-            content="## Titre\nun titre\n\n## Résumé\n- point",
+            content='{"title": "un titre", "summary": "- point"}',
             model="anthropic/claude-haiku-4.5",
             input_tokens=1000,
             output_tokens=200,
@@ -142,7 +119,9 @@ def test_summarize_article_propagates_call_metrics(monkeypatch):
 
     monkeypatch.setattr(summarize, "complete", fake_complete)
     summary, call = summarize_article("texte", "titre original")
+    assert captured["json"] is True
     assert summary.rewritten_title == "un titre"
+    assert summary.summary_markdown == "- point"
     assert call.model == "anthropic/claude-haiku-4.5"
     assert call.input_tokens == 1000
     assert call.output_tokens == 200
