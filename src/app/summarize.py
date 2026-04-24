@@ -8,10 +8,9 @@ ou la transcription d'une vidéo.
 
 Ton travail a deux parties :
 
-1. Un titre réécrit de 6 à 15 mots qui énonce factuellement ce que le contenu \
+1. Un titre réécrit en français de 6 à 15 mots qui énonce factuellement ce que le contenu \
 apprend au lecteur. Évite tout style putaclic, toute question, toute promesse vague \
-("ce qu'il faut savoir", "ce qui va changer"). Pas de majuscule partout, pas de point final. \
-Si le titre original est déjà factuel et informatif, réutilise-le tel quel.
+("ce qu'il faut savoir", "ce qui va changer"). Pas de majuscule partout, pas de point final.
 
 2. Un résumé structuré en Markdown :
    - commence par une à deux phrases de synthèse factuelle (sans préfixe "TL;DR" \
