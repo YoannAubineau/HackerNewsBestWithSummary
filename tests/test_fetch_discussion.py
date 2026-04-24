@@ -381,27 +381,20 @@ def test_fetch_submitter_text_empty_on_http_error(httpx_mock):
     assert fetch_submitter_text(12) == ""
 
 
-def test_top_comments_picks_highest_scored_across_whole_tree(httpx_mock, isolated_settings):
-    # Low budget so most branches would be dropped from the LLM text; top_comments
-    # must still surface the 3 highest-scored nodes regardless of selection.
-    isolated_settings.discussion_budget = 2
+def test_top_comments_takes_first_three_root_children(httpx_mock, isolated_settings):
+    # Algolia returns root children in HN's default display order (internal
+    # score-based ranking). We preserve that order and take the first three.
+    isolated_settings.discussion_budget = 10
     payload = {
         "children": [
-            _comment(
-                "low_root", "low root", points=5, id=1001,
-                children=[_comment("low_leaf", "leaf", id=1002)],
-            ),
-            _comment(
-                "mid_root", "mid root", points=50, id=1003,
-                children=[
-                    _comment("deep_winner", "winner", points=999, id=1004),
-                    _comment("deep_second", "second", points=500, id=1005),
-                ],
-            ),
-            _comment(
-                "third_root", "third", points=100, id=1006,
-                children=[_comment("leaf2", "leaf", id=1007)],
-            ),
+            _comment("alice", "first", id=1,
+                     children=[_comment("leaf", "leaf", id=11)]),
+            _comment("bob", "second", id=2,
+                     children=[_comment("leaf", "leaf", id=12)]),
+            _comment("carol", "third", id=3,
+                     children=[_comment("leaf", "leaf", id=13)]),
+            _comment("dave", "fourth (dropped)", id=4,
+                     children=[_comment("leaf", "leaf", id=14)]),
         ]
     }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/200", json=payload)
@@ -409,41 +402,42 @@ def test_top_comments_picks_highest_scored_across_whole_tree(httpx_mock, isolate
     assert result is not None
     md = result.top_comments_markdown
     assert md.startswith("**Meilleurs commentaires** :")
-    # 999 > 500 > 100
-    assert "[deep_winner, 999 pts](https://news.ycombinator.com/item?id=1004)" in md
-    assert "[deep_second, 500 pts](https://news.ycombinator.com/item?id=1005)" in md
-    assert "[third_root, 100 pts](https://news.ycombinator.com/item?id=1006)" in md
-    # mid_root (50 pts) and low_root (5 pts) should not appear.
-    assert "mid_root" not in md
-    assert "low_root" not in md
-    # Order: winner first, second second, third third.
-    assert md.index("deep_winner") < md.index("deep_second") < md.index("third_root")
+    assert "[alice](https://news.ycombinator.com/item?id=1)" in md
+    assert "[bob](https://news.ycombinator.com/item?id=2)" in md
+    assert "[carol](https://news.ycombinator.com/item?id=3)" in md
+    assert "dave" not in md
+    assert md.index("alice") < md.index("bob") < md.index("carol")
 
 
-def test_top_comments_skips_missing_id_author_text_or_points(httpx_mock, isolated_settings):
+def test_top_comments_skips_deleted_roots_then_continues(httpx_mock, isolated_settings):
+    # A deleted/dead root comment has text=None (or author=None, or id=None).
+    # We skip it in place and take the next candidate so we still fill 3 slots.
     isolated_settings.discussion_budget = 50
     payload = {
         "children": [
-            _comment(None, "no author", points=100, id=1,
-                     children=[_comment("leaf", "leaf", id=2)]),
-            _comment("alice", None, points=100, id=3,
-                     children=[_comment("leaf", "leaf", id=4)]),
-            _comment("bob", "no id", points=100,
-                     children=[_comment("leaf", "leaf", id=5)]),
-            _comment("carol", "no points", id=6,
-                     children=[_comment("leaf", "leaf", id=7)]),
-            _comment("dave", "kept", points=1, id=8,
-                     children=[_comment("leaf", "leaf", id=9)]),
+            _comment(None, "no author", id=1,
+                     children=[_comment("leaf", "leaf", id=11)]),
+            _comment("alice", None, id=2,
+                     children=[_comment("leaf", "leaf", id=12)]),
+            _comment("bob", "no id",
+                     children=[_comment("leaf", "leaf", id=13)]),
+            _comment("carol", "first kept", id=4,
+                     children=[_comment("leaf", "leaf", id=14)]),
+            _comment("dave", "second kept", id=5,
+                     children=[_comment("leaf", "leaf", id=15)]),
+            _comment("erin", "third kept", id=6,
+                     children=[_comment("leaf", "leaf", id=16)]),
         ]
     }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/201", json=payload)
     result = fetch_discussion(201)
     assert result is not None
     md = result.top_comments_markdown
+    assert "carol" in md
     assert "dave" in md
+    assert "erin" in md
     assert "no author" not in md
     assert "no id" not in md
-    assert "no points" not in md
 
 
 def test_top_comments_truncates_to_300_chars_with_ellipsis(httpx_mock, isolated_settings):
@@ -453,32 +447,27 @@ def test_top_comments_truncates_to_300_chars_with_ellipsis(httpx_mock, isolated_
     short_text = "c" * 100
     payload = {
         "children": [
-            _comment(
-                "parent", "parent", points=1, id=1,
-                children=[
-                    _comment("long", long_text, points=100, id=2),
-                    _comment("exact", exact_text, points=99, id=3),
-                    _comment("short", short_text, points=98, id=4),
-                ],
-            ),
+            _comment("long", long_text, id=1,
+                     children=[_comment("leaf", "leaf", id=11)]),
+            _comment("exact", exact_text, id=2,
+                     children=[_comment("leaf", "leaf", id=12)]),
+            _comment("short", short_text, id=3,
+                     children=[_comment("leaf", "leaf", id=13)]),
         ]
     }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/202", json=payload)
     result = fetch_discussion(202)
     assert result is not None
     md = result.top_comments_markdown
-    # long_text: 500 chars → truncated, ends with … and has exactly 300 chars
-    long_line = next(line for line in md.splitlines() if "[long, " in line)
+    long_line = next(line for line in md.splitlines() if "[long]" in line)
     long_payload = long_line.split(" : « ", 1)[1].rstrip(" »")
     assert long_payload.endswith("\u2026")
     assert len(long_payload) == 300
-    # exact 300 chars: untouched
-    exact_line = next(line for line in md.splitlines() if "[exact, " in line)
+    exact_line = next(line for line in md.splitlines() if "[exact]" in line)
     exact_payload = exact_line.split(" : « ", 1)[1].rstrip(" »")
     assert exact_payload == exact_text
     assert "\u2026" not in exact_payload
-    # short: untouched
-    short_line = next(line for line in md.splitlines() if "[short, " in line)
+    short_line = next(line for line in md.splitlines() if "[short]" in line)
     assert short_text in short_line
 
 
@@ -487,14 +476,8 @@ def test_top_comments_collapses_internal_whitespace(httpx_mock, isolated_setting
     payload = {
         "children": [
             _comment(
-                "root", "root", points=5, id=1,
-                children=[
-                    _comment(
-                        "alice",
-                        "<p>line one</p>\n<p>line  two</p>",
-                        points=42, id=2,
-                    ),
-                ],
+                "alice", "<p>line one</p>\n<p>line  two</p>", id=1,
+                children=[_comment("leaf", "leaf", id=11)],
             ),
         ]
     }
@@ -502,33 +485,18 @@ def test_top_comments_collapses_internal_whitespace(httpx_mock, isolated_setting
     result = fetch_discussion(203)
     assert result is not None
     md = result.top_comments_markdown
-    line = next(line for line in md.splitlines() if "[alice, " in line)
-    # No newlines, no double spaces in the text payload.
+    line = next(line for line in md.splitlines() if "[alice]" in line)
     text = line.split(" : « ", 1)[1].rstrip(" »")
     assert "\n" not in text
     assert "  " not in text
     assert text == "line one line two"
 
 
-def test_top_comments_empty_when_no_comment_has_points(httpx_mock, isolated_settings):
-    isolated_settings.discussion_budget = 10
-    payload = {
-        "children": [
-            _comment("alice", "root", id=1, children=[_comment("leaf", "leaf", id=2)]),
-            _comment("bob", "root 2", id=3, children=[_comment("leaf2", "leaf", id=4)]),
-        ]
-    }
-    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/204", json=payload)
-    result = fetch_discussion(204)
-    assert result is not None
-    assert result.top_comments_markdown == ""
-
-
 def test_top_comments_limits_to_three(httpx_mock, isolated_settings):
     isolated_settings.discussion_budget = 10
     payload = {
         "children": [
-            _comment(f"u{i}", f"text {i}", points=100 - i, id=1000 + i,
+            _comment(f"u{i}", f"text {i}", id=1000 + i,
                      children=[_comment(f"leaf{i}", "leaf", id=2000 + i)])
             for i in range(10)
         ]
@@ -539,10 +507,19 @@ def test_top_comments_limits_to_three(httpx_mock, isolated_settings):
     md = result.top_comments_markdown
     bullet_count = sum(1 for line in md.splitlines() if line.startswith("- ["))
     assert bullet_count == 3
-    # The three with the highest points: u0 (100), u1 (99), u2 (98).
-    assert "[u0, 100 pts]" in md
-    assert "[u1, 99 pts]" in md
-    assert "[u2, 98 pts]" in md
-    assert "[u3," not in md
+    assert "[u0]" in md
+    assert "[u1]" in md
+    assert "[u2]" in md
+    assert "[u3]" not in md
+
+
+def test_top_comments_empty_when_no_children(httpx_mock, isolated_settings):
+    # Edge case: no children at all (e.g. a story with zero comments). The
+    # root-only fetch_discussion already returns None in this case because
+    # _iter_comments yields nothing; but exercise _collect_top_comments
+    # independently to document its behaviour.
+    from app.fetch_discussion import AlgoliaItem, _collect_top_comments
+    root = AlgoliaItem(id=1, author="op", children=[])
+    assert _collect_top_comments(root) == []
 
 

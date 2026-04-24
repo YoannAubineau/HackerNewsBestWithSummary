@@ -184,7 +184,7 @@ def test_compose_body_omits_count_when_zero():
 def test_compose_body_inserts_top_comments_between_discussion_and_footer():
     top_md = (
         "**Meilleurs commentaires** :\n\n"
-        "- [alice, 42 pts](https://news.ycombinator.com/item?id=1) : « hello »"
+        "- [alice](https://news.ycombinator.com/item?id=1) : « hello »"
     )
     body = compose_body(
         article_summary=None,
@@ -197,7 +197,7 @@ def test_compose_body_inserts_top_comments_between_discussion_and_footer():
     assert "**Meilleurs commentaires**" in body
     assert body.index("**Avis négatifs**") < body.index("**Meilleurs commentaires**")
     assert body.index("**Meilleurs commentaires**") < body.index("[Article original]")
-    assert "[alice, 42 pts](https://news.ycombinator.com/item?id=1)" in body
+    assert "[alice](https://news.ycombinator.com/item?id=1)" in body
 
 
 def test_compose_body_omits_top_comments_when_none_or_empty():

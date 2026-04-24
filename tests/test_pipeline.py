@@ -269,7 +269,7 @@ def test_step_fetch_discussions_writes_top_comments_sidecar(
     assert sidecar.exists()
     content = sidecar.read_text(encoding="utf-8")
     assert content.startswith("**Meilleurs commentaires** :")
-    assert "[alice, 42 pts](https://news.ycombinator.com/item?id=501)" in content
+    assert "[alice](https://news.ycombinator.com/item?id=501)" in content
 
 
 def test_step_summarize_reads_and_clears_top_comments_sidecar(
@@ -284,7 +284,7 @@ def test_step_summarize_reads_and_clears_top_comments_sidecar(
     write_sidecar(path, "discussion", "raw discussion")
     top_md = (
         "**Meilleurs commentaires** :\n\n"
-        "- [alice, 42 pts](https://news.ycombinator.com/item?id=501) : « hi »"
+        "- [alice](https://news.ycombinator.com/item?id=501) : « hi »"
     )
     write_sidecar(path, "top_comments", top_md)
 
@@ -307,7 +307,7 @@ def test_step_summarize_reads_and_clears_top_comments_sidecar(
 
     _, final_body = load(path)
     assert "**Meilleurs commentaires**" in final_body
-    assert "[alice, 42 pts](https://news.ycombinator.com/item?id=501)" in final_body
+    assert "[alice](https://news.ycombinator.com/item?id=501)" in final_body
     assert read_sidecar(path, "top_comments") is None
 
 
