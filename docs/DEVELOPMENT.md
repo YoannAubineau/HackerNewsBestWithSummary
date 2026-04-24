@@ -173,3 +173,26 @@ sub-threads but inflates the prompt and the per-call cost. Lowering it
 tightens the focus on the top-ranked exchanges. 500 was chosen so that
 a typical front-page thread fits comfortably in a Haiku 4.5 context
 window without dominating it.
+
+## Top comments block
+
+Independent of the LLM-fed budget above, each article also reproduces
+the three top-ranked root comments of the Hacker News discussion
+verbatim, under a "Commentaires les plus plébiscités" heading at the
+end of the discussion section. Each bullet quotes the comment text
+(truncated to 300 characters with a U+2026 ellipsis on overflow) and
+links to the full comment via `news.ycombinator.com/item?id=<id>`.
+
+Per-comment scores are not exposed by Algolia or by HN's Firebase API,
+and Algolia returns children chronologically by ID rather than in HN's
+best order. So `fetch-discussions` makes one extra request per article
+to `news.ycombinator.com/item?id=<id>`, parses the HTML, and reads the
+display order of top-level rows (`<tr class="athing comtr">` with
+`indent="0"`). The first three IDs that exist in the Algolia tree and
+have a usable author and text become the rendered block. An HTTP error,
+a 429 rate-limit, or a markup change downgrades silently to an empty
+block rather than blocking the cycle.
+
+The pre-rendered markdown is stored in a `<hash>.raw.top_comments.txt`
+sidecar between `fetch-discussions` and `summarize`, and cleared
+alongside the other sidecars once the article reaches `summarized`.

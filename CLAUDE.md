@@ -28,8 +28,9 @@ hourly on a public repo, so minutes are free.
   PR text, CLAUDE.md, docs) must be in **English**. The conversation with the
   user happens in French, don't conflate the two. User-facing content inside
   the feed (summary text, feed title, section headings like "Résumé de
-  l'article", "Avis positifs", "Avis négatifs") stays in **French** because
-  that's the user's target reading language.
+  l'article", "Avis positifs", "Avis négatifs", "Commentaires les plus
+  plébiscités") stays in **French** because that's the user's target
+  reading language.
 - **No comments unless a reader would be surprised**. No "this line does X"
   comments. Add a comment only when there's a non-obvious invariant, a
   workaround, or a subtle constraint.
@@ -55,9 +56,10 @@ hourly on a public repo, so minutes are free.
   of the matching status. Crash-resumable for free.
 - **Raw HTML / discussion text is never committed**. Article content is kept
   in sidecar files (`artefacts/articles/.../<hash>.raw.article.txt`,
-  `<hash>.raw.discussion.txt`) which are gitignored, used during the cycle,
-  and cleared once the summary succeeds. Only the summary itself ends up in
-  git. Driven by copyright and repo-size concerns.
+  `<hash>.raw.discussion.txt`, `<hash>.raw.top_comments.txt`) which are
+  gitignored, used during the cycle, and cleared once the summary
+  succeeds. Only the summary itself ends up in git. Driven by copyright
+  and repo-size concerns.
 - **Weekly LLM version check**. A separate workflow
   (`.github/workflows/check-llm-versions.yml`) runs `uv run app
   check-llm-versions` every Monday, queries OpenRouter's `/models`
@@ -92,7 +94,25 @@ hourly on a public repo, so minutes are free.
   fetch fails.
 - `src/app/fetch_discussion.py`, Algolia API + comment selection: recursive
   degressive comment budget (default 500), plus pinning of the HN submitter's
-  own comments and their full ancestor chain.
+  own comments and their full ancestor chain. Also produces the
+  "Commentaires les plus plébiscités" block rendered at the end of the
+  discussion section. Per-comment scores are not exposed by any HN API
+  (Algolia returns `points: null` on every child, Firebase doesn't carry
+  it either), and Algolia's `/items/{id}` returns children
+  chronologically by ID, which mostly surfaces the earliest posted
+  comments rather than HN's best picks. So `_fetch_hn_display_order`
+  scrapes `news.ycombinator.com/item?id=<id>` and extracts the top-level
+  comment rows (`<tr class="athing comtr">` with `indent="0"`) in their
+  rendered order, which is HN's own internal best-ranking. The IDs are
+  mapped onto the Algolia tree by `_select_top_comments` to pull each
+  comment's text and author, the text is HTML-stripped and whitespace-
+  collapsed, truncated to 300 chars with U+2026 on overflow, and the
+  first three valid entries are returned. An HTTP or parse failure
+  degrades silently to an empty section rather than crashing the cycle.
+  The rendered markdown travels between `step_fetch_discussions` and
+  `step_summarize` via the gitignored `<hash>.raw.top_comments.txt`
+  sidecar, which `clear_sidecars` cleans up after summarization
+  alongside its siblings.
 - `src/app/llm.py`, OpenRouter client with model cascade on 429 / 5xx /
   empty body. Logs token usage per call.
 - `src/app/check_models.py`, queries OpenRouter's `/models` endpoint and
@@ -131,6 +151,17 @@ hourly on a public repo, so minutes are free.
   new, so avoid unless you mean it.
 - **Cron is best-effort**: GitHub schedules run 5 to 15 min late under load.
   Not an issue at our cadence.
+- **HN HTML is the only source for comment ranking**: per-comment scores
+  are not exposed by Algolia or Firebase, and Algolia returns children
+  in chronological (ID-ascending) order, not HN's best order. The
+  "Commentaires les plus plébiscités" section therefore depends on a
+  one-shot fetch of `news.ycombinator.com/item?id=<id>` per article.
+  HTTP 429 from HN is the most common failure mode during bulk regens
+  of past articles (sustained scraping in a tight loop), but the single
+  fetch per cycle is well below any threshold in normal operation. A
+  rate-limit or HTML-shape change downgrades to an empty block rather
+  than crashing. If HN ever rewrites its comment-row markup, update
+  `_COMMENT_ROW_RE` in `fetch_discussion.py`.
 - **YouTube transcripts need a residential proxy in CI**: YouTube blocks
   cloud-provider IP ranges, so any direct transcript fetch from a GitHub
   Actions runner raises `RequestBlocked`. `_fetch_youtube_transcript`

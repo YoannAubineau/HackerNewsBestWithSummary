@@ -59,7 +59,13 @@ where it left off.
    tree and selects a recursive comment budget (default 500), degressively
    allocated to root threads ranked by HN score. The story submitter's
    own comments and their ancestor chain are always pinned, since they
-   carry clarifications that are otherwise easy to miss. → `status: discussion_fetched`.
+   carry clarifications that are otherwise easy to miss. The same step
+   also scrapes the HN HTML page (`news.ycombinator.com/item?id=<id>`)
+   to recover the display order of top-level comments, which Algolia
+   does not preserve and which HN never exposes as a numeric score. The
+   first three valid IDs in that order become the verbatim
+   "Commentaires les plus plébiscités" block rendered later in the
+   feed. → `status: discussion_fetched`.
 4. **`summarize`** calls the LLM twice per article: once to produce both
    a rewritten factual title and a structured article summary (single
    prompt, single call), once to synthesise the discussion into
@@ -87,7 +93,7 @@ Single source of truth is the filesystem, versioned by git, with no database.
 |---|---|
 | `artefacts/articles/YYYY/MM/DD/{short_hash}.md` | One article per file. YAML frontmatter holds all metadata (URLs, dates, `status`, image URL, model used, attempt count). The Markdown body holds the final summaries. |
 | `artefacts/articles/_failed/…` | Articles that exceeded `MAX_ATTEMPTS`. Kept for history rather than deleted. |
-| `artefacts/articles/**/*.raw.article.txt`, `*.raw.discussion.txt` | Transient sidecars holding raw source content between stages. **Gitignored** because they are copyright-sensitive and would bloat the repo. Cleared once the article reaches `summarized`. |
+| `artefacts/articles/**/*.raw.article.txt`, `*.raw.discussion.txt`, `*.raw.top_comments.txt` | Transient sidecars holding raw source content (or the pre-rendered top-comments block) between stages. **Gitignored** because they are copyright-sensitive and would bloat the repo. Cleared once the article reaches `summarized`. |
 | `artefacts/feed.fr.xml` | The published RSS feed. |
 | `artefacts/feed.xsl` | Client-side XSLT stylesheet applied by browsers when opening the feed URL directly. |
 
@@ -158,6 +164,7 @@ are never stored either.
 |---|---|---|
 | **hnrss.org** | `https://hnrss.org/best` | Upstream RSS source. |
 | **Algolia HN Search API** | `https://hn.algolia.com/api/v1/items/{id}` | Public API returning the full comment tree for an HN item. |
+| **Hacker News (HTML)** | `https://news.ycombinator.com/item?id={id}` | Scraped once per article to read the rendered display order of top-level comments. Per-comment scores are not exposed by any HN API, and Algolia returns children chronologically rather than by HN's best ranking, so the HTML page is the only source of truth for the order. |
 | **OpenRouter** | `https://openrouter.ai/api/v1/chat/completions` | Gateway routing to the configured LLM with cascading fallback between providers. |
 | **Anthropic Claude Haiku 4.5** | via OpenRouter | Default LLM used for title rewriting and both summaries. |
 | Article publishers | per-article URL | Fetched to extract the article text. |
@@ -170,7 +177,7 @@ are never stored either.
 |---|---|
 | **Filesystem + git** | Articles are Markdown files under `artefacts/articles/YYYY/MM/DD/{short_hash}.md`. Git provides history, idempotency (deterministic filename), and deployment in one. |
 | **No database** | Unwarranted at this scale. The repository itself is the data layer. |
-| **Gitignored sidecar files** | `.raw.article.txt` and `.raw.discussion.txt` cache raw content between pipeline stages and are never committed. |
+| **Gitignored sidecar files** | `.raw.article.txt`, `.raw.discussion.txt`, and `.raw.top_comments.txt` cache raw content (or the pre-rendered top-comments markdown) between pipeline stages and are never committed. |
 
 ### CI/CD
 
