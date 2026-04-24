@@ -13,6 +13,7 @@ from tenacity import (
     stop_after_attempt,
     wait_exponential,
 )
+from youtube_transcript_api.proxies import WebshareProxyConfig
 
 from app.config import get_settings
 
@@ -263,6 +264,30 @@ def _fetch_hn_html(hn_item_id: int) -> str:
     return response.text
 
 
+def _fetch_hn_html_via_proxy(hn_item_id: int) -> str:
+    """Single attempt against HN through the Webshare residential proxy.
+
+    Each request comes from a fresh rotating residential IP, which
+    bypasses HN's IP-based rate limiting on shared GitHub Actions
+    runners. Caller is responsible for checking that proxy credentials
+    are configured before invoking this. Raises ``httpx.HTTPError`` on
+    failure.
+    """
+    settings = get_settings()
+    proxy_url = WebshareProxyConfig(
+        proxy_username=settings.webshare_proxy_username,
+        proxy_password=settings.webshare_proxy_password,
+    ).url
+    response = httpx.get(
+        _HN_STORY_URL.format(id=hn_item_id),
+        timeout=settings.http_timeout,
+        headers={"User-Agent": settings.user_agent},
+        proxy=proxy_url,
+    )
+    response.raise_for_status()
+    return response.text
+
+
 def _fetch_hn_display_order(hn_item_id: int) -> list[int]:
     """Return top-level comment IDs in HN's own display order.
 
@@ -276,17 +301,40 @@ def _fetch_hn_display_order(hn_item_id: int) -> list[int]:
     Transient HN failures (HTTP 429, connection resets) are retried up
     to three times with exponential backoff, since GitHub Actions
     runners share IPs and tend to trip HN's rate limit even on a single
-    request. Any HTTP or parse failure that survives the retries yields
-    an empty list, and the caller falls back to an empty
-    ``top_comments_markdown`` rather than crashing the pipeline.
+    request. When the direct retries are exhausted and Webshare proxy
+    credentials are configured, one last attempt routes through the
+    residential proxy pool already used by the YouTube transcript path
+    — that gives us a fresh IP per request and bypasses HN's
+    IP-based throttling entirely. If everything fails, the caller falls
+    back to an empty ``top_comments_markdown`` rather than crashing the
+    pipeline.
     """
     try:
         text = _fetch_hn_html(hn_item_id)
-    except (httpx.HTTPError, RetryError) as exc:
-        log.warning(
-            "hn_display_order_fetch_failed", hn_item_id=hn_item_id, error=str(exc)
+    except (httpx.HTTPError, RetryError) as direct_exc:
+        settings = get_settings()
+        if not (
+            settings.webshare_proxy_username and settings.webshare_proxy_password
+        ):
+            log.warning(
+                "hn_display_order_fetch_failed",
+                hn_item_id=hn_item_id,
+                error=str(direct_exc),
+            )
+            return []
+        try:
+            text = _fetch_hn_html_via_proxy(hn_item_id)
+        except httpx.HTTPError as proxy_exc:
+            log.warning(
+                "hn_display_order_proxy_failed",
+                hn_item_id=hn_item_id,
+                direct_error=str(direct_exc),
+                proxy_error=str(proxy_exc),
+            )
+            return []
+        log.info(
+            "hn_display_order_fetched", hn_item_id=hn_item_id, via_proxy=True
         )
-        return []
     return [
         int(cid)
         for cid, indent in _COMMENT_ROW_RE.findall(text)

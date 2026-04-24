@@ -189,9 +189,18 @@ best order. So `fetch-discussions` makes one extra request per article
 to `news.ycombinator.com/item?id=<id>`, parses the HTML, and reads the
 display order of top-level rows (`<tr class="athing comtr">` with
 `indent="0"`). The first three IDs that exist in the Algolia tree and
-have a usable author and text become the rendered block. An HTTP error,
-a 429 rate-limit, or a markup change downgrades silently to an empty
-block rather than blocking the cycle.
+have a usable author and text become the rendered block.
+
+Robustness: HN frequently rate-limits the shared IPs of GitHub Actions
+runners with HTTP 429, even on a first request. The direct fetch is
+wrapped in a tenacity retry (3 attempts, 2-10 s exponential backoff,
+also covering `ConnectError` and `ReadTimeout`). If those retries are
+exhausted and `WEBSHARE_PROXY_USERNAME` / `WEBSHARE_PROXY_PASSWORD`
+are set, one last attempt routes through the Webshare residential
+proxy already used for YouTube transcripts — each request gets a
+fresh residential IP, which sidesteps HN's per-IP throttling. If
+everything still fails, the cycle logs and renders an empty block
+rather than blocking.
 
 The pre-rendered markdown is stored in a `<hash>.raw.top_comments.txt`
 sidecar between `fetch-discussions` and `summarize`, and cleared

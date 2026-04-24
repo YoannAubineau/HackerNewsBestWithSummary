@@ -155,13 +155,19 @@ hourly on a public repo, so minutes are free.
   are not exposed by Algolia or Firebase, and Algolia returns children
   in chronological (ID-ascending) order, not HN's best order. The
   "Commentaires les plus plébiscités" section therefore depends on a
-  one-shot fetch of `news.ycombinator.com/item?id=<id>` per article.
-  HTTP 429 from HN is the most common failure mode during bulk regens
-  of past articles (sustained scraping in a tight loop), but the single
-  fetch per cycle is well below any threshold in normal operation. A
-  rate-limit or HTML-shape change downgrades to an empty block rather
-  than crashing. If HN ever rewrites its comment-row markup, update
-  `_COMMENT_ROW_RE` in `fetch_discussion.py`.
+  fetch of `news.ycombinator.com/item?id=<id>` per article. HTTP 429
+  from HN happens often enough on shared GitHub Actions IPs to be a
+  real concern, even on a single request. `_fetch_hn_html` is wrapped
+  in a tenacity retry (3 attempts, 2-10 s exponential backoff on 429
+  / `ConnectError` / `ReadTimeout`). If those retries are exhausted
+  and `WEBSHARE_PROXY_USERNAME` / `WEBSHARE_PROXY_PASSWORD` are set,
+  `_fetch_hn_display_order` falls back to a single attempt through
+  `_fetch_hn_html_via_proxy`, which routes the same GET through the
+  Webshare residential pool already used by the YouTube path — fresh
+  IP per request, sidesteps HN's IP throttling. If everything fails,
+  the section degrades to empty rather than crashing. If HN ever
+  rewrites its comment-row markup, update `_COMMENT_ROW_RE` in
+  `fetch_discussion.py`.
 - **YouTube transcripts need a residential proxy in CI**: YouTube blocks
   cloud-provider IP ranges, so any direct transcript fetch from a GitHub
   Actions runner raises `RequestBlocked`. `_fetch_youtube_transcript`

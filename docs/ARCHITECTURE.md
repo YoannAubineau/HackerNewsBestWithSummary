@@ -164,12 +164,12 @@ are never stored either.
 |---|---|---|
 | **hnrss.org** | `https://hnrss.org/best` | Upstream RSS source. |
 | **Algolia HN Search API** | `https://hn.algolia.com/api/v1/items/{id}` | Public API returning the full comment tree for an HN item. |
-| **Hacker News (HTML)** | `https://news.ycombinator.com/item?id={id}` | Scraped once per article to read the rendered display order of top-level comments. Per-comment scores are not exposed by any HN API, and Algolia returns children chronologically rather than by HN's best ranking, so the HTML page is the only source of truth for the order. |
+| **Hacker News (HTML)** | `https://news.ycombinator.com/item?id={id}` | Scraped once per article to read the rendered display order of top-level comments. Per-comment scores are not exposed by any HN API, and Algolia returns children chronologically rather than by HN's best ranking, so the HTML page is the only source of truth for the order. The direct call retries up to three times on HTTP 429 / connection errors with exponential backoff, then falls back to one last attempt through the Webshare residential proxy below if its credentials are configured (HN often rate-limits shared GitHub Actions IPs even on a first request). |
 | **OpenRouter** | `https://openrouter.ai/api/v1/chat/completions` | Gateway routing to the configured LLM with cascading fallback between providers. |
 | **Anthropic Claude Haiku 4.5** | via OpenRouter | Default LLM used for title rewriting and both summaries. |
 | Article publishers | per-article URL | Fetched to extract the article text. |
 | **YouTube** | `youtube.com`, `img.youtube.com` | Scraped by `youtube-transcript-api` for video transcripts and used directly for thumbnails. |
-| **Webshare residential proxy** | `p.webshare.io:80` | Optional outbound proxy for YouTube transcript requests. Required from GitHub Actions runners, whose datacenter IPs YouTube blocks. |
+| **Webshare residential proxy** | `p.webshare.io:80` | Optional outbound proxy for YouTube transcript requests (YouTube blocks GitHub Actions datacenter IPs outright) and a last-resort fallback for the HN HTML scrape when direct calls exhaust their retries (HN frequently rate-limits the same shared IPs). |
 
 ### Storage
 

@@ -619,14 +619,61 @@ def test_fetch_hn_display_order_retries_on_429(httpx_mock, monkeypatch):
     assert _real_fetch_hn_display_order(9999) == [42]
 
 
-def test_fetch_hn_display_order_gives_up_after_three_429(httpx_mock, monkeypatch):
+def test_fetch_hn_display_order_gives_up_after_three_429_without_proxy(
+    httpx_mock, monkeypatch, isolated_settings
+):
     import time
     monkeypatch.setattr(time, "sleep", lambda _: None)
+    isolated_settings.webshare_proxy_username = ""
+    isolated_settings.webshare_proxy_password = ""
     for _ in range(3):
         httpx_mock.add_response(
             url="https://news.ycombinator.com/item?id=1111",
             status_code=429,
         )
     assert _real_fetch_hn_display_order(1111) == []
+
+
+def test_fetch_hn_display_order_falls_back_to_proxy_when_direct_exhausts(
+    httpx_mock, monkeypatch, isolated_settings
+):
+    import time
+    monkeypatch.setattr(time, "sleep", lambda _: None)
+    isolated_settings.webshare_proxy_username = "demo"
+    isolated_settings.webshare_proxy_password = "secret"
+    # Three direct 429s exhaust the tenacity retry, then the proxy attempt
+    # against the same target URL succeeds. pytest-httpx matches at the
+    # transport layer and consumes registered responses in order, so the
+    # fourth response is the one returned to the proxy call.
+    for _ in range(3):
+        httpx_mock.add_response(
+            url="https://news.ycombinator.com/item?id=2222",
+            status_code=429,
+        )
+    httpx_mock.add_response(
+        url="https://news.ycombinator.com/item?id=2222",
+        text=(
+            '<tr class="athing comtr" id="77">'
+            '<td><table><tr><td class="ind" indent="0">'
+            '<img></td></tr></table></td></tr>'
+        ),
+    )
+    assert _real_fetch_hn_display_order(2222) == [77]
+
+
+def test_fetch_hn_display_order_returns_empty_when_proxy_also_fails(
+    httpx_mock, monkeypatch, isolated_settings
+):
+    import time
+    monkeypatch.setattr(time, "sleep", lambda _: None)
+    isolated_settings.webshare_proxy_username = "demo"
+    isolated_settings.webshare_proxy_password = "secret"
+    # Three direct 429s + one proxy 429 → empty.
+    for _ in range(4):
+        httpx_mock.add_response(
+            url="https://news.ycombinator.com/item?id=3333",
+            status_code=429,
+        )
+    assert _real_fetch_hn_display_order(3333) == []
 
 
