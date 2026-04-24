@@ -51,6 +51,9 @@ def step_fetch_feed() -> int:
     for entry in entries:
         if find_existing(entry.guid) is not None:
             continue
+        if entry.title.lower().startswith("[flagged]"):
+            log.info("entry_skipped_flagged", guid=entry.guid, title=entry.title)
+            continue
         _create_pending(entry)
         created += 1
     log.info("fetch_feed", fetched=len(entries), created=created)

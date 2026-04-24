@@ -409,6 +409,20 @@ def test_step_fetch_feed_creates_new_pending(isolated_settings, monkeypatch):
     assert step_fetch_feed() == 1
 
 
+def test_step_fetch_feed_skips_flagged_title(isolated_settings, monkeypatch):
+    entry = _make_feed_entry("guid-flagged", hn_item_id=778)
+    entry.title = "[flagged] Some sensitive post"
+    monkeypatch.setattr(pipeline, "fetch_source_feed", lambda: [entry])
+    assert step_fetch_feed() == 0
+
+
+def test_step_fetch_feed_skips_flagged_title_case_insensitive(isolated_settings, monkeypatch):
+    entry = _make_feed_entry("guid-flagged-upper", hn_item_id=779)
+    entry.title = "[FLAGGED] Another one"
+    monkeypatch.setattr(pipeline, "fetch_source_feed", lambda: [entry])
+    assert step_fetch_feed() == 0
+
+
 def test_step_summarize_breaker_disabled_when_limit_is_zero(isolated_settings, monkeypatch):
     isolated_settings.daily_cost_limit_usd = 0.0
 
