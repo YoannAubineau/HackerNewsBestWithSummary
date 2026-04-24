@@ -54,6 +54,24 @@ OPENROUTER_API_KEY=dummy uv run app fetch-discussions  # step 3: Algolia HN API
 OPENROUTER_API_KEY=dummy uv run app publish            # step 5: regenerate feed.fr.xml
 ```
 
+### Keep the primary LLM current
+
+`OPENROUTER_MODEL` points at a floating alias (no date suffix), so
+point-releases of the same version line roll in automatically. Newer
+generations (e.g. Haiku 5, Sonnet 5) do not, because the family version
+is part of the slug. Run:
+
+```bash
+uv run app check-llm-versions
+```
+
+The command queries OpenRouter's `/models` endpoint and exits 1 when a
+newer version of the configured family is published, printing the
+candidate slugs. In CI, `.github/workflows/check-llm-versions.yml` runs
+it every Monday and opens a tracking issue when a bump is available. The
+code change itself stays manual (edit `openrouter_model` in
+`src/app/config.py` after sanity-checking the output quality).
+
 ### Tests and lint
 
 ```bash

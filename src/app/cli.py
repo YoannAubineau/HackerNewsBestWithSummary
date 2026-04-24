@@ -5,6 +5,7 @@ from pathlib import Path
 import structlog
 import typer
 
+from app.check_models import check_llm_versions
 from app.logging_setup import setup_logging
 from app.pipeline import (
     CycleResult,
@@ -95,3 +96,11 @@ def update_usage_cmd() -> None:
     """Record today's OpenRouter spend and regenerate the 30-day bar chart."""
     record_usage()
     generate_chart()
+
+
+@app.command("check-llm-versions")
+def check_llm_versions_cmd() -> None:
+    """Report if a newer version of the configured Claude model is on OpenRouter."""
+    code = check_llm_versions()
+    if code != 0:
+        raise typer.Exit(code=code)
