@@ -28,17 +28,21 @@ class LLMCallResult:
     latency_ms: int
 
 
-def complete(system_prompt: str, user_prompt: str) -> LLMCallResult:
+def complete(system_prompt: str, user_prompt: str, *, json: bool = False) -> LLMCallResult:
     """Call OpenRouter, trying the primary model then each fallback.
 
     A 429 or 5xx triggers the next model; any other 4xx aborts.
+
+    When ``json`` is True, request ``response_format: json_object`` so the
+    model emits a parseable JSON string. Best-effort across the cascade —
+    callers must tolerate malformed JSON from providers that ignore it.
     """
     settings = get_settings()
     candidates = [settings.openrouter_model, *settings.openrouter_fallback_models]
     last_error: Exception | None = None
     for model in candidates:
         try:
-            return _call(model, system_prompt, user_prompt)
+            return _call(model, system_prompt, user_prompt, json=json)
         except _Retryable as exc:
             last_error = exc
             log.warning("llm_retry", model=model, reason=str(exc))
@@ -48,15 +52,19 @@ def complete(system_prompt: str, user_prompt: str) -> LLMCallResult:
     raise AllModelsFailedError(f"all models failed: {last_error}")
 
 
-def _call(model: str, system_prompt: str, user_prompt: str) -> LLMCallResult:
+def _call(
+    model: str, system_prompt: str, user_prompt: str, *, json: bool = False
+) -> LLMCallResult:
     settings = get_settings()
-    payload = {
+    payload: dict = {
         "model": model,
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ],
     }
+    if json:
+        payload["response_format"] = {"type": "json_object"}
     headers = {
         "Authorization": f"Bearer {settings.openrouter_api_key}",
         "Content-Type": "application/json",
