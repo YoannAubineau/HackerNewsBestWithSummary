@@ -177,26 +177,65 @@ def test_description_does_not_inline_the_image(isolated_settings):
     assert "cdn.example.com" not in description
 
 
-def test_description_contains_rendered_markdown(isolated_settings):
+_CONTENT_NS = {"content": "http://purl.org/rss/1.0/modules/content/"}
+
+
+def _content_encoded(item) -> str:
+    el = item.find("content:encoded", _CONTENT_NS)
+    return (el.text or "") if el is not None else ""
+
+
+def test_content_encoded_contains_rendered_markdown(isolated_settings):
     article = _make_article("g-desc", hn_item_id=7)
     save(article, "## Résumé de l'article\n\n**Note importante.**\n\n- Point 1\n- Point 2")
     items = _parse(build_feed())
-    description = items[0].findtext("description") or ""
-    assert "<h2>" in description
-    assert "<strong>Note importante.</strong>" in description
-    assert "<li>Point 1</li>" in description
+    content = _content_encoded(items[0])
+    assert "<h2>" in content
+    assert "<strong>Note importante.</strong>" in content
+    assert "<li>Point 1</li>" in content
 
 
-def test_description_escapes_raw_html_in_body(isolated_settings):
+def test_raw_html_in_body_is_escaped(isolated_settings):
     # Guards against a prompt-injected LLM output emitting <script> / <iframe>
     # that would slip through to RSS readers. markdown-it-py should treat the
     # raw HTML as literal text (escaped) rather than pass it through.
     article = _make_article("g-xss", hn_item_id=99)
-    save(article, "## Résumé\n\n<script>alert('xss')</script>\n\nnormal.")
+    save(
+        article,
+        "## Résumé\n\nPhrase factuelle.\n\n<script>alert('xss')</script>\n\nnormal.",
+    )
+    raw = build_feed().decode("utf-8")
+    assert "<script>" not in raw
+    assert "&lt;script&gt;" in raw
+
+
+def test_description_is_short_french_excerpt(isolated_settings):
+    article = _make_article("g-excerpt", hn_item_id=77)
+    body = (
+        "## Résumé de l'article\n\n"
+        "Première phrase factuelle.\n\n"
+        "- Un point\n- Deux points\n\n"
+        "## Discussion sur Hacker News\n\nBlah."
+    )
+    save(article, body)
     items = _parse(build_feed())
-    description = items[0].findtext("description") or ""
-    assert "<script>" not in description
-    assert "&lt;script&gt;" in description
+    assert items[0].findtext("description") == "Première phrase factuelle."
+
+
+def test_description_falls_back_to_title_when_no_plain_paragraph(isolated_settings):
+    article = _make_article("g-fallback", hn_item_id=79, title="Titre de secours")
+    save(article, "## Résumé\n\n- Bullet only\n- Another bullet")
+    items = _parse(build_feed())
+    assert items[0].findtext("description") == "Titre de secours"
+
+
+def test_rss_declares_content_namespace(isolated_settings):
+    article = _make_article("g-ns", hn_item_id=78)
+    save(article, "## Résumé\n\nCorps.")
+    raw = build_feed().decode("utf-8")
+    assert 'xmlns:content="http://purl.org/rss/1.0/modules/content/"' in raw
+    items = _parse(build_feed())
+    assert items[0].find("content:encoded", _CONTENT_NS) is not None
 
 
 def test_feed_declares_xsl_stylesheet_for_browser_rendering(isolated_settings):
