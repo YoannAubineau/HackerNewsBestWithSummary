@@ -9,8 +9,44 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 24 Apr 2026 10:31:09 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 11:25:08 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Ubuntu 26.04 LTS publié avec améliorations de sécurité et support de cinq ans</title>
+      <link>https://lwn.net/Articles/1069399/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Ubuntu 26.04 LTS (&amp;quot;Resolute Raccoon&amp;quot;) est sorti selon le calendrier prévu, apportant des améliorations majeures en sécurité, performance et utilisabilité sur les environnements desktop, serveur et cloud. Les variantes officielles (Kubuntu, Lubuntu, Xubuntu, etc.) sont également disponibles aujourd'hui.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Nouvelles fonctionnalités de sécurité : chiffrement complet du disque basé sur TPM, augmentation des composants memory-safe, et meilleur contrôle des permissions d'application&lt;/li&gt;
+&lt;li&gt;Support Livepatch étendu aux systèmes Arm pour réduire les interruptions de service&lt;/li&gt;
+&lt;li&gt;Mises à jour de maintenance pendant 5 ans pour Ubuntu Desktop, Server, Cloud, WSL et Core&lt;/li&gt;
+&lt;li&gt;Mises à jour de maintenance pendant 3 ans pour les autres variantes officielles&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (65 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La chiffrement de disque TPM-backed est un ajout bienvenu pour la sécurité physique des serveurs en datacenter tiers, offrant une protection automatique sans saisie de mot de passe au démarrage.&lt;/li&gt;
+&lt;li&gt;Ubuntu conserve son excellent support matériel et ses pilotes propriétaires (notamment Nvidia), restant un choix pragmatique pour les environnements de production et éducatif.&lt;/li&gt;
+&lt;li&gt;L'intégration de KDE Plasma 6.6 ou GNOME 50 apporte des améliorations notables, notamment une meilleure gestion du scaling haute résolution qui justifie l'intérêt pour Ubuntu face aux alternatives (macOS, Windows).&lt;/li&gt;
+&lt;li&gt;Les utilisateurs apprécient que la réécriture en Rust des coreutils et autres outils systèmes progresse, malgré les CVE découvertes, car elle représente une amélioration long terme en sécurité.&lt;/li&gt;
+&lt;li&gt;Ubuntu reste attrayant pour les développeurs cherchant une alternative aux macOS/Windows, offrant flexibilité et liberté de personnalisation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le feature de chiffrement TPM-backed souffre de problèmes de compatibilité majeurs (ThinkPad X1 Carbon, Framework Desktop) et ne fonctionne qu'avec un nombre limité de chips TPM, paraissant prématurée.&lt;/li&gt;
+&lt;li&gt;Canonical continue sa stratégie agressive d'imposition de Snap : les paquets sont redirigés vers Snap par défaut, réapparaissent après suppression, et s'installent silencieusement comme dépendances, frustrant les utilisateurs opposés à cette technologie.&lt;/li&gt;
+&lt;li&gt;GNOME désactive délibérément des fonctionnalités Linux historiques (middle-click paste) pour copier macOS, ignorant les préférences des utilisateurs Linux et questionnant la philosophie du projet.&lt;/li&gt;
+&lt;li&gt;L'absence d'Ubuntu MATE pour la première fois depuis Ubuntu 15 déçoit une communauté d'utilisateurs fidèles, reflétant un éloignement de Canonical de ses valeurs communautaires initiales.&lt;/li&gt;
+&lt;li&gt;La confiance en Canonical diminue : utilisation du userbase comme testeurs bêta (coreutils Rust, sudo-rs), décisions perçues comme imposées sans consultation, poussant les utilisateurs pragmatiques vers Debian.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://lwn.net/Articles/1069399/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47885596"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">c228ca0c</guid>
+      <comments>https://news.ycombinator.com/item?id=47885596</comments>
+      <pubDate>Fri, 24 Apr 2026 04:38:37 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Comment faire votre premier appel API avec DeepSeek v4</title>
       <link>https://api-docs.deepseek.com/</link>
