@@ -9,8 +9,47 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 24 Apr 2026 03:03:39 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 06:37:50 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Comment faire votre premier appel API avec DeepSeek v4</title>
+      <link>https://api-docs.deepseek.com/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;DeepSeek propose une API compatible avec les formats OpenAI et Anthropic, permettant d'utiliser les SDK existants pour accéder à ses modèles. Les anciens noms de modèles (deepseek-chat et deepseek-reasoner) seront dépréciés le 24 juillet 2026 au profit de deepseek-v4-flash.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'API DeepSeek utilise le format OpenAI/Anthropic, facilitant l'intégration avec les outils existants&lt;/li&gt;
+&lt;li&gt;Après authentification avec une clé API, vous pouvez faire des appels via curl, Python (SDK OpenAI) ou Node.js&lt;/li&gt;
+&lt;li&gt;Les paramètres clés incluent le choix du modèle (deepseek-v4-pro), l'activation du mode réflexif (thinking) et le niveau d'effort de raisonnement (reasoning_effort)&lt;/li&gt;
+&lt;li&gt;Les réponses peuvent être en mode stream ou non selon le paramètre stream configuré&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (82 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le modèle atteint un niveau frontier comparable à Opus 4.6, avec des performances de pointe sur plusieurs benchmarks, à un prix révolutionnaire ($0.14-$3.48/M tokens contre $2+/M pour Claude).&lt;/li&gt;
+&lt;li&gt;DeepSeek confirme sa position de leader en open-source : publication systématique des weights, papers et frameworks (TileKernels, DeepGEMM, etc.), contrairement aux grands labs occidentaux qui verrouillent leurs modèles.&lt;/li&gt;
+&lt;li&gt;L'architecture innovante (manifold-constrained hyper-connections, attention hybride) permet une efficacité d'entraînement remarquable ; la version Flash (284B, 13B actifs) devient accessible sur matériel local classique.&lt;/li&gt;
+&lt;li&gt;La documentation technique est exceptionnellement claire et complète, surpassant celle d'OpenAI/Google en concision et utilité pratique.&lt;/li&gt;
+&lt;li&gt;Le rapport qualité/prix déverrouille de nouveaux usages : agents, applications coûteuses deviennent viables ; les prix suggèrent une rentabilité réelle, pas une subvention intenable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les comparaisons de benchmarks sont suspectes : l'interne de DeepSeek reconnaît que v4 est inférieur à Opus 4.6 Thinking ; les gains affichés semblent partiellement liés au benchmark-maxing plutôt qu'à une véritable supériorité.&lt;/li&gt;
+&lt;li&gt;L'absence d'interface native (pas de &amp;quot;DeepSeek Code&amp;quot;) crée une friction majeure pour les développeurs habitués à Claude ; l'intégration reste technique et demande configuration manuelle.&lt;/li&gt;
+&lt;li&gt;Les préoccupations géopolitiques et de confidentialité freinent l'adoption : envoi de données PII vers des serveurs en Chine, convergence implicite avec l'État chinois soulèvent des réserves légitimes chez les entreprises US.&lt;/li&gt;
+&lt;li&gt;Le cycle hype-oubli se répète à chaque sortie DeepSeek ; les avantages réels finissent marginalisés face à la consolidation autour des écosystèmes Anthropic/OpenAI malgré le coût supérieur.&lt;/li&gt;
+&lt;li&gt;Exécution limitée : l'intégration avec des outils agents (Pi Coding) révèle des défauts fonctionnels immédiatement après le lancement.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://api-docs.deepseek.com/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47884971"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">76525f3a</guid>
+      <comments>https://news.ycombinator.com/item?id=47884971</comments>
+      <pubDate>Fri, 24 Apr 2026 03:01:21 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://api-docs.deepseek.com/img/deepseek-social-card.jpeg"/>
+      </media:group>
+    </item>
     <item>
       <title>Soldat américain poursuivi pour avoir utilisé des informations classifiées pour parier sur un marché de prédiction</title>
       <link>https://www.justice.gov/usao-sdny/pr/us-soldier-charged-using-classified-information-profit-prediction-market-bets?bm-verify=AAQAAAAN_____y6To7sZYZ502biZwIHXlr-7zXZUqV4H0xLTfW__wDA3SjNLqifXRaQwsikyuz6IJknyuL8xfVYRkesxcDk5V10m-HoXl2K93f17rygBphL77WVFoQ_XvlmUo922IwM_DQ66137X6wWMtpdHslcEjpJG7KbBmUw9Su4kDENpDt_yv2spThQZehgv-X1Adk5U2VHfp41co2s_QJGjRj4y0KmL1mhSCyVaE7MC1LHG0mtP-xYmD0xBOQwn6PlHkPiP5Nt46h5ZIjLGXgCZDEVD42i7rIEM379DKLPUPX0PDNmOAwFSuTqcTDVnT_UUV8vxpHLRMb7rUxPxKUPcIB23iZTRJddWDDtPHMXadpwv67xr-f1sKDLZT9NgHCO4iuC2EthmAt0</link>
@@ -244,6 +283,40 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://www.telegraph.co.uk/content/dam/briefs/2026/04/23/TELEMMGLPICT000449701987_17769343097120_trans_NvBQzQNjv4BqqVzuuqpFlyLIwiB6NTmJwSX5rhseiWKOo9p9OQ-ymek.jpeg?impolicy=OG-Standard"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Panne affectant GitHub Actions, Copilot et Webhooks, maintenant résolu</title>
+      <link>https://www.githubstatus.com/incidents/myrbk7jvvs6p</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;GitHub a connu une panne affectant plusieurs services (Actions, Copilot et Webhooks) qui a été entièrement mitigée et résolue. Une analyse détaillée des causes sera publiée ultérieurement.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Actions et Copilot ont d'abord subi une dégradation de performance, puis ont été stabilisés&lt;/li&gt;
+&lt;li&gt;Webhooks était également affecté mais fonctionne maintenant normalement&lt;/li&gt;
+&lt;li&gt;La cause racine a été identifiée et les mesures d'atténuation ont permis de rétablir les services&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (39 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GitHub a une position de marché tellement dominante que les entreprises acceptent les pannes comme un coût acceptable ; l'infrastructure cloud est suffisamment robuste pour que même les composants individuels atteignent ~99,78% de disponibilité.&lt;/li&gt;
+&lt;li&gt;Des alternatives viables et matures existent (Forgejo, Gitea, Codeberg, SourceHut) avec des déploiements auto-hébergés beaucoup plus simples qu'avant, notamment grâce à NixOS et l'Infrastructure as Code, offrant une vraie liberté opérationnelle.&lt;/li&gt;
+&lt;li&gt;Les utilisateurs rapportent que migrer vers Forgejo auto-hébergé est rapide et que les Actions/runners locaux fonctionnent plus vite que GitHub, justifiant le mouvement vers l'auto-hébergement.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La métrique d'uptime réelle de GitHub est bien inférieure à 2 nines (88% combiné), car fragmenter les services en composants distincts est une stratégie de cosmétique SRE ; la disponibilité réelle est plafonnée par le service le plus faible (git à 98,98% = 1 nine).&lt;/li&gt;
+&lt;li&gt;Les pannes récentes incluent des régressions graves (commits entièrement revertés lors d'un incident de merge queue) qui n'existaient jamais avant, indiquant une dégradation fonctionnelle au-delà du simple uptime.&lt;/li&gt;
+&lt;li&gt;GitHub reste prisonnière du lock-in de marque : les développeurs ne peuvent pas vraiment partir car les employeurs exigent une présence GitHub pour le recrutement, malgré la qualité de service médiocre et l'absence d'alternatives praticables à échelle industrielle.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://www.githubstatus.com/incidents/myrbk7jvvs6p"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47877644"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">8bb0fa36</guid>
+      <comments>https://news.ycombinator.com/item?id=47877644</comments>
+      <pubDate>Thu, 23 Apr 2026 16:21:55 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://dka575ofm4ao0.cloudfront.net/pages-twitter_logos/original/36420/GitHub-Mark-120px-plus.png"/>
       </media:group>
     </item>
     <item>
