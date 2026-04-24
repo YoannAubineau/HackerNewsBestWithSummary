@@ -9,135 +9,8 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 24 Apr 2026 22:14:46 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 22:31:55 +0000</lastBuildDate>
     <ttl>15</ttl>
-    <item>
-      <title>Raylib 6.0 ajoute un moteur de rendu logiciel et restructure ses APIs</title>
-      <link>https://github.com/raysan5/raylib/releases/tag/6.0</link>
-      <description>github.com/raysan5/raylib/releases/tag/6.0</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Raylib 6.0 représente la plus grande version depuis la création de la bibliothèque, avec 330 nouveaux problèmes fermés, 2000 commits et 20 nouvelles fonctions ajoutées à l'API. Cette version introduit un moteur de rendu entièrement logiciel (rlsw) permettant une exécution sur CPU sans GPU, ainsi que plusieurs nouveaux systèmes de gestion et de nouvelles architectures de plateforme.</p>
-<ul>
-<li>Un nouveau moteur de rendu logiciel (rlsw) exécute raylib sur CPU pur, sans GPU requis, permettant le support de microcontrôleurs comme l'ESP32 et des appareils RISC-V</li>
-<li>Nouvelles architectures de plateforme : backends Win32 natif, Emscripten/web, mémoire headless, et support réorganisé pour SDL, RGFW et DRM</li>
-<li>Système d'animation squelettique repensé avec blending d'animations, transitions temporisées et support GPU-skinning amélioré</li>
-<li>API complète de gestion de fichiers (+40 fonctions) et de texte (+30 fonctions) intégrées dans un seul module rcore</li>
-<li>Support redessiné des modes fullscreen et haute résolution (High-DPI) testé sur Windows, Linux et macOS avec plusieurs moniteurs et résolutions 4K</li>
-<li>Nouvel outil rexm de gestion d'exemples simplifiant l'ajout/suppression/renommage des +70 nouveaux exemples créés dans cette version</li>
-</ul>
-<h2>Discussion sur Hacker News (17 commentaires analysés)</h2>
-<p><strong>Avis positifs</strong> :</p>
-<ul>
-<li>Le nouveau moteur de rendu logiciel ouvre des possibilités intéressantes, notamment sur des plateformes contraintes comme l'ESP32S3.</li>
-<li>Raylib excelle comme bibliothèque minimaliste pour les prototypes et les jeux 2D : pas d'opinions imposées, flexibilité maximale et excellente ergonomie avec certains langages (Swift avec C-interop, Odin).</li>
-<li>La nouvelle API de gestion de texte (+30 fonctions) résout enfin un problème historique de performance sur les scènes texte-intensives.</li>
-<li>L'accessibilité cross-platform (gestion d'entrée, rendu, fenêtrage) en fait un excellent point de départ pour les game jams et projets créatifs.</li>
-</ul>
-<p><strong>Avis négatifs</strong> :</p>
-<ul>
-<li>Raylib n'est pas un concurrent direct d'Unreal/Unity : il manque de briques essentielles (éclairage avancé, ray-tracing, pathfinding) et nécessite de recoder soi-même des systèmes complexes, allongeant significativement le développement.</li>
-<li>Le scope du projet semble limité à la 2D ; le support 3D complet avec skinned meshes n'apparaît pas envisagé, ce qui limite la durée de vie des projets au-delà d'une certaine complexité.</li>
-<li>Malgré les améliorations, la question de la viabilité à long terme de Raylib pour les jeux ambitieux reste ouverte, comparé à des engines plus matures.</li>
-</ul>
-<hr />
-<p><a href="https://github.com/raysan5/raylib/releases/tag/6.0">Article original</a> · <a href="https://news.ycombinator.com/item?id=47874854">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">713c05f6</guid>
-      <comments>https://news.ycombinator.com/item?id=47874854</comments>
-      <pubDate>Thu, 23 Apr 2026 12:16:16 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://opengraph.githubassets.com/0ced67c6358522b6db8a616b36e431bf8c9aa30cab10aeadbce505ac56079579/raysan5/raylib/releases/tag/6.0"/>
-      </media:group>
-    </item>
-    <item>
-      <title>Les comportements qui isolent socialement et créent des expériences relationnelles incoérentes</title>
-      <link>https://nate.leaflet.pub/3mk4xkaxobc2p</link>
-      <description>nate.leaflet.pub/3mk4xkaxobc2p</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Cet article décrit les mécanismes psychologiques et comportementaux qui poussent les individus à l'isolement social et à des interactions dysfonctionnelles, notamment l'interprétation biaisée des intentions d'autrui et le renforcement de leurs propres convictions.</p>
-<ul>
-<li>Attribuer automatiquement des motivations négatives ou irrationnelles aux autres sans chercher à comprendre leur point de vue</li>
-<li>Interpréter l'ambiguïté en supposant la malveillance, l'ignorance ou l'amoralité plutôt que de poser des questions clarificatrices</li>
-<li>Éviter de remettre en question ses propres hypothèses et accorder une confiance absolue à ses intuitions et émotions</li>
-<li>Fuir les conversations en changeant de sujet quand ses assomptions sont contestées, plutôt que d'engager un dialogue authentique</li>
-<li>Refuser d'accorder la grâce aux erreurs d'autrui et se replier sur soi-même lorsque la compréhension mutuelle devient impossible</li>
-</ul>
-<h2>Discussion sur Hacker News (94 commentaires analysés)</h2>
-<p><strong>Avis positifs</strong> :</p>
-<ul>
-<li>La distinction entre &quot;asocial&quot; (évite les gens, manque de repères sociaux) et &quot;antisocial&quot; (hostile, perturbateur) est utile et souvent confondue ; beaucoup reconnaissent que la liste décrit davantage des comportements contre-productifs que véritablement antisocial.</li>
-<li>Les conseils pratiques résonnent : chercher un terrain d'entente même en désaccord, écouter plutôt que de convaincre, interpréter les actions des autres avec bienveillance plutôt que malveillance. L'idée que &quot;l'unité permet le changement&quot; trouve du soutien.</li>
-<li>Pour les personnes autistes ou socially anxious, plusieurs commentateurs témoignent que apprendre les dynamiques sociales (même si c'est laborieux) et pratiquer l'interaction authentique paie à long terme, plus que de s'isoler.</li>
-<li>La mise en garde contre &quot;l'esprit de rectitude&quot; est valide : avoir raison n'est pas toujours plus important que maintenir les relations ; choisir ses batailles est une sagesse reconnue.</li>
-</ul>
-<p><strong>Avis négatifs</strong> :</p>
-<ul>
-<li>Plusieurs trouvent l'article condescendant et hypocrite : il critique exactement les comportements qu'il commet lui-même (jugement sans charité, mauvaise foi attribuée aux autres, absence de compréhension de perspectives différentes).</li>
-<li>La liste confond désaccord fondamental en valeurs avec &quot;antisocialité&quot; ; certains défendent légitimement leurs principes moraux (même si cela isole), ce qui n'est pas une pathologie sociale.</li>
-<li>Les solutions proposées ignorent les réalités neurobiologiques et environnementales : l'anxiété sociale, la neurodivergence, ou des années d'expériences négatives ne se règlent pas par &quot;être au présent&quot; ou de la pensée positive.</li>
-<li>L'article semble écrit en réaction à des conflits personnels spécifiques (famille, réseaux sociaux) plutôt que comme guide général ; il projette des intentions malveillantes sur des désaccords qui pourraient être simples divergences de valeurs.</li>
-</ul>
-<p><strong>Commentaires les plus plébiscités</strong> :</p>
-<ul>
-<li><a href="https://news.ycombinator.com/item?id=47892785">poemxo</a> : « I am guessing the author is either criticizing people who are anti-social (in the pop culture definition) or believes he was before and after some thinking arrived at the conclusion that antisociety was not the way. But I don't feel it describes my internal motivations, so I've translated them to m… »</li>
-<li><a href="https://news.ycombinator.com/item?id=47889037">foo12bar</a> : « How about the old fashioned freezing with a face contorted in fear like your being held at knife point unable to think of anything to say and just waiting to be able to leave? When you get asked a question, fumble over your words and say something stupid. Later on, you can reflexively watch the mem… »</li>
-<li><a href="https://news.ycombinator.com/item?id=47894599">notthemessiah</a> : « the author wrote this in the Leaflet comments sections:&quot;&quot;&quot;through some upsetting turn of events, someone put this on hackernews and started a piranha feeding frenzy of speculation about what / who im referring to here. so just to be clear:i wrote this bulleted list in a couple minutes as a way to r… »</li>
-</ul>
-<hr />
-<p><a href="https://nate.leaflet.pub/3mk4xkaxobc2p">Article original</a> · <a href="https://news.ycombinator.com/item?id=47888372">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">70d1232c</guid>
-      <comments>https://news.ycombinator.com/item?id=47888372</comments>
-      <pubDate>Fri, 24 Apr 2026 10:48:14 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://leaflet.pub/lish/did%3Aplc%3Axbtmt2zjwlrfegqvch7fboei/3lxksvuhk3s2j/3mk4xkaxobc2p/opengraph-image?edc23816ae45539e"/>
-      </media:group>
-    </item>
-    <item>
-      <title>Retrouver une utilisation intentionnelle d'Internet en adoptant les pratiques des années 1990</title>
-      <link>https://joshblais.com/blog/using-the-internet-like-its-1999/</link>
-      <description>joshblais.com/blog/using-the-internet-like-its-1999/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>L'article défend un retour à une utilisation décentralisée et intentionnelle d'Internet, loin des algorithmes et des plateformes de réseaux sociaux modernes qui fragmentent l'attention. L'auteur propose de s'inspirer des technologies et protocoles des années 1990 et 2000 pour reprendre le contrôle de notre expérience en ligne.</p>
-<ul>
-<li>Utiliser les flux RSS pour suivre manuellement les créateurs et contenus sans algorithme, plutôt que de dépendre des recommandations des plateformes</li>
-<li>Préférer les protocoles textuels comme IRC et XMPP (ou héberger soi-même XMPP) pour des échanges avec un meilleur signal-bruit que les réseaux sociaux modernes</li>
-<li>Télécharger et archiver localement les contenus importants pour éviter la pourriture des liens et conserver une copie personnelle</li>
-<li>Privilégier l'email comme canal de communication personnel plutôt que les messages sur les réseaux sociaux, et utiliser le chiffrement PGP</li>
-<li>Adopter la méthode POSSE (publier sur son site personnel puis distribuer) et chercher activement les créateurs authentiques plutôt que du contenu généré par IA</li>
-</ul>
-<h2>Discussion sur Hacker News (45 commentaires analysés)</h2>
-<p><strong>Avis positifs</strong> :</p>
-<ul>
-<li>La nostalgie du Web 1999 reflète surtout un besoin légitime de retrouver l'agentivité utilisateur et de réduire le bloat technologique : des sites rapides et légers sont tout à fait possibles sans sacrifier la modernité.</li>
-<li>Le Web ancien présentait une diversité authentique et un esprit expérimental (passion projects, webrings, découverte) que les silos algorithmiques actuels ont étouffé, rendant l'information moins accessible malgré son abondance.</li>
-<li>Des solutions existent déjà pour recréer cette expérience (RSS readers, Lemmy, Neocities, DNS blocklists, offline-first apps) : le problème n'est pas technique mais relève de choix commerciaux privilégiant la captation de données sur l'expérience utilisateur.</li>
-</ul>
-<p><strong>Avis négatifs</strong> :</p>
-<ul>
-<li>Le Web 1999 était en réalité rempli de contenu malveillant, de spam, de malware et de prédation, simplement moins visible faute de régulation ; la comparaison idéalisée ignore les dysfonctionnements réels d'alors (pop-ups, crashes, incompatibilité des navigateurs).</li>
-<li>La nostalgie du Web 1999 est largement un biais de mémoire sélective : les gens confondent la technologie avec le sentiment d'être jeune et d'expérimenter la découverte pour la première fois, plutôt que d'évaluer objectivement la qualité actuelle (documentation gratuite, cours en ligne, accès à l'information).</li>
-<li>Le contrôle technique réel des dispositifs par les entreprises (notamment téléphones versus PCs) est un problème bien plus fondamental que la esthétique du Web, et replonger dans le HTML simple ne résout pas le manque d'agentivité des utilisateurs modernes.</li>
-</ul>
-<p><strong>Commentaires les plus plébiscités</strong> :</p>
-<ul>
-<li><a href="https://news.ycombinator.com/item?id=47891527">keepamovin</a> : « Probably sounds really weird but I get almost teary eyed when I see those Windows teal-background era graphics and a Netscape browser. Those days! These are the nights that never die. (https://www.youtube.com/watch?v=UtF6Jej8yb4) I don't know if you felt it, but I felt it. Back then, in those days.… »</li>
-<li><a href="https://news.ycombinator.com/item?id=47890501">vovanidze</a> : « the nostalgia for 1999 isnt really about missing dial up or basic html, its about mourning the loss of user agency. back then the browser actually worked for you. today the client is basically a hostile enviroment running megabytes of third party js just to track telemetry.going back to gopher or t… »</li>
-<li><a href="https://news.ycombinator.com/item?id=47893936">fasterik</a> : « I've come to the conclusion that nostalgia is almost never about the objective quality of something. It's about the associations we make between a certain time in our lives and the media/technology that surrounded us at the time. It's also filtered through selective memory, emphasizing the positive… »</li>
-</ul>
-<hr />
-<p><a href="https://joshblais.com/blog/using-the-internet-like-its-1999/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47881198">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">5ab55a89</guid>
-      <comments>https://news.ycombinator.com/item?id=47881198</comments>
-      <pubDate>Thu, 23 Apr 2026 20:14:29 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://joshblais.com/og-images/netscape.jpeg"/>
-      </media:group>
-    </item>
     <item>
       <title>Éviter l'enlisement des projets en restreignant le périmètre et en clarifiant ses critères de succès</title>
       <link>https://kevinlynagh.com/newsletter/2026_04_overthinking/</link>
@@ -224,6 +97,94 @@
       </media:group>
     </item>
     <item>
+      <title>Retrouver une utilisation intentionnelle d'Internet en adoptant les pratiques des années 1990</title>
+      <link>https://joshblais.com/blog/using-the-internet-like-its-1999/</link>
+      <description>joshblais.com/blog/using-the-internet-like-its-1999/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>L'article défend un retour à une utilisation décentralisée et intentionnelle d'Internet, loin des algorithmes et des plateformes de réseaux sociaux modernes qui fragmentent l'attention. L'auteur propose de s'inspirer des technologies et protocoles des années 1990 et 2000 pour reprendre le contrôle de notre expérience en ligne.</p>
+<ul>
+<li>Utiliser les flux RSS pour suivre manuellement les créateurs et contenus sans algorithme, plutôt que de dépendre des recommandations des plateformes</li>
+<li>Préférer les protocoles textuels comme IRC et XMPP (ou héberger soi-même XMPP) pour des échanges avec un meilleur signal-bruit que les réseaux sociaux modernes</li>
+<li>Télécharger et archiver localement les contenus importants pour éviter la pourriture des liens et conserver une copie personnelle</li>
+<li>Privilégier l'email comme canal de communication personnel plutôt que les messages sur les réseaux sociaux, et utiliser le chiffrement PGP</li>
+<li>Adopter la méthode POSSE (publier sur son site personnel puis distribuer) et chercher activement les créateurs authentiques plutôt que du contenu généré par IA</li>
+</ul>
+<h2>Discussion sur Hacker News (45 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>La nostalgie du Web 1999 reflète surtout un besoin légitime de retrouver l'agentivité utilisateur et de réduire le bloat technologique : des sites rapides et légers sont tout à fait possibles sans sacrifier la modernité.</li>
+<li>Le Web ancien présentait une diversité authentique et un esprit expérimental (passion projects, webrings, découverte) que les silos algorithmiques actuels ont étouffé, rendant l'information moins accessible malgré son abondance.</li>
+<li>Des solutions existent déjà pour recréer cette expérience (RSS readers, Lemmy, Neocities, DNS blocklists, offline-first apps) : le problème n'est pas technique mais relève de choix commerciaux privilégiant la captation de données sur l'expérience utilisateur.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Le Web 1999 était en réalité rempli de contenu malveillant, de spam, de malware et de prédation, simplement moins visible faute de régulation ; la comparaison idéalisée ignore les dysfonctionnements réels d'alors (pop-ups, crashes, incompatibilité des navigateurs).</li>
+<li>La nostalgie du Web 1999 est largement un biais de mémoire sélective : les gens confondent la technologie avec le sentiment d'être jeune et d'expérimenter la découverte pour la première fois, plutôt que d'évaluer objectivement la qualité actuelle (documentation gratuite, cours en ligne, accès à l'information).</li>
+<li>Le contrôle technique réel des dispositifs par les entreprises (notamment téléphones versus PCs) est un problème bien plus fondamental que la esthétique du Web, et replonger dans le HTML simple ne résout pas le manque d'agentivité des utilisateurs modernes.</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47891527">keepamovin</a> : « Probably sounds really weird but I get almost teary eyed when I see those Windows teal-background era graphics and a Netscape browser. Those days! These are the nights that never die. (https://www.youtube.com/watch?v=UtF6Jej8yb4) I don't know if you felt it, but I felt it. Back then, in those days.… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47890501">vovanidze</a> : « the nostalgia for 1999 isnt really about missing dial up or basic html, its about mourning the loss of user agency. back then the browser actually worked for you. today the client is basically a hostile enviroment running megabytes of third party js just to track telemetry.going back to gopher or t… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47893936">fasterik</a> : « I've come to the conclusion that nostalgia is almost never about the objective quality of something. It's about the associations we make between a certain time in our lives and the media/technology that surrounded us at the time. It's also filtered through selective memory, emphasizing the positive… »</li>
+</ul>
+<hr />
+<p><a href="https://joshblais.com/blog/using-the-internet-like-its-1999/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47881198">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">5ab55a89</guid>
+      <comments>https://news.ycombinator.com/item?id=47881198</comments>
+      <pubDate>Thu, 23 Apr 2026 20:14:29 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://joshblais.com/og-images/netscape.jpeg"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Les comportements qui isolent socialement et créent des expériences relationnelles incoérentes</title>
+      <link>https://nate.leaflet.pub/3mk4xkaxobc2p</link>
+      <description>nate.leaflet.pub/3mk4xkaxobc2p</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Cet article décrit les mécanismes psychologiques et comportementaux qui poussent les individus à l'isolement social et à des interactions dysfonctionnelles, notamment l'interprétation biaisée des intentions d'autrui et le renforcement de leurs propres convictions.</p>
+<ul>
+<li>Attribuer automatiquement des motivations négatives ou irrationnelles aux autres sans chercher à comprendre leur point de vue</li>
+<li>Interpréter l'ambiguïté en supposant la malveillance, l'ignorance ou l'amoralité plutôt que de poser des questions clarificatrices</li>
+<li>Éviter de remettre en question ses propres hypothèses et accorder une confiance absolue à ses intuitions et émotions</li>
+<li>Fuir les conversations en changeant de sujet quand ses assomptions sont contestées, plutôt que d'engager un dialogue authentique</li>
+<li>Refuser d'accorder la grâce aux erreurs d'autrui et se replier sur soi-même lorsque la compréhension mutuelle devient impossible</li>
+</ul>
+<h2>Discussion sur Hacker News (94 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>La distinction entre &quot;asocial&quot; (évite les gens, manque de repères sociaux) et &quot;antisocial&quot; (hostile, perturbateur) est utile et souvent confondue ; beaucoup reconnaissent que la liste décrit davantage des comportements contre-productifs que véritablement antisocial.</li>
+<li>Les conseils pratiques résonnent : chercher un terrain d'entente même en désaccord, écouter plutôt que de convaincre, interpréter les actions des autres avec bienveillance plutôt que malveillance. L'idée que &quot;l'unité permet le changement&quot; trouve du soutien.</li>
+<li>Pour les personnes autistes ou socially anxious, plusieurs commentateurs témoignent que apprendre les dynamiques sociales (même si c'est laborieux) et pratiquer l'interaction authentique paie à long terme, plus que de s'isoler.</li>
+<li>La mise en garde contre &quot;l'esprit de rectitude&quot; est valide : avoir raison n'est pas toujours plus important que maintenir les relations ; choisir ses batailles est une sagesse reconnue.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Plusieurs trouvent l'article condescendant et hypocrite : il critique exactement les comportements qu'il commet lui-même (jugement sans charité, mauvaise foi attribuée aux autres, absence de compréhension de perspectives différentes).</li>
+<li>La liste confond désaccord fondamental en valeurs avec &quot;antisocialité&quot; ; certains défendent légitimement leurs principes moraux (même si cela isole), ce qui n'est pas une pathologie sociale.</li>
+<li>Les solutions proposées ignorent les réalités neurobiologiques et environnementales : l'anxiété sociale, la neurodivergence, ou des années d'expériences négatives ne se règlent pas par &quot;être au présent&quot; ou de la pensée positive.</li>
+<li>L'article semble écrit en réaction à des conflits personnels spécifiques (famille, réseaux sociaux) plutôt que comme guide général ; il projette des intentions malveillantes sur des désaccords qui pourraient être simples divergences de valeurs.</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47892785">poemxo</a> : « I am guessing the author is either criticizing people who are anti-social (in the pop culture definition) or believes he was before and after some thinking arrived at the conclusion that antisociety was not the way. But I don't feel it describes my internal motivations, so I've translated them to m… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47889037">foo12bar</a> : « How about the old fashioned freezing with a face contorted in fear like your being held at knife point unable to think of anything to say and just waiting to be able to leave? When you get asked a question, fumble over your words and say something stupid. Later on, you can reflexively watch the mem… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47894599">notthemessiah</a> : « the author wrote this in the Leaflet comments sections:&quot;&quot;&quot;through some upsetting turn of events, someone put this on hackernews and started a piranha feeding frenzy of speculation about what / who im referring to here. so just to be clear:i wrote this bulleted list in a couple minutes as a way to r… »</li>
+</ul>
+<hr />
+<p><a href="https://nate.leaflet.pub/3mk4xkaxobc2p">Article original</a> · <a href="https://news.ycombinator.com/item?id=47888372">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">70d1232c</guid>
+      <comments>https://news.ycombinator.com/item?id=47888372</comments>
+      <pubDate>Fri, 24 Apr 2026 10:48:14 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://leaflet.pub/lish/did%3Aplc%3Axbtmt2zjwlrfegqvch7fboei/3lxksvuhk3s2j/3mk4xkaxobc2p/opengraph-image?edc23816ae45539e"/>
+      </media:group>
+    </item>
+    <item>
       <title>La Norvège s'apprête à interdire les réseaux sociaux aux moins de 16 ans</title>
       <link>https://www.bloomberg.com/news/articles/2026-04-24/norway-wants-kids-to-be-kids-with-social-media-ban-for-under-16s</link>
       <description>www.bloomberg.com/news/articles/2026-04-24/norway-wants-kids-to-be-kids-with-social-media-ban-for-under-16s</description>
@@ -263,48 +224,6 @@
       <guid isPermaLink="false">8b914210</guid>
       <comments>https://news.ycombinator.com/item?id=47891019</comments>
       <pubDate>Fri, 24 Apr 2026 14:45:10 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-    </item>
-    <item>
-      <title>Guide interactif sur le fonctionnement des modèles de langage basé sur la conférence de Karpathy</title>
-      <link>https://ynarwal.github.io/how-llms-work/</link>
-      <description>ynarwal.github.io/how-llms-work/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Ce guide explique comment les modèles de langage de grande taille comme ChatGPT sont construits, du téléchargement de données brutes jusqu'à l'assistant conversationnel. Le processus comprend deux phases majeures : le pré-entraînement sur 15 trillions de tokens pour créer un modèle de base, puis le post-entraînement supervisé et l'apprentissage par renforcement pour transformer ce simulateur d'autocomplétage en assistant utile.</p>
-<ul>
-<li>Le pré-entraînement collecte environ 44 téraoctets de texte filtré (Common Crawl), élimine les doublons, le contenu indésirable et les informations personnelles, puis convertit le texte brut en tokens via l'algorithme Byte Pair Encoding (100 000 vocabulaire)</li>
-<li>Un réseau Transformer avec des milliards de paramètres apprend à prédire le token suivant en ajustant ses poids via descente de gradient sur des mois de calcul GPU</li>
-<li>Le modèle de base résultant est un simulateur de document internet capable d'autocomplétion mais pas encore un assistant ; il génère du texte en échantillonnant probabilistiquement parmi les tokens possibles</li>
-<li>L'entraînement supervisé fine-tune le modèle sur des millions de conversations étiquetées par des humains, suivi d'un apprentissage par renforcement (RLHF) pour optimiser les réponses selon les préférences humaines</li>
-<li>Les modèles hallucinent confidemment, n'ont pas de mémoire persistante entre conversations, et leur connaissance s'arrête à la date de coupure des données d'entraînement ; la génération augmentée par récupération (RAG) atténue ces limitations en injectant des documents pertinents dans le contexte</li>
-</ul>
-<h2>Discussion sur Hacker News (26 commentaires analysés)</h2>
-<p><strong>Avis positifs</strong> :</p>
-<ul>
-<li>Les explications visuelles interactives sont claires et bien structurées, notamment sur les embeddings, l'attention et le processus d'inférence vs entraînement.</li>
-<li>Le contenu s'appuie directement sur la transcription de la conférence de Karpathy, garantissant une base solide et fidèle à la source.</li>
-<li>Les corrections apportées (44 TB corrigés en 10 disques durs, meilleure navigation, lien vers tiktokenizer) montrent une volonté d'amélioration continue et de responsabilité face aux retours.</li>
-<li>Les visualisations interactives du tokenization et de l'architecture offrent une approche pédagogique utile pour comprendre le fonctionnement des LLMs.</li>
-</ul>
-<p><strong>Avis négatifs</strong> :</p>
-<ul>
-<li>Le design utilise les tropes visuels génériques associés au contenu généré par IA (gradients, typographie de &quot;slop&quot;), donnant l'impression d'un manque d'effort personnel dans le style et la curation.</li>
-<li>La publication de contenu purement généré par LLM soulève des questions sur la valeur ajoutée : n'importe qui pourrait reproduire le même résultat avec le même prompt.</li>
-<li>Des erreurs factuelles notables (44 TB sur &quot;un seul disque dur&quot;) et des faiblesses techniques (mauvais tokenization d'exemples) réduisent la confiance malgré l'affichage proéminent de ces chiffres.</li>
-<li>Existent déjà des ressources humaines de référence mieux établies (« The Illustrated GPT-2 » de Jay Alammar) qui offrent une expertise et une réflexion pédagogique plus originale.</li>
-</ul>
-<p><strong>Commentaires les plus plébiscités</strong> :</p>
-<ul>
-<li><a href="https://news.ycombinator.com/item?id=47888179">lateral_cloud</a> : « This is completely AI generated..don't bother reading. »</li>
-<li><a href="https://news.ycombinator.com/item?id=47892297">skiing_crawling</a> : « What the value of publishing purely LLM generated content? Anyone can prompt the same thing out of it. »</li>
-<li><a href="https://news.ycombinator.com/item?id=47891209">dylkil</a> : « Was this created with claude design? it looks very similar to something it mocked for me last week »</li>
-</ul>
-<hr />
-<p><a href="https://ynarwal.github.io/how-llms-work/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47886517">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">e640312d</guid>
-      <comments>https://news.ycombinator.com/item?id=47886517</comments>
-      <pubDate>Fri, 24 Apr 2026 06:48:53 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
@@ -348,6 +267,48 @@
       <guid isPermaLink="false">6265ec5f</guid>
       <comments>https://news.ycombinator.com/item?id=47892019</comments>
       <pubDate>Fri, 24 Apr 2026 15:59:19 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>Guide interactif sur le fonctionnement des modèles de langage basé sur la conférence de Karpathy</title>
+      <link>https://ynarwal.github.io/how-llms-work/</link>
+      <description>ynarwal.github.io/how-llms-work/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Ce guide explique comment les modèles de langage de grande taille comme ChatGPT sont construits, du téléchargement de données brutes jusqu'à l'assistant conversationnel. Le processus comprend deux phases majeures : le pré-entraînement sur 15 trillions de tokens pour créer un modèle de base, puis le post-entraînement supervisé et l'apprentissage par renforcement pour transformer ce simulateur d'autocomplétage en assistant utile.</p>
+<ul>
+<li>Le pré-entraînement collecte environ 44 téraoctets de texte filtré (Common Crawl), élimine les doublons, le contenu indésirable et les informations personnelles, puis convertit le texte brut en tokens via l'algorithme Byte Pair Encoding (100 000 vocabulaire)</li>
+<li>Un réseau Transformer avec des milliards de paramètres apprend à prédire le token suivant en ajustant ses poids via descente de gradient sur des mois de calcul GPU</li>
+<li>Le modèle de base résultant est un simulateur de document internet capable d'autocomplétion mais pas encore un assistant ; il génère du texte en échantillonnant probabilistiquement parmi les tokens possibles</li>
+<li>L'entraînement supervisé fine-tune le modèle sur des millions de conversations étiquetées par des humains, suivi d'un apprentissage par renforcement (RLHF) pour optimiser les réponses selon les préférences humaines</li>
+<li>Les modèles hallucinent confidemment, n'ont pas de mémoire persistante entre conversations, et leur connaissance s'arrête à la date de coupure des données d'entraînement ; la génération augmentée par récupération (RAG) atténue ces limitations en injectant des documents pertinents dans le contexte</li>
+</ul>
+<h2>Discussion sur Hacker News (26 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Les explications visuelles interactives sont claires et bien structurées, notamment sur les embeddings, l'attention et le processus d'inférence vs entraînement.</li>
+<li>Le contenu s'appuie directement sur la transcription de la conférence de Karpathy, garantissant une base solide et fidèle à la source.</li>
+<li>Les corrections apportées (44 TB corrigés en 10 disques durs, meilleure navigation, lien vers tiktokenizer) montrent une volonté d'amélioration continue et de responsabilité face aux retours.</li>
+<li>Les visualisations interactives du tokenization et de l'architecture offrent une approche pédagogique utile pour comprendre le fonctionnement des LLMs.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Le design utilise les tropes visuels génériques associés au contenu généré par IA (gradients, typographie de &quot;slop&quot;), donnant l'impression d'un manque d'effort personnel dans le style et la curation.</li>
+<li>La publication de contenu purement généré par LLM soulève des questions sur la valeur ajoutée : n'importe qui pourrait reproduire le même résultat avec le même prompt.</li>
+<li>Des erreurs factuelles notables (44 TB sur &quot;un seul disque dur&quot;) et des faiblesses techniques (mauvais tokenization d'exemples) réduisent la confiance malgré l'affichage proéminent de ces chiffres.</li>
+<li>Existent déjà des ressources humaines de référence mieux établies (« The Illustrated GPT-2 » de Jay Alammar) qui offrent une expertise et une réflexion pédagogique plus originale.</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47888179">lateral_cloud</a> : « This is completely AI generated..don't bother reading. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47892297">skiing_crawling</a> : « What the value of publishing purely LLM generated content? Anyone can prompt the same thing out of it. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47891209">dylkil</a> : « Was this created with claude design? it looks very similar to something it mocked for me last week »</li>
+</ul>
+<hr />
+<p><a href="https://ynarwal.github.io/how-llms-work/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47886517">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">e640312d</guid>
+      <comments>https://news.ycombinator.com/item?id=47886517</comments>
+      <pubDate>Fri, 24 Apr 2026 06:48:53 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
@@ -626,41 +587,6 @@
       </media:group>
     </item>
     <item>
-      <title>Panne affectant GitHub Actions, Copilot et Webhooks, maintenant résolu</title>
-      <link>https://www.githubstatus.com/incidents/myrbk7jvvs6p</link>
-      <description>www.githubstatus.com/incidents/myrbk7jvvs6p</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>GitHub a connu une panne affectant plusieurs services (Actions, Copilot et Webhooks) qui a été entièrement mitigée et résolue. Une analyse détaillée des causes sera publiée ultérieurement.</p>
-<ul>
-<li>Actions et Copilot ont d'abord subi une dégradation de performance, puis ont été stabilisés</li>
-<li>Webhooks était également affecté mais fonctionne maintenant normalement</li>
-<li>La cause racine a été identifiée et les mesures d'atténuation ont permis de rétablir les services</li>
-</ul>
-<h2>Discussion sur Hacker News (39 commentaires analysés)</h2>
-<p><strong>Avis positifs</strong> :</p>
-<ul>
-<li>GitHub a une position de marché tellement dominante que les entreprises acceptent les pannes comme un coût acceptable ; l'infrastructure cloud est suffisamment robuste pour que même les composants individuels atteignent ~99,78% de disponibilité.</li>
-<li>Des alternatives viables et matures existent (Forgejo, Gitea, Codeberg, SourceHut) avec des déploiements auto-hébergés beaucoup plus simples qu'avant, notamment grâce à NixOS et l'Infrastructure as Code, offrant une vraie liberté opérationnelle.</li>
-<li>Les utilisateurs rapportent que migrer vers Forgejo auto-hébergé est rapide et que les Actions/runners locaux fonctionnent plus vite que GitHub, justifiant le mouvement vers l'auto-hébergement.</li>
-</ul>
-<p><strong>Avis négatifs</strong> :</p>
-<ul>
-<li>La métrique d'uptime réelle de GitHub est bien inférieure à 2 nines (88% combiné), car fragmenter les services en composants distincts est une stratégie de cosmétique SRE ; la disponibilité réelle est plafonnée par le service le plus faible (git à 98,98% = 1 nine).</li>
-<li>Les pannes récentes incluent des régressions graves (commits entièrement revertés lors d'un incident de merge queue) qui n'existaient jamais avant, indiquant une dégradation fonctionnelle au-delà du simple uptime.</li>
-<li>GitHub reste prisonnière du lock-in de marque : les développeurs ne peuvent pas vraiment partir car les employeurs exigent une présence GitHub pour le recrutement, malgré la qualité de service médiocre et l'absence d'alternatives praticables à échelle industrielle.</li>
-</ul>
-<hr />
-<p><a href="https://www.githubstatus.com/incidents/myrbk7jvvs6p">Article original</a> · <a href="https://news.ycombinator.com/item?id=47877644">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">8bb0fa36</guid>
-      <comments>https://news.ycombinator.com/item?id=47877644</comments>
-      <pubDate>Thu, 23 Apr 2026 16:21:55 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://dka575ofm4ao0.cloudfront.net/pages-twitter_logos/original/36420/GitHub-Mark-120px-plus.png"/>
-      </media:group>
-    </item>
-    <item>
       <title>Comment faire votre premier appel API avec DeepSeek v4</title>
       <link>https://api-docs.deepseek.com/</link>
       <description>api-docs.deepseek.com/</description>
@@ -698,6 +624,41 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://api-docs.deepseek.com/img/deepseek-social-card.jpeg"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Panne affectant GitHub Actions, Copilot et Webhooks, maintenant résolu</title>
+      <link>https://www.githubstatus.com/incidents/myrbk7jvvs6p</link>
+      <description>www.githubstatus.com/incidents/myrbk7jvvs6p</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>GitHub a connu une panne affectant plusieurs services (Actions, Copilot et Webhooks) qui a été entièrement mitigée et résolue. Une analyse détaillée des causes sera publiée ultérieurement.</p>
+<ul>
+<li>Actions et Copilot ont d'abord subi une dégradation de performance, puis ont été stabilisés</li>
+<li>Webhooks était également affecté mais fonctionne maintenant normalement</li>
+<li>La cause racine a été identifiée et les mesures d'atténuation ont permis de rétablir les services</li>
+</ul>
+<h2>Discussion sur Hacker News (39 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>GitHub a une position de marché tellement dominante que les entreprises acceptent les pannes comme un coût acceptable ; l'infrastructure cloud est suffisamment robuste pour que même les composants individuels atteignent ~99,78% de disponibilité.</li>
+<li>Des alternatives viables et matures existent (Forgejo, Gitea, Codeberg, SourceHut) avec des déploiements auto-hébergés beaucoup plus simples qu'avant, notamment grâce à NixOS et l'Infrastructure as Code, offrant une vraie liberté opérationnelle.</li>
+<li>Les utilisateurs rapportent que migrer vers Forgejo auto-hébergé est rapide et que les Actions/runners locaux fonctionnent plus vite que GitHub, justifiant le mouvement vers l'auto-hébergement.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>La métrique d'uptime réelle de GitHub est bien inférieure à 2 nines (88% combiné), car fragmenter les services en composants distincts est une stratégie de cosmétique SRE ; la disponibilité réelle est plafonnée par le service le plus faible (git à 98,98% = 1 nine).</li>
+<li>Les pannes récentes incluent des régressions graves (commits entièrement revertés lors d'un incident de merge queue) qui n'existaient jamais avant, indiquant une dégradation fonctionnelle au-delà du simple uptime.</li>
+<li>GitHub reste prisonnière du lock-in de marque : les développeurs ne peuvent pas vraiment partir car les employeurs exigent une présence GitHub pour le recrutement, malgré la qualité de service médiocre et l'absence d'alternatives praticables à échelle industrielle.</li>
+</ul>
+<hr />
+<p><a href="https://www.githubstatus.com/incidents/myrbk7jvvs6p">Article original</a> · <a href="https://news.ycombinator.com/item?id=47877644">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">8bb0fa36</guid>
+      <comments>https://news.ycombinator.com/item?id=47877644</comments>
+      <pubDate>Thu, 23 Apr 2026 16:21:55 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://dka575ofm4ao0.cloudfront.net/pages-twitter_logos/original/36420/GitHub-Mark-120px-plus.png"/>
       </media:group>
     </item>
     <item>
@@ -924,76 +885,39 @@
       </media:group>
     </item>
     <item>
-      <title>Arch Linux publie une image Docker bit-for-bit reproductible sous le tag "repro"</title>
-      <link>https://antiz.fr/blog/archlinux-now-has-a-reproducible-docker-image/</link>
-      <description>antiz.fr/blog/archlinux-now-has-a-reproducible-docker-image/</description>
+      <title>OpenAI annonce GPT-5.5</title>
+      <link>https://openai.com/index/introducing-gpt-5-5/</link>
+      <description>openai.com/index/introducing-gpt-5-5/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Arch Linux a atteint un jalon technique en proposant une image Docker bit-for-bit reproductible, distribuée sous un nouveau tag &quot;repro&quot;. Cette reproductibilité signifie que l'image produit un hash identique à chaque construction, vérifiable via ses digests.</p>
+<p>OpenAI a publié une annonce concernant un nouveau modèle appelé GPT-5.5. L'annonce a généré une attention significative sur la communauté tech.</p>
 <ul>
-<li>L'image reproductible nécessite de régénérer les clés pacman avant utilisation, car elles sont supprimées pour garantir la reproductibilité (commande : <code>pacman-key --init &amp;&amp; pacman-key --populate archlinux</code>)</li>
-<li>Les ajustements techniques incluent la normalisation de <code>SOURCE_DATE_EPOCH</code>, la suppression du cache auxiliaire ldconfig et la réécriture des timestamps lors de la compilation</li>
-<li>La reproductibilité est vérifiée via l'égalité des digests et l'outil diffoci pour comparer les constructions</li>
-<li>Le processus réutilise le même système de compilation que l'image WSL d'Arch Linux</li>
-<li>Un rebuilder automatique pourrait être mis en place pour vérifier périodiquement la reproductibilité et publier les résultats</li>
+<li>Un article d'annonce officielle a été publié sur le site d'OpenAI</li>
+<li>Le sujet a suscité 647 points d'intérêt sur Hacker News</li>
+<li>La discussion a attiré 286 commentaires de la communauté</li>
 </ul>
-<h2>Discussion sur Hacker News (43 commentaires analysés)</h2>
+<h2>Discussion sur Hacker News (88 commentaires analysés)</h2>
 <p><strong>Avis positifs</strong> :</p>
 <ul>
-<li>Les images reproductibles offrent un bénéfice réel en sécurité et débogage : pouvoir identifier précisément les différences entre deux images permet de détecter des anomalies (attaques, corruption) qu'on ne verrait pas autrement.</li>
-<li>C'est un accomplissement important pour la certification, la sécurité et les applications critiques ; Arch pourrait inspirer d'autres distributions à adopter cette approche, même si Debian travaille déjà dessus.</li>
-<li>Les utilisateurs apprécient la stabilité et la fiabilité d'Arch Linux en production (WSL 2, natif, Docker) pour tester des configurations et des dotfiles dans un environnement cohérent.</li>
+<li>Les améliorations d'efficacité sont substantielles : GPT-5.5 atteint des scores comparables à GPT-5.4 en utilisant 5 fois moins de tokens sur certaines tâches, ce qui représente un gain réel d'intelligence plutôt que juste une escalade computationnelle.</li>
+<li>L'innovation en optimisation d'inférence (Codex analysant les patterns de trafic pour améliorer de 20% la génération) montre des progrès au-delà des benchmarks traditionnels, avec des applications pratiques concrètes.</li>
+<li>La disponibilité ouverte de GPT-5.5 contraste favorablement avec le modèle gatekeepé de Mythos d'Anthropic, redonnant à OpenAI une posture plus &quot;open&quot; malgré les critiques tarifaires.</li>
+<li>Les capacités pour les tâches à long horizon et les systèmes agents (heartbeats pour vérification continue) offrent des cas d'usage pratiques tangibles.</li>
+<li>Les améliorations en générations de code (Three.js, shaders) montrent des sauts qualitatifs perceptibles depuis la version 5.4.</li>
 </ul>
 <p><strong>Avis négatifs</strong> :</p>
 <ul>
-<li>Dilemme fondamental : les images reproductibles obsolètes contiennent des failles de sécurité connues, donc la reproductibilité n'a de sens que pour des images récentes ; c'est un bénéfice limité qui disparaît passé un mois.</li>
-<li>Les solutions existantes (Nix, snapshots Debian, gestionnaires de dépendances pinées) résolvent déjà ce problème depuis longtemps de manière plus élégante et complète que des ajustements post-coup sur les distributions traditionnelles.</li>
-<li>L'absence de package manager dans les conteneurs est préférable (buildroot, images préconstruites) : ajouter apt-get dans les Dockerfiles reste un anti-pattern même avec la reproductibilité, car cela complique l'audit et la maintenance.</li>
+<li>Le doublement des prix par rapport à GPT-5.4 (et multiplication par 3-10 par rapport aux versions antérieures) préoccupe fortement ; même si l'efficacité tokenique s'améliore, la tendance générale des coûts est alarmante et risque de créer des dépendances propriétaires.</li>
+<li>Les benchmarks restent peu reproductibles et ne reflètent pas nécessairement les gains réels en productivité réelle ; GPT-5.5 reste significativement derrière Mythos sur SWE-Bench Pro (58.6% vs 77.8%), minorant les prétentions de supériorité générale.</li>
+<li>Le marketing marketing &quot;superlatives sur superlatives&quot; à chaque lancement crée de la fatigue et cache l'absence d'innovation architecturale fondamentale ; les gains semblent essentiellement issus de l'augmentation du calcul.</li>
+<li>Les problèmes de &quot;motivation&quot; rapportés sur GPT-5.4 (refus de compléter les tâches malgré les instructions explicites) suggèrent des problèmes d'alignement non résolus affectant l'utilité pratique.</li>
 </ul>
 <hr />
-<p><a href="https://antiz.fr/blog/archlinux-now-has-a-reproducible-docker-image/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47871519">Discussion HN</a></p>
+<p><a href="https://openai.com/index/introducing-gpt-5-5/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47879092">Discussion HN</a></p>
 ]]></content:encoded>
-      <guid isPermaLink="false">6e7213e3</guid>
-      <comments>https://news.ycombinator.com/item?id=47871519</comments>
-      <pubDate>Thu, 23 Apr 2026 01:59:08 +0000</pubDate>
+      <guid isPermaLink="false">fbe6cb69</guid>
+      <comments>https://news.ycombinator.com/item?id=47879092</comments>
+      <pubDate>Thu, 23 Apr 2026 18:01:39 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-    </item>
-    <item>
-      <title>L'agence française ANTS confirme une fuite de données de 19 millions de citoyens</title>
-      <link>https://www.bleepingcomputer.com/news/security/french-govt-agency-confirms-breach-as-hacker-offers-to-sell-data/</link>
-      <description>www.bleepingcomputer.com/news/security/french-govt-agency-confirms-breach-as-hacker-offers-to-sell-data/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>L'Agence nationale des titres sécurisés (ANTS), qui gère les documents administratifs français comme les cartes d'identité et les passeports, a confirmé le 15 avril 2026 une violation de données. Un acteur malveillant revendique le vol de jusqu'à 19 millions d'enregistrements et propose les données à la vente.</p>
-<ul>
-<li>Les données exposées incluent les noms complets, adresses email, dates de naissance, adresses postales et numéros de téléphone de millions d'utilisateurs du portail ants.gouv.fr</li>
-<li>L'agence affirme que les données volées ne permettent pas l'accès direct aux portails électroniques, mais peuvent être utilisées pour des attaques de phishing et d'ingénierie sociale</li>
-<li>ANTS a notifié l'autorité de protection des données (CNIL), le Parquet de Paris et l'agence nationale de cybersécurité (ANSSI)</li>
-<li>L'agence conseille aux citoyens de rester vigilants face aux communications suspectes prétendant provenir d'ANTS, mais affirme qu'aucune action immédiate n'est requise</li>
-</ul>
-<h2>Discussion sur Hacker News (38 commentaires analysés)</h2>
-<p><strong>Avis positifs</strong> :</p>
-<ul>
-<li>Les fuites répétées de données gouvernementales françaises confirment un problème systémique grave qui nécessite des solutions structurelles, notamment des tests de pénétration agressifs menés par des agences gouvernementales indépendantes plutôt que des audits de conformité inefficaces.</li>
-<li>La France propose une solution innovante avec les identifiants numériques à usage unique (France-Identité) qui minimisent les données partagées par organisation et use-case, modèle que d'autres pays devraient adopter.</li>
-<li>Le problème révèle l'absurdité de la collecte KYC excessive : les données les plus strictement protégées sont justement celles qui fuient le plus, invalidant l'argument de sécurité derrière ces exigences.</li>
-<li>L'absence de conséquences réelles pour les agences gouvernementales (contrairement aux entreprises privées) crée une impunité systématique ; seule la responsabilité personnelle des décideurs changerait les incitations.</li>
-</ul>
-<p><strong>Avis négatifs</strong> :</p>
-<ul>
-<li>Les informations volées (nom, date de naissance, adresse) sont insuffisantes pour une véritable usurpation d'identité moderne ; l'escalade du problème dépend davantage de systèmes d'authentification défaillants que de la fuite elle-même.</li>
-<li>Le chiffrement en base de données ne résout rien : les attaquants disposent des clés de déchiffrement ou contournent le système autrement, donc cette mesure est cosmétique.</li>
-<li>Ces fuites sont devenues si routinières que les données personnelles doivent être traitées comme publiques ; s'y adapter (via identités numériques fédérées et MFA) est plus réaliste que de prétendre empêcher les fuites.</li>
-<li>Les pénalités et amendes RGPD restent inefficaces car elles prélèvent sur le budget public (les contribuables paient finalement) sans créer d'incitations réelles au changement dans l'administration.</li>
-</ul>
-<hr />
-<p><a href="https://www.bleepingcomputer.com/news/security/french-govt-agency-confirms-breach-as-hacker-offers-to-sell-data/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47877366">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">80a0a047</guid>
-      <comments>https://news.ycombinator.com/item?id=47877366</comments>
-      <pubDate>Thu, 23 Apr 2026 15:59:55 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://www.bleepstatic.com/content/hl-images/2026/04/21/Titres.jpg"/>
-      </media:group>
     </item>
     <item>
       <title>Anthropic identifie et corrige trois problèmes de qualité affectant Claude Code en avril 2025</title>
@@ -1040,41 +964,76 @@
       </media:group>
     </item>
     <item>
-      <title>Les employés de Palantir remettent en question leur implication dans les politiques d'immigration et militaires</title>
-      <link>https://www.wired.com/story/palantir-employees-are-starting-to-wonder-if-theyre-the-bad-guys/</link>
-      <description>www.wired.com/story/palantir-employees-are-starting-to-wonder-if-theyre-the-bad-guys/</description>
+      <title>L'agence française ANTS confirme une fuite de données de 19 millions de citoyens</title>
+      <link>https://www.bleepingcomputer.com/news/security/french-govt-agency-confirms-breach-as-hacker-offers-to-sell-data/</link>
+      <description>www.bleepingcomputer.com/news/security/french-govt-agency-confirms-breach-as-hacker-offers-to-sell-data/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Depuis le début du second mandat de Donald Trump, les employés de Palantir expriment des doutes croissants sur le rôle de leur entreprise dans l'application des politiques gouvernementales, notamment le contrôle des immigrants et les opérations militaires. L'entreprise de technologie, fondée après le 11 septembre avec un soutien initial de la CIA, connaît une crise d'identité entre sa mission affichée de protéger les libertés civiles et son implication actuelle dans des opérations critiquées.</p>
+<p>L'Agence nationale des titres sécurisés (ANTS), qui gère les documents administratifs français comme les cartes d'identité et les passeports, a confirmé le 15 avril 2026 une violation de données. Un acteur malveillant revendique le vol de jusqu'à 19 millions d'enregistrements et propose les données à la vente.</p>
 <ul>
-<li>Palantir fournit des logiciels au Département de la Sécurité intérieure pour identifier, suivre et faciliter l'expulsion d'immigrants, ce qui a déclenché des alertes chez les employés actuels et anciens</li>
-<li>Les tensions internes ont atteint un point culminant après la mort d'un infirmier tué par les agents fédéraux lors de manifestations contre l'ICE, les employés demandant transparence sur les contrats avec cette agence</li>
-<li>L'entreprise a commencé à effacer les conversations Slack après sept jours dans les canaux où se déroulent les débats internes, ce que les travailleurs interprètent comme une tentative d'étouffer les critiques</li>
-<li>La possible implication des outils de surveillance de Palantir dans une frappe aérienne qui a tué plus de 120 enfants dans une école iranienne a constitué un point de rupture pour les employés</li>
-<li>Le PDG Alex Karp maintient une position ferme, déclarant que l'entreprise est « en retard » en termes de popularité interne et affirmant qu'une position n'a de valeur que si elle risque de perdre des employés</li>
+<li>Les données exposées incluent les noms complets, adresses email, dates de naissance, adresses postales et numéros de téléphone de millions d'utilisateurs du portail ants.gouv.fr</li>
+<li>L'agence affirme que les données volées ne permettent pas l'accès direct aux portails électroniques, mais peuvent être utilisées pour des attaques de phishing et d'ingénierie sociale</li>
+<li>ANTS a notifié l'autorité de protection des données (CNIL), le Parquet de Paris et l'agence nationale de cybersécurité (ANSSI)</li>
+<li>L'agence conseille aux citoyens de rester vigilants face aux communications suspectes prétendant provenir d'ANTS, mais affirme qu'aucune action immédiate n'est requise</li>
 </ul>
-<h2>Discussion sur Hacker News (98 commentaires analysés)</h2>
+<h2>Discussion sur Hacker News (38 commentaires analysés)</h2>
 <p><strong>Avis positifs</strong> :</p>
 <ul>
-<li>Les employés auraient dû se poser la question bien plus tôt : la nature de Palantir comme entreprise de surveillance massive était évidente depuis le départ, notamment via son nom évocateur tiré de Tolkien.</li>
-<li>Palantir remplit une fonction légitime pour la défense nationale américaine, et il est sain d'avoir des personnes intelligentes et critiques travaillant dans ce secteur plutôt que de le laisser aux seules mains de carriéristes sans scrupules.</li>
-<li>Le débat moral existe dans d'autres secteurs (défense, énergie nucléaire, aerospace) sans que cela ne disqualifie moralement tous les employés ; la complexité éthique est réelle et ne justifie pas une condamnation catégorique.</li>
+<li>Les fuites répétées de données gouvernementales françaises confirment un problème systémique grave qui nécessite des solutions structurelles, notamment des tests de pénétration agressifs menés par des agences gouvernementales indépendantes plutôt que des audits de conformité inefficaces.</li>
+<li>La France propose une solution innovante avec les identifiants numériques à usage unique (France-Identité) qui minimisent les données partagées par organisation et use-case, modèle que d'autres pays devraient adopter.</li>
+<li>Le problème révèle l'absurdité de la collecte KYC excessive : les données les plus strictement protégées sont justement celles qui fuient le plus, invalidant l'argument de sécurité derrière ces exigences.</li>
+<li>L'absence de conséquences réelles pour les agences gouvernementales (contrairement aux entreprises privées) crée une impunité systématique ; seule la responsabilité personnelle des décideurs changerait les incitations.</li>
 </ul>
 <p><strong>Avis négatifs</strong> :</p>
 <ul>
-<li>Palantir pratique la surveillance de masse infraconstitutionnelle déguisée en « défense » : c'est une arme d'invisibilité et de contrôle bien plus insidieuse qu'une arme conventionnelle, affectant même les citoyens américains sans transparence légale.</li>
-<li>Le manifeste technofasciste d'Alex Karp (défense de la conscription obligatoire, des déportations massives) révèle une idéologie dangereuse au cœur de l'entreprise, rendant illusoire toute tentative de moralisation interne par les travailleurs.</li>
-<li>La structure même de Palantir encourage l'aveuglement moral : les employés se concentrent sur des problèmes techniquement intéressants tout en ignorant les conséquences réelles de leurs outils (surveillance discriminatoire, usage contre dissidents, escalade autoritaire), perpétuant « la banalité du mal ».</li>
+<li>Les informations volées (nom, date de naissance, adresse) sont insuffisantes pour une véritable usurpation d'identité moderne ; l'escalade du problème dépend davantage de systèmes d'authentification défaillants que de la fuite elle-même.</li>
+<li>Le chiffrement en base de données ne résout rien : les attaquants disposent des clés de déchiffrement ou contournent le système autrement, donc cette mesure est cosmétique.</li>
+<li>Ces fuites sont devenues si routinières que les données personnelles doivent être traitées comme publiques ; s'y adapter (via identités numériques fédérées et MFA) est plus réaliste que de prétendre empêcher les fuites.</li>
+<li>Les pénalités et amendes RGPD restent inefficaces car elles prélèvent sur le budget public (les contribuables paient finalement) sans créer d'incitations réelles au changement dans l'administration.</li>
 </ul>
 <hr />
-<p><a href="https://www.wired.com/story/palantir-employees-are-starting-to-wonder-if-theyre-the-bad-guys/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47878633">Discussion HN</a></p>
+<p><a href="https://www.bleepingcomputer.com/news/security/french-govt-agency-confirms-breach-as-hacker-offers-to-sell-data/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47877366">Discussion HN</a></p>
 ]]></content:encoded>
-      <guid isPermaLink="false">1f71b0e2</guid>
-      <comments>https://news.ycombinator.com/item?id=47878633</comments>
-      <pubDate>Thu, 23 Apr 2026 17:30:05 +0000</pubDate>
+      <guid isPermaLink="false">80a0a047</guid>
+      <comments>https://news.ycombinator.com/item?id=47877366</comments>
+      <pubDate>Thu, 23 Apr 2026 15:59:55 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
-        <media:thumbnail url="https://media.wired.com/photos/69d3c62396de4781bbc4cf6e/191:100/w_1280,c_limit/GettyImages-2268833968.jpg"/>
+        <media:thumbnail url="https://www.bleepstatic.com/content/hl-images/2026/04/21/Titres.jpg"/>
       </media:group>
+    </item>
+    <item>
+      <title>Arch Linux publie une image Docker bit-for-bit reproductible sous le tag "repro"</title>
+      <link>https://antiz.fr/blog/archlinux-now-has-a-reproducible-docker-image/</link>
+      <description>antiz.fr/blog/archlinux-now-has-a-reproducible-docker-image/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Arch Linux a atteint un jalon technique en proposant une image Docker bit-for-bit reproductible, distribuée sous un nouveau tag &quot;repro&quot;. Cette reproductibilité signifie que l'image produit un hash identique à chaque construction, vérifiable via ses digests.</p>
+<ul>
+<li>L'image reproductible nécessite de régénérer les clés pacman avant utilisation, car elles sont supprimées pour garantir la reproductibilité (commande : <code>pacman-key --init &amp;&amp; pacman-key --populate archlinux</code>)</li>
+<li>Les ajustements techniques incluent la normalisation de <code>SOURCE_DATE_EPOCH</code>, la suppression du cache auxiliaire ldconfig et la réécriture des timestamps lors de la compilation</li>
+<li>La reproductibilité est vérifiée via l'égalité des digests et l'outil diffoci pour comparer les constructions</li>
+<li>Le processus réutilise le même système de compilation que l'image WSL d'Arch Linux</li>
+<li>Un rebuilder automatique pourrait être mis en place pour vérifier périodiquement la reproductibilité et publier les résultats</li>
+</ul>
+<h2>Discussion sur Hacker News (43 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Les images reproductibles offrent un bénéfice réel en sécurité et débogage : pouvoir identifier précisément les différences entre deux images permet de détecter des anomalies (attaques, corruption) qu'on ne verrait pas autrement.</li>
+<li>C'est un accomplissement important pour la certification, la sécurité et les applications critiques ; Arch pourrait inspirer d'autres distributions à adopter cette approche, même si Debian travaille déjà dessus.</li>
+<li>Les utilisateurs apprécient la stabilité et la fiabilité d'Arch Linux en production (WSL 2, natif, Docker) pour tester des configurations et des dotfiles dans un environnement cohérent.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Dilemme fondamental : les images reproductibles obsolètes contiennent des failles de sécurité connues, donc la reproductibilité n'a de sens que pour des images récentes ; c'est un bénéfice limité qui disparaît passé un mois.</li>
+<li>Les solutions existantes (Nix, snapshots Debian, gestionnaires de dépendances pinées) résolvent déjà ce problème depuis longtemps de manière plus élégante et complète que des ajustements post-coup sur les distributions traditionnelles.</li>
+<li>L'absence de package manager dans les conteneurs est préférable (buildroot, images préconstruites) : ajouter apt-get dans les Dockerfiles reste un anti-pattern même avec la reproductibilité, car cela complique l'audit et la maintenance.</li>
+</ul>
+<hr />
+<p><a href="https://antiz.fr/blog/archlinux-now-has-a-reproducible-docker-image/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47871519">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">6e7213e3</guid>
+      <comments>https://news.ycombinator.com/item?id=47871519</comments>
+      <pubDate>Thu, 23 Apr 2026 01:59:08 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Les États-Unis sont riches mais malheureux depuis 2020, selon des mesures inédites de bien-être</title>
@@ -1118,39 +1077,41 @@
       </media:group>
     </item>
     <item>
-      <title>OpenAI annonce GPT-5.5</title>
-      <link>https://openai.com/index/introducing-gpt-5-5/</link>
-      <description>openai.com/index/introducing-gpt-5-5/</description>
+      <title>Les employés de Palantir remettent en question leur implication dans les politiques d'immigration et militaires</title>
+      <link>https://www.wired.com/story/palantir-employees-are-starting-to-wonder-if-theyre-the-bad-guys/</link>
+      <description>www.wired.com/story/palantir-employees-are-starting-to-wonder-if-theyre-the-bad-guys/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>OpenAI a publié une annonce concernant un nouveau modèle appelé GPT-5.5. L'annonce a généré une attention significative sur la communauté tech.</p>
+<p>Depuis le début du second mandat de Donald Trump, les employés de Palantir expriment des doutes croissants sur le rôle de leur entreprise dans l'application des politiques gouvernementales, notamment le contrôle des immigrants et les opérations militaires. L'entreprise de technologie, fondée après le 11 septembre avec un soutien initial de la CIA, connaît une crise d'identité entre sa mission affichée de protéger les libertés civiles et son implication actuelle dans des opérations critiquées.</p>
 <ul>
-<li>Un article d'annonce officielle a été publié sur le site d'OpenAI</li>
-<li>Le sujet a suscité 647 points d'intérêt sur Hacker News</li>
-<li>La discussion a attiré 286 commentaires de la communauté</li>
+<li>Palantir fournit des logiciels au Département de la Sécurité intérieure pour identifier, suivre et faciliter l'expulsion d'immigrants, ce qui a déclenché des alertes chez les employés actuels et anciens</li>
+<li>Les tensions internes ont atteint un point culminant après la mort d'un infirmier tué par les agents fédéraux lors de manifestations contre l'ICE, les employés demandant transparence sur les contrats avec cette agence</li>
+<li>L'entreprise a commencé à effacer les conversations Slack après sept jours dans les canaux où se déroulent les débats internes, ce que les travailleurs interprètent comme une tentative d'étouffer les critiques</li>
+<li>La possible implication des outils de surveillance de Palantir dans une frappe aérienne qui a tué plus de 120 enfants dans une école iranienne a constitué un point de rupture pour les employés</li>
+<li>Le PDG Alex Karp maintient une position ferme, déclarant que l'entreprise est « en retard » en termes de popularité interne et affirmant qu'une position n'a de valeur que si elle risque de perdre des employés</li>
 </ul>
-<h2>Discussion sur Hacker News (88 commentaires analysés)</h2>
+<h2>Discussion sur Hacker News (98 commentaires analysés)</h2>
 <p><strong>Avis positifs</strong> :</p>
 <ul>
-<li>Les améliorations d'efficacité sont substantielles : GPT-5.5 atteint des scores comparables à GPT-5.4 en utilisant 5 fois moins de tokens sur certaines tâches, ce qui représente un gain réel d'intelligence plutôt que juste une escalade computationnelle.</li>
-<li>L'innovation en optimisation d'inférence (Codex analysant les patterns de trafic pour améliorer de 20% la génération) montre des progrès au-delà des benchmarks traditionnels, avec des applications pratiques concrètes.</li>
-<li>La disponibilité ouverte de GPT-5.5 contraste favorablement avec le modèle gatekeepé de Mythos d'Anthropic, redonnant à OpenAI une posture plus &quot;open&quot; malgré les critiques tarifaires.</li>
-<li>Les capacités pour les tâches à long horizon et les systèmes agents (heartbeats pour vérification continue) offrent des cas d'usage pratiques tangibles.</li>
-<li>Les améliorations en générations de code (Three.js, shaders) montrent des sauts qualitatifs perceptibles depuis la version 5.4.</li>
+<li>Les employés auraient dû se poser la question bien plus tôt : la nature de Palantir comme entreprise de surveillance massive était évidente depuis le départ, notamment via son nom évocateur tiré de Tolkien.</li>
+<li>Palantir remplit une fonction légitime pour la défense nationale américaine, et il est sain d'avoir des personnes intelligentes et critiques travaillant dans ce secteur plutôt que de le laisser aux seules mains de carriéristes sans scrupules.</li>
+<li>Le débat moral existe dans d'autres secteurs (défense, énergie nucléaire, aerospace) sans que cela ne disqualifie moralement tous les employés ; la complexité éthique est réelle et ne justifie pas une condamnation catégorique.</li>
 </ul>
 <p><strong>Avis négatifs</strong> :</p>
 <ul>
-<li>Le doublement des prix par rapport à GPT-5.4 (et multiplication par 3-10 par rapport aux versions antérieures) préoccupe fortement ; même si l'efficacité tokenique s'améliore, la tendance générale des coûts est alarmante et risque de créer des dépendances propriétaires.</li>
-<li>Les benchmarks restent peu reproductibles et ne reflètent pas nécessairement les gains réels en productivité réelle ; GPT-5.5 reste significativement derrière Mythos sur SWE-Bench Pro (58.6% vs 77.8%), minorant les prétentions de supériorité générale.</li>
-<li>Le marketing marketing &quot;superlatives sur superlatives&quot; à chaque lancement crée de la fatigue et cache l'absence d'innovation architecturale fondamentale ; les gains semblent essentiellement issus de l'augmentation du calcul.</li>
-<li>Les problèmes de &quot;motivation&quot; rapportés sur GPT-5.4 (refus de compléter les tâches malgré les instructions explicites) suggèrent des problèmes d'alignement non résolus affectant l'utilité pratique.</li>
+<li>Palantir pratique la surveillance de masse infraconstitutionnelle déguisée en « défense » : c'est une arme d'invisibilité et de contrôle bien plus insidieuse qu'une arme conventionnelle, affectant même les citoyens américains sans transparence légale.</li>
+<li>Le manifeste technofasciste d'Alex Karp (défense de la conscription obligatoire, des déportations massives) révèle une idéologie dangereuse au cœur de l'entreprise, rendant illusoire toute tentative de moralisation interne par les travailleurs.</li>
+<li>La structure même de Palantir encourage l'aveuglement moral : les employés se concentrent sur des problèmes techniquement intéressants tout en ignorant les conséquences réelles de leurs outils (surveillance discriminatoire, usage contre dissidents, escalade autoritaire), perpétuant « la banalité du mal ».</li>
 </ul>
 <hr />
-<p><a href="https://openai.com/index/introducing-gpt-5-5/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47879092">Discussion HN</a></p>
+<p><a href="https://www.wired.com/story/palantir-employees-are-starting-to-wonder-if-theyre-the-bad-guys/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47878633">Discussion HN</a></p>
 ]]></content:encoded>
-      <guid isPermaLink="false">fbe6cb69</guid>
-      <comments>https://news.ycombinator.com/item?id=47879092</comments>
-      <pubDate>Thu, 23 Apr 2026 18:01:39 +0000</pubDate>
+      <guid isPermaLink="false">1f71b0e2</guid>
+      <comments>https://news.ycombinator.com/item?id=47878633</comments>
+      <pubDate>Thu, 23 Apr 2026 17:30:05 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://media.wired.com/photos/69d3c62396de4781bbc4cf6e/191:100/w_1280,c_limit/GettyImages-2268833968.jpg"/>
+      </media:group>
     </item>
     <item>
       <title>Bitwarden CLI compromised dans la campagne de chaîne d'approvisionnement de Checkmarx</title>
@@ -1277,45 +1238,6 @@
       </media:group>
     </item>
     <item>
-      <title>Zed introduit l'exécution parallèle de plusieurs agents dans une même fenêtre avec une barre de threads</title>
-      <link>https://zed.dev/blog/parallel-agents</link>
-      <description>zed.dev/blog/parallel-agents</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Zed permet désormais d'orchestrer plusieurs agents s'exécutant en parallèle dans la même fenêtre, avec une nouvelle Threads Sidebar pour contrôler l'accès aux dossiers et référentiels, et monitorer leur activité en temps réel à 120 fps.</p>
-<ul>
-<li>La Threads Sidebar regroupe les threads par projet et permet de combiner différents agents, de travailler entre plusieurs projets et d'isoler les worktrees selon les besoins</li>
-<li>L'interface a été repensée avec la Threads Sidebar ancrée à gauche par défaut pour placer les threads au centre du flux de travail</li>
-<li>La fonction repose sur le concept d'« agentic engineering » : combiner l'assistance IA avec l'engagement direct du développeur dans le code plutôt que de générer automatiquement des lignes de code</li>
-<li>Les opérations courantes comme arrêter, archiver ou lancer des threads sont accessibles instantanément depuis la Sidebar</li>
-<li>La fonctionnalité est disponible dans la dernière version de Zed, accessible via l'icône en bas à gauche ou les raccourcis clavier option-cmd-j (macOS) et ctrl-option-j (Linux/Windows)</li>
-</ul>
-<h2>Discussion sur Hacker News (47 commentaires analysés)</h2>
-<p><strong>Avis positifs</strong> :</p>
-<ul>
-<li>Zed propose une implémentation d'agents parallèles plus logique que ses concurrents (Warp, Conductor), avec support agent-agnostic, worktrees multiples, et une UI de qualité supérieure aux wrappers CLI.</li>
-<li>Les hooks de cycle de vie des worktrees (création/suppression) offrent des possibilités puissantes : configuration locale, duplication de bases de données, isolation automatique—une vraie avancée par rapport aux outils existants.</li>
-<li>Zed reste un excellent éditeur rapide et puissant en lui-même, avec des fonctionnalités de base solides et la possibilité de désactiver complètement les features IA si souhaité.</li>
-<li>Le système de threads parallèles améliore le workflow en permettant de basculer entre investigations secondaires sans perdre le contexte du travail principal, plutôt que simplement &quot;paralléliser&quot;.</li>
-</ul>
-<p><strong>Avis négatifs</strong> :</p>
-<ul>
-<li>La nouvelle disposition par défaut repousse l'arborescence de fichiers et le code sur les côtés pour privilégier le panneau d'agents, ce qui déplaît à de nombreux utilisateurs et risque de repousser les nouveaux venus cherchant un éditeur classique.</li>
-<li>Zed manque de fonctionnalités importantes par rapport à Claude et ses concurrents : pas d'intégration MCP, absence de plugins/skills, et outils de review de code insuffisants pour valider des changements générés par agents.</li>
-<li>Les utilisateurs expriment des préoccupations quant au pivot stratégique vers les agents aux dépens de l'expérience d'édition traditionnelle : plusieurs QoL manquent (git avancé, débogage TS lent, configuration fine de l'UI).</li>
-<li>Les agents parallèles créent une dette cognitive importante et ne conviennent pas à tous les workflows ; beaucoup préfèrent revoir manuellement chaque modification pour éviter que les agents n'inscrivent des bugs dans le code ou ne compliquent inutilement l'architecture.</li>
-</ul>
-<hr />
-<p><a href="https://zed.dev/blog/parallel-agents">Article original</a> · <a href="https://news.ycombinator.com/item?id=47866750">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">fd185871</guid>
-      <comments>https://news.ycombinator.com/item?id=47866750</comments>
-      <pubDate>Wed, 22 Apr 2026 17:38:57 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://zed.dev/img/post/parallel-agents/thumbnail.webp"/>
-      </media:group>
-    </item>
-    <item>
       <title>Des chercheurs documentent pour la première fois des décharges de corona ultraviolettes sur les cimes d'arbres lors d'orages</title>
       <link>https://www.psu.edu/news/earth-and-mineral-sciences/story/treetops-glowing-during-storms-captured-film-first-time</link>
       <description>www.psu.edu/news/earth-and-mineral-sciences/story/treetops-glowing-during-storms-captured-film-first-time</description>
@@ -1358,6 +1280,45 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://psu-gatsby-files-prod.s3.amazonaws.com/s3fs-public/styles/16_9_1000w/public/2026/04/corona-news-1.jpg?h=84071268&amp;itok=bocHWT_2"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Zed introduit l'exécution parallèle de plusieurs agents dans une même fenêtre avec une barre de threads</title>
+      <link>https://zed.dev/blog/parallel-agents</link>
+      <description>zed.dev/blog/parallel-agents</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Zed permet désormais d'orchestrer plusieurs agents s'exécutant en parallèle dans la même fenêtre, avec une nouvelle Threads Sidebar pour contrôler l'accès aux dossiers et référentiels, et monitorer leur activité en temps réel à 120 fps.</p>
+<ul>
+<li>La Threads Sidebar regroupe les threads par projet et permet de combiner différents agents, de travailler entre plusieurs projets et d'isoler les worktrees selon les besoins</li>
+<li>L'interface a été repensée avec la Threads Sidebar ancrée à gauche par défaut pour placer les threads au centre du flux de travail</li>
+<li>La fonction repose sur le concept d'« agentic engineering » : combiner l'assistance IA avec l'engagement direct du développeur dans le code plutôt que de générer automatiquement des lignes de code</li>
+<li>Les opérations courantes comme arrêter, archiver ou lancer des threads sont accessibles instantanément depuis la Sidebar</li>
+<li>La fonctionnalité est disponible dans la dernière version de Zed, accessible via l'icône en bas à gauche ou les raccourcis clavier option-cmd-j (macOS) et ctrl-option-j (Linux/Windows)</li>
+</ul>
+<h2>Discussion sur Hacker News (47 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Zed propose une implémentation d'agents parallèles plus logique que ses concurrents (Warp, Conductor), avec support agent-agnostic, worktrees multiples, et une UI de qualité supérieure aux wrappers CLI.</li>
+<li>Les hooks de cycle de vie des worktrees (création/suppression) offrent des possibilités puissantes : configuration locale, duplication de bases de données, isolation automatique—une vraie avancée par rapport aux outils existants.</li>
+<li>Zed reste un excellent éditeur rapide et puissant en lui-même, avec des fonctionnalités de base solides et la possibilité de désactiver complètement les features IA si souhaité.</li>
+<li>Le système de threads parallèles améliore le workflow en permettant de basculer entre investigations secondaires sans perdre le contexte du travail principal, plutôt que simplement &quot;paralléliser&quot;.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>La nouvelle disposition par défaut repousse l'arborescence de fichiers et le code sur les côtés pour privilégier le panneau d'agents, ce qui déplaît à de nombreux utilisateurs et risque de repousser les nouveaux venus cherchant un éditeur classique.</li>
+<li>Zed manque de fonctionnalités importantes par rapport à Claude et ses concurrents : pas d'intégration MCP, absence de plugins/skills, et outils de review de code insuffisants pour valider des changements générés par agents.</li>
+<li>Les utilisateurs expriment des préoccupations quant au pivot stratégique vers les agents aux dépens de l'expérience d'édition traditionnelle : plusieurs QoL manquent (git avancé, débogage TS lent, configuration fine de l'UI).</li>
+<li>Les agents parallèles créent une dette cognitive importante et ne conviennent pas à tous les workflows ; beaucoup préfèrent revoir manuellement chaque modification pour éviter que les agents n'inscrivent des bugs dans le code ou ne compliquent inutilement l'architecture.</li>
+</ul>
+<hr />
+<p><a href="https://zed.dev/blog/parallel-agents">Article original</a> · <a href="https://news.ycombinator.com/item?id=47866750">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">fd185871</guid>
+      <comments>https://news.ycombinator.com/item?id=47866750</comments>
+      <pubDate>Wed, 22 Apr 2026 17:38:57 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://zed.dev/img/post/parallel-agents/thumbnail.webp"/>
       </media:group>
     </item>
     <item>
@@ -1704,43 +1665,6 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
-      <title>Un chercheur analyse 500 projets Show HN pour identifier les motifs de conception générés par IA</title>
-      <link>https://www.adriankrebs.ch/blog/design-slop/</link>
-      <description>www.adriankrebs.ch/blog/design-slop/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Un développeur a créé une méthode de scoring automatisé pour détecter les signes de conception générée par IA dans les soumissions Show HN de Hacker News. Il a observé que de nombreux projets récents partagent des caractéristiques visuelles génériques et stériles, confirmant l'intuition que les LLM produisent des designs similaires.</p>
-<ul>
-<li><strong>15 motifs identifiés</strong> : fonts (Inter omniprésente, combinaisons typiques), couleurs (purples spécifiques, dark mode, contrastes faibles, dégradés), layouts (héros centré, badges, bordures colorées, cartes identiques) et patterns CSS (shadcn/ui, glassmorphism)</li>
-<li><strong>Méthodologie</strong> : un navigateur sans tête analyse 500 sites Show HN via des vérifications déterministes du DOM et des styles CSS, évitant les screenshots pour éviter les biais d'interprétation</li>
-<li><strong>Résultats</strong> : les sites ont été classés en trois niveaux selon le nombre de motifs détectés, révélant une tendance marquée mais pas généralisée à l'IA-design</li>
-<li><strong>Conclusion nuancée</strong> : ce n'est pas fondamentalement négatif (Bootstrap avait le même effet autrefois), mais reflète un manque d'inspiration plutôt qu'une véritable innovation en conception</li>
-</ul>
-<h2>Discussion sur Hacker News (30 commentaires analysés)</h2>
-<p><strong>Confirmations</strong> :</p>
-<ul>
-<li>L'utilisation d'outils IA pour accélérer le développement est devenue la norme, particulièrement sur les side-projects où les contraintes de temps incitent naturellement à exploiter ces gains de productivité.</li>
-<li>Les mécanismes de vote communautaire sur HN filtrent efficacement les soumissions, indépendamment de leur approche de développement, en favorisant ceux qui présentent réellement de la valeur ou de l'intérêt.</li>
-<li>Le problème central n'est pas le recours à l'IA mais l'absence d'investissement personnel et de raffinement : les bons projets &quot;vibe-codés&quot; existent (10%), distincts de la majorité qui manque de polish et de justification intelligible.</li>
-<li>Les standards d'évaluation doivent évoluer : 10 000 lignes générées en quelques heures ne représentent plus une &quot;preuve de travail&quot; et ne garantissent pas les tests en conditions réelles que l'on pouvait attendre avant.</li>
-</ul>
-<p><strong>Réfutations</strong> :</p>
-<ul>
-<li>La qualité des submissions Show HN s'est dégradée statistiquement : environ 90% des projets générés par IA restent de faible qualité, malgré les capacités actuelles, en raison de l'investissement temporel minimal plutôt que d'une limitation technique des outils.</li>
-<li>L'argument du &quot;raffinement&quot; est contestable : beaucoup de projets pré-IA étaient déjà du &quot;boilerplate framework&quot;, suggérant que le problème du bruit préexistait et ne doit pas être attribué uniquement aux outils IA actuels.</li>
-<li>Le rapport signal-bruit s'effondre, rendant la plateforme moins utile aux contributeurs sérieux qui hésitent à soumettre, créant une spirale négative où les bonnes idées restent invisibles face au flot de variantes sans originalité.</li>
-</ul>
-<hr />
-<p><a href="https://www.adriankrebs.ch/blog/design-slop/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47864393">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">6f5b4901</guid>
-      <comments>https://news.ycombinator.com/item?id=47864393</comments>
-      <pubDate>Wed, 22 Apr 2026 14:44:32 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://adriankrebs.ch/_astro/og-default.B6BqwTMP.svg"/>
-      </media:group>
-    </item>
-    <item>
       <title>Firefox expose un identifiant stable permettant de lier les identités Tor privées à travers les sites web</title>
       <link>https://fingerprint.com/blog/firefox-tor-indexeddb-privacy-vulnerability/</link>
       <description>fingerprint.com/blog/firefox-tor-indexeddb-privacy-vulnerability/</description>
@@ -1786,6 +1710,43 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://fingerprint.com/static/893bf56cdf5a22443c3b3ace0bb862df/blog_firefox_vulnerability.jpg"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Un chercheur analyse 500 projets Show HN pour identifier les motifs de conception générés par IA</title>
+      <link>https://www.adriankrebs.ch/blog/design-slop/</link>
+      <description>www.adriankrebs.ch/blog/design-slop/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Un développeur a créé une méthode de scoring automatisé pour détecter les signes de conception générée par IA dans les soumissions Show HN de Hacker News. Il a observé que de nombreux projets récents partagent des caractéristiques visuelles génériques et stériles, confirmant l'intuition que les LLM produisent des designs similaires.</p>
+<ul>
+<li><strong>15 motifs identifiés</strong> : fonts (Inter omniprésente, combinaisons typiques), couleurs (purples spécifiques, dark mode, contrastes faibles, dégradés), layouts (héros centré, badges, bordures colorées, cartes identiques) et patterns CSS (shadcn/ui, glassmorphism)</li>
+<li><strong>Méthodologie</strong> : un navigateur sans tête analyse 500 sites Show HN via des vérifications déterministes du DOM et des styles CSS, évitant les screenshots pour éviter les biais d'interprétation</li>
+<li><strong>Résultats</strong> : les sites ont été classés en trois niveaux selon le nombre de motifs détectés, révélant une tendance marquée mais pas généralisée à l'IA-design</li>
+<li><strong>Conclusion nuancée</strong> : ce n'est pas fondamentalement négatif (Bootstrap avait le même effet autrefois), mais reflète un manque d'inspiration plutôt qu'une véritable innovation en conception</li>
+</ul>
+<h2>Discussion sur Hacker News (30 commentaires analysés)</h2>
+<p><strong>Confirmations</strong> :</p>
+<ul>
+<li>L'utilisation d'outils IA pour accélérer le développement est devenue la norme, particulièrement sur les side-projects où les contraintes de temps incitent naturellement à exploiter ces gains de productivité.</li>
+<li>Les mécanismes de vote communautaire sur HN filtrent efficacement les soumissions, indépendamment de leur approche de développement, en favorisant ceux qui présentent réellement de la valeur ou de l'intérêt.</li>
+<li>Le problème central n'est pas le recours à l'IA mais l'absence d'investissement personnel et de raffinement : les bons projets &quot;vibe-codés&quot; existent (10%), distincts de la majorité qui manque de polish et de justification intelligible.</li>
+<li>Les standards d'évaluation doivent évoluer : 10 000 lignes générées en quelques heures ne représentent plus une &quot;preuve de travail&quot; et ne garantissent pas les tests en conditions réelles que l'on pouvait attendre avant.</li>
+</ul>
+<p><strong>Réfutations</strong> :</p>
+<ul>
+<li>La qualité des submissions Show HN s'est dégradée statistiquement : environ 90% des projets générés par IA restent de faible qualité, malgré les capacités actuelles, en raison de l'investissement temporel minimal plutôt que d'une limitation technique des outils.</li>
+<li>L'argument du &quot;raffinement&quot; est contestable : beaucoup de projets pré-IA étaient déjà du &quot;boilerplate framework&quot;, suggérant que le problème du bruit préexistait et ne doit pas être attribué uniquement aux outils IA actuels.</li>
+<li>Le rapport signal-bruit s'effondre, rendant la plateforme moins utile aux contributeurs sérieux qui hésitent à soumettre, créant une spirale négative où les bonnes idées restent invisibles face au flot de variantes sans originalité.</li>
+</ul>
+<hr />
+<p><a href="https://www.adriankrebs.ch/blog/design-slop/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47864393">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">6f5b4901</guid>
+      <comments>https://news.ycombinator.com/item?id=47864393</comments>
+      <pubDate>Wed, 22 Apr 2026 14:44:32 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://adriankrebs.ch/_astro/og-default.B6BqwTMP.svg"/>
       </media:group>
     </item>
     <item>
@@ -2047,6 +2008,40 @@
       </media:group>
     </item>
     <item>
+      <title>Enseignements d'un ingénieur senior après plusieurs années d'expérience</title>
+      <link>https://luminousmen.substack.com/p/drunk-post-things-ive-learned-as</link>
+      <description>luminousmen.substack.com/p/drunk-post-things-ive-learned-as</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Un ingénieur senior partage les leçons clés qu'il a apprises au cours de sa carrière dans le domaine technique, révélant les réalités du métier au-delà des théories académiques.</p>
+<ul>
+<li>L'expérience pratique en tant qu'ingénieur senior offre une perspective différente des attentes initiales</li>
+<li>Les apprentissages couvrent probablement les aspects techniques, managériaux et organisationnels de la profession</li>
+<li>L'article a généré un intérêt significatif avec 253 points et 184 commentaires sur Hacker News, suggérant des réflexions pertinentes pour la communauté</li>
+</ul>
+<h2>Discussion sur Hacker News (79 commentaires analysés)</h2>
+<p><strong>Confirmations</strong> :</p>
+<ul>
+<li>L'apprentissage de LISP et des fondamentaux informatiques approfondit véritablement la compréhension du génie logiciel et transforme la façon de penser les problèmes, même si on ne l'utilise plus ensuite.</li>
+<li>La documentation du &quot;pourquoi&quot; (contexte, intentions, trade-offs) est une compétence cruellement sous-estimée qui devient encore plus importante avec l'IA, car elle capture la connaissance tacite que le code seul ne révèle pas.</li>
+<li>Changer d'entreprise est un levier de progression de carrière plus efficace que rester longtemps au même endroit, offrant diversité d'expérience et perspectives élargies.</li>
+<li>Les héros et experts fonctionnent aussi en mode &quot;essai-erreur&quot; comme tout le monde : l'expérience apporte surtout une meilleure intuition des trade-offs, pas une certitude absolue.</li>
+</ul>
+<p><strong>Réfutations</strong> :</p>
+<ul>
+<li>Les langages dynamiques permettent de construire des systèmes significatifs et performants (HN/Reddit tournent dessus) ; les limites viennent de décisions architecturales, pas du typage ; Python domine l'IA malgré son caractère dynamique.</li>
+<li>Le scénario &quot;100k à 23 ans, retraite à 45&quot; est un outlier US irréaliste pour la majorité même en Amérique, et complètement décalé des salaires et structures sociales du reste du monde.</li>
+<li>Les commentaires HN ne sont pas &quot;sans valeur&quot; : certains dépassent largement la qualité des articles, offrent des nuances essentielles et des perspectives inattendues (même si inégaux en qualité).</li>
+<li>Retirer de l'argent avant 59,5 ans d'un 401k verrouille les gains futurs et diffère injustement les impôts à une période où on a moins besoin de déductions fiscales.</li>
+</ul>
+<hr />
+<p><a href="https://luminousmen.substack.com/p/drunk-post-things-ive-learned-as">Article original</a> · <a href="https://news.ycombinator.com/item?id=47856535">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">e3b4cb84</guid>
+      <comments>https://news.ycombinator.com/item?id=47856535</comments>
+      <pubDate>Tue, 21 Apr 2026 23:53:45 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
       <title>GrapheneOS répond aux allégations de WIRED basées sur les déclarations de James Donaldson</title>
       <link>https://discuss.grapheneos.org/d/34369-original-grapheneos-responses-to-wired-fact-checker</link>
       <description>discuss.grapheneos.org/d/34369-original-grapheneos-responses-to-wired-fact-checker</description>
@@ -2086,37 +2081,37 @@
       </media:group>
     </item>
     <item>
-      <title>Enseignements d'un ingénieur senior après plusieurs années d'expérience</title>
-      <link>https://luminousmen.substack.com/p/drunk-post-things-ive-learned-as</link>
-      <description>luminousmen.substack.com/p/drunk-post-things-ive-learned-as</description>
+      <title>Un utilisateur exprime sa fatigue face à l'omniprésence de l'IA et souhaite la bloquer au niveau du navigateur</title>
+      <link>https://news.ycombinator.com/item?id=47857461</link>
+      <description>news.ycombinator.com/item</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Un ingénieur senior partage les leçons clés qu'il a apprises au cours de sa carrière dans le domaine technique, révélant les réalités du métier au-delà des théories académiques.</p>
+<p>Un utilisateur compare sa lassitude envers l'IA à celle qu'il a ressentie avec Facebook, déclarant son désir de filtrer complètement le contenu lié à l'IA à la source.</p>
 <ul>
-<li>L'expérience pratique en tant qu'ingénieur senior offre une perspective différente des attentes initiales</li>
-<li>Les apprentissages couvrent probablement les aspects techniques, managériaux et organisationnels de la profession</li>
-<li>L'article a généré un intérêt significatif avec 253 points et 184 commentaires sur Hacker News, suggérant des réflexions pertinentes pour la communauté</li>
+<li>L'auteur souhaite que tout contenu relatif à l'IA soit bloqué automatiquement au niveau du navigateur</li>
+<li>Il établit un parallèle avec son abandon de Facebook, causé par une saturation similaire</li>
+<li>Son malaise reflète une fatigue croissante face à l'omniprésence et la promotion de l'IA dans les contenus en ligne</li>
 </ul>
-<h2>Discussion sur Hacker News (79 commentaires analysés)</h2>
+<h2>Discussion sur Hacker News (60 commentaires analysés)</h2>
 <p><strong>Confirmations</strong> :</p>
 <ul>
-<li>L'apprentissage de LISP et des fondamentaux informatiques approfondit véritablement la compréhension du génie logiciel et transforme la façon de penser les problèmes, même si on ne l'utilise plus ensuite.</li>
-<li>La documentation du &quot;pourquoi&quot; (contexte, intentions, trade-offs) est une compétence cruellement sous-estimée qui devient encore plus importante avec l'IA, car elle capture la connaissance tacite que le code seul ne révèle pas.</li>
-<li>Changer d'entreprise est un levier de progression de carrière plus efficace que rester longtemps au même endroit, offrant diversité d'expérience et perspectives élargies.</li>
-<li>Les héros et experts fonctionnent aussi en mode &quot;essai-erreur&quot; comme tout le monde : l'expérience apporte surtout une meilleure intuition des trade-offs, pas une certitude absolue.</li>
+<li>La sur-saturation médiatique d'IA crée une fatigue légitime : omniprésence dans les offres d'emploi, les réseaux sociaux, les contenus générés en masse (voix synthétiques, images, texte) qui dégrade la qualité globale du discours.</li>
+<li>L'IA amplifie les problèmes organisationnels existants plutôt que de les résoudre ; les entreprises la mettent en avant sans stratégie réelle, rappelant la bulle dot-com.</li>
+<li>Les voix synthétiques et contenus &quot;slop&quot; AI sont effectivement devenus omniprésents et irritants, générant un sentiment d'inauthenticité croissante sur internet.</li>
+<li>L'absence de clarté conceptuelle aggrave le débat : beaucoup confondent &quot;IA&quot; générale avec IA générative, rendant la discussion superficielle et fatigante.</li>
 </ul>
 <p><strong>Réfutations</strong> :</p>
 <ul>
-<li>Les langages dynamiques permettent de construire des systèmes significatifs et performants (HN/Reddit tournent dessus) ; les limites viennent de décisions architecturales, pas du typage ; Python domine l'IA malgré son caractère dynamique.</li>
-<li>Le scénario &quot;100k à 23 ans, retraite à 45&quot; est un outlier US irréaliste pour la majorité même en Amérique, et complètement décalé des salaires et structures sociales du reste du monde.</li>
-<li>Les commentaires HN ne sont pas &quot;sans valeur&quot; : certains dépassent largement la qualité des articles, offrent des nuances essentielles et des perspectives inattendues (même si inégaux en qualité).</li>
-<li>Retirer de l'argent avant 59,5 ans d'un 401k verrouille les gains futurs et diffère injustement les impôts à une période où on a moins besoin de déductions fiscales.</li>
+<li>Pour les professionnels qui l'utilisent correctement, l'IA est révolutionnaire et utile (développement, apprentissage accéléré, diagnostic médical, résolution de problèmes) ; c'est un outil comme les autres technologies avant lui.</li>
+<li>La fatigue est aussi une question de consommation médiatique personnelle : on peut filtrer le contenu AI ou simplement l'ignorer ; le problème n'est pas la technologie mais l'exposition volontaire.</li>
+<li>Les craintes de surveillance/oppression existaient bien avant l'IA (Chine 2018, Corée du Nord) ; l'IA n'est pas l'élément révolutionnaire présupposé.</li>
+<li>L'IA ne fait que continuer une tendance historique (chevaux → automobiles) ; se plaindre de &quot;tout AI&quot; équivaut à se plaindre du progrès technologique en général.</li>
 </ul>
 <hr />
-<p><a href="https://luminousmen.substack.com/p/drunk-post-things-ive-learned-as">Article original</a> · <a href="https://news.ycombinator.com/item?id=47856535">Discussion HN</a></p>
+<p><a href="https://news.ycombinator.com/item?id=47857461">Article original</a> · <a href="https://news.ycombinator.com/item?id=47857461">Discussion HN</a></p>
 ]]></content:encoded>
-      <guid isPermaLink="false">e3b4cb84</guid>
-      <comments>https://news.ycombinator.com/item?id=47856535</comments>
-      <pubDate>Tue, 21 Apr 2026 23:53:45 +0000</pubDate>
+      <guid isPermaLink="false">079ebc09</guid>
+      <comments>https://news.ycombinator.com/item?id=47857461</comments>
+      <pubDate>Wed, 22 Apr 2026 01:19:30 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
@@ -2185,40 +2180,6 @@
       <media:group>
         <media:thumbnail url="https://techcrunch.com/wp-content/uploads/2024/11/GettyImages-1445867611.jpg?w=1024"/>
       </media:group>
-    </item>
-    <item>
-      <title>Un utilisateur exprime sa fatigue face à l'omniprésence de l'IA et souhaite la bloquer au niveau du navigateur</title>
-      <link>https://news.ycombinator.com/item?id=47857461</link>
-      <description>news.ycombinator.com/item</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Un utilisateur compare sa lassitude envers l'IA à celle qu'il a ressentie avec Facebook, déclarant son désir de filtrer complètement le contenu lié à l'IA à la source.</p>
-<ul>
-<li>L'auteur souhaite que tout contenu relatif à l'IA soit bloqué automatiquement au niveau du navigateur</li>
-<li>Il établit un parallèle avec son abandon de Facebook, causé par une saturation similaire</li>
-<li>Son malaise reflète une fatigue croissante face à l'omniprésence et la promotion de l'IA dans les contenus en ligne</li>
-</ul>
-<h2>Discussion sur Hacker News (60 commentaires analysés)</h2>
-<p><strong>Confirmations</strong> :</p>
-<ul>
-<li>La sur-saturation médiatique d'IA crée une fatigue légitime : omniprésence dans les offres d'emploi, les réseaux sociaux, les contenus générés en masse (voix synthétiques, images, texte) qui dégrade la qualité globale du discours.</li>
-<li>L'IA amplifie les problèmes organisationnels existants plutôt que de les résoudre ; les entreprises la mettent en avant sans stratégie réelle, rappelant la bulle dot-com.</li>
-<li>Les voix synthétiques et contenus &quot;slop&quot; AI sont effectivement devenus omniprésents et irritants, générant un sentiment d'inauthenticité croissante sur internet.</li>
-<li>L'absence de clarté conceptuelle aggrave le débat : beaucoup confondent &quot;IA&quot; générale avec IA générative, rendant la discussion superficielle et fatigante.</li>
-</ul>
-<p><strong>Réfutations</strong> :</p>
-<ul>
-<li>Pour les professionnels qui l'utilisent correctement, l'IA est révolutionnaire et utile (développement, apprentissage accéléré, diagnostic médical, résolution de problèmes) ; c'est un outil comme les autres technologies avant lui.</li>
-<li>La fatigue est aussi une question de consommation médiatique personnelle : on peut filtrer le contenu AI ou simplement l'ignorer ; le problème n'est pas la technologie mais l'exposition volontaire.</li>
-<li>Les craintes de surveillance/oppression existaient bien avant l'IA (Chine 2018, Corée du Nord) ; l'IA n'est pas l'élément révolutionnaire présupposé.</li>
-<li>L'IA ne fait que continuer une tendance historique (chevaux → automobiles) ; se plaindre de &quot;tout AI&quot; équivaut à se plaindre du progrès technologique en général.</li>
-</ul>
-<hr />
-<p><a href="https://news.ycombinator.com/item?id=47857461">Article original</a> · <a href="https://news.ycombinator.com/item?id=47857461">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">079ebc09</guid>
-      <comments>https://news.ycombinator.com/item?id=47857461</comments>
-      <pubDate>Wed, 22 Apr 2026 01:19:30 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>VidStudio est un éditeur vidéo navigateur qui traite les fichiers localement sans les télécharger</title>
@@ -3881,6 +3842,47 @@
       <comments>https://news.ycombinator.com/item?id=47836730</comments>
       <pubDate>Mon, 20 Apr 2026 16:34:25 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>Les ordinateurs quantiques ne menacent pas les clés symétriques de 128 bits</title>
+      <link>https://words.filippo.io/128-bits/</link>
+      <description>words.filippo.io/128-bits/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p><strong>TL;DR :</strong> Contrairement à une idée fausse répandue, les ordinateurs quantiques n'affaiblissent pas la sécurité des clés symétriques de 128 bits comme AES-128. L'algorithme de Grover, bien qu'offrant une accélération quadratique théorique, ne peut pas être parallélisé efficacement, ce qui rend les attaques pratiquement infaisables même avec une technologie quantique avancée.</p>
+<ul>
+<li>L'algorithme de Grover ne peut fonctionner que séquentiellement ; la parallélisation nécessaire pour le rendre pratique détruit son avantage quadratique et augmente considérablement le coût total de l'attaque.</li>
+<li>Briser AES-128 par Grover nécessiterait 140 billions de circuits quantiques de 724 qubits logiques fonctionnant en parallèle pendant 10 ans, soit 430 quadrillions de fois plus coûteux que de casser les courbes elliptiques par Shor.</li>
+<li>Le NIST, la BSI et des experts en cryptographie quantique (dont Samuel Jaques) s'accordent à dire que tous les types de clés AES (128, 192, 256 bits) restent sûrs contre les ordinateurs quantiques.</li>
+<li>Augmenter les tailles de clés symétriques constituerait un effort inutile qui détournerait les ressources de la transition réelle urgente vers la cryptographie post-quantique pour les algorithmes asymétriques.</li>
+<li>NIST a intégré AES-128 comme référence de sécurité Category 1 pour la cryptographie post-quantique, reconnaissant explicitement que Grover ne réduit pas de moitié la sécurité des clés symétriques.</li>
+</ul>
+<h2>Discussion sur Hacker News</h2>
+<p><strong>Arguments en faveur</strong> :</p>
+<ul>
+<li>128-bit symmetric keys restent sûres contre les ordinateurs quantiques même avec l'algorithme de Grover, qui nécessiterait 140 trillions de circuits quantiques de 724 qubits logiques fonctionnant 10 ans</li>
+<li>La puissance de calcul requise pour une attaque quantique dépasse les limites physiques possibles (chaleur, énergie) même avec des améliorations technologiques exponentielles</li>
+<li>Les menaces pratiques actuelles proviennent d'autres vecteurs d'attaque ; une rotation agressif des clés et l'utilisation de TLS réduisent significativement les risques</li>
+<li>Grover's algorithm est mathématiquement prouvé optimal et ne peut pas être amélioré de façon disruptive pour casser AES rapidement</li>
+<li>Les changements de clés astuces (OAuth rotatif très fréquent) offrent des mitigations pratiques contre même les attaques quantiques</li>
+</ul>
+<p><strong>Arguments contre</strong> :</p>
+<ul>
+<li>L'incertitude persiste sur les futures percées quantiques au-delà de Grover et sur les faiblesses structurelles spécifiques des ciphers (ex: attaques quantiques contre réseaux Feistel 3-4 rounds)</li>
+<li>Les rumeurs suggèrent des ordinateurs quantiques fonctionnels possibles dans 5 ans ; cette timeline imprévisible justifie la migration préventive</li>
+<li>La transition vers la cryptographie post-quantique (ML-KEM, SNTRUP) implique des coûts d'adoption élevés mais le report risque d'être coûteux à long terme</li>
+<li>Les données sensibles capturées aujourd'hui (&quot;harvest now, decrypt later&quot;) pourraient devenir compromises lors d'avancées quantiques futures</li>
+<li>Pour les systèmes sans rotation régulière de clés, aucune garantie réelle existe contre une attaque quantique retardée</li>
+</ul>
+<hr />
+<p><a href="https://words.filippo.io/128-bits/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47836784">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">05126279</guid>
+      <comments>https://news.ycombinator.com/item?id=47836784</comments>
+      <pubDate>Mon, 20 Apr 2026 16:37:48 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://assets.buttondown.email/images/4de912cf-5147-4672-9800-4510d734d5ec.jpeg?w=960&amp;fit=max"/>
+      </media:group>
     </item>
   </channel>
 </rss>
