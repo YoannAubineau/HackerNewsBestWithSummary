@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Check LLM Versions
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - run: uv sync --frozen
+
+      - name: Check for newer LLM versions
+        id: check
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          set +e
+          uv run app check-llm-versions > report.txt
+          code=$?
+          cat report.txt
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Open issue when a newer model is available
+        if: steps.check.outputs.exit_code != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="LLM: newer model available on OpenRouter"
+          existing="$(gh issue list --search "\"$title\" in:title is:open" --json number --jq '.[0].number')"
+          if [ -n "$existing" ]; then
+            echo "Issue #$existing already open; skipping."
+            exit 0
+          fi
+          gh label create llm-model-update --force --color 0E8A16 --description "Newer LLM version detected on OpenRouter"
+          gh issue create --title "$title" --label llm-model-update --body-file report.txt

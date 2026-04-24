@@ -57,6 +57,12 @@ hourly on a public repo, so minutes are free.
   `<hash>.raw.discussion.txt`) which are gitignored, used during the cycle,
   and cleared once the summary succeeds. Only the summary itself ends up in
   git. Driven by copyright and repo-size concerns.
+- **Weekly LLM version check**. A separate workflow
+  (`.github/workflows/check-llm-versions.yml`) runs `uv run app
+  check-llm-versions` every Monday, queries OpenRouter's `/models`
+  endpoint, and opens a GitHub issue when a newer generation of the
+  configured `openrouter_model` family is published. The bump itself is
+  manual (edit `openrouter_model` in `src/app/config.py`).
 
 ## Key files
 
@@ -84,6 +90,10 @@ hourly on a public repo, so minutes are free.
   own comments and their full ancestor chain.
 - `src/app/llm.py`, OpenRouter client with model cascade on 429 / 5xx /
   empty body. Logs token usage per call.
+- `src/app/check_models.py`, queries OpenRouter's `/models` endpoint and
+  prints a report (exit 1) when a newer version of the configured
+  `openrouter_model` family is available. Invoked weekly by its own
+  workflow.
 - `src/app/summarize.py`, three prompts (article + title rewrite in one
   call, discussion synthesis, and a cheap title-only translation used when
   the article is `js_required`). French output, strict `## Titre` /
