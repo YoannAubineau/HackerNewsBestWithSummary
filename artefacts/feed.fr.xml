@@ -9,12 +9,12 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 24 Apr 2026 14:02:01 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 14:35:59 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Ubuntu 26.04 LTS publié avec améliorations de sécurité et support de cinq ans</title>
       <link>https://lwn.net/Articles/1069399/</link>
-      <description>Ubuntu 26.04 LTS ("Resolute Raccoon") est sorti selon le calendrier prévu, apportant des améliorations majeures en sécurité, performance et utilisabilité sur les environnements desktop, serveur et cloud. Les variantes officielles (Kubuntu, Lubuntu, Xubuntu, etc.) sont également disponibles aujourd'hui.</description>
+      <description>lwn.net/Articles/1069399/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Ubuntu 26.04 LTS (&quot;Resolute Raccoon&quot;) est sorti selon le calendrier prévu, apportant des améliorations majeures en sécurité, performance et utilisabilité sur les environnements desktop, serveur et cloud. Les variantes officielles (Kubuntu, Lubuntu, Xubuntu, etc.) sont également disponibles aujourd'hui.</p>
 <ul>
@@ -51,7 +51,7 @@
     <item>
       <title>Comment faire votre premier appel API avec DeepSeek v4</title>
       <link>https://api-docs.deepseek.com/</link>
-      <description>DeepSeek propose une API compatible avec les formats OpenAI et Anthropic, permettant d'utiliser les SDK existants pour accéder à ses modèles. Les anciens noms de modèles (deepseek-chat et deepseek-reasoner) seront dépréciés le 24 juillet 2026 au profit de deepseek-v4-flash.</description>
+      <description>api-docs.deepseek.com/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>DeepSeek propose une API compatible avec les formats OpenAI et Anthropic, permettant d'utiliser les SDK existants pour accéder à ses modèles. Les anciens noms de modèles (deepseek-chat et deepseek-reasoner) seront dépréciés le 24 juillet 2026 au profit de deepseek-v4-flash.</p>
 <ul>
@@ -91,7 +91,7 @@
     <item>
       <title>Soldat américain poursuivi pour avoir utilisé des informations classifiées pour parier sur un marché de prédiction</title>
       <link>https://www.justice.gov/usao-sdny/pr/us-soldier-charged-using-classified-information-profit-prediction-market-bets?bm-verify=AAQAAAAN_____y6To7sZYZ502biZwIHXlr-7zXZUqV4H0xLTfW__wDA3SjNLqifXRaQwsikyuz6IJknyuL8xfVYRkesxcDk5V10m-HoXl2K93f17rygBphL77WVFoQ_XvlmUo922IwM_DQ66137X6wWMtpdHslcEjpJG7KbBmUw9Su4kDENpDt_yv2spThQZehgv-X1Adk5U2VHfp41co2s_QJGjRj4y0KmL1mhSCyVaE7MC1LHG0mtP-xYmD0xBOQwn6PlHkPiP5Nt46h5ZIjLGXgCZDEVD42i7rIEM379DKLPUPX0PDNmOAwFSuTqcTDVnT_UUV8vxpHLRMb7rUxPxKUPcIB23iZTRJddWDDtPHMXadpwv67xr-f1sKDLZT9NgHCO4iuC2EthmAt0</link>
-      <description>Un soldat de l'armée américaine stationné à Fort Bragg a été inculpé d'avoir utilisé des informations classifiées sur l'opération militaire visant à capturer Nicolás Maduro pour placer des paris rentables sur Polymarket, un marché de prédiction. Il aurait réalisé un profit d'environ 409 000 dollars avant de tenter de dissimuler son identité et ses transactions.</description>
+      <description>www.justice.gov/usao-sdny/pr/us-soldier-charged-using-classified-information-profit-prediction-market-bets</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un soldat de l'armée américaine stationné à Fort Bragg a été inculpé d'avoir utilisé des informations classifiées sur l'opération militaire visant à capturer Nicolás Maduro pour placer des paris rentables sur Polymarket, un marché de prédiction. Il aurait réalisé un profit d'environ 409 000 dollars avant de tenter de dissimuler son identité et ses transactions.</p>
 <ul>
@@ -127,12 +127,7 @@
     <item>
       <title>Show HN: Tolaria – Open-source macOS app to manage Markdown knowledge bases</title>
       <link>https://github.com/refactoringhq/tolaria</link>
-      <description>```json
-{
-  "title": "Tolaria, application macOS open source pour gérer des bases de connaissances Markdown",
-  "summary": "Tolaria est une application de bureau pour Mac conçue pour organiser des bases de connaissances en Markdown. Elle repose sur des fichiers standards, l'intégration Git et fonctionne entièrement hors ligne sans dépendances cloud.\n\n- Les notes sont stockées sous forme de fichiers Markdown avec métadonnées YAML, offrant portabilité complète et pas de verrouillage propriétaire\n- Chaque coffre-fort est un dépôt Git avec historique complet, permettant l'utilisation de n'importe quel service de stockage distant\n- L'application fonctionne hors ligne sans comptes, abonnements ni serveurs Tolaria, garantissant que les données restent la propriété de l'utilisateur\n- Construite avec Tauri, React et TypeScript, l'application est open source sous licence AGPL-3.0 et conçue autour du clavier pour les utilisateurs avancés\n- Compatible avec les agents IA comme Claude Code et Codex CLI, tout en permettant l'utilisation d'outils tiers standards pour éditer le coffre-fort"
-}
-```</description>
+      <description>github.com/refactoringhq/tolaria</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <pre><code class="language-json">{
   &quot;title&quot;: &quot;Tolaria, application macOS open source pour gérer des bases de connaissances Markdown&quot;,
@@ -169,7 +164,7 @@
     <item>
       <title>Un militaire américain arrêté pour avoir parié 400 000 dollars sur une opération contre Maduro avec des informations classifiées</title>
       <link>https://www.cnn.com/2026/04/23/politics/us-special-forces-soldier-arrested-maduro-raid-trade</link>
-      <description>Un sergent-chef des forces spéciales américaines a été inculpé pour avoir utilisé des informations classifiées gouvernementales pour parier sur la capture du président vénézuélien Nicolás Maduro sur le marché de prédiction Polymarket, générant 400 000 dollars de bénéfices.</description>
+      <description>www.cnn.com/2026/04/23/politics/us-special-forces-soldier-arrested-maduro-raid-trade</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un sergent-chef des forces spéciales américaines a été inculpé pour avoir utilisé des informations classifiées gouvernementales pour parier sur la capture du président vénézuélien Nicolás Maduro sur le marché de prédiction Polymarket, générant 400 000 dollars de bénéfices.</p>
 <ul>
@@ -208,7 +203,7 @@
     <item>
       <title>Meta supprime 10% de ses effectifs, soit 8 000 employés</title>
       <link>https://techcrunch.com/2026/04/23/meta-job-cuts-10-percent-8000-employees/</link>
-      <description>Meta procède à un licenciement collectif de 8 000 salariés (10% de sa main-d'œuvre) et gèle le recrutement sur 6 000 postes ouverts. Les réductions de personnel commenceront le 20 mai selon un mémorandum interne adressé aux employés.</description>
+      <description>techcrunch.com/2026/04/23/meta-job-cuts-10-percent-8000-employees/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Meta procède à un licenciement collectif de 8 000 salariés (10% de sa main-d'œuvre) et gèle le recrutement sur 6 000 postes ouverts. Les réductions de personnel commenceront le 20 mai selon un mémorandum interne adressé aux employés.</p>
 <ul>
@@ -245,7 +240,7 @@
     <item>
       <title>OpenAI annonce GPT-5.5</title>
       <link>https://openai.com/index/introducing-gpt-5-5/</link>
-      <description>OpenAI a publié une annonce concernant un nouveau modèle appelé GPT-5.5. L'annonce a généré une attention significative sur la communauté tech.</description>
+      <description>openai.com/index/introducing-gpt-5-5/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>OpenAI a publié une annonce concernant un nouveau modèle appelé GPT-5.5. L'annonce a généré une attention significative sur la communauté tech.</p>
 <ul>
@@ -280,7 +275,7 @@
     <item>
       <title>Anthropic identifie et corrige trois problèmes de qualité affectant Claude Code en avril 2025</title>
       <link>https://www.anthropic.com/engineering/april-23-postmortem</link>
-      <description>Anthropic a enquêté sur les rapports de dégradation de qualité de Claude et identifié trois problèmes distincts affectant Claude Code, l'SDK Claude Agent et Claude Cowork, tous résolus au 20 avril. L'API n'a pas été impactée.</description>
+      <description>www.anthropic.com/engineering/april-23-postmortem</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Anthropic a enquêté sur les rapports de dégradation de qualité de Claude et identifié trois problèmes distincts affectant Claude Code, l'SDK Claude Agent et Claude Cowork, tous résolus au 20 avril. L'API n'a pas été impactée.</p>
 <ul>
@@ -324,7 +319,7 @@
     <item>
       <title>Les employés de Palantir remettent en question leur implication dans les politiques d'immigration et militaires</title>
       <link>https://www.wired.com/story/palantir-employees-are-starting-to-wonder-if-theyre-the-bad-guys/</link>
-      <description>Depuis le début du second mandat de Donald Trump, les employés de Palantir expriment des doutes croissants sur le rôle de leur entreprise dans l'application des politiques gouvernementales, notamment le contrôle des immigrants et les opérations militaires. L'entreprise de technologie, fondée après le 11 septembre avec un soutien initial de la CIA, connaît une crise d'identité entre sa mission affichée de protéger les libertés civiles et son implication actuelle dans des opérations critiquées.</description>
+      <description>www.wired.com/story/palantir-employees-are-starting-to-wonder-if-theyre-the-bad-guys/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Depuis le début du second mandat de Donald Trump, les employés de Palantir expriment des doutes croissants sur le rôle de leur entreprise dans l'application des politiques gouvernementales, notamment le contrôle des immigrants et les opérations militaires. L'entreprise de technologie, fondée après le 11 septembre avec un soutien initial de la CIA, connaît une crise d'identité entre sa mission affichée de protéger les libertés civiles et son implication actuelle dans des opérations critiquées.</p>
 <ul>
@@ -361,7 +356,7 @@
     <item>
       <title>Des pics de température anormaux à Paris soupçonnés d'être manipulés au sèche-cheveux pour gagner des paris en cryptomonnaie</title>
       <link>https://www.telegraph.co.uk/business/2026/04/23/hairdryer-used-trick-weather-sensor-34000-polymarket-bet/</link>
-      <description>La police française enquête sur la possibilité qu'un sèche-cheveux ait été utilisé pour falsifier les relevés de température du capteur de l'aéroport Charles de Gaulle de Paris, permettant à des parieurs de remporter des milliers de dollars sur Polymarket, la plus grande plateforme de prédiction du monde.</description>
+      <description>www.telegraph.co.uk/business/2026/04/23/hairdryer-used-trick-weather-sensor-34000-polymarket-bet/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>La police française enquête sur la possibilité qu'un sèche-cheveux ait été utilisé pour falsifier les relevés de température du capteur de l'aéroport Charles de Gaulle de Paris, permettant à des parieurs de remporter des milliers de dollars sur Polymarket, la plus grande plateforme de prédiction du monde.</p>
 <ul>
@@ -398,12 +393,7 @@
     <item>
       <title>MeshCore development team splits over trademark dispute and AI-generated code</title>
       <link>https://blog.meshcore.io/2026/04/23/the-split</link>
-      <description>```json
-{
-  "title": "Le projet MeshCore se divise suite à un conflit de marque et l'utilisation de code généré par IA",
-  "summary": "L'équipe de développement de MeshCore annonce une scission interne provoquée par Andy Kirby, qui a massivement utilisé du code généré par Claude IA et a déposé une demande de marque sans informer ses coéquipiers. L'équipe originale lance désormais meshcore.io comme plateforme officielle alternative.\n\n- Andy Kirby a développé une branche du projet (MeshOS) en utilisant principalement du code généré par IA (Claude) sans l'avoir divulgué à l'équipe\n- Le dépôt GitHub officiel reste la source de vérité pour MeshCore, auquel Andy n'a jamais contribué\n- Andy a déposé une marque MeshCore le 29 mars et contrôle les anciens canaux (meshcore.co.uk, Discord initial), contestant la propriété du projet\n- L'équipe originale (Scott, Liam, Recrof, FDLamotte, Oltaco) a lancé meshcore.io et un nouveau serveur Discord pour continuer le développement humain\n- Le projet a atteint 38 000+ nœuds et 100 000+ utilisateurs actifs seulement depuis janvier 2025"
-}
-```</description>
+      <description>blog.meshcore.io/2026/04/23/the-split</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <pre><code class="language-json">{
   &quot;title&quot;: &quot;Le projet MeshCore se divise suite à un conflit de marque et l'utilisation de code généré par IA&quot;,
@@ -437,7 +427,7 @@
     <item>
       <title>Panne affectant GitHub Actions, Copilot et Webhooks, maintenant résolu</title>
       <link>https://www.githubstatus.com/incidents/myrbk7jvvs6p</link>
-      <description>GitHub a connu une panne affectant plusieurs services (Actions, Copilot et Webhooks) qui a été entièrement mitigée et résolue. Une analyse détaillée des causes sera publiée ultérieurement.</description>
+      <description>www.githubstatus.com/incidents/myrbk7jvvs6p</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>GitHub a connu une panne affectant plusieurs services (Actions, Copilot et Webhooks) qui a été entièrement mitigée et résolue. Une analyse détaillée des causes sera publiée ultérieurement.</p>
 <ul>
@@ -472,7 +462,7 @@
     <item>
       <title>Les États-Unis sont riches mais malheureux depuis 2020, selon des mesures inédites de bien-être</title>
       <link>https://www.derekthompson.org/p/if-americas-so-rich-howd-it-get-so</link>
-      <description>Depuis 2020, le bien-être rapporté des Américains a chuté de manière brutale et historiquement sans précédent, malgré une économie solide avec un taux de chômage bas et des revenus en hausse. Cette baisse affecte uniformément toutes les catégories démographiques et persiste à travers 2024, phénomène que l'économiste Sam Peltzman qualifie de « changement de régime » dans le sentiment national.</description>
+      <description>www.derekthompson.org/p/if-americas-so-rich-howd-it-get-so</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Depuis 2020, le bien-être rapporté des Américains a chuté de manière brutale et historiquement sans précédent, malgré une économie solide avec un taux de chômage bas et des revenus en hausse. Cette baisse affecte uniformément toutes les catégories démographiques et persiste à travers 2024, phénomène que l'économiste Sam Peltzman qualifie de « changement de régime » dans le sentiment national.</p>
 <ul>
@@ -513,7 +503,7 @@
     <item>
       <title>L'agence française ANTS confirme une fuite de données de 19 millions de citoyens</title>
       <link>https://www.bleepingcomputer.com/news/security/french-govt-agency-confirms-breach-as-hacker-offers-to-sell-data/</link>
-      <description>L'Agence nationale des titres sécurisés (ANTS), qui gère les documents administratifs français comme les cartes d'identité et les passeports, a confirmé le 15 avril 2026 une violation de données. Un acteur malveillant revendique le vol de jusqu'à 19 millions d'enregistrements et propose les données à la vente.</description>
+      <description>www.bleepingcomputer.com/news/security/french-govt-agency-confirms-breach-as-hacker-offers-to-sell-data/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>L'Agence nationale des titres sécurisés (ANTS), qui gère les documents administratifs français comme les cartes d'identité et les passeports, a confirmé le 15 avril 2026 une violation de données. Un acteur malveillant revendique le vol de jusqu'à 19 millions d'enregistrements et propose les données à la vente.</p>
 <ul>
@@ -551,7 +541,7 @@
     <item>
       <title>Bitwarden CLI compromised dans la campagne de chaîne d'approvisionnement de Checkmarx</title>
       <link>https://socket.dev/blog/bitwarden-cli-compromised</link>
-      <description>La version 2026.4.0 de Bitwarden CLI a été compromise dans la campagne d'attaque de chaîne d'approvisionnement de Checkmarx, touchant un gestionnaire de mots de passe utilisé par plus de 10 millions d'utilisateurs et 50 000 entreprises. Les attaquants ont exploité une GitHub Action compromise dans le pipeline CI/CD de Bitwarden pour injecter du code malveillant.</description>
+      <description>socket.dev/blog/bitwarden-cli-compromised</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>La version 2026.4.0 de Bitwarden CLI a été compromise dans la campagne d'attaque de chaîne d'approvisionnement de Checkmarx, touchant un gestionnaire de mots de passe utilisé par plus de 10 millions d'utilisateurs et 50 000 entreprises. Les attaquants ont exploité une GitHub Action compromise dans le pipeline CI/CD de Bitwarden pour injecter du code malveillant.</p>
 <ul>
@@ -590,7 +580,7 @@
     <item>
       <title>Des chercheurs découvrent deux campagnes de surveillance exploitant les failles des réseaux mobiles mondiaux</title>
       <link>https://techcrunch.com/2026/04/23/surveillance-vendors-caught-abusing-access-to-telcos-to-track-peoples-phone-locations-researchers-say/</link>
-      <description>Des chercheurs du Citizen Lab ont identifié deux campagnes de surveillance sophistiquées exploitant des failles connues de l'infrastructure télécom mondiale pour localiser des individus. Les vendeurs de surveillance opéraient comme des sociétés fantômes se faisant passer pour de vrais opérateurs mobiles afin d'accéder aux données de localisation de leurs cibles.</description>
+      <description>techcrunch.com/2026/04/23/surveillance-vendors-caught-abusing-access-to-telcos-to-track-peoples-phone-locations-researchers-say/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Des chercheurs du Citizen Lab ont identifié deux campagnes de surveillance sophistiquées exploitant des failles connues de l'infrastructure télécom mondiale pour localiser des individus. Les vendeurs de surveillance opéraient comme des sociétés fantômes se faisant passer pour de vrais opérateurs mobiles afin d'accéder aux données de localisation de leurs cibles.</p>
 <ul>
@@ -627,7 +617,7 @@
     <item>
       <title>Honker ajoute les sémantiques NOTIFY/LISTEN de Postgres à SQLite avec file d'attente durable et streams d'événements</title>
       <link>https://github.com/russellromney/honker</link>
-      <description>Honker est une extension SQLite et un ensemble de bindings de langage qui reproduisent les capacités de pub/sub de Postgres directement dans SQLite, sans nécessiter de daemon, de broker externe ou de polling client. L'extension observe le fichier WAL de SQLite pour déclencher des notifications entre processus avec une latence de quelques millisecondes.</description>
+      <description>github.com/russellromney/honker</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Honker est une extension SQLite et un ensemble de bindings de langage qui reproduisent les capacités de pub/sub de Postgres directement dans SQLite, sans nécessiter de daemon, de broker externe ou de polling client. L'extension observe le fichier WAL de SQLite pour déclencher des notifications entre processus avec une latence de quelques millisecondes.</p>
 <ul>
@@ -666,7 +656,7 @@
     <item>
       <title>I am building a cloud</title>
       <link>https://crawshaw.io/blog/building-a-cloud</link>
-      <description>Un entrepreneur lance exe.dev, une nouvelle plateforme cloud construite à partir de zéro pour résoudre les problèmes fondamentaux des clouds actuels : mauvaise abstraction des VMs, performance insuffisante du stockage distant sur SSD, et coûts réseau prohibitifs.</description>
+      <description>crawshaw.io/blog/building-a-cloud</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <h2>exe.dev : une nouvelle infrastructure cloud repensée depuis ses fondations</h2>
 <p>Un entrepreneur lance exe.dev, une nouvelle plateforme cloud construite à partir de zéro pour résoudre les problèmes fondamentaux des clouds actuels : mauvaise abstraction des VMs, performance insuffisante du stockage distant sur SSD, et coûts réseau prohibitifs.</p>
@@ -702,7 +692,7 @@
     <item>
       <title>Arch Linux publie une image Docker bit-for-bit reproductible sous le tag "repro"</title>
       <link>https://antiz.fr/blog/archlinux-now-has-a-reproducible-docker-image/</link>
-      <description>Arch Linux a atteint un jalon technique en proposant une image Docker bit-for-bit reproductible, distribuée sous un nouveau tag "repro". Cette reproductibilité signifie que l'image produit un hash identique à chaque construction, vérifiable via ses digests.</description>
+      <description>antiz.fr/blog/archlinux-now-has-a-reproducible-docker-image/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Arch Linux a atteint un jalon technique en proposant une image Docker bit-for-bit reproductible, distribuée sous un nouveau tag &quot;repro&quot;. Cette reproductibilité signifie que l'image produit un hash identique à chaque construction, vérifiable via ses digests.</p>
 <ul>
@@ -736,7 +726,7 @@
     <item>
       <title>Apple corrige un bug permettant aux forces de l'ordre d'extraire les messages supprimés des iPhones</title>
       <link>https://techcrunch.com/2026/04/22/apple-fixes-bug-that-cops-used-to-extract-deleted-chat-messages-from-iphones/</link>
-      <description>Apple a publié une mise à jour de sécurité corrigeant une faille qui permettait aux autorités d'accéder aux messages supprimés ou auto-effacés sur les iPhones. Le bug conservait les notifications contenant ces messages en cache pendant jusqu'à un mois, permettant aux outils judiciaires d'extraire les données même après leur suppression dans l'application de messagerie.</description>
+      <description>techcrunch.com/2026/04/22/apple-fixes-bug-that-cops-used-to-extract-deleted-chat-messages-from-iphones/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Apple a publié une mise à jour de sécurité corrigeant une faille qui permettait aux autorités d'accéder aux messages supprimés ou auto-effacés sur les iPhones. Le bug conservait les notifications contenant ces messages en cache pendant jusqu'à un mois, permettant aux outils judiciaires d'extraire les données même après leur suppression dans l'application de messagerie.</p>
 <ul>
@@ -773,7 +763,7 @@
     <item>
       <title>Un site web diffusé en direct directement depuis un modèle d'IA</title>
       <link>https://flipbook.page/</link>
-      <description>Un développeur a créé une démonstration où un site web est généré et diffusé en direct par un modèle d'IA, sans serveur web traditionnel.</description>
+      <description>flipbook.page/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un développeur a créé une démonstration où un site web est généré et diffusé en direct par un modèle d'IA, sans serveur web traditionnel.</p>
 <ul>
@@ -808,7 +798,7 @@
     <item>
       <title>Les modèles d'IA réécrivent excessivement le code au-delà des corrections nécessaires, mais peuvent être réorientés</title>
       <link>https://nrehiew.github.io/blog/minimal_editing/</link>
-      <description>L'article examine le problème du "sur-édition" où les modèles d'IA modifient le code bien au-delà de ce qui est nécessaire pour corriger un bogue, rendant la révision de code plus difficile. Les auteurs mesurent ce phénomène à travers des métriques comme la distance de Levenshtein au niveau des tokens et la complexité cognitive ajoutée, puis explorent les solutions.</description>
+      <description>nrehiew.github.io/blog/minimal_editing/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>L'article examine le problème du &quot;sur-édition&quot; où les modèles d'IA modifient le code bien au-delà de ce qui est nécessaire pour corriger un bogue, rendant la révision de code plus difficile. Les auteurs mesurent ce phénomène à travers des métriques comme la distance de Levenshtein au niveau des tokens et la complexité cognitive ajoutée, puis explorent les solutions.</p>
 <ul>
@@ -843,7 +833,7 @@
     <item>
       <title>Zed introduit l'exécution parallèle de plusieurs agents dans une même fenêtre avec une barre de threads</title>
       <link>https://zed.dev/blog/parallel-agents</link>
-      <description>Zed permet désormais d'orchestrer plusieurs agents s'exécutant en parallèle dans la même fenêtre, avec une nouvelle Threads Sidebar pour contrôler l'accès aux dossiers et référentiels, et monitorer leur activité en temps réel à 120 fps.</description>
+      <description>zed.dev/blog/parallel-agents</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Zed permet désormais d'orchestrer plusieurs agents s'exécutant en parallèle dans la même fenêtre, avec une nouvelle Threads Sidebar pour contrôler l'accès aux dossiers et référentiels, et monitorer leur activité en temps réel à 120 fps.</p>
 <ul>
@@ -882,7 +872,7 @@
     <item>
       <title>Firefox expose un identifiant stable permettant de lier les identités Tor privées à travers les sites web</title>
       <link>https://fingerprint.com/blog/firefox-tor-indexeddb-privacy-vulnerability/</link>
-      <description>Une vulnérabilité découverte dans Firefox et les navigateurs basés sur Gecko permet aux sites web de créer un identifiant stable et déterministe en observant l'ordre des bases de données IndexedDB, compromettant l'isolation des sessions privées et la protection du Tor Browser contre le suivi cross-site.</description>
+      <description>fingerprint.com/blog/firefox-tor-indexeddb-privacy-vulnerability/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Une vulnérabilité découverte dans Firefox et les navigateurs basés sur Gecko permet aux sites web de créer un identifiant stable et déterministe en observant l'ordre des bases de données IndexedDB, compromettant l'isolation des sessions privées et la protection du Tor Browser contre le suivi cross-site.</p>
 <ul>
@@ -930,7 +920,7 @@
     <item>
       <title>Une startup albertaine vend des tracteurs sans technologie à moitié prix</title>
       <link>https://wheelfront.com/this-alberta-startup-sells-no-tech-tractors-for-half-price/</link>
-      <description>Une entreprise de l'Alberta propose des tracteurs dépourvus de technologies numériques complexes à un coût significativement réduit par rapport aux modèles conventionnels du marché.</description>
+      <description>wheelfront.com/this-alberta-startup-sells-no-tech-tractors-for-half-price/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Une entreprise de l'Alberta propose des tracteurs dépourvus de technologies numériques complexes à un coût significativement réduit par rapport aux modèles conventionnels du marché.</p>
 <ul>
@@ -966,7 +956,7 @@
     <item>
       <title>Trois couches de dette système : technique, cognitive et intentionnelle</title>
       <link>https://martinfowler.com/fragments/2026-04-02.html</link>
-      <description>Margaret-Anne Storey propose un cadre pour évaluer la santé des systèmes logiciels selon trois types de dette : technique (dans le code), cognitive (dans les équipes) et intentionnelle (dans les artefacts). Cette distinction aide à comprendre comment les systèmes perdent leur capacité à évoluer et à correspondre à leurs objectifs originels, particulièrement à mesure que les LLM génèrent du code.</description>
+      <description>martinfowler.com/fragments/2026-04-02.html</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Margaret-Anne Storey propose un cadre pour évaluer la santé des systèmes logiciels selon trois types de dette : technique (dans le code), cognitive (dans les équipes) et intentionnelle (dans les artefacts). Cette distinction aide à comprendre comment les systèmes perdent leur capacité à évoluer et à correspondre à leurs objectifs originels, particulièrement à mesure que les LLM génèrent du code.</p>
 <ul>
@@ -1005,7 +995,7 @@
     <item>
       <title>Les suicides de jeunes ont diminué après la création d'une ligne d'écoute nationale</title>
       <link>https://www.nytimes.com/2026/04/22/science/988-youth-suicides-decline.html</link>
-      <description>La mise en place d'une ligne d'écoute nationale a entraîné une baisse mesurable des suicides chez les jeunes, selon des données publiées par le New York Times. Cette intervention a démontré son efficacité comme outil de prévention du suicide.</description>
+      <description>www.nytimes.com/2026/04/22/science/988-youth-suicides-decline.html</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>La mise en place d'une ligne d'écoute nationale a entraîné une baisse mesurable des suicides chez les jeunes, selon des données publiées par le New York Times. Cette intervention a démontré son efficacité comme outil de prévention du suicide.</p>
 <ul>
@@ -1040,7 +1030,7 @@
     <item>
       <title>Un chercheur analyse 500 projets Show HN pour identifier les motifs de conception générés par IA</title>
       <link>https://www.adriankrebs.ch/blog/design-slop/</link>
-      <description>Un développeur a créé une méthode de scoring automatisé pour détecter les signes de conception générée par IA dans les soumissions Show HN de Hacker News. Il a observé que de nombreux projets récents partagent des caractéristiques visuelles génériques et stériles, confirmant l'intuition que les LLM produisent des designs similaires.</description>
+      <description>www.adriankrebs.ch/blog/design-slop/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un développeur a créé une méthode de scoring automatisé pour détecter les signes de conception générée par IA dans les soumissions Show HN de Hacker News. Il a observé que de nombreux projets récents partagent des caractéristiques visuelles génériques et stériles, confirmant l'intuition que les LLM produisent des designs similaires.</p>
 <ul>
@@ -1077,7 +1067,7 @@
     <item>
       <title>Des chercheurs documentent pour la première fois des décharges de corona ultraviolettes sur les cimes d'arbres lors d'orages</title>
       <link>https://www.psu.edu/news/earth-and-mineral-sciences/story/treetops-glowing-during-storms-captured-film-first-time</link>
-      <description>Une équipe de Penn State a réalisé la première observation directe de décharges de corona en conditions naturelles, un phénomène atmosphérique longtemps théorisé où des impulsions électriques minuscules font briller les feuilles des arbres en ultraviolet pendant les orages.</description>
+      <description>www.psu.edu/news/earth-and-mineral-sciences/story/treetops-glowing-during-storms-captured-film-first-time</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Une équipe de Penn State a réalisé la première observation directe de décharges de corona en conditions naturelles, un phénomène atmosphérique longtemps théorisé où des impulsions électriques minuscules font briller les feuilles des arbres en ultraviolet pendant les orages.</p>
 <ul>
@@ -1122,7 +1112,7 @@
     <item>
       <title>Qwen3.6-27B atteint des performances de haut niveau en codage avec un modèle dense de 27 milliards de paramètres</title>
       <link>https://qwen.ai/blog?id=qwen3.6-27b</link>
-      <description>Alibaba présente Qwen3.6-27B, un modèle de langage de 27 milliards de paramètres capable de performances comparables aux modèles flagship existants, particulièrement dans les tâches de codage.</description>
+      <description>qwen.ai/blog</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Alibaba présente Qwen3.6-27B, un modèle de langage de 27 milliards de paramètres capable de performances comparables aux modèles flagship existants, particulièrement dans les tâches de codage.</p>
 <ul>
@@ -1158,7 +1148,7 @@
     <item>
       <title>Google présente les TPU de 8e génération : deux puces spécialisées pour l'entraînement et l'inférence des modèles d'IA</title>
       <link>https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/eighth-generation-tpu-agentic-era/</link>
-      <description>Google introduit deux nouvelles puces Tensor Processor Unit (TPU) de 8e génération : TPU 8t pour l'entraînement et TPU 8i pour l'inférence, conçues spécifiquement pour les charges de travail des agents d'IA. Ces architectures spécialisées visent à offrir une meilleure efficacité énergétique et des performances supérieures par rapport à la génération précédente.</description>
+      <description>blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/eighth-generation-tpu-agentic-era/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Google introduit deux nouvelles puces Tensor Processor Unit (TPU) de 8e génération : TPU 8t pour l'entraînement et TPU 8i pour l'inférence, conçues spécifiquement pour les charges de travail des agents d'IA. Ces architectures spécialisées visent à offrir une meilleure efficacité énergétique et des performances supérieures par rapport à la génération précédente.</p>
 <ul>
@@ -1197,7 +1187,7 @@
     <item>
       <title>La version 2 du dataset GM-SEUS recense 3,4 millions de panneaux solaires aux États-Unis</title>
       <link>https://tech.marksblogg.com/american-solar-farms-v2.html</link>
-      <description>La version 2 du Ground-Mounted Solar Energy in the United States (GM-SEUS) dataset a été publiée avec 3,4 millions de panneaux solaires, soit une augmentation de 500 000 panneaux par rapport à la version 1. Le dataset inclut désormais trois catégories distinctes : les panneaux individuels, les champs solaires et un nouveau dataset de panneaux solaires sur toiture.</description>
+      <description>tech.marksblogg.com/american-solar-farms-v2.html</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>La version 2 du Ground-Mounted Solar Energy in the United States (GM-SEUS) dataset a été publiée avec 3,4 millions de panneaux solaires, soit une augmentation de 500 000 panneaux par rapport à la version 1. Le dataset inclut désormais trois catégories distinctes : les panneaux individuels, les champs solaires et un nouveau dataset de panneaux solaires sur toiture.</p>
 <ul>
@@ -1232,7 +1222,7 @@
     <item>
       <title>GitHub CLI collecte désormais une télémétrie pseudonyme pour améliorer le produit</title>
       <link>https://cli.github.com/telemetry</link>
-      <description>GitHub CLI envoie des données de télémétrie pseudonymes à GitHub pour comprendre comment les fonctionnalités sont utilisées et prioriser les améliorations du produit. Les utilisateurs peuvent inspecter exactement ce qui serait envoyé avant de décider de conserver la télémétrie activée.</description>
+      <description>cli.github.com/telemetry</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>GitHub CLI envoie des données de télémétrie pseudonymes à GitHub pour comprendre comment les fonctionnalités sont utilisées et prioriser les améliorations du produit. Les utilisateurs peuvent inspecter exactement ce qui serait envoyé avant de décider de conserver la télémétrie activée.</p>
 <ul>
@@ -1271,7 +1261,7 @@
     <item>
       <title>Sous-système Windows 9x pour Linux</title>
       <link>https://social.hails.org/@hailey/116446826733136456</link>
-      <description>(no content)</description>
+      <description>social.hails.org/@hailey/116446826733136456</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>(no content)</p>
 <h2>Discussion sur Hacker News (82 commentaires analysés)</h2>
@@ -1303,7 +1293,7 @@
     <item>
       <title>Le fonctionnement du GPS : conversion du temps en position via satellites</title>
       <link>https://perthirtysix.com/how-the-heck-does-gps-work</link>
-      <description>Le GPS fonctionne en mesurant le temps que met un signal radio à voyager d'un satellite jusqu'à votre téléphone, ce qui permet de calculer la distance. En combinant les mesures de plusieurs satellites et en corrigeant les imprécisions de l'horloge du téléphone, le système peut déterminer une position précise en trois dimensions.</description>
+      <description>perthirtysix.com/how-the-heck-does-gps-work</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Le GPS fonctionne en mesurant le temps que met un signal radio à voyager d'un satellite jusqu'à votre téléphone, ce qui permet de calculer la distance. En combinant les mesures de plusieurs satellites et en corrigeant les imprécisions de l'horloge du téléphone, le système peut déterminer une position précise en trois dimensions.</p>
 <ul>
@@ -1351,7 +1341,7 @@
     <item>
       <title>Meta installe un logiciel de surveillance sur les ordinateurs de ses employés pour entraîner ses modèles d'IA</title>
       <link>https://www.theregister.com/2026/04/22/meta_employee_surveillance_software/</link>
-      <description>Meta déploie un outil appelé "Model Capability Initiative" qui enregistre les frappes clavier, mouvements de souris et captures d'écran des employés sur leurs ordinateurs professionnels. L'entreprise justifie cette surveillance par le besoin de collecter des données réelles sur la façon dont les gens utilisent les ordinateurs pour développer des agents IA autonomes.</description>
+      <description>www.theregister.com/2026/04/22/meta_employee_surveillance_software/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Meta déploie un outil appelé &quot;Model Capability Initiative&quot; qui enregistre les frappes clavier, mouvements de souris et captures d'écran des employés sur leurs ordinateurs professionnels. L'entreprise justifie cette surveillance par le besoin de collecter des données réelles sur la façon dont les gens utilisent les ordinateurs pour développer des agents IA autonomes.</p>
 <ul>
@@ -1390,7 +1380,7 @@
     <item>
       <title>Un utilisateur exprime sa fatigue face à l'omniprésence de l'IA et souhaite la bloquer au niveau du navigateur</title>
       <link>https://news.ycombinator.com/item?id=47857461</link>
-      <description>Un utilisateur compare sa lassitude envers l'IA à celle qu'il a ressentie avec Facebook, déclarant son désir de filtrer complètement le contenu lié à l'IA à la source.</description>
+      <description>news.ycombinator.com/item</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un utilisateur compare sa lassitude envers l'IA à celle qu'il a ressentie avec Facebook, déclarant son désir de filtrer complètement le contenu lié à l'IA à la source.</p>
 <ul>
@@ -1424,7 +1414,7 @@
     <item>
       <title>Enseignements d'un ingénieur senior après plusieurs années d'expérience</title>
       <link>https://luminousmen.substack.com/p/drunk-post-things-ive-learned-as</link>
-      <description>Un ingénieur senior partage les leçons clés qu'il a apprises au cours de sa carrière dans le domaine technique, révélant les réalités du métier au-delà des théories académiques.</description>
+      <description>luminousmen.substack.com/p/drunk-post-things-ive-learned-as</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un ingénieur senior partage les leçons clés qu'il a apprises au cours de sa carrière dans le domaine technique, révélant les réalités du métier au-delà des théories académiques.</p>
 <ul>
@@ -1458,7 +1448,7 @@
     <item>
       <title>Anthropic semble retirer Claude Code de son abonnement Pro à 20 dollars par mois</title>
       <link>https://bsky.app/profile/edzitron.com/post/3mjzxwfx3qs2a</link>
-      <description>Anthropic aurait supprimé l'accès à Claude Code de son offre d'abonnement Pro facturée 20 dollars mensuels, selon les modifications observées sur sa page tarifaire.</description>
+      <description>bsky.app/profile/edzitron.com/post/3mjzxwfx3qs2a</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Anthropic aurait supprimé l'accès à Claude Code de son offre d'abonnement Pro facturée 20 dollars mensuels, selon les modifications observées sur sa page tarifaire.</p>
 <ul>
@@ -1490,7 +1480,7 @@
     <item>
       <title>SpaceX acquiert Cursor pour 60 milliards de dollars selon la compagnie</title>
       <link>https://twitter.com/spacex/status/2046713419978453374</link>
-      <description>SpaceX annonce avoir conclu un accord pour l'acquisition de Cursor, une société évaluée à 60 milliards de dollars.</description>
+      <description>twitter.com/spacex/status/2046713419978453374</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>SpaceX annonce avoir conclu un accord pour l'acquisition de Cursor, une société évaluée à 60 milliards de dollars.</p>
 <ul>
@@ -1523,7 +1513,7 @@
     <item>
       <title>Claude Code supprimé de l'offre Pro d'Anthropic</title>
       <link>https://claude.com/pricing</link>
-      <description>Anthropic a restructuré son offre tarifaire en retirant Claude Code de son plan Pro. Cette fonctionnalité de génération et d'exécution de code est désormais disponible uniquement dans les plans Team et Enterprise.</description>
+      <description>claude.com/pricing</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Anthropic a restructuré son offre tarifaire en retirant Claude Code de son plan Pro. Cette fonctionnalité de génération et d'exécution de code est désormais disponible uniquement dans les plans Team et Enterprise.</p>
 <ul>
@@ -1561,7 +1551,7 @@
     <item>
       <title>Tim Cook cède la direction d'Apple à John Ternus dans une transition ordonnée et planifiée</title>
       <link>https://daringfireball.net/2026/04/another_day_has_come</link>
-      <description>Tim Cook quitte la présidence d'Apple à 65 ans après 15 ans à la tête de l'entreprise pour devenir président exécutif, tandis que John Ternus, ingénieur de 25 ans chez Apple, prend la direction générale. Cette transition contraste fortement avec celle de 2011, où Steve Jobs, malade, avait dû céder son poste dans la crise et la tristesse.</description>
+      <description>daringfireball.net/2026/04/another_day_has_come</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Tim Cook quitte la présidence d'Apple à 65 ans après 15 ans à la tête de l'entreprise pour devenir président exécutif, tandis que John Ternus, ingénieur de 25 ans chez Apple, prend la direction générale. Cette transition contraste fortement avec celle de 2011, où Steve Jobs, malade, avait dû céder son poste dans la crise et la tristesse.</p>
 <ul>
@@ -1599,7 +1589,7 @@
     <item>
       <title>Un mainteneur explique pourquoi les pull requests des contributeurs externes deviennent moins utiles avec les LLM</title>
       <link>https://dpc.pw/posts/i-dont-want-your-prs-anymore/</link>
-      <description>Un mainteneur de logiciel open source explique qu'il préfère cesser de fusionner les pull requests d'contributeurs externes, car les LLM rendent l'implémentation de code plus rapide et moins risquée que de reviewer les contributions d'inconnus. Le travail réel de maintenance a fondamentalement changé : la génération de code n'est plus le goulot d'étranglement, mais plutôt la compréhension du code existant, la conception architecturale et la review.</description>
+      <description>dpc.pw/posts/i-dont-want-your-prs-anymore/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un mainteneur de logiciel open source explique qu'il préfère cesser de fusionner les pull requests d'contributeurs externes, car les LLM rendent l'implémentation de code plus rapide et moins risquée que de reviewer les contributions d'inconnus. Le travail réel de maintenance a fondamentalement changé : la génération de code n'est plus le goulot d'étranglement, mais plutôt la compréhension du code existant, la conception architecturale et la review.</p>
 <ul>
@@ -1635,7 +1625,7 @@
     <item>
       <title>ChatGPT Images 2.0</title>
       <link>https://openai.com/index/introducing-chatgpt-images-2-0/</link>
-      <description>OpenAI a présenté ChatGPT Images 2.0 lors d'une livestream officielle. Cette nouvelle version représente une mise à jour significative des capacités de génération d'images de ChatGPT.</description>
+      <description>openai.com/index/introducing-chatgpt-images-2-0/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <h2>ChatGPT Images 2.0 lancé par OpenAI lors d'une présentation en direct</h2>
 <p>OpenAI a présenté ChatGPT Images 2.0 lors d'une livestream officielle. Cette nouvelle version représente une mise à jour significative des capacités de génération d'images de ChatGPT.</p>
@@ -1670,7 +1660,7 @@
     <item>
       <title>Framework Laptop 13 Pro</title>
       <link>https://frame.work/laptop13pro</link>
-      <description>Framework Laptop 13 Pro est un ordinateur portable destiné aux développeurs, équipé de processeurs Intel Core Ultra Series 3, d'une autonomie de 20 heures et d'une mémoire LPCAMM2 modulaire. Le dispositif conserve la philosophie de la marque en matière de réparabilité, modulabilité et personnalisation.</description>
+      <description>frame.work/laptop13pro</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <h2>Framework Laptop 13 Pro avec processeur Intel Core Ultra Series 3 offre 20 heures d'autonomie</h2>
 <p>Framework Laptop 13 Pro est un ordinateur portable destiné aux développeurs, équipé de processeurs Intel Core Ultra Series 3, d'une autonomie de 20 heures et d'une mémoire LPCAMM2 modulaire. Le dispositif conserve la philosophie de la marque en matière de réparabilité, modulabilité et personnalisation.</p>
@@ -1710,7 +1700,7 @@
     <item>
       <title>Cal.diy : édition communautaire open-source en auto-hébergement de Cal.com</title>
       <link>https://github.com/calcom/cal.diy</link>
-      <description>Cal.diy est une plateforme de planification de calendrier open-source et entièrement gratuite, basée sur Cal.com mais sans les fonctionnalités commerciales ni d'édition entreprise. Destinée à l'auto-hébergement, elle est licensée MIT et ne nécessite aucune clé de licence ni compte Cal.com pour fonctionner.</description>
+      <description>github.com/calcom/cal.diy</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Cal.diy est une plateforme de planification de calendrier open-source et entièrement gratuite, basée sur Cal.com mais sans les fonctionnalités commerciales ni d'édition entreprise. Destinée à l'auto-hébergement, elle est licensée MIT et ne nécessite aucune clé de licence ni compte Cal.com pour fonctionner.</p>
 <ul>
@@ -1748,7 +1738,7 @@
     <item>
       <title>Meta commencera à enregistrer les mouvements de souris et frappes clavier des employés pour l'entraînement de l'IA</title>
       <link>https://www.reuters.com/sustainability/boards-policy-regulation/meta-start-capturing-employee-mouse-movements-keystrokes-ai-training-data-2026-04-21/</link>
-      <description>Meta prévoit de capturer les données de comportement des employés, notamment les mouvements de souris et les frappes clavier, dans le but d'entraîner ses systèmes d'intelligence artificielle.</description>
+      <description>www.reuters.com/sustainability/boards-policy-regulation/meta-start-capturing-employee-mouse-movements-keystrokes-ai-training-data-2026-04-21/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Meta prévoit de capturer les données de comportement des employés, notamment les mouvements de souris et les frappes clavier, dans le but d'entraîner ses systèmes d'intelligence artificielle.</p>
 <ul>
@@ -1782,7 +1772,7 @@
     <item>
       <title>Britannica11.org propose une édition structurée et interrogeable de l'Encyclopædia Britannica de 1911</title>
       <link>https://britannica11.org/</link>
-      <description>Britannica11.org offre un accès numérique à l'Encyclopædia Britannica de sa onzième édition (1910-1911), complètement consultable et annoté.</description>
+      <description>britannica11.org/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Britannica11.org offre un accès numérique à l'Encyclopædia Britannica de sa onzième édition (1910-1911), complètement consultable et annoté.</p>
 <ul>
@@ -1819,7 +1809,7 @@
     <item>
       <title>Une compromission OAuth chez Vercel expose les risques des variables d'environnement sur les plateformes cloud</title>
       <link>https://www.trendmicro.com/en_us/research/26/d/vercel-breach-oauth-supply-chain.html</link>
-      <description>Un attaquant a compromis une application OAuth tiers (Context.ai) pour accéder aux systèmes internes de Vercel et énumérer les variables d'environnement non marquées comme sensibles, exposant des secrets de clients. Cette incident révèle comment les relations de confiance OAuth contournent les défenses traditionnelles et amplifient les risques dans la chaîne d'approvisionnement logicielle.</description>
+      <description>www.trendmicro.com/en_us/research/26/d/vercel-breach-oauth-supply-chain.html</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un attaquant a compromis une application OAuth tiers (Context.ai) pour accéder aux systèmes internes de Vercel et énumérer les variables d'environnement non marquées comme sensibles, exposant des secrets de clients. Cette incident révèle comment les relations de confiance OAuth contournent les défenses traditionnelles et amplifient les risques dans la chaîne d'approvisionnement logicielle.</p>
 <ul>
@@ -1869,7 +1859,7 @@
     <item>
       <title>GrapheneOS répond aux allégations de WIRED basées sur les déclarations de James Donaldson</title>
       <link>https://discuss.grapheneos.org/d/34369-original-grapheneos-responses-to-wired-fact-checker</link>
-      <description>GrapheneOS conteste vivement l'article de WIRED, affirmant qu'il repose largement sur des fabrications de James Donaldson, ancien associé qui a tenté pendant 8 ans de détruire le projet et son fondateur Daniel Micay. L'équipe du projet fournit des réponses détaillées à un vérificateur de faits pour clarifier l'histoire réelle et réfuter les allégations.</description>
+      <description>discuss.grapheneos.org/d/34369-original-grapheneos-responses-to-wired-fact-checker</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>GrapheneOS conteste vivement l'article de WIRED, affirmant qu'il repose largement sur des fabrications de James Donaldson, ancien associé qui a tenté pendant 8 ans de détruire le projet et son fondateur Daniel Micay. L'équipe du projet fournit des réponses détaillées à un vérificateur de faits pour clarifier l'histoire réelle et réfuter les allégations.</p>
 <ul>
@@ -1908,7 +1898,7 @@
     <item>
       <title>Comment les sociétés de gestion de marques vidangent la qualité des grandes marques par le modèle de licence</title>
       <link>https://www.worseonpurpose.com/p/your-favorite-brands-got-worse-on-purpose</link>
-      <description>Les sociétés de gestion de marques comme Authentic Brands Group (ABG) achètent des noms de marques prestigieuses en faillite, puis les dépouillez de leurs usines, designers et contrôle qualité, en vendant les droits à des tiers qui fabriquent les produits. ABG possède plus de 50 marques valorisées à 20 milliards de dollars mais reconnaît officiellement dans ses documents d'inscription auprès de la SEC qu'elle n'exerce aucun contrôle sur la qualité des produits vendus sous ces noms.</description>
+      <description>www.worseonpurpose.com/p/your-favorite-brands-got-worse-on-purpose</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Les sociétés de gestion de marques comme Authentic Brands Group (ABG) achètent des noms de marques prestigieuses en faillite, puis les dépouillez de leurs usines, designers et contrôle qualité, en vendant les droits à des tiers qui fabriquent les produits. ABG possède plus de 50 marques valorisées à 20 milliards de dollars mais reconnaît officiellement dans ses documents d'inscription auprès de la SEC qu'elle n'exerce aucun contrôle sur la qualité des produits vendus sous ces noms.</p>
 <ul>
@@ -1957,7 +1947,7 @@
     <item>
       <title>Anthropic reçoit 5 milliards de dollars d'Amazon et s'engage à dépenser 100 milliards sur AWS en dix ans</title>
       <link>https://techcrunch.com/2026/04/20/anthropic-takes-5b-from-amazon-and-pledges-100b-in-cloud-spending-in-return/</link>
-      <description>Amazon investit 5 milliards de dollars supplémentaires dans Anthropic, portant son investissement total à 13 milliards, tandis qu'Anthropic s'engage à dépenser plus de 100 milliards de dollars sur les services cloud AWS au cours des dix prochaines années pour accéder à jusqu'à 5 GW de capacité informatique.</description>
+      <description>techcrunch.com/2026/04/20/anthropic-takes-5b-from-amazon-and-pledges-100b-in-cloud-spending-in-return/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Amazon investit 5 milliards de dollars supplémentaires dans Anthropic, portant son investissement total à 13 milliards, tandis qu'Anthropic s'engage à dépenser plus de 100 milliards de dollars sur les services cloud AWS au cours des dix prochaines années pour accéder à jusqu'à 5 GW de capacité informatique.</p>
 <ul>
@@ -1992,7 +1982,7 @@
     <item>
       <title>VidStudio est un éditeur vidéo navigateur qui traite les fichiers localement sans les télécharger</title>
       <link>https://vidstudio.app/video-editor</link>
-      <description>VidStudio est un outil de montage vidéo entièrement basé sur le navigateur qui exécute tous les traitements localement, sans envoyer les fichiers vers des serveurs externes. La plateforme offre une suite complète de fonctionnalités de traitement vidéo avec traitement rapide et protection de la vie privée.</description>
+      <description>vidstudio.app/video-editor</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>VidStudio est un outil de montage vidéo entièrement basé sur le navigateur qui exécute tous les traitements localement, sans envoyer les fichiers vers des serveurs externes. La plateforme offre une suite complète de fonctionnalités de traitement vidéo avec traitement rapide et protection de la vie privée.</p>
 <ul>
@@ -2029,7 +2019,7 @@
     <item>
       <title>Tim Cook légue à Apple une domination financière mais des questions stratégiques non résolues</title>
       <link>https://stratechery.com/2026/tim-cooks-impeccable-timing/</link>
-      <description>Tim Cook cède la direction d'Apple après avoir porté les revenus de l'entreprise de 297 milliards à 4 000 milliards de dollars en 15 ans. Son héritage repose sur des triomphes opérationnels et financiers, mais également sur des choix stratégiques qui pourraient fragiliser Apple à long terme.</description>
+      <description>stratechery.com/2026/tim-cooks-impeccable-timing/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Tim Cook cède la direction d'Apple après avoir porté les revenus de l'entreprise de 297 milliards à 4 000 milliards de dollars en 15 ans. Son héritage repose sur des triomphes opérationnels et financiers, mais également sur des choix stratégiques qui pourraient fragiliser Apple à long terme.</p>
 <ul>
@@ -2075,7 +2065,7 @@
     <item>
       <title>Recueil de lois et principes fondamentaux en génie logiciel</title>
       <link>https://lawsofsoftwareengineering.com</link>
-      <description>Un ensemble complet de lois, principes et biais qui régissent la conception de logiciels, l'organisation des équipes et le comportement humain dans les projets informatiques.</description>
+      <description>lawsofsoftwareengineering.com</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un ensemble complet de lois, principes et biais qui régissent la conception de logiciels, l'organisation des équipes et le comportement humain dans les projets informatiques.</p>
 <ul>
@@ -2124,7 +2114,7 @@
     <item>
       <title>Des violences sexuelles utilisées par l'armée israélienne et des colons pour déplacer les Palestiniens de Cisjordanie</title>
       <link>https://www.theguardian.com/world/2026/apr/21/israeli-soldiers-using-sexual-assault-to-force-palestinians-out-of-west-bank-report-says</link>
-      <description>Selon des experts en droits humains et des organisations humanitaires, des soldats israéliens et des colons recourent aux violences sexuelles et au harcèlement pour forcer les Palestiniens à quitter leurs foyers en Cisjordanie occupée. Ces violences ont des conséquences graves sur les victimes et accélèrent les déplacements forcés des communautés.</description>
+      <description>www.theguardian.com/world/2026/apr/21/israeli-soldiers-using-sexual-assault-to-force-palestinians-out-of-west-bank-report-says</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Selon des experts en droits humains et des organisations humanitaires, des soldats israéliens et des colons recourent aux violences sexuelles et au harcèlement pour forcer les Palestiniens à quitter leurs foyers en Cisjordanie occupée. Ces violences ont des conséquences graves sur les victimes et accélèrent les déplacements forcés des communautés.</p>
 <ul>
@@ -2162,7 +2152,7 @@
     <item>
       <title>Un cheat Roblox et un outil IA ont causé une panne majeure de la plateforme Vercel</title>
       <link>https://webmatrices.com/post/how-a-roblox-cheat-and-one-ai-tool-brought-down-vercel-s-entire-platform</link>
-      <description>Un cheat pour Roblox combiné à un outil IA a provoqué une panne significative des services de Vercel, la plateforme de déploiement populaire auprès des développeurs.</description>
+      <description>webmatrices.com/post/how-a-roblox-cheat-and-one-ai-tool-brought-down-vercel-s-entire-platform</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un cheat pour Roblox combiné à un outil IA a provoqué une panne significative des services de Vercel, la plateforme de déploiement populaire auprès des développeurs.</p>
 <ul>
@@ -2195,7 +2185,7 @@
     <item>
       <title>Anthropic autorise à nouveau l'utilisation de Claude CLI dans OpenClaw selon les directives du personnel</title>
       <link>https://docs.openclaw.ai/providers/anthropic</link>
-      <description>Anthropic a confirmé auprès de son personnel que l'utilisation de Claude CLI via OpenClaw est à nouveau autorisée. OpenClaw supporte maintenant à la fois l'accès par clé API Anthropic et la réutilisation de Claude CLI, avec plusieurs configurations et optimisations disponibles.</description>
+      <description>docs.openclaw.ai/providers/anthropic</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Anthropic a confirmé auprès de son personnel que l'utilisation de Claude CLI via OpenClaw est à nouveau autorisée. OpenClaw supporte maintenant à la fois l'accès par clé API Anthropic et la réutilisation de Claude CLI, avec plusieurs configurations et optimisations disponibles.</p>
 <ul>
@@ -2232,7 +2222,7 @@
     <item>
       <title>Optimiser un interpréteur de langage dynamique de 16 fois en utilisant la représentation des valeurs, les caches inline et le modèle objet</title>
       <link>https://zef-lang.dev/implementation</link>
-      <description>Un développeur décrit comment il a optimisé un interpréteur AST-walking pour le langage Zef, en le rendant compétitif avec Lua, QuickJS et CPython malgré un point de départ très basique. Les techniques appliquées, sans JIT ni compilateur, ont permis un gain de performance de 16,6 fois.</description>
+      <description>zef-lang.dev/implementation</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un développeur décrit comment il a optimisé un interpréteur AST-walking pour le langage Zef, en le rendant compétitif avec Lua, QuickJS et CPython malgré un point de départ très basique. Les techniques appliquées, sans JIT ni compilateur, ont permis un gain de performance de 16,6 fois.</p>
 <ul>
@@ -2267,7 +2257,7 @@
     <item>
       <title>Un ingénieur fabrique ses propres puces RAM dans un atelier domestique aménagé en salle blanche</title>
       <link>https://www.youtube.com/watch?v=h6GWikWlAQA</link>
-      <description>Un créateur a transformé un cabanon en salle blanche de classe 100 et a fabriqué des puces RAM de zéro, en réponse à la pénurie mondiale et aux prix élevés causés par la domination de trois fabricants. Le projet démontre que la fabrication de semiconducteurs est techniquement réalisable à petite échelle, même si elle reste complexe.</description>
+      <description>www.youtube.com/watch</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Un créateur a transformé un cabanon en salle blanche de classe 100 et a fabriqué des puces RAM de zéro, en réponse à la pénurie mondiale et aux prix élevés causés par la domination de trois fabricants. Le projet démontre que la fabrication de semiconducteurs est techniquement réalisable à petite échelle, même si elle reste complexe.</p>
 <ul>
@@ -2312,7 +2302,7 @@
     <item>
       <title>Le workflow megamerge dans Jujutsu permet de travailler simultanément sur plusieurs branches</title>
       <link>https://isaaccorbrey.com/notes/jujutsu-megamerges-for-fun-and-profit</link>
-      <description>Le workflow megamerge est une technique avancée de Jujutsu qui consiste à créer un commit octopus (avec trois parents ou plus) combinant toutes les branches de travail actives, puis de développer au-dessus de ce commit fusionné. Cette approche offre une vue d'ensemble de tous les changements interagissant ensemble sans exposer le megamerge lui-même au serveur distant.</description>
+      <description>isaaccorbrey.com/notes/jujutsu-megamerges-for-fun-and-profit</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Le workflow megamerge est une technique avancée de Jujutsu qui consiste à créer un commit octopus (avec trois parents ou plus) combinant toutes les branches de travail actives, puis de développer au-dessus de ce commit fusionné. Cette approche offre une vue d'ensemble de tous les changements interagissant ensemble sans exposer le megamerge lui-même au serveur distant.</p>
 <ul>
@@ -2352,7 +2342,7 @@
     <item>
       <title>StackAdapt propose des publicités dans ChatGPT à bas coûts en ciblant la pertinence des requêtes utilisateurs</title>
       <link>https://www.adweek.com/media/exclusive-leaked-deck-reveals-stackadapts-playbook-for-chatgpt-ads/</link>
-      <description>[Article original](https://www.adweek.com/media/exclusive-leaked-deck-reveals-stackadapts-playbook-for-chatgpt-ads/) · [Discussion HN](https://news.ycombinator.com/item?id=47840980)</description>
+      <description>www.adweek.com/media/exclusive-leaked-deck-reveals-stackadapts-playbook-for-chatgpt-ads/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> StackAdapt, partenaire publicitaire d'OpenAI, recrute des annonceurs pour tester des publicités dans ChatGPT en proposant des tarifs très compétitifs et un ciblage basé sur la pertinence des prompts utilisateurs.</p>
 <ul>
@@ -2391,7 +2381,7 @@
     <item>
       <title>Tim Cook devient président directeur général d'Apple, John Ternus lui succède à partir de septembre 2026</title>
       <link>https://www.apple.com/newsroom/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/</link>
-      <description>[Article original](https://www.apple.com/newsroom/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/) · [Discussion HN](https://news.ycombinator.com/item?id=47840219)</description>
+      <description>www.apple.com/newsroom/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Apple annonce une transition de direction le 1er septembre 2026 : Tim Cook devient président exécutif du conseil d'administration et John Ternus, vice-président de l'ingénierie matérielle, devient directeur général.</p>
 <ul>
@@ -2432,7 +2422,7 @@
     <item>
       <title>Les mouvements de résistance à l'IA se multiplient et soulèvent des questions importantes</title>
       <link>https://stephvee.ca/blog/artificial%20intelligence/ai-resistance-is-growing/</link>
-      <description>[Article original](https://stephvee.ca/blog/artificial%20intelligence/ai-resistance-is-growing/) · [Discussion HN](https://news.ycombinator.com/item?id=47839951)</description>
+      <description>stephvee.ca/blog/artificial%20intelligence/ai-resistance-is-growing/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Des mouvements de résistance à l'intelligence artificielle émergent et gagnent en ampleur, portant sur des enjeux variés méritant une discussion publique approfondie.</p>
 <ul>
@@ -2469,7 +2459,7 @@
     <item>
       <title>le F-35 n'est pas adapté à une guerre de longue durée contre la Chine</title>
       <link>https://warontherocks.com/cogs-of-war/the-f-35-is-a-masterpiece-built-for-the-wrong-war/</link>
-      <description>[Article original](https://warontherocks.com/cogs-of-war/the-f-35-is-a-masterpiece-built-for-the-wrong-war/) · [Discussion HN](https://news.ycombinator.com/item?id=47839835)</description>
+      <description>warontherocks.com/cogs-of-war/the-f-35-is-a-masterpiece-built-for-the-wrong-war/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Le F-35, bien qu'excellent dans les opérations courtes et planifiées comme contre l'Iran, est mal conçu pour un conflit prolongé avec la Chine. Son coût prohibitif, sa faible capacité de production et ses besoins logistiques lourds le rendent vulnérable face à des attaques massives et impossibles à remplacer rapidement en cas de pertes élevées.</p>
 <ul>
@@ -2510,7 +2500,7 @@
     <item>
       <title>Kimi open-source le Vendor Verifier pour valider la précision des implémentations d'inférence</title>
       <link>https://www.kimi.com/blog/kimi-vendor-verifier</link>
-      <description>[Article original](https://www.kimi.com/blog/kimi-vendor-verifier) · [Discussion HN](https://news.ycombinator.com/item?id=47838703)</description>
+      <description>www.kimi.com/blog/kimi-vendor-verifier</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Kimi ouvre son Vendor Verifier (KVV) pour aider les utilisateurs à vérifier l'exactitude des implémentations de son modèle K2.6 par différents prestataires, après avoir découvert que des anomalies de benchmark provenaient d'erreurs d'implémentation et non de défauts du modèle.</p>
 <ul>
@@ -2546,7 +2536,7 @@
     <item>
       <title>GitHub Copilot restreint ses plans individuels face à la demande des workflows d'agents</title>
       <link>https://github.blog/news-insights/company-news/changes-to-github-copilot-individual-plans/</link>
-      <description>GitHub Copilot introduit des changements majeurs à ses plans individuels pour maintenir la qualité de service : pause des nouvelles inscriptions, réduction des limites d'utilisation et restriction de la disponibilité des modèles. Ces mesures deviennent nécessaires en raison de la forte augmentation de la consommation de ressources liée aux workflows d'agents parallélisés et de longue durée.</description>
+      <description>github.blog/news-insights/company-news/changes-to-github-copilot-individual-plans/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>GitHub Copilot introduit des changements majeurs à ses plans individuels pour maintenir la qualité de service : pause des nouvelles inscriptions, réduction des limites d'utilisation et restriction de la disponibilité des modèles. Ces mesures deviennent nécessaires en raison de la forte augmentation de la consommation de ressources liée aux workflows d'agents parallélisés et de longue durée.</p>
 <ul>
@@ -2584,7 +2574,7 @@
     <item>
       <title>Un texte satirique annonce le contrôle de Global Tetrahedron sur InfoWars.com</title>
       <link>https://theonion.com/at-long-last-infowars-is-ours/</link>
-      <description>[Article original](https://theonion.com/at-long-last-infowars-is-ours/) · [Discussion HN](https://news.ycombinator.com/item?id=47837611)</description>
+      <description>theonion.com/at-long-last-infowars-is-ours/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Un article de satire annonce que Global Tetrahedron a pris le contrôle d'InfoWars et décrit en termes ironiques une vision dystopique du site transformé en plateforme maximisant la désinformation, les escroqueries et la manipulation psychologique.</p>
 <ul>
@@ -2624,7 +2614,7 @@
     <item>
       <title>Les ordinateurs quantiques ne menacent pas les clés symétriques de 128 bits</title>
       <link>https://words.filippo.io/128-bits/</link>
-      <description>[Article original](https://words.filippo.io/128-bits/) · [Discussion HN](https://news.ycombinator.com/item?id=47836784)</description>
+      <description>words.filippo.io/128-bits/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Contrairement à une idée fausse répandue, les ordinateurs quantiques n'affaiblissent pas la sécurité des clés symétriques de 128 bits comme AES-128. L'algorithme de Grover, bien qu'offrant une accélération quadratique théorique, ne peut pas être parallélisé efficacement, ce qui rend les attaques pratiquement infaisables même avec une technologie quantique avancée.</p>
 <ul>
@@ -2665,7 +2655,7 @@
     <item>
       <title>Les raisons pour lesquelles la surveillance est devenue le modèle par défaut</title>
       <link>https://vivianvoss.net/blog/why-we-accepted-surveillance</link>
-      <description>[Article original](https://vivianvoss.net/blog/why-we-accepted-surveillance) · [Discussion HN](https://news.ycombinator.com/item?id=47836730)</description>
+      <description>vivianvoss.net/blog/why-we-accepted-surveillance</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR</strong> : L'article analyse comment la surveillance s'est progressivement imposée comme la norme acceptée par défaut dans la plupart des secteurs numériques et sociaux.</p>
 <ul>
@@ -2700,7 +2690,7 @@
     <item>
       <title>Deezer signale que 44% des chansons téléchargées quotidiennement sont générées par l'IA</title>
       <link>https://techcrunch.com/2026/04/20/deezer-says-44-of-songs-uploaded-to-its-platform-daily-are-ai-generated/</link>
-      <description>[Article original](https://techcrunch.com/2026/04/20/deezer-says-44-of-songs-uploaded-to-its-platform-daily-are-ai-generated/) · [Discussion HN](https://news.ycombinator.com/item?id=47835928)</description>
+      <description>techcrunch.com/2026/04/20/deezer-says-44-of-songs-uploaded-to-its-platform-daily-are-ai-generated/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Deezer reçoit 75 000 morceaux générés par l'IA par jour, soit 44% de tous les nouveaux uploads, mais leur consommation reste marginale à 1-3% des écoutes avec 85% détectées comme frauduleuses.</p>
 <ul>
@@ -2741,7 +2731,7 @@
     <item>
       <title>Amazon Kindles deviennent des appareils jetables avec des restrictions croissantes, alternatives supérieures disponibles</title>
       <link>https://www.androidauthority.com/amazon-kindle-2026-3657863/</link>
-      <description>[Article original](https://www.androidauthority.com/amazon-kindle-2026-3657863/) · [Discussion HN](https://news.ycombinator.com/item?id=47835775)</description>
+      <description>www.androidauthority.com/amazon-kindle-2026-3657863/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> L'auteur abandonne définitivement les Kindles en raison de l'obsolescence forcée d'Amazon (arrêt des anciens modèles), d'une interface devenue une vitrine publicitaire et de la surveillance des données de lecture. Des alternatives comme Kobo et Boox offrent désormais une meilleure expérience avec davantage de liberté.</p>
 <ul>
@@ -2782,7 +2772,7 @@
     <item>
       <title>Kimi K2.6 améliore significativement le codage autonome, les tâches longue durée et la coordination multi-agents</title>
       <link>https://www.kimi.com/blog/kimi-k2-6</link>
-      <description>[Article original](https://www.kimi.com/blog/kimi-k2-6) · [Discussion HN](https://news.ycombinator.com/item?id=47835735)</description>
+      <description>www.kimi.com/blog/kimi-k2-6</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Kimi K2.6 est un modèle open-source qui améliore le codage de longue durée, la généralisation entre langages de programmation, et introduit des capacités de coordination multi-agents appelées Claw Groups pour une collaboration humain-IA à grande échelle.</p>
 <ul>
@@ -2820,7 +2810,7 @@
     <item>
       <title>Acetaminophen est généralement plus sûr que l'ibuprofen pour la plupart des usages</title>
       <link>https://asteriskmag.com/issues/14/the-mystery-in-the-medicine-cabinet</link>
-      <description>Contrairement à l'idée reçue, l'acétaminophène (paracétamol) présente un profil de sécurité supérieur à celui de l'ibuprofène dans la majorité des situations, à condition de respecter les doses recommandées. Bien que l'acétaminophène soit toxique en cas de surdosage massif, l'ibuprofène pose des risques chroniques plus larges affectant l'estomac, le cœur et les reins.</description>
+      <description>asteriskmag.com/issues/14/the-mystery-in-the-medicine-cabinet</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Contrairement à l'idée reçue, l'acétaminophène (paracétamol) présente un profil de sécurité supérieur à celui de l'ibuprofène dans la majorité des situations, à condition de respecter les doses recommandées. Bien que l'acétaminophène soit toxique en cas de surdosage massif, l'ibuprofène pose des risques chroniques plus larges affectant l'estomac, le cœur et les reins.</p>
 <ul>
@@ -2861,7 +2851,7 @@
     <item>
       <title>MNT Reform est un ordinateur portable open source conçu et assemblé en Allemagne</title>
       <link>http://mnt.stanleylieber.com/reform/</link>
-      <description>MNT Reform est un projet d'ordinateur portable basé sur des principes open hardware, entièrement conçu et fabriqué en Allemagne. Le projet suscite un intérêt significatif auprès de la communauté technologique.</description>
+      <description>mnt.stanleylieber.com/reform/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>MNT Reform est un projet d'ordinateur portable basé sur des principes open hardware, entièrement conçu et fabriqué en Allemagne. Le projet suscite un intérêt significatif auprès de la communauté technologique.</p>
 <ul>
@@ -2895,7 +2885,7 @@
     <item>
       <title>Alibaba annonce Qwen3.6-Max-Preview, modèle IA en évolution continue</title>
       <link>https://qwen.ai/blog?id=qwen3.6-max-preview</link>
-      <description>[Article original](https://qwen.ai/blog?id=qwen3.6-max-preview) · [Discussion HN](https://news.ycombinator.com/item?id=47834565)</description>
+      <description>qwen.ai/blog</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Alibaba déploie une version preview de Qwen3.6-Max, son modèle IA amélioré. Le projet souligne l'engagement continu vers des performances accrues.</p>
 <ul>
@@ -2932,7 +2922,7 @@
     <item>
       <title>À partir de 2027, tous les téléphones vendus dans l'UE doivent avoir des batteries amovibles</title>
       <link>https://www.theolivepress.es/spain-news/2026/04/20/eu-to-force-replaceable-batteries-in-phones-and-tablets-from-2027/</link>
-      <description>[Article original](https://www.theolivepress.es/spain-news/2026/04/20/eu-to-force-replaceable-batteries-in-phones-and-tablets-from-2027/) · [Discussion HN](https://news.ycombinator.com/item?id=47834195)</description>
+      <description>www.theolivepress.es/spain-news/2026/04/20/eu-to-force-replaceable-batteries-in-phones-and-tablets-from-2027/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> L'Union européenne impose que tous les téléphones commercialisés sur son territoire disposent de batteries remplaçables à partir de 2027, une mesure visant à réduire les déchets électroniques et allonger la durée de vie des appareils.</p>
 <ul>
@@ -2972,7 +2962,7 @@
     <item>
       <title>L'utilisation du sauna améliore la récupération cardiaque le jour même, particulièrement chez les femmes en phase lutéale</title>
       <link>https://tryterra.co/research/sauna-effect-on-heart-rate</link>
-      <description>[Article original](https://tryterra.co/research/sauna-effect-on-heart-rate) · [Discussion HN](https://news.ycombinator.com/item?id=47834184)</description>
+      <description>tryterra.co/research/sauna-effect-on-heart-rate</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR</strong> : Une analyse de 256 utilisateurs de wearables montre que les jours de sauna sont associés à une baisse de 3 bpm de la fréquence cardiaque minimale nocturne, indépendamment du niveau d'activité. Cet effet de récupération physiologique est plus marqué chez les femmes durant la phase lutéale du cycle menstruel.</p>
 <ul>
@@ -3011,7 +3001,7 @@
     <item>
       <title>ggsql : une implémentation de la grammaire des graphiques basée sur la syntaxe SQL</title>
       <link>https://opensource.posit.co/blog/2026-04-20_ggsql_alpha_release/</link>
-      <description>[Article original](https://opensource.posit.co/blog/2026-04-20_ggsql_alpha_release/) · [Discussion HN](https://news.ycombinator.com/item?id=47833558)</description>
+      <description>opensource.posit.co/blog/2026-04-20_ggsql_alpha_release/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> ggsql est un nouvel outil en alpha qui permet de créer des visualisations de données directement en SQL, combinant la grammaire des graphiques avec la syntaxe SQL. Il fonctionne dans Quarto, Jupyter, Positron et VS Code.</p>
 <ul>
@@ -3052,7 +3042,7 @@
     <item>
       <title>Atlassian active par défaut la collecte de données pour entraîner ses modèles d'IA</title>
       <link>https://letsdatascience.com/news/atlassian-enables-default-data-collection-to-train-ai-f71343d8</link>
-      <description>[Article original](https://letsdatascience.com/news/atlassian-enables-default-data-collection-to-train-ai-f71343d8) · [Discussion HN](https://news.ycombinator.com/item?id=47833247)</description>
+      <description>letsdatascience.com/news/atlassian-enables-default-data-collection-to-train-ai-f71343d8</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Atlassian a mis en place une collecte de données activée par défaut pour alimenter ses systèmes d'intelligence artificielle, soulevant des questions sur le consentement et la confidentialité des utilisateurs.</p>
 <ul>
@@ -3088,7 +3078,7 @@
     <item>
       <title>Tesla a dissimulé des accidents mortels pour poursuivre ses tests de conduite autonome</title>
       <link>https://www.rts.ch/info/monde/2026/article/tesla-dissimule-des-milliers-d-incidents-de-conduite-autonome-mortels-29214161.html</link>
-      <description>[Article original](https://www.rts.ch/info/monde/2026/article/tesla-dissimule-des-milliers-d-incidents-de-conduite-autonome-mortels-29214161.html) · [Discussion HN](https://news.ycombinator.com/item?id=47833156)</description>
+      <description>www.rts.ch/info/monde/2026/article/tesla-dissimule-des-milliers-d-incidents-de-conduite-autonome-mortels-29214161.html</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR</strong> : Une fuite de données révèle que Tesla a caché des milliers d'incidents graves, dont plusieurs mortels, liés à son système &quot;Autopilot&quot;. Un jury a condamné le constructeur à verser 243 millions de dollars de dommages et intérêts.</p>
 <ul>
@@ -3129,7 +3119,7 @@
     <item>
       <title>Extension WebUSB pour Firefox : installation et configuration du stub natif</title>
       <link>https://github.com/ArcaneNibble/awawausb</link>
-      <description>[Article original](https://github.com/ArcaneNibble/awawausb) · [Discussion HN](https://news.ycombinator.com/item?id=47832969)</description>
+      <description>github.com/ArcaneNibble/awawausb</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Cette extension ajoute la fonctionnalité WebUSB à Firefox via un programme natif séparé appelé &quot;native stub&quot; que l'utilisateur doit installer en parallèle de l'extension navigateur.</p>
 <ul>
@@ -3170,7 +3160,7 @@
     <item>
       <title>Un tremblement de terre de magnitude 7,4 s'est produit à 100 km à l'est-nord-est de Miyako au Japon</title>
       <link>https://earthquake.usgs.gov/earthquakes/eventpage/us6000sri7/</link>
-      <description>[Article original](https://earthquake.usgs.gov/earthquakes/eventpage/us6000sri7/) · [Discussion HN](https://news.ycombinator.com/item?id=47832248)</description>
+      <description>earthquake.usgs.gov/earthquakes/eventpage/us6000sri7/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR</strong> : Un séisme de magnitude 7,4 a frappé une zone à 100 km à l'est-nord-est de Miyako, au Japon, selon l'USGS.</p>
 <ul>
@@ -3205,7 +3195,7 @@
     <item>
       <title>La NSA utilise le modèle Mythos d'Anthropic malgré son inscription sur liste noire</title>
       <link>https://www.axios.com/2026/04/19/nsa-anthropic-mythos-pentagon</link>
-      <description>[Article original](https://www.axios.com/2026/04/19/nsa-anthropic-mythos-pentagon) · [Discussion HN](https://news.ycombinator.com/item?id=47832222)</description>
+      <description>www.axios.com/2026/04/19/nsa-anthropic-mythos-pentagon</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> La NSA emploierait le modèle d'IA Mythos d'Anthropic bien que ce modèle figure sur une liste noire officielle, révélant un écart entre les politiques affichées et les pratiques réelles des agences de renseignement.</p>
 <ul>
@@ -3242,7 +3232,7 @@
     <item>
       <title>Une application de vérification d'âge de l'Union européenne contournée en deux minutes par des chercheurs en cybersécurité</title>
       <link>https://www.politico.eu/article/eu-brussels-launched-age-checking-app-hackers-say-took-them-2-minutes-break-it/</link>
-      <description>La Commission européenne a présenté mercredi une application mobile de vérification d'âge destinée à empêcher les enfants d'accéder aux réseaux sociaux, mais des experts en cybersécurité ont rapidement identifié des failles graves dans le code concernant la confidentialité et la sécurité.</description>
+      <description>www.politico.eu/article/eu-brussels-launched-age-checking-app-hackers-say-took-them-2-minutes-break-it/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>La Commission européenne a présenté mercredi une application mobile de vérification d'âge destinée à empêcher les enfants d'accéder aux réseaux sociaux, mais des experts en cybersécurité ont rapidement identifié des failles graves dans le code concernant la confidentialité et la sécurité.</p>
 <ul>
@@ -3279,7 +3269,7 @@
     <item>
       <title>Des millions d'étoiles GitHub fausses se vendent ouvertement et influencent les décisions de financement des startups</title>
       <link>https://awesomeagents.ai/news/github-fake-stars-investigation/</link>
-      <description>[Article original](https://awesomeagents.ai/news/github-fake-stars-investigation/) · [Discussion HN](https://news.ycombinator.com/item?id=47831621)</description>
+      <description>awesomeagents.ai/news/github-fake-stars-investigation/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Une étude de Carnegie Mellon a documenté 6 millions d'étoiles GitHub fausses vendues par des milliers de comptes, avec des étoiles coûtant entre 0,03 et 0,85 dollar chacune. Les investisseurs en capital-risque utilisent explicitement le nombre d'étoiles comme signal de sourcing pour identifier les startups, créant une boucle de rétroaction qui incite les fondateurs à acheter des fausses étoiles.</p>
 <ul>
@@ -3319,7 +3309,7 @@
     <item>
       <title>Les architectures d'agents actuels reproduisent les failles de sécurité de MS-DOS, selon ce développeur</title>
       <link>https://www.flyingpenguin.com/build-an-openclaw-free-secure-always-on-local-ai-agent/</link>
-      <description>[Article original](https://www.flyingpenguin.com/build-an-openclaw-free-secure-always-on-local-ai-agent/) · [Discussion HN](https://news.ycombinator.com/item?id=47831437)</description>
+      <description>www.flyingpenguin.com/build-an-openclaw-free-secure-always-on-local-ai-agent/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Un développeur compare les systèmes d'agents actuels aux problèmes de sécurité de MS-DOS, arguant que les solutions populaires contournent les problèmes plutôt que de les résoudre architecturalement. Il propose une approche alternative avec séparation des processus et audit en chaîne de hachage.</p>
 <ul>
@@ -3357,7 +3347,7 @@
     <item>
       <title>Des traders parient des millions avant les annonces de Trump, soulevant des soupçons de délit d'initié</title>
       <link>https://www.bbc.com/news/articles/cge0grppe3po</link>
-      <description>[Article original](https://www.bbc.com/news/articles/cge0grppe3po) · [Discussion HN](https://news.ycombinator.com/item?id=47829486)</description>
+      <description>www.bbc.com/news/articles/cge0grppe3po</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> La BBC a documenté un pattern récurrent de pics inhabituels d'échanges financiers survenant minutes ou heures avant les annonces majeures de Trump, suggérant que certains traders pourraient disposer d'informations non publiques. Bien que plusieurs cas impliquent des gains colossaux, les poursuites restent difficiles à engager faute de preuves identifiant la source des informations.</p>
 <ul>
@@ -3398,7 +3388,7 @@
     <item>
       <title>Cartographie des fournisseurs de messagerie officielle dans les 2 100 communes suisses</title>
       <link>https://mxmap.ch/</link>
-      <description>Une carte interactive recense tous les fournisseurs de messagerie utilisés par les communes suisses pour leurs domaines officiels, révélant un paysage largement dominé par des prestataires américains soumis à la loi CLOUD Act.</description>
+      <description>mxmap.ch/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p>Une carte interactive recense tous les fournisseurs de messagerie utilisés par les communes suisses pour leurs domaines officiels, révélant un paysage largement dominé par des prestataires américains soumis à la loi CLOUD Act.</p>
 <ul>
@@ -3433,7 +3423,7 @@
     <item>
       <title>Les pièges courants qui empêchent d'écouter véritablement les utilisateurs en développement logiciel</title>
       <link>https://ashley.rolfmore.com/stop-trying-to-engineer-your-way-out-of-listening-to-people/</link>
-      <description>[Article original](https://ashley.rolfmore.com/stop-trying-to-engineer-your-way-out-of-listening-to-people/) · [Discussion HN](https://news.ycombinator.com/item?id=47827259)</description>
+      <description>ashley.rolfmore.com/stop-trying-to-engineer-your-way-out-of-listening-to-people/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Écouter les gens est difficile et ne peut pas être remplacée par des frameworks ou systèmes. Les développeurs et designers doivent reconnaître leurs biais inconscients et les pièges qui les empêchent d'entendre vraiment ce que les gens disent.</p>
 <ul>
@@ -3472,7 +3462,7 @@
     <item>
       <title>Turtle WoW ferme après la victoire judiciaire de Blizzard contre le serveur privé</title>
       <link>https://www.pcgamer.com/games/world-of-warcraft/turtle-wow-classic-server-announces-shutdown-after-blizzard-wins-injunction/</link>
-      <description>[Article original](https://www.pcgamer.com/games/world-of-warcraft/turtle-wow-classic-server-announces-shutdown-after-blizzard-wins-injunction/) · [Discussion HN](https://news.ycombinator.com/item?id=47825160)</description>
+      <description>www.pcgamer.com/games/world-of-warcraft/turtle-wow-classic-server-announces-shutdown-after-blizzard-wins-injunction/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Le serveur privé Turtle WoW ferme définitivement le 14 mai suite à une décision de justice favorable à Blizzard. Les développeurs ont accepté un règlement qui impose l'arrêt du projet après 8 ans d'existence.</p>
 <ul>
@@ -3513,7 +3503,7 @@
     <item>
       <title>Vercel révèle une violation de ses systèmes internes liée à une application tiers compromise</title>
       <link>https://decipher.sc/2026/04/19/vercel-says-internal-systems-hit-in-breach/</link>
-      <description>[Article original](https://decipher.sc/2026/04/19/vercel-says-internal-systems-hit-in-breach/) · [Discussion HN](https://news.ycombinator.com/item?id=47824976)</description>
+      <description>decipher.sc/2026/04/19/vercel-says-internal-systems-hit-in-breach/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Vercel a découvert une violation de ses systèmes internes le dimanche, affectant un nombre limité de clients. L'intrusion provient d'une application tiers dont l'accès OAuth Google Workspace a été compromis dans une attaque plus large.</p>
 <ul>
@@ -3549,7 +3539,7 @@
     <item>
       <title>Notion a exposé les adresses email de tous les éditeurs de pages publiques</title>
       <link>https://twitter.com/weezerOSINT/status/2045849358462222720</link>
-      <description>[Article original](https://twitter.com/weezerOSINT/status/2045849358462222720) · [Discussion HN](https://news.ycombinator.com/item?id=47824945)</description>
+      <description>twitter.com/weezerOSINT/status/2045849358462222720</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Une faille de sécurité sur Notion a permis l'accès aux adresses email de tous les utilisateurs ayant des droits d'édition sur des pages publiques.</p>
 <ul>
@@ -3584,7 +3574,7 @@
     <item>
       <title>Vercel subit une cyberattaque via un outil IA tiers, des données clients exposées</title>
       <link>https://www.bleepingcomputer.com/news/security/vercel-confirms-breach-as-hackers-claim-to-be-selling-stolen-data/</link>
-      <description>[Article original](https://www.bleepingcomputer.com/news/security/vercel-confirms-breach-as-hackers-claim-to-be-selling-stolen-data/) · [Discussion HN](https://news.ycombinator.com/item?id=47824463)</description>
+      <description>www.bleepingcomputer.com/news/security/vercel-confirms-breach-as-hackers-claim-to-be-selling-stolen-data/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Vercel a confirmé une faille de sécurité impliquant l'accès à des systèmes internes après le compromis du compte Google Workspace d'un employé via la plateforme Context.ai. Des variables d'environnement non chiffrées ont été exposées, bien que les services clients n'aient pas été affectés.</p>
 <ul>
@@ -3625,7 +3615,7 @@
     <item>
       <title>Les concurrents d'Adobe lancent une offensive commerciale avec des alternatives gratuites et moins chères</title>
       <link>https://www.theverge.com/tech/913765/adobe-rivals-free-creative-software-app-updates</link>
-      <description>[Article original](https://www.theverge.com/tech/913765/adobe-rivals-free-creative-software-app-updates) · [Discussion HN](https://news.ycombinator.com/item?id=47824403)</description>
+      <description>www.theverge.com/tech/913765/adobe-rivals-free-creative-software-app-updates</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR</strong> : Les éditeurs de logiciels créatifs proposent massivement des alternatives gratuites ou moins chères aux produits Adobe, profitant du mécontentement face aux tarifs d'abonnement élevés et à l'orientation vers l'IA générative.</p>
 <ul>
@@ -3664,7 +3654,7 @@
     <item>
       <title>Un employé d'une compagnie aérienne arrêté à Dubaï pour avoir partagé des photos de dégâts de bombardements sur WhatsApp</title>
       <link>https://www.lbc.co.uk/article/dubai-police-spied-private-whatsapp-5HjdXwr_2/</link>
-      <description>[Article original](https://www.lbc.co.uk/article/dubai-police-spied-private-whatsapp-5HjdXwr_2/) · [Discussion HN](https://news.ycombinator.com/item?id=47824068)</description>
+      <description>www.lbc.co.uk/article/dubai-police-spied-private-whatsapp-5HjdXwr_2/</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
 <p><strong>TL;DR :</strong> Un agent de compagnie aérienne a été arrêté par la police de Dubaï après avoir partagé des images de dégâts causés par des frappes en mars 2026 dans un groupe WhatsApp privé. Les autorités auraient accédé à ce groupe fermé via des opérations de surveillance électronique.</p>
 <ul>
