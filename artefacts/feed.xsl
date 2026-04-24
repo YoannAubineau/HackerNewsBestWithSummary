@@ -118,7 +118,7 @@
                   <xsl:value-of select="content:encoded" disable-output-escaping="yes"/>
                 </div>
                 <footer class="hnid">
-                  <a href="{comments}">
+                  <a href="{comments}" data-hnid="{substring-after(comments, 'id=')}">
                     <xsl:text>HN #</xsl:text>
                     <xsl:value-of select="substring-after(comments, 'id=')"/>
                   </a>
@@ -127,6 +127,19 @@
             </xsl:for-each>
           </main>
         </div>
+        <script>
+          document.querySelectorAll('.hnid a').forEach(function (a) {
+            a.addEventListener('click', function (event) {
+              if (!navigator.clipboard) return;
+              event.preventDefault();
+              navigator.clipboard.writeText(a.getAttribute('data-hnid')).then(function () {
+                var original = a.textContent;
+                a.textContent = 'Copié !';
+                setTimeout(function () { a.textContent = original; }, 1500);
+              });
+            });
+          });
+        </script>
       </body>
     </html>
   </xsl:template>
