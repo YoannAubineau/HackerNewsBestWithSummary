@@ -271,7 +271,7 @@ def test_step_fetch_discussions_writes_top_comments_sidecar(
     sidecar = sidecar_path(path, "top_comments")
     assert sidecar.exists()
     content = sidecar.read_text(encoding="utf-8")
-    assert content.startswith("**Meilleurs commentaires** :")
+    assert content.startswith("**Commentaires les plus plébiscités** :")
     assert "[alice](https://news.ycombinator.com/item?id=501)" in content
 
 
@@ -286,7 +286,7 @@ def test_step_summarize_reads_and_clears_top_comments_sidecar(
     write_sidecar(path, "article", "raw article")
     write_sidecar(path, "discussion", "raw discussion")
     top_md = (
-        "**Meilleurs commentaires** :\n\n"
+        "**Commentaires les plus plébiscités** :\n\n"
         "- [alice](https://news.ycombinator.com/item?id=501) : « hi »"
     )
     write_sidecar(path, "top_comments", top_md)
@@ -309,7 +309,7 @@ def test_step_summarize_reads_and_clears_top_comments_sidecar(
     assert pipeline.step_summarize() == 1
 
     _, final_body = load(path)
-    assert "**Meilleurs commentaires**" in final_body
+    assert "**Commentaires les plus plébiscités**" in final_body
     assert "[alice](https://news.ycombinator.com/item?id=501)" in final_body
     assert read_sidecar(path, "top_comments") is None
 
