@@ -6,6 +6,13 @@ from dataclasses import dataclass
 import httpx
 import structlog
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from tenacity import (
+    RetryError,
+    retry,
+    retry_if_exception,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from app.config import get_settings
 
@@ -226,6 +233,36 @@ _WHITESPACE_RE = re.compile(r"\s+")
 _HN_ITEM_URL = "https://news.ycombinator.com/item?id={id}"
 
 
+def _is_retryable_hn_error(exc: BaseException) -> bool:
+    """Retry HN HTML fetches on transient errors only.
+
+    HN HTTP 429 is the dominant failure mode (shared GitHub Actions IPs
+    get rate-limited even on a single request). Connection-level
+    timeouts and resets are also transient. Any other HTTP error
+    (404, 5xx, malformed response) is treated as terminal.
+    """
+    if isinstance(exc, httpx.HTTPStatusError):
+        return exc.response.status_code == 429
+    return isinstance(exc, (httpx.ConnectError, httpx.ReadTimeout))
+
+
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=2, min=2, max=10),
+    retry=retry_if_exception(_is_retryable_hn_error),
+    reraise=True,
+)
+def _fetch_hn_html(hn_item_id: int) -> str:
+    settings = get_settings()
+    response = httpx.get(
+        _HN_STORY_URL.format(id=hn_item_id),
+        timeout=settings.http_timeout,
+        headers={"User-Agent": settings.user_agent},
+    )
+    response.raise_for_status()
+    return response.text
+
+
 def _fetch_hn_display_order(hn_item_id: int) -> list[int]:
     """Return top-level comment IDs in HN's own display order.
 
@@ -236,26 +273,23 @@ def _fetch_hn_display_order(hn_item_id: int) -> list[int]:
     fetch it and pick out each ``<tr class="athing comtr">`` with
     ``indent="0"``.
 
-    Any HTTP or parse failure yields an empty list — the caller falls
-    back to an empty ``top_comments_markdown`` rather than crashing the
-    pipeline.
+    Transient HN failures (HTTP 429, connection resets) are retried up
+    to three times with exponential backoff, since GitHub Actions
+    runners share IPs and tend to trip HN's rate limit even on a single
+    request. Any HTTP or parse failure that survives the retries yields
+    an empty list, and the caller falls back to an empty
+    ``top_comments_markdown`` rather than crashing the pipeline.
     """
-    settings = get_settings()
     try:
-        response = httpx.get(
-            _HN_STORY_URL.format(id=hn_item_id),
-            timeout=settings.http_timeout,
-            headers={"User-Agent": settings.user_agent},
-        )
-        response.raise_for_status()
-    except httpx.HTTPError as exc:
+        text = _fetch_hn_html(hn_item_id)
+    except (httpx.HTTPError, RetryError) as exc:
         log.warning(
             "hn_display_order_fetch_failed", hn_item_id=hn_item_id, error=str(exc)
         )
         return []
     return [
         int(cid)
-        for cid, indent in _COMMENT_ROW_RE.findall(response.text)
+        for cid, indent in _COMMENT_ROW_RE.findall(text)
         if indent == "0"
     ]
 

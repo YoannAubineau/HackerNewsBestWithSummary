@@ -590,10 +590,43 @@ def test_fetch_hn_display_order_parses_top_level_only(httpx_mock):
 
 
 def test_fetch_hn_display_order_returns_empty_on_http_error(httpx_mock):
+    # 5xx is not in the retry list (only 429 / ConnectError / ReadTimeout
+    # are transient). Returns immediately rather than retrying.
     httpx_mock.add_response(
         url="https://news.ycombinator.com/item?id=8888",
         status_code=503,
     )
     assert _real_fetch_hn_display_order(8888) == []
+
+
+def test_fetch_hn_display_order_retries_on_429(httpx_mock, monkeypatch):
+    import time
+    monkeypatch.setattr(time, "sleep", lambda _: None)
+    # First call rate-limited, second succeeds. The wrapper should retry
+    # transparently and return the parsed order on the second response.
+    httpx_mock.add_response(
+        url="https://news.ycombinator.com/item?id=9999",
+        status_code=429,
+    )
+    httpx_mock.add_response(
+        url="https://news.ycombinator.com/item?id=9999",
+        text=(
+            '<tr class="athing comtr" id="42">'
+            '<td><table><tr><td class="ind" indent="0">'
+            '<img></td></tr></table></td></tr>'
+        ),
+    )
+    assert _real_fetch_hn_display_order(9999) == [42]
+
+
+def test_fetch_hn_display_order_gives_up_after_three_429(httpx_mock, monkeypatch):
+    import time
+    monkeypatch.setattr(time, "sleep", lambda _: None)
+    for _ in range(3):
+        httpx_mock.add_response(
+            url="https://news.ycombinator.com/item?id=1111",
+            status_code=429,
+        )
+    assert _real_fetch_hn_display_order(1111) == []
 
 
