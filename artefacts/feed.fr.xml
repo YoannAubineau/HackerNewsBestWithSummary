@@ -9,8 +9,47 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 24 Apr 2026 16:19:45 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 17:20:01 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Spinel compile Ruby en binaires natifs avec inférence de types et optimisations C</title>
+      <link>https://github.com/matz/spinel</link>
+      <description>github.com/matz/spinel</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Spinel est un compilateur AOT (Ahead-Of-Time) qui transforme du code Ruby en exécutables natifs autonomes via inférence de types et génération de code C optimisé. Le compilateur est auto-hébergé : son backend écrit en Ruby se compile lui-même en binaire natif, offrant un gain de performance de ~11,6x par rapport à miniruby sur des charges intensives.</p>
+<ul>
+<li><strong>Pipeline de compilation</strong> : Ruby (parser Prism) → AST sérialisé → inférence de types + génération C (backend self-hosted) → compilation C standard → binaire natif sans dépendances runtime</li>
+<li><strong>Optimisations clés</strong> : promotion de types de valeur (structures C sur la pile), propagation de constantes, hoisting des boucles, inlining de méthodes courtes, aplatissement des concaténations de chaînes, auto-promotion bigint, et élimination du code mort</li>
+<li><strong>Fonctionnalités supportées</strong> : classes, héritage, mixins, gestion d'exceptions, pattern matching, blocs/lambdas/Fiber, chaînes mutables, regexp intégrée, variables globales typées et I/O fichiers</li>
+<li><strong>Mémoire et performance</strong> : garbage collector mark-and-sweep avec petites classes automatiquement stack-allouées, symboles interned à la compilation, réutilisation des buffers de split en boucle, zéro allocation pour certaines opérations sur strings</li>
+<li><strong>Bootstrap self-hosting</strong> : le compilateur se compile lui-même en trois générations jusqu'à stabilisation, 74 tests passent, build sans dépendances runtime</li>
+</ul>
+<h2>Discussion sur Hacker News (26 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Matz et son expertise des sémantiques Ruby limitent les risques ; le design pragmatique (utilisation de Prism, génération de C) rend le projet réaliste et maîtrisé.</li>
+<li>Le sous-ensemble fonctionnel suffit pour beaucoup de code réel (40+ projets Ruby personnels utiliseraient send() plutôt qu'eval) ; la démonstration live à RubyKaigi 2026 confirme la viabilité.</li>
+<li>L'accélération de développement via Claude (1 mois) et les performances obtenues (86× plus rapides) valident l'utilité des LLMs et rendent les critiques antérieures obsolètes.</li>
+<li>Cette version simplifiée (sans eval, métaprogrammation, threads) correspond à l'évolution désirée par les développeurs Ruby expérimentés : maintainabilité accrue sans sacrifier l'esthétique du langage.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Les limitations majeures (pas d'eval, pas de métaprogrammation dynamique send/method_missing, pas de threads) excluent une large portion du code Ruby réel et de l'écosystème Rails ; ce n'est qu'un sous-ensemble comparable à mruby.</li>
+<li>La qualité du code généré (spinel_codegen.rb : 21k lignes, 15 niveaux d'imbrication) est difficile à maintenir sans aide IA ; le pattern par défaut if-return des LLM crée du code anti-idiomatique et loin d'être optimal.</li>
+<li>La documentation est confuse et l'écosystème Ruby reste fragmenté (MRI, mruby, TruffleRuby, JRuby, Spinel) ; l'expérience utilisateur pâtit du manque d'unification.</li>
+<li>Spinel n'offre aucun avantage décisif par rapport à Crystal (qui a une vraie base d'utilisateurs et est optimisé nativement pour l'AOT) ou à d'autres langages compilés existants ; c'est un outil expérimental mal positionné.</li>
+</ul>
+<hr />
+<p><a href="https://github.com/matz/spinel">Article original</a> · <a href="https://news.ycombinator.com/item?id=47887334">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">f9a897ef</guid>
+      <comments>https://news.ycombinator.com/item?id=47887334</comments>
+      <pubDate>Fri, 24 Apr 2026 08:28:47 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://opengraph.githubassets.com/80bcb503cb573bd06eca3f2586cd3a441835b86daacccbac80fcba3b254c678c/matz/spinel"/>
+      </media:group>
+    </item>
     <item>
       <title>Les quatre motifs qui poussent un écrivain à écrire selon Orwell</title>
       <link>https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/why-i-write/</link>
