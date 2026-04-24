@@ -2,7 +2,8 @@
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:atom="http://www.w3.org/2005/Atom"
-    xmlns:media="http://search.yahoo.com/mrss/">
+    xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <xsl:output method="html" encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
 
   <xsl:template match="/rss">
@@ -114,7 +115,7 @@
                   </xsl:call-template>
                 </time>
                 <div class="desc">
-                  <xsl:value-of select="description" disable-output-escaping="yes"/>
+                  <xsl:value-of select="content:encoded" disable-output-escaping="yes"/>
                 </div>
                 <footer class="hnid">
                   <a href="{comments}">
