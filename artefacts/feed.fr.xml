@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 24 Apr 2026 14:40:39 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 15:23:58 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Ubuntu 26.04 LTS publié avec améliorations de sécurité et support de cinq ans</title>
@@ -47,6 +47,46 @@
       <comments>https://news.ycombinator.com/item?id=47885596</comments>
       <pubDate>Fri, 24 Apr 2026 04:38:37 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>La consommation régulière de café modifie le microbiome intestinal et les fonctions cognitives</title>
+      <link>https://www.nature.com/articles/s41467-026-71264-8</link>
+      <description>www.nature.com/articles/s41467-026-71264-8</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Une étude prospective menée auprès de 62 adultes sains a démontré que la consommation habituelle de café façonne la composition du microbiome intestinal et influence le comportement, l'humeur et les fonctions cognitives par le biais de l'axe microbiote-intestin-cerveau. Les chercheurs ont comparé des buveurs de café modérés à des non-buveurs, puis ont suivi une période d'abstinence de 14 jours avant la réintroduction de café caféiné ou décaféiné pendant 21 jours.</p>
+<ul>
+<li>Les consommateurs réguliers de café présentent une plus grande impulsivité et réactivité émotionnelle que les non-buveurs, mais ces effets diminuent lors de l'abstinence et s'améliorent avec la réintroduction de café, indépendamment de la caféine</li>
+<li>La consommation de café modifie spécifiquement l'abondance bactérienne, notamment en augmentant Cryptobacterium et Eggerthella, et réduit les métabolites neuroactifs comme le GABA et l'acide indole-3-propionique</li>
+<li>Le café caféiné réduit l'anxiété et certains marqueurs inflammatoires, tandis que le décaféiné améliore la mémoire, la qualité du sommeil et l'activité physique</li>
+<li>Neuf métabolites clés, dont la théophylline, la caféine et les acides phénoliques, montrent des associations fortes entre les espèces microbiennes et les performances cognitives</li>
+<li>Les effets du café sur le microbiome et certains métabolites sont partiellement réversibles à l'arrêt et se rétablissent rapidement à la réintroduction, suggérant des mécanismes directs et indépendants de la caféine</li>
+</ul>
+<h2>Discussion sur Hacker News (74 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>La découverte que les effets du café sur le microbiome et la cognition existent même en décaféiné est pertinente et suggère que d'autres composés que la caféine jouent un rôle important.</li>
+<li>L'étude apporte une nouvelle perspective intéressante sur l'axe microbiote-gut-cerveau et comment les habitudes alimentaires peuvent être liées à des changements neurobiologiques mesurables.</li>
+<li>Le café est généralement considéré comme une boisson relativement saine par la majorité de la communauté scientifique, et les résultats ne contredisent pas cette évaluation globale.</li>
+<li>L'exploration des effets du café au-delà de la caféine (constituants chimiques complexes) ouvre des questions utiles sur ce qui pourrait différencier le café des autres sources de caféine isolée.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>La taille d'échantillon très réduite (n=62) et la population exclusivement irlandaise limitent fortement la généralisation des résultats ; les conclusions restent spéculatives plutôt que probantes.</li>
+<li>L'étude est financée par ISIC, un organisme de l'industrie du café, ce qui soulève des questions de conflit d'intérêt non suffisamment discutées dans la publication.</li>
+<li>Les résultats montrent que les buveurs de café présentent plus d'impulsivité et de réactivité émotionnelle (négatif) tout en ayant une pire mémoire que les non-buveurs, ce qui contredit l'idée d'un bénéfice global.</li>
+<li>L'utilisation incohérente de la mesure « tasse » (118-250 ml selon les standards) compromet la fiabilité méthodologique de l'étude et rend difficile la comparaison avec d'autres recherches.</li>
+<li>Il est possible que les mêmes effets microbiomiques se produisent avec d'autres aliments ou habitudes; l'étude n'évalue pas la spécificité du café par rapport à d'autres interventions diététiques.</li>
+</ul>
+<hr />
+<p><a href="https://www.nature.com/articles/s41467-026-71264-8">Article original</a> · <a href="https://news.ycombinator.com/item?id=47885377">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">807bb9c6</guid>
+      <comments>https://news.ycombinator.com/item?id=47885377</comments>
+      <pubDate>Fri, 24 Apr 2026 04:04:42 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://media.springernature.com/m685/springer-static/image/art%3A10.1038%2Fs41467-026-71264-8/MediaObjects/41467_2026_71264_Fig1_HTML.png"/>
+      </media:group>
     </item>
     <item>
       <title>Comment faire votre premier appel API avec DeepSeek v4</title>
@@ -89,6 +129,43 @@
       </media:group>
     </item>
     <item>
+      <title>Les quatre motifs qui poussent un écrivain à écrire selon Orwell</title>
+      <link>https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/why-i-write/</link>
+      <description>www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/why-i-write/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>George Orwell retrace son évolution en tant qu'écrivain et analyse les motivations profondes qui le poussent à écrire. Il identifie quatre grands motifs : l'égoïsme (désir de reconnaissance et d'immortalité), l'enthousiasme esthétique (amour des mots et de la beauté), l'impulsion historique (documenter la réalité) et le propos politique (transformer la société). Ces motivations coexistent chez tout écrivain mais varient selon les circonstances et l'époque.</p>
+<ul>
+<li>Orwell a découvert très tôt sa vocation d'écrivain (vers 5-6 ans) et a développé un attachement durable à la description minutieuse et au pouvoir expressif des mots, influencé par sa solitude d'enfant.</li>
+<li>L'écrivain sérieux est mû par l'égoïsme plus que le journaliste moyen, mais aussi par une quête esthétique et un souci historique de rapporter les faits avec justesse.</li>
+<li>Le propos politique s'impose graduellement à Orwell suite à la Guerre d'Espagne et à la montée du totalitarisme, le convertissant en pamphlétaire malgré ses inclinations naturelles.</li>
+<li>Depuis 1936, chaque ligne d'Orwell vise à combattre le totalitarisme et promouvoir le socialisme démocratique, tout en refusant de sacrifier l'intégrité esthétique et la précision du langage.</li>
+<li>La tension entre ces motifs pose des défis de construction et de sincérité : Orwell cherche à concilier l'art de l'écriture avec l'urgence politique sans renier son amour de la forme et du détail.</li>
+</ul>
+<h2>Discussion sur Hacker News (22 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>L'essai soulève des questions fondamentales sur le <em>pourquoi</em> écrire, particulièrement pertinent face à la génération actuelle de contenu généré par IA dépourvu d'intention et d'authenticité humaine.</li>
+<li>La qualité d'écriture d'Orwell est remarquable et contraste avec la médiocrité de la production écrite moderne, rappelant l'importance de l'intention et de la conscience dans la création.</li>
+<li>L'honnêteté d'Orwell sur le processus créatif (la lutte, le démon intérieur) résonne fortement et éclaire comment fusionner intention politique et artistique sans compromettre l'une ou l'autre.</li>
+<li>Ses essais et reportages non-fictionnels (notamment sur l'Espagne, la Birmanie) demeurent essentiels pour comprendre une époque et restent des modèles d'clarté morale et de perspective lucide.</li>
+<li>L'analyse de ses propres motivations en tant que jeune écrivain offre une introspection rare et utile sur les forces qui animent véritablement un créateur.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Ses romans de fiction, hormis <em>1984</em> et partiellement <em>Burmese Days</em>, sont plutôt faibles comparé à ses essais; il semble avoir mieux maîtrisé la voix du reporter direct que celle du romancier.</li>
+<li>Les lecteurs modernes risquent d'être biaisés vers ses conseils d'écriture devenus &quot;doctrine&quot;, perdant de vue que des styles plus élaborés et riches demeurent valides et puissants.</li>
+<li>Bien que lucide politiquement, Orwell était aveuglé par ses propres préjugés (misogynie, chauvinisme britannique, hostilité à la végétarisme), ce qui limite sa portée universelle malgré son intégrité morale apparente.</li>
+<li>Certains commentateurs contredisent l'idée que tout contenu créatif doit avoir une profonde intention : l'IA peut créer du contenu valide pour des niches spécifiques ou du divertissement sans prétention, que le public apprécie réellement.</li>
+</ul>
+<hr />
+<p><a href="https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/why-i-write/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47884768">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">e3cd1572</guid>
+      <comments>https://news.ycombinator.com/item?id=47884768</comments>
+      <pubDate>Fri, 24 Apr 2026 02:26:23 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
       <title>Soldat américain poursuivi pour avoir utilisé des informations classifiées pour parier sur un marché de prédiction</title>
       <link>https://www.justice.gov/usao-sdny/pr/us-soldier-charged-using-classified-information-profit-prediction-market-bets?bm-verify=AAQAAAAN_____y6To7sZYZ502biZwIHXlr-7zXZUqV4H0xLTfW__wDA3SjNLqifXRaQwsikyuz6IJknyuL8xfVYRkesxcDk5V10m-HoXl2K93f17rygBphL77WVFoQ_XvlmUo922IwM_DQ66137X6wWMtpdHslcEjpJG7KbBmUw9Su4kDENpDt_yv2spThQZehgv-X1Adk5U2VHfp41co2s_QJGjRj4y0KmL1mhSCyVaE7MC1LHG0mtP-xYmD0xBOQwn6PlHkPiP5Nt46h5ZIjLGXgCZDEVD42i7rIEM379DKLPUPX0PDNmOAwFSuTqcTDVnT_UUV8vxpHLRMb7rUxPxKUPcIB23iZTRJddWDDtPHMXadpwv67xr-f1sKDLZT9NgHCO4iuC2EthmAt0</link>
       <description>www.justice.gov/usao-sdny/pr/us-soldier-charged-using-classified-information-profit-prediction-market-bets</description>
@@ -125,15 +202,18 @@
       </media:group>
     </item>
     <item>
-      <title>Show HN: Tolaria – Open-source macOS app to manage Markdown knowledge bases</title>
+      <title>Tolaria, application macOS open source pour gérer des bases de connaissances Markdown</title>
       <link>https://github.com/refactoringhq/tolaria</link>
       <description>github.com/refactoringhq/tolaria</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<pre><code class="language-json">{
-  &quot;title&quot;: &quot;Tolaria, application macOS open source pour gérer des bases de connaissances Markdown&quot;,
-  &quot;summary&quot;: &quot;Tolaria est une application de bureau pour Mac conçue pour organiser des bases de connaissances en Markdown. Elle repose sur des fichiers standards, l'intégration Git et fonctionne entièrement hors ligne sans dépendances cloud.\n\n- Les notes sont stockées sous forme de fichiers Markdown avec métadonnées YAML, offrant portabilité complète et pas de verrouillage propriétaire\n- Chaque coffre-fort est un dépôt Git avec historique complet, permettant l'utilisation de n'importe quel service de stockage distant\n- L'application fonctionne hors ligne sans comptes, abonnements ni serveurs Tolaria, garantissant que les données restent la propriété de l'utilisateur\n- Construite avec Tauri, React et TypeScript, l'application est open source sous licence AGPL-3.0 et conçue autour du clavier pour les utilisateurs avancés\n- Compatible avec les agents IA comme Claude Code et Codex CLI, tout en permettant l'utilisation d'outils tiers standards pour éditer le coffre-fort&quot;
-}
-</code></pre>
+<p>Tolaria est une application de bureau pour Mac conçue pour organiser des bases de connaissances en Markdown. Elle repose sur des fichiers standards, l'intégration Git et fonctionne entièrement hors ligne sans dépendances cloud.</p>
+<ul>
+<li>Les notes sont stockées sous forme de fichiers Markdown avec métadonnées YAML, offrant portabilité complète et pas de verrouillage propriétaire</li>
+<li>Chaque coffre-fort est un dépôt Git avec historique complet, permettant l'utilisation de n'importe quel service de stockage distant</li>
+<li>L'application fonctionne hors ligne sans comptes, abonnements ni serveurs Tolaria, garantissant que les données restent la propriété de l'utilisateur</li>
+<li>Construite avec Tauri, React et TypeScript, l'application est open source sous licence AGPL-3.0 et conçue autour du clavier pour les utilisateurs avancés</li>
+<li>Compatible avec les agents IA comme Claude Code et Codex CLI, tout en permettant l'utilisation d'outils tiers standards pour éditer le coffre-fort</li>
+</ul>
 <h2>Discussion sur Hacker News (38 commentaires analysés)</h2>
 <p><strong>Avis positifs</strong> :</p>
 <ul>
@@ -391,15 +471,18 @@
       </media:group>
     </item>
     <item>
-      <title>MeshCore development team splits over trademark dispute and AI-generated code</title>
+      <title>Le projet MeshCore se divise suite à un conflit de marque et l'utilisation de code généré par IA</title>
       <link>https://blog.meshcore.io/2026/04/23/the-split</link>
       <description>blog.meshcore.io/2026/04/23/the-split</description>
       <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<pre><code class="language-json">{
-  &quot;title&quot;: &quot;Le projet MeshCore se divise suite à un conflit de marque et l'utilisation de code généré par IA&quot;,
-  &quot;summary&quot;: &quot;L'équipe de développement de MeshCore annonce une scission interne provoquée par Andy Kirby, qui a massivement utilisé du code généré par Claude IA et a déposé une demande de marque sans informer ses coéquipiers. L'équipe originale lance désormais meshcore.io comme plateforme officielle alternative.\n\n- Andy Kirby a développé une branche du projet (MeshOS) en utilisant principalement du code généré par IA (Claude) sans l'avoir divulgué à l'équipe\n- Le dépôt GitHub officiel reste la source de vérité pour MeshCore, auquel Andy n'a jamais contribué\n- Andy a déposé une marque MeshCore le 29 mars et contrôle les anciens canaux (meshcore.co.uk, Discord initial), contestant la propriété du projet\n- L'équipe originale (Scott, Liam, Recrof, FDLamotte, Oltaco) a lancé meshcore.io et un nouveau serveur Discord pour continuer le développement humain\n- Le projet a atteint 38 000+ nœuds et 100 000+ utilisateurs actifs seulement depuis janvier 2025&quot;
-}
-</code></pre>
+<p>L'équipe de développement de MeshCore annonce une scission interne provoquée par Andy Kirby, qui a massivement utilisé du code généré par Claude IA et a déposé une demande de marque sans informer ses coéquipiers. L'équipe originale lance désormais meshcore.io comme plateforme officielle alternative.</p>
+<ul>
+<li>Andy Kirby a développé une branche du projet (MeshOS) en utilisant principalement du code généré par IA (Claude) sans l'avoir divulgué à l'équipe</li>
+<li>Le dépôt GitHub officiel reste la source de vérité pour MeshCore, auquel Andy n'a jamais contribué</li>
+<li>Andy a déposé une marque MeshCore le 29 mars et contrôle les anciens canaux (meshcore.co.uk, Discord initial), contestant la propriété du projet</li>
+<li>L'équipe originale (Scott, Liam, Recrof, FDLamotte, Oltaco) a lancé meshcore.io et un nouveau serveur Discord pour continuer le développement humain</li>
+<li>Le projet a atteint 38 000+ nœuds et 100 000+ utilisateurs actifs seulement depuis janvier 2025</li>
+</ul>
 <h2>Discussion sur Hacker News (66 commentaires analysés)</h2>
 <p><strong>Avis positifs</strong> :</p>
 <ul>
