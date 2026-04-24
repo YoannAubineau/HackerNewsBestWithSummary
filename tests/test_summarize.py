@@ -58,6 +58,25 @@ def test_returns_none_title_if_sections_out_of_order():
     assert "## Titre" in summary
 
 
+def test_recovers_title_when_titre_header_is_missing():
+    text = (
+        "## OpenAI annonce GPT-5.5\n"
+        "\n"
+        "## Résumé\n"
+        "Le corps du résumé."
+    )
+    title, summary = _split_title_and_summary(text)
+    assert title == "OpenAI annonce GPT-5.5"
+    assert summary == "Le corps du résumé."
+
+
+def test_recovers_plain_title_line_when_titre_header_is_missing():
+    text = "OpenAI annonce GPT-5.5\n\n## Résumé\nLe corps."
+    title, summary = _split_title_and_summary(text)
+    assert title == "OpenAI annonce GPT-5.5"
+    assert summary == "Le corps."
+
+
 def test_compose_body_shows_discussion_comment_count():
     body = compose_body(
         article_summary="**Note.**\n\n- point",
