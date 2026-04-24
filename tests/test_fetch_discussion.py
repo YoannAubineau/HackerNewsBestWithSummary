@@ -1,4 +1,22 @@
-from app.fetch_discussion import _degressive_split, fetch_discussion, fetch_submitter_text
+import pytest
+
+from app import fetch_discussion as fd
+from app.fetch_discussion import (
+    _degressive_split,
+    fetch_discussion,
+    fetch_submitter_text,
+)
+from app.fetch_discussion import (
+    _fetch_hn_display_order as _real_fetch_hn_display_order,
+)
+
+
+@pytest.fixture(autouse=True)
+def _stub_hn_display_order(monkeypatch):
+    """Default every test to an empty HN order so fetch_discussion never
+    tries to hit news.ycombinator.com. Tests that care about top comments
+    override this via a local monkeypatch."""
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
 
 
 def _comment(author, text, children=None, points=None, id=None):
@@ -381,55 +399,59 @@ def test_fetch_submitter_text_empty_on_http_error(httpx_mock):
     assert fetch_submitter_text(12) == ""
 
 
-def test_top_comments_takes_first_three_root_children(httpx_mock, isolated_settings):
-    # Algolia returns root children in HN's default display order (internal
-    # score-based ranking). We preserve that order and take the first three.
+def test_top_comments_follow_hn_display_order(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # Algolia returns children in chronological order; HN's display order
+    # can rearrange them by its internal best-ranking. top_comments must
+    # follow HN's order, not the chronological Algolia order.
     isolated_settings.discussion_budget = 10
     payload = {
         "children": [
-            _comment("alice", "first", id=1,
+            _comment("alice", "posted first", id=1,
                      children=[_comment("leaf", "leaf", id=11)]),
-            _comment("bob", "second", id=2,
+            _comment("bob", "posted second", id=2,
                      children=[_comment("leaf", "leaf", id=12)]),
-            _comment("carol", "third", id=3,
+            _comment("carol", "posted third", id=3,
                      children=[_comment("leaf", "leaf", id=13)]),
-            _comment("dave", "fourth (dropped)", id=4,
-                     children=[_comment("leaf", "leaf", id=14)]),
         ]
     }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/200", json=payload)
+    # HN ranks carol > alice > bob.
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [3, 1, 2])
     result = fetch_discussion(200)
     assert result is not None
     md = result.top_comments_markdown
     assert md.startswith("**Meilleurs commentaires** :")
-    assert "[alice](https://news.ycombinator.com/item?id=1)" in md
-    assert "[bob](https://news.ycombinator.com/item?id=2)" in md
-    assert "[carol](https://news.ycombinator.com/item?id=3)" in md
-    assert "dave" not in md
-    assert md.index("alice") < md.index("bob") < md.index("carol")
+    assert md.index("carol") < md.index("alice") < md.index("bob")
 
 
-def test_top_comments_skips_deleted_roots_then_continues(httpx_mock, isolated_settings):
-    # A deleted/dead root comment has text=None (or author=None, or id=None).
-    # We skip it in place and take the next candidate so we still fill 3 slots.
+def test_top_comments_skip_deleted_or_missing_from_tree(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # HN may surface IDs that correspond to deleted comments (text=None,
+    # author=None) or that aren't in the Algolia tree for some reason.
+    # We skip them and keep consuming the ordered list until we fill n.
     isolated_settings.discussion_budget = 50
     payload = {
         "children": [
-            _comment(None, "no author", id=1,
+            _comment(None, "no author", id=10,
                      children=[_comment("leaf", "leaf", id=11)]),
-            _comment("alice", None, id=2,
+            _comment("alice", None, id=20,
                      children=[_comment("leaf", "leaf", id=12)]),
-            _comment("bob", "no id",
-                     children=[_comment("leaf", "leaf", id=13)]),
-            _comment("carol", "first kept", id=4,
+            _comment("carol", "first kept", id=40,
                      children=[_comment("leaf", "leaf", id=14)]),
-            _comment("dave", "second kept", id=5,
+            _comment("dave", "second kept", id=50,
                      children=[_comment("leaf", "leaf", id=15)]),
-            _comment("erin", "third kept", id=6,
+            _comment("erin", "third kept", id=60,
                      children=[_comment("leaf", "leaf", id=16)]),
         ]
     }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/201", json=payload)
+    # 10 and 20 are unusable; 99 isn't in the tree at all; the next three are fine.
+    monkeypatch.setattr(
+        fd, "_fetch_hn_display_order", lambda _id: [10, 20, 99, 40, 50, 60]
+    )
     result = fetch_discussion(201)
     assert result is not None
     md = result.top_comments_markdown
@@ -437,10 +459,11 @@ def test_top_comments_skips_deleted_roots_then_continues(httpx_mock, isolated_se
     assert "dave" in md
     assert "erin" in md
     assert "no author" not in md
-    assert "no id" not in md
 
 
-def test_top_comments_truncates_to_300_chars_with_ellipsis(httpx_mock, isolated_settings):
+def test_top_comments_truncates_to_300_chars_with_ellipsis(
+    httpx_mock, isolated_settings, monkeypatch
+):
     isolated_settings.discussion_budget = 10
     long_text = "a" * 500
     exact_text = "b" * 300
@@ -456,6 +479,7 @@ def test_top_comments_truncates_to_300_chars_with_ellipsis(httpx_mock, isolated_
         ]
     }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/202", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1, 2, 3])
     result = fetch_discussion(202)
     assert result is not None
     md = result.top_comments_markdown
@@ -471,7 +495,9 @@ def test_top_comments_truncates_to_300_chars_with_ellipsis(httpx_mock, isolated_
     assert short_text in short_line
 
 
-def test_top_comments_collapses_internal_whitespace(httpx_mock, isolated_settings):
+def test_top_comments_collapses_internal_whitespace(
+    httpx_mock, isolated_settings, monkeypatch
+):
     isolated_settings.discussion_budget = 10
     payload = {
         "children": [
@@ -482,6 +508,7 @@ def test_top_comments_collapses_internal_whitespace(httpx_mock, isolated_setting
         ]
     }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/203", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
     result = fetch_discussion(203)
     assert result is not None
     md = result.top_comments_markdown
@@ -492,7 +519,9 @@ def test_top_comments_collapses_internal_whitespace(httpx_mock, isolated_setting
     assert text == "line one line two"
 
 
-def test_top_comments_limits_to_three(httpx_mock, isolated_settings):
+def test_top_comments_limits_to_three(
+    httpx_mock, isolated_settings, monkeypatch
+):
     isolated_settings.discussion_budget = 10
     payload = {
         "children": [
@@ -502,6 +531,7 @@ def test_top_comments_limits_to_three(httpx_mock, isolated_settings):
         ]
     }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/205", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: list(range(1000, 1010)))
     result = fetch_discussion(205)
     assert result is not None
     md = result.top_comments_markdown
@@ -513,13 +543,57 @@ def test_top_comments_limits_to_three(httpx_mock, isolated_settings):
     assert "[u3]" not in md
 
 
-def test_top_comments_empty_when_no_children(httpx_mock, isolated_settings):
-    # Edge case: no children at all (e.g. a story with zero comments). The
-    # root-only fetch_discussion already returns None in this case because
-    # _iter_comments yields nothing; but exercise _collect_top_comments
-    # independently to document its behaviour.
-    from app.fetch_discussion import AlgoliaItem, _collect_top_comments
-    root = AlgoliaItem(id=1, author="op", children=[])
-    assert _collect_top_comments(root) == []
+def test_top_comments_empty_when_hn_order_is_empty(httpx_mock, isolated_settings):
+    # Stubbed _fetch_hn_display_order returns [] by default via the autouse
+    # fixture; fetch_discussion must degrade to an empty section.
+    isolated_settings.discussion_budget = 10
+    payload = {
+        "children": [
+            _comment("alice", "root", id=1,
+                     children=[_comment("leaf", "leaf", id=11)]),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/206", json=payload)
+    result = fetch_discussion(206)
+    assert result is not None
+    assert result.top_comments_markdown == ""
+
+
+def test_fetch_hn_display_order_parses_top_level_only(httpx_mock):
+    # Synthetic HN HTML with three top-level comments (indent=0) and two
+    # nested ones (indent=1, indent=2). Only the top-level IDs should come
+    # back, in document order.
+    html = (
+        '<html><body><table>'
+        '<tr class="athing comtr" id="100">'
+        '<td><table><tr><td class="ind" indent="0">'
+        '<img></td></tr></table></td></tr>'
+        '<tr class="athing comtr" id="200">'
+        '<td><table><tr><td class="ind" indent="1">'
+        '<img></td></tr></table></td></tr>'
+        '<tr class="athing comtr" id="300">'
+        '<td><table><tr><td class="ind" indent="0">'
+        '<img></td></tr></table></td></tr>'
+        '<tr class="athing comtr" id="400">'
+        '<td><table><tr><td class="ind" indent="2">'
+        '<img></td></tr></table></td></tr>'
+        '<tr class="athing comtr" id="500">'
+        '<td><table><tr><td class="ind" indent="0">'
+        '<img></td></tr></table></td></tr>'
+        '</table></body></html>'
+    )
+    httpx_mock.add_response(
+        url="https://news.ycombinator.com/item?id=7777",
+        text=html,
+    )
+    assert _real_fetch_hn_display_order(7777) == [100, 300, 500]
+
+
+def test_fetch_hn_display_order_returns_empty_on_http_error(httpx_mock):
+    httpx_mock.add_response(
+        url="https://news.ycombinator.com/item?id=8888",
+        status_code=503,
+    )
+    assert _real_fetch_hn_display_order(8888) == []
 
 

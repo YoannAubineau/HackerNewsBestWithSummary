@@ -231,8 +231,10 @@ def test_step_fetch_articles_skips_sidecar_when_submitter_text_empty(
 
 
 def test_step_fetch_discussions_writes_top_comments_sidecar(
-    isolated_settings, httpx_mock
+    isolated_settings, httpx_mock, monkeypatch
 ):
+    from app import fetch_discussion as fd
+
     article = _make_article("guid-top-comments")
     article.status = Status.ARTICLE_FETCHED
     article.content_source = ContentSource.EXTRACTED
@@ -262,6 +264,7 @@ def test_step_fetch_discussions_writes_top_comments_sidecar(
             ],
         },
     )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [501])
 
     assert step_fetch_discussions() == 1
 

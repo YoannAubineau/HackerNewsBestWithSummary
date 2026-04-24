@@ -10,10 +10,15 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from app.config import get_settings
 
 _ALGOLIA_URL = "https://hn.algolia.com/api/v1/items/{id}"
+_HN_STORY_URL = "https://news.ycombinator.com/item?id={id}"
 _TAG_RE = re.compile(r"<[^>]+>")
 _BLOCK_BREAK_RE = re.compile(r"</(p|div|pre|blockquote|li)\s*>", re.IGNORECASE)
 _LINE_BREAK_RE = re.compile(r"<br\s*/?>", re.IGNORECASE)
 _BLANK_LINES_RE = re.compile(r"\n{3,}")
+_COMMENT_ROW_RE = re.compile(
+    r'class="athing comtr" id="(\d+)"[^>]*?>.*?indent="(\d+)"',
+    re.DOTALL,
+)
 
 log = structlog.get_logger()
 
@@ -60,7 +65,8 @@ def fetch_discussion(hn_item_id: int) -> Discussion | None:
     comments = list(_iter_comments(payload, settings.discussion_budget))
     if not comments:
         return None
-    top_comments = _collect_top_comments(payload)
+    ordered_ids = _fetch_hn_display_order(hn_item_id)
+    top_comments = _select_top_comments(payload, ordered_ids)
     return Discussion(
         comment_count=len(comments),
         text=_render_comments(comments),
@@ -220,34 +226,73 @@ _WHITESPACE_RE = re.compile(r"\s+")
 _HN_ITEM_URL = "https://news.ycombinator.com/item?id={id}"
 
 
-def _collect_top_comments(
-    root: AlgoliaItem, n: int = 3, max_chars: int = 300
-) -> list[TopComment]:
-    """Return the first ``n`` non-deleted root-level comments of the thread.
+def _fetch_hn_display_order(hn_item_id: int) -> list[int]:
+    """Return top-level comment IDs in HN's own display order.
 
-    HN comment scores are not exposed via Algolia nor the Firebase API,
-    so we lean on HN's own ordering: the Algolia children of the root
-    are returned in the same order HN displays them (its internal
-    ranking), which means the first top-level comments are HN's own
-    "best" picks. Deleted/dead comments (missing ``id``, ``author`` or
-    ``text``) are skipped in place and the scan continues until we hit
-    ``n`` or exhaust the tree.
+    Per-comment scores are not exposed by Algolia or Firebase, and
+    Algolia's ``/items/{id}`` returns children in chronological order
+    (by ID), which does not reflect HN's "best" ranking. The HN HTML
+    page is the only public source of truth for that ordering, so we
+    fetch it and pick out each ``<tr class="athing comtr">`` with
+    ``indent="0"``.
 
-    Text is HTML-stripped, internal whitespace collapsed, and truncated
-    to ``max_chars`` with a single ``…`` (U+2026) on overflow.
+    Any HTTP or parse failure yields an empty list — the caller falls
+    back to an empty ``top_comments_markdown`` rather than crashing the
+    pipeline.
     """
+    settings = get_settings()
+    try:
+        response = httpx.get(
+            _HN_STORY_URL.format(id=hn_item_id),
+            timeout=settings.http_timeout,
+            headers={"User-Agent": settings.user_agent},
+        )
+        response.raise_for_status()
+    except httpx.HTTPError as exc:
+        log.warning(
+            "hn_display_order_fetch_failed", hn_item_id=hn_item_id, error=str(exc)
+        )
+        return []
+    return [
+        int(cid)
+        for cid, indent in _COMMENT_ROW_RE.findall(response.text)
+        if indent == "0"
+    ]
+
+
+def _select_top_comments(
+    root: AlgoliaItem,
+    ordered_ids: list[int],
+    n: int = 3,
+    max_chars: int = 300,
+) -> list[TopComment]:
+    """Pick the first ``n`` valid comments from ``ordered_ids``.
+
+    ``ordered_ids`` is HN's display order (see ``_fetch_hn_display_order``);
+    their text and author live in the Algolia tree. Deleted/dead comments
+    (missing ``author`` or ``text``) and IDs not present in the tree are
+    skipped in place. Text is HTML-stripped, internal whitespace
+    collapsed, and truncated to ``max_chars`` with a single ``…`` on
+    overflow.
+    """
+    if not ordered_ids:
+        return []
+    by_id: dict[int, AlgoliaItem] = {
+        child.id: child for child in root.children if child.id is not None
+    }
     picked: list[TopComment] = []
-    for child in root.children:
+    for cid in ordered_ids:
         if len(picked) == n:
             break
-        if child.id is None or child.author is None or child.text is None:
+        node = by_id.get(cid)
+        if node is None or node.author is None or node.text is None:
             continue
-        cleaned = _WHITESPACE_RE.sub(" ", _strip_html(child.text)).strip()
+        cleaned = _WHITESPACE_RE.sub(" ", _strip_html(node.text)).strip()
         if not cleaned:
             continue
         if len(cleaned) > max_chars:
             cleaned = cleaned[: max_chars - 1].rstrip() + "\u2026"
-        picked.append(TopComment(id=child.id, author=child.author, text=cleaned))
+        picked.append(TopComment(id=cid, author=node.author, text=cleaned))
     return picked
 
 
