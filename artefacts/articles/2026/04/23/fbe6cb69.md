@@ -22,6 +22,7 @@ llm_models_used:
 - anthropic/claude-4.5-haiku-20251001
 llm_output_tokens: 733
 our_published_at: '2026-04-23T20:14:37Z'
+rewritten_title: OpenAI annonce GPT-5.5
 source_published_at: '2026-04-23T18:01:39Z'
 status: summarized
 summarized_at: '2026-04-23T20:21:21.099360Z'
@@ -31,9 +32,6 @@ url: https://openai.com/index/introducing-gpt-5-5/
 
 ## Résumé de l'article
 
-## OpenAI annonce GPT-5.5
-
-## Résumé
 OpenAI a publié une annonce concernant un nouveau modèle appelé GPT-5.5. L'annonce a généré une attention significative sur la communauté tech.
 
 - Un article d'annonce officielle a été publié sur le site d'OpenAI

@@ -104,11 +104,18 @@ _SUMMARY_HEADING_RE = re.compile(r"^\s*#{1,3}\s*Résumé\s*$", re.IGNORECASE | r
 
 def _split_title_and_summary(text: str) -> tuple[str | None, str]:
     """Parse LLM output. On unexpected format: title=None, summary=raw text."""
-    title_match = _TITLE_HEADING_RE.search(text)
     summary_match = _SUMMARY_HEADING_RE.search(text)
-    if not title_match or not summary_match or summary_match.start() < title_match.end():
+    if not summary_match:
         return None, text.strip()
-    raw_title = text[title_match.end() : summary_match.start()].strip()
+    title_match = _TITLE_HEADING_RE.search(text)
+    if title_match is None:
+        # Some responses skip '## Titre' and jump straight to the title as a
+        # heading. Treat anything before '## Résumé' as the title in that case.
+        raw_title = text[: summary_match.start()].strip().lstrip("#").strip()
+    elif title_match.end() > summary_match.start():
+        return None, text.strip()
+    else:
+        raw_title = text[title_match.end() : summary_match.start()].strip()
     title = raw_title.splitlines()[0].strip() if raw_title else ""
     summary = text[summary_match.end() :].strip()
     return (title or None), summary
