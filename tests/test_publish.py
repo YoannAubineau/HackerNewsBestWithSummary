@@ -163,8 +163,8 @@ def test_no_media_thumbnail_when_image_url_absent(isolated_settings):
     assert _thumbnail_url(items[0]) is None
 
 
-def test_description_does_not_inline_the_image(isolated_settings):
-    # media:thumbnail is the only channel for the image; the description
+def test_rendered_body_does_not_inline_the_image(isolated_settings):
+    # media:thumbnail is the only channel for the image; the rendered body
     # stays clean and does not contain an <img> tag (which would risk
     # showing up twice in readers that both display the thumbnail and
     # render the body).
@@ -172,9 +172,9 @@ def test_description_does_not_inline_the_image(isolated_settings):
     article.image_url = "https://cdn.example.com/hero.jpg"
     save(article, "## Résumé\n\nCorps.")
     items = _parse(build_feed())
-    description = items[0].findtext("description") or ""
-    assert "<img " not in description
-    assert "cdn.example.com" not in description
+    content = _content_encoded(items[0])
+    assert "<img " not in content
+    assert "cdn.example.com" not in content
 
 
 _CONTENT_NS = {"content": "http://purl.org/rss/1.0/modules/content/"}
@@ -200,33 +200,35 @@ def test_raw_html_in_body_is_escaped(isolated_settings):
     # that would slip through to RSS readers. markdown-it-py should treat the
     # raw HTML as literal text (escaped) rather than pass it through.
     article = _make_article("g-xss", hn_item_id=99)
-    save(
-        article,
-        "## Résumé\n\nPhrase factuelle.\n\n<script>alert('xss')</script>\n\nnormal.",
-    )
+    save(article, "## Résumé\n\n<script>alert('xss')</script>\n\nnormal.")
     raw = build_feed().decode("utf-8")
     assert "<script>" not in raw
     assert "&lt;script&gt;" in raw
 
 
-def test_description_is_short_french_excerpt(isolated_settings):
-    article = _make_article("g-excerpt", hn_item_id=77)
-    body = (
-        "## Résumé de l'article\n\n"
-        "Première phrase factuelle.\n\n"
-        "- Un point\n- Deux points\n\n"
-        "## Discussion sur Hacker News\n\nBlah."
+def test_description_is_article_url_without_scheme(isolated_settings):
+    article = _make_article("g-url", hn_item_id=77, url="https://lwn.net/Articles/1069399/")
+    save(article, "## Résumé\n\nCorps.")
+    items = _parse(build_feed())
+    assert items[0].findtext("description") == "lwn.net/Articles/1069399/"
+
+
+def test_description_for_ask_hn_uses_hn_url_without_scheme(isolated_settings):
+    article = _make_article("g-url-ask", ask_show=True, hn_item_id=78)
+    save(article, "## Discussion\n\nCorps.")
+    items = _parse(build_feed())
+    assert items[0].findtext("description") == "news.ycombinator.com/item"
+
+
+def test_description_strips_query_string(isolated_settings):
+    article = _make_article(
+        "g-qs",
+        hn_item_id=81,
+        url="https://www.justice.gov/usao-sdny/pr/article?bm-verify=ABCDEF123&tracking=x",
     )
-    save(article, body)
+    save(article, "## Résumé\n\nCorps.")
     items = _parse(build_feed())
-    assert items[0].findtext("description") == "Première phrase factuelle."
-
-
-def test_description_falls_back_to_title_when_no_plain_paragraph(isolated_settings):
-    article = _make_article("g-fallback", hn_item_id=79, title="Titre de secours")
-    save(article, "## Résumé\n\n- Bullet only\n- Another bullet")
-    items = _parse(build_feed())
-    assert items[0].findtext("description") == "Titre de secours"
+    assert items[0].findtext("description") == "www.justice.gov/usao-sdny/pr/article"
 
 
 def test_rss_declares_content_namespace(isolated_settings):
