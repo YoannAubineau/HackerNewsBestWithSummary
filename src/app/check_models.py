@@ -41,10 +41,14 @@ def _fetch_model_ids(timeout: float) -> list[str]:
     return [item["id"] for item in items if isinstance(item, dict) and "id" in item]
 
 
+NEWER_MODEL_EXIT_CODE = 2
+
+
 def check_llm_versions() -> int:
     """Return 0 when the configured primary model is the newest of its family
-    on OpenRouter, 1 when a newer version is published. Writes a human-readable
-    report to stdout either way.
+    on OpenRouter, 2 when a newer version is published. Writes a human-readable
+    report to stdout either way. HTTP errors propagate as exceptions so the
+    caller can distinguish a transient network problem from a clean result.
     """
     settings = get_settings()
     current = _parse_slug(settings.openrouter_model)
@@ -54,11 +58,7 @@ def check_llm_versions() -> int:
             "skipping check."
         )
         return 0
-    try:
-        slugs = _fetch_model_ids(settings.http_timeout)
-    except httpx.HTTPError as exc:
-        print(f"Failed to fetch OpenRouter model list: {exc}")
-        return 0
+    slugs = _fetch_model_ids(settings.http_timeout)
     newer: list[_ModelRef] = []
     for slug in slugs:
         ref = _parse_slug(slug)
@@ -84,7 +84,7 @@ def check_llm_versions() -> int:
         "the output quality on a few articles before merging."
     )
     print("\n".join(lines))
-    return 1
+    return NEWER_MODEL_EXIT_CODE
 
 
 def main() -> None:

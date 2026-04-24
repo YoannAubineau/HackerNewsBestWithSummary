@@ -91,9 +91,10 @@ hourly on a public repo, so minutes are free.
 - `src/app/llm.py`, OpenRouter client with model cascade on 429 / 5xx /
   empty body. Logs token usage per call.
 - `src/app/check_models.py`, queries OpenRouter's `/models` endpoint and
-  prints a report (exit 1) when a newer version of the configured
+  prints a report (exit 2) when a newer version of the configured
   `openrouter_model` family is available. Invoked weekly by its own
-  workflow.
+  workflow. HTTP errors propagate so a transient network failure surfaces
+  as a red workflow run rather than being silently swallowed.
 - `src/app/summarize.py`, three prompts (article + title rewrite in one
   call, discussion synthesis, and a cheap title-only translation used when
   the article is `js_required`). French output, strict `## Titre` /

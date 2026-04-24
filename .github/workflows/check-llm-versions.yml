@@ -33,10 +33,15 @@ jobs:
           code=$?
           cat report.txt
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
-          exit 0
+          # 0 = up to date, 2 = newer version available (handled below).
+          # Anything else means the check itself failed and must surface as
+          # a red run so the workflow-failure step fires.
+          if [ "$code" != "0" ] && [ "$code" != "2" ]; then
+            exit "$code"
+          fi
 
       - name: Open issue when a newer model is available
-        if: steps.check.outputs.exit_code != '0'
+        if: steps.check.outputs.exit_code == '2'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -48,3 +53,24 @@ jobs:
           fi
           gh label create llm-model-update --force --color 0E8A16 --description "Newer LLM version detected on OpenRouter"
           gh issue create --title "$title" --label llm-model-update --body-file report.txt
+
+      - name: Report workflow failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create check-llm-versions-failure --force --color B60205 --description "Weekly LLM version check workflow failed"
+          timestamp="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          existing="$(gh issue list --label check-llm-versions-failure --state open --json number --jq '.[0].number')"
+          body=$(cat <<EOF
+          Weekly LLM version check failed at ${timestamp} (UTC).
+
+          Run: ${RUN_URL}
+          EOF
+          )
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "Weekly LLM version check failed" --label check-llm-versions-failure --body "$body"
+          fi
