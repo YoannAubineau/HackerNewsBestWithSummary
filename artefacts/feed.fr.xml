@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Thu, 23 Apr 2026 22:14:54 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 00:25:04 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Meta supprime 10% de ses effectifs, soit 8 000 employés</title>
@@ -173,6 +173,42 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://media.wired.com/photos/69d3c62396de4781bbc4cf6e/191:100/w_1280,c_limit/GettyImages-2268833968.jpg"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Des pics de température anormaux à Paris soupçonnés d'être manipulés au sèche-cheveux pour gagner des paris en cryptomonnaie</title>
+      <link>https://www.telegraph.co.uk/business/2026/04/23/hairdryer-used-trick-weather-sensor-34000-polymarket-bet/</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;La police française enquête sur la possibilité qu'un sèche-cheveux ait été utilisé pour falsifier les relevés de température du capteur de l'aéroport Charles de Gaulle de Paris, permettant à des parieurs de remporter des milliers de dollars sur Polymarket, la plus grande plateforme de prédiction du monde.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Deux pics de température anormaux ont été enregistrés les 6 et 15 avril (21°C et 22°C en fin de journée), alors que les prévisions donnaient moins de 1% de probabilité&lt;/li&gt;
+&lt;li&gt;Les parieurs ayant misé sur ces températures improbables ont empocké environ 34 000 dollars, un trader gagnant 21 000 dollars sur un seul pari&lt;/li&gt;
+&lt;li&gt;Météo-France a déposé plainte auprès de la police après avoir détecté une modification physique sur son capteur&lt;/li&gt;
+&lt;li&gt;Le capteur est situé sur une route publique et facilement accessible, le sèche-cheveux étant l'une des hypothèses évoquées pour expliquer la manipulation&lt;/li&gt;
+&lt;li&gt;Les sources de données de Polymarket pour la température parisienne ont depuis changé de capteur, passant à celui de Paris-Le Bourget&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (63 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les marchés de prédiction révèlent des failles structurelles existantes (manipulation de données publiques pour profit) qui forçaient déjà certains acteurs (grandes entreprises, traders) ; cette transparence incite à renforcer l'intégrité des données de base et les architectures de capteurs (redondance, distribution géographique).&lt;/li&gt;
+&lt;li&gt;Les marchés offrent une meilleure équité probabiliste comparée aux casinos traditionnels : avec avantage informationnel, l'espérance mathématique est positive, contrairement au jeu classique où les odds sont toujours contre vous.&lt;/li&gt;
+&lt;li&gt;Certains traders sophistiqués réussissent à en tirer profit en modélisant les manipulations humaines comme variable du marché, similairement aux stratégies Wall Street, ce qui montre une capacité d'adaptation du marché.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Les marchés de prédiction créent des incitations perverses directes : parier sur des événements (assassinat, conflits militaires, catastrophes) augmente la probabilité que des acteurs informés les provoquent, générant des externalités négatives (morts, souffrance) bien au-delà des pertes gamblers.&lt;/li&gt;
+&lt;li&gt;L'absence de régulation fédérale (la SEC américaine bloque activement les régulations étatiques) et la migration offshore rendent ces plateformes structurellement ingouvernables ; même avec des TOS, la charge de preuve reste impossible à établir pour la plupart des manipulations.&lt;/li&gt;
+&lt;li&gt;Ces marchés récompensent systématiquement la corruption d'insiders dotés d'informations privilégiées (officiels gouvernementaux, opérateurs militaires), transformant le secret professionnel en opportunité de profit et amplifiant l'inégalité informationnelle existante.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://www.telegraph.co.uk/business/2026/04/23/hairdryer-used-trick-weather-sensor-34000-polymarket-bet/"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47878208"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">4bfece65</guid>
+      <comments>https://news.ycombinator.com/item?id=47878208</comments>
+      <pubDate>Thu, 23 Apr 2026 17:01:01 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://www.telegraph.co.uk/content/dam/briefs/2026/04/23/TELEMMGLPICT000449701987_17769343097120_trans_NvBQzQNjv4BqqVzuuqpFlyLIwiB6NTmJwSX5rhseiWKOo9p9OQ-ymek.jpeg?impolicy=OG-Standard"/>
       </media:group>
     </item>
     <item>
@@ -655,6 +691,40 @@
       <media:group>
         <media:thumbnail url="https://martinfowler.com/logo-sq.png"/>
       </media:group>
+    </item>
+    <item>
+      <title>Les suicides de jeunes ont diminué après la création d'une ligne d'écoute nationale</title>
+      <link>https://www.nytimes.com/2026/04/22/science/988-youth-suicides-decline.html</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;La mise en place d'une ligne d'écoute nationale a entraîné une baisse mesurable des suicides chez les jeunes, selon des données publiées par le New York Times. Cette intervention a démontré son efficacité comme outil de prévention du suicide.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Une ligne d'écoute nationale a été créée pour fournir un soutien immédiat aux jeunes en crise&lt;/li&gt;
+&lt;li&gt;Les statistiques de suicide chez les jeunes ont baissé suite à son lancement&lt;/li&gt;
+&lt;li&gt;L'accès à une aide professionnelle et accessible semble réduire les comportements suicidaires&lt;/li&gt;
+&lt;li&gt;Cette initiative suggère que les interventions de soutien mental largement accessibles peuvent avoir un impact préventif significatif&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (41 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le déclin des suicides chez les jeunes après la création du 988 est une validation claire de l'efficacité des hotlines professionnelles, avec des témoignages personnels confirmant l'utilité des intervenants bien formés qui peuvent écouter longuement et offrir un soutien immédiat.&lt;/li&gt;
+&lt;li&gt;Le besoin social de prêter plus d'attention au suicide qu'aux phénomènes statistiquement rares est justifié : les suicides tuent massivement plus de personnes que d'autres tragédies médiatisées, et cette ressource répond à un vrai problème de santé publique.&lt;/li&gt;
+&lt;li&gt;Certains modèles d'intervention fonctionnent bien : les équipes mobiles de travailleurs sociaux (sans intervention policière) constituent une alternative efficace qui crée des liens de confiance durables et accès à des services intégrés.&lt;/li&gt;
+&lt;li&gt;Les variations régionales de succès (différences entre comtés, États) montrent que le modèle est adaptable et que le problème n'est pas insurmontable avec les bonnes ressources.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;L'intervention policière dans les crises suicidaires aggrave souvent les situations au lieu de les résoudre, escalade les traumatismes et remplace l'aide réelle par de l'institutionnalisation coercitive sans garantie d'efficacité.&lt;/li&gt;
+&lt;li&gt;Les hotlines américaines sont critiquées pour des délais d'appel très courts (5 minutes), insuffisants pour des interventions réelles et fonctionnant davantage comme un filtre vers une involontarisation forcée et coûteuse plutôt que comme une aide authentique.&lt;/li&gt;
+&lt;li&gt;Des témoignages dénoncent les systèmes de services sociaux pour enfants comme traumatisants et contre-productifs : l'enfermement institutionnel génère violence et comportements suicidaires au lieu de les prévenir, avec peu de cas réels de guérison documentés.&lt;/li&gt;
+&lt;li&gt;Les causes structurelles sous-jacentes (facteurs saisonniers liés à l'école, isolement rural, accès aux armes) ne sont pas traitées par une hotline seule, et des explications alternatives (densité de population, climat, disponibilité des moyens) suggèrent des interventions plus larges nécessaires.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://www.nytimes.com/2026/04/22/science/988-youth-suicides-decline.html"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47865622"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">f3a9d0f2</guid>
+      <comments>https://news.ycombinator.com/item?id=47865622</comments>
+      <pubDate>Wed, 22 Apr 2026 16:07:56 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
     <item>
       <title>Un chercheur analyse 500 projets Show HN pour identifier les motifs de conception générés par IA</title>
