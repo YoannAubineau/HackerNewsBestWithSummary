@@ -9,7 +9,7 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Fri, 24 Apr 2026 06:37:50 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2026 10:31:09 +0000</lastBuildDate>
     <ttl>15</ttl>
     <item>
       <title>Comment faire votre premier appel API avec DeepSeek v4</title>
@@ -83,6 +83,44 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://www.justice.gov/themes/custom/usdoj_uswds/images/metatag-image--press-release.png"/>
+      </media:group>
+    </item>
+    <item>
+      <title>Un militaire américain arrêté pour avoir parié 400 000 dollars sur une opération contre Maduro avec des informations classifiées</title>
+      <link>https://www.cnn.com/2026/04/23/politics/us-special-forces-soldier-arrested-maduro-raid-trade</link>
+      <description>&lt;h2&gt;Résumé de l'article&lt;/h2&gt;
+&lt;p&gt;Un sergent-chef des forces spéciales américaines a été inculpé pour avoir utilisé des informations classifiées gouvernementales pour parier sur la capture du président vénézuélien Nicolás Maduro sur le marché de prédiction Polymarket, générant 400 000 dollars de bénéfices.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Van Dyke a ouvert un compte en décembre et a parié environ 32 000 dollars que Maduro serait « hors » d'ici janvier, plaçant 13 paris entre le 27 décembre et le 2 janvier, heures avant l'opération militaire&lt;/li&gt;
+&lt;li&gt;Il était impliqué dans la planification et l'exécution de l'opération et avait accès à des informations classifiées, ce qui constitue une violation des obligations de confidentialité des militaires&lt;/li&gt;
+&lt;li&gt;Il fait face à cinq accusations criminelles incluant le vol et l'abus d'informations gouvernementales confidentielles, le vol et la fraude&lt;/li&gt;
+&lt;li&gt;Il a transféré ses 400 000 dollars de bénéfices vers un coffre-fort en cryptomonnaie étrangère avant de les déposer sur un compte de courtage en ligne, tentant ainsi de cacher leur origine&lt;/li&gt;
+&lt;li&gt;Polymarket a déclaré avoir identifié le trader et signalé le dossier au département de la Justice, tandis que le Commodity Futures Trading Commission a également déposé une plainte connexe&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Discussion sur Hacker News (99 commentaires analysés)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Avis positifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La poursuite judiciaire est justifiée : le soldat a utilisé des informations classifiées pour un gain personnel, ce qui constitue une violation grave de sécurité nationale et expose ses camarades au risque.&lt;/li&gt;
+&lt;li&gt;Les charges sont appropriées : vol d'informations gouvernementales non publiques, fraude aux produits dérivés, fraude électronique et blanchiment constituent des infractions légitimes et bien fondées légalement.&lt;/li&gt;
+&lt;li&gt;Le rang élevé du suspect (Master Sergeant) complique la narration du &amp;quot;petit gars persécuté&amp;quot; : c'est un rôle décisionnel sensible au niveau du bataillon, pas un simple soldat.&lt;/li&gt;
+&lt;li&gt;Les marchés de prédiction non régulés présentent des risques de manipulation évidents qu'il est légitime d'encadrer légalement, indépendamment de la question du double standard politique.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Avis négatifs&lt;/strong&gt; :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Double standard politique flagrant : les membres du Congrès et hauts fonctionnaires se livrent régulièrement au délit d'initié avec des informations classifiées sans poursuites, tandis que ce militaire est rapidement inculpé et arrêté.&lt;/li&gt;
+&lt;li&gt;Absence de poursuite pour divulgation de secrets d'État : les accusations ignorent l'infraction potentiellement plus grave de révélation d'informations classifiées (opération Maduro), se concentrant plutôt sur l'enrichissement personnel.&lt;/li&gt;
+&lt;li&gt;Les marchés de prédiction sont censés intégrer les informations privilégiées pour améliorer la précision : punir quelqu'un pour avoir participé en tant qu'initié contredit la logique même de ces marchés.&lt;/li&gt;
+&lt;li&gt;Sélectivité manifeste du système judiciaire : c'est un cas de &amp;quot;faire un exemple&amp;quot; sur le petit maillon de la chaîne pendant que les élites restent impunies, reflétant une justice à deux vitesses.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href="https://www.cnn.com/2026/04/23/politics/us-special-forces-soldier-arrested-maduro-raid-trade"&gt;Article original&lt;/a&gt; · &lt;a href="https://news.ycombinator.com/item?id=47882645"&gt;Discussion HN&lt;/a&gt;&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">b590ebf0</guid>
+      <comments>https://news.ycombinator.com/item?id=47882645</comments>
+      <pubDate>Thu, 23 Apr 2026 21:56:15 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://media.cnn.com/api/v1/images/stellar/prod/2026-01-05t124551z-1320417056-rc20via4lz84-rtrmadp-3-usa-venezuela-maduro-new-york.jpg?c=16x9&amp;q=w_800,c_fill"/>
       </media:group>
     </item>
     <item>
