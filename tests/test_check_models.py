@@ -1,6 +1,7 @@
 import httpx
+import pytest
 
-from app.check_models import _parse_slug, check_llm_versions
+from app.check_models import NEWER_MODEL_EXIT_CODE, _parse_slug, check_llm_versions
 
 
 def _models_response(ids: list[str]) -> dict:
@@ -54,7 +55,7 @@ def test_check_detects_newer_minor_version(httpx_mock, isolated_settings, capsys
             ]
         ),
     )
-    assert check_llm_versions() == 1
+    assert check_llm_versions() == NEWER_MODEL_EXIT_CODE
     out = capsys.readouterr().out
     assert "anthropic/claude-haiku-4.6" in out
 
@@ -70,7 +71,7 @@ def test_check_detects_newer_major_version(httpx_mock, isolated_settings, capsys
             ]
         ),
     )
-    assert check_llm_versions() == 1
+    assert check_llm_versions() == NEWER_MODEL_EXIT_CODE
     out = capsys.readouterr().out
     assert "anthropic/claude-haiku-5.0" in out
 
@@ -114,9 +115,8 @@ def test_check_returns_zero_when_current_slug_unparseable(
     assert "Cannot parse a version" in out
 
 
-def test_check_returns_zero_on_http_error(httpx_mock, isolated_settings, capsys):
+def test_check_raises_on_http_error(httpx_mock, isolated_settings):
     isolated_settings.openrouter_model = "anthropic/claude-haiku-4.5"
     httpx_mock.add_exception(httpx.ConnectError("network down"))
-    assert check_llm_versions() == 0
-    out = capsys.readouterr().out
-    assert "Failed to fetch" in out
+    with pytest.raises(httpx.ConnectError):
+        check_llm_versions()

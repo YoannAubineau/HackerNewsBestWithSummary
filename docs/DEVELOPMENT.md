@@ -65,12 +65,17 @@ is part of the slug. Run:
 uv run app check-llm-versions
 ```
 
-The command queries OpenRouter's `/models` endpoint and exits 1 when a
+The command queries OpenRouter's `/models` endpoint and exits 2 when a
 newer version of the configured family is published, printing the
-candidate slugs. In CI, `.github/workflows/check-llm-versions.yml` runs
-it every Monday and opens a tracking issue when a bump is available. The
-code change itself stays manual (edit `openrouter_model` in
-`src/app/config.py` after sanity-checking the output quality).
+candidate slugs. Exit 0 means the current model is still the newest in
+its family. Any other exit code means the check itself failed (typically
+an HTTP error against OpenRouter). In CI,
+`.github/workflows/check-llm-versions.yml` runs it every Monday, opens a
+tracking issue labelled `llm-model-update` when a bump is available, and
+opens a separate issue labelled `check-llm-versions-failure` when the
+workflow itself fails. The code change to bump the model stays manual
+(edit `openrouter_model` in `src/app/config.py` after sanity-checking
+the output quality).
 
 ### Tests and lint
 
