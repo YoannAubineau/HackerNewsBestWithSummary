@@ -9,8 +9,52 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sat, 25 Apr 2026 04:04:16 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 05:34:04 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>L'iPad devrait être tactile uniquement, les MacBooks keyboard-first</title>
+      <link>https://craigmod.com/essays/ipad_neo/</link>
+      <description>craigmod.com/essays/ipad_neo/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Apple devrait radicalement redéfinir ses stratégies produits en séparant clairement les iPad et MacBook plutôt que de les rapprocher. L'iPad devrait abandonner les claviers et souris pour devenir une machine tactile unique avec des apps novatrices, tandis que le MacBook devrait rester axé sur le clavier et refuser le tactile.</p>
+<ul>
+<li>L'iPad Pro dispose de matériel puissant mais iPadOS l'entrave : les utilisateurs sérieux préfèrent les MacBooks car le logiciel iPad ne permet pas de vrai travail professionnel malgré le moteur Ferrari intégré</li>
+<li>L'arrivée des M1 MacBooks en 2020 a relégué les iPad à l'oubli ; les outils IA récents rendent macOS encore plus indispensable pour les utilisateurs avancés</li>
+<li>Apple commet l'erreur stratégique de rapprocher iPadOS et macOS (ajout de multitâches, fenêtres) alors qu'ils devraient être radicalement différents</li>
+<li>Le MacBook Neo représente la machine que les utilisateurs souhaitaient : compacte, avec macOS et un clavier efficace, sans écran tactile</li>
+<li>Apple devrait simplifier les lignes de produits : iPad 100% tactile avec apps créatives inspirées de PushPopPress, MacBook sans écran tactile optimisé pour le clavier et les outils IA</li>
+</ul>
+<h2>Discussion sur Hacker News (61 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Les écrans tactiles sont mal adaptés à la manipulation de texte et à la productivité : clavier/souris demeurent supérieurs, et forcer ces tâches sur iPad crée une expérience inférieure à un MacBook léger, même avec clavier intégré.</li>
+<li>L'iPad excelle dans des usages bien délimités : consommation de contenu, dessin créatif avec Apple Pencil (comme Procreate), et travail tactile spécialisé où l'interface disparaît sous les doigts.</li>
+<li>Le modèle d'App Store fermé d'Apple génère un écosystème logiciel riche et polisé, particulièrement visible sur les applications audio, contrairement au fragmenté univers Android.</li>
+<li>L'ergonomie des écrans tactiles sur ordinateurs portables est mauvaise : atteindre l'écran depuis clavier/trackpad fatigue rapidement et détruit l'utilité du tactile.</li>
+<li>Quelques usages légitimes existent malgré les limitations : connectivité cellulaire intégrée, poids/taille supérieurs au MacBook Air, accès SSH et debugging à distance via clients spécialisés.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Le MacBook Neo est survendu : à 600-700 dollars configuré décemment, un MacBook Air M2 d'occasion offre bien plus (meilleur écran, batterie, speakers, processeur), et une large partie du public ignore simplement l'occasion.</li>
+<li>Apple crée intentionnellement une confusion produit intenable : iPadOS doit être puissant (concurrent Mac), verrouillé (sécurité), mais pas trop (ne pas cannibaliser les ventes Mac), résultant en un compromis qui satisfait personne.</li>
+<li>L'App Store fermé et le contrôle absolu d'Apple étouffent l'innovation : les applications &quot;bizarres&quot; et productives ne voient jamais le jour faute de liberté de distribution, rendant l'iPad fondamentalement limité malgré sa puissance.</li>
+<li>Le manque d'alternatives matérielles est un choix volontaire : le hardware iPad <em>pourrait</em> exécuter macOS ou une véritable fragmentation iOS/macOS, mais Apple refuse par segmentation de marché intentionnelle.</li>
+<li>Face ID sur iPad Pro est inférieur à Touch ID : moins accessible pour malvoyants, beaucoup plus de faux négatifs/positifs, et performance catastrophique en faible luminosité.</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47898924">bahmboo</a> : « Y'all look at as a paradigm shift. The rest of the world just wants to touch the screen when it makes sense.We trained billions of humans to touch the screen. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47898907">gehsty</a> : « The only thing I’d push back on is the weird and wacky iPad apps - our brains and fingers need some consistency in UI, doesn’t mean it can be fun though! »</li>
+<li><a href="https://news.ycombinator.com/item?id=47874477">steveBK123</a> : « I've used Mac for 20 years and iPad on&amp;off for 10 years.. largely I agree with Craig. Touch on MacOS is basically useless, you won't realize this until you try using an iPad like a MacBook for an extended period of time. Reaching up from keyboard/trackpad to touch the screen quickly gets fatiguing.… »</li>
+</ul>
+<hr />
+<p><a href="https://craigmod.com/essays/ipad_neo/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47872306">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">3aad2fb4</guid>
+      <comments>https://news.ycombinator.com/item?id=47872306</comments>
+      <pubDate>Thu, 23 Apr 2026 04:40:31 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>SDL ajoute le support complet du DOS avec audio, vidéo et gestion d'interruptions</title>
       <link>https://github.com/libsdl-org/SDL/pull/15377</link>
@@ -3856,47 +3900,6 @@
       <comments>https://news.ycombinator.com/item?id=47835735</comments>
       <pubDate>Mon, 20 Apr 2026 15:28:13 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-    </item>
-    <item>
-      <title>Amazon Kindles deviennent des appareils jetables avec des restrictions croissantes, alternatives supérieures disponibles</title>
-      <link>https://www.androidauthority.com/amazon-kindle-2026-3657863/</link>
-      <description>www.androidauthority.com/amazon-kindle-2026-3657863/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> L'auteur abandonne définitivement les Kindles en raison de l'obsolescence forcée d'Amazon (arrêt des anciens modèles), d'une interface devenue une vitrine publicitaire et de la surveillance des données de lecture. Des alternatives comme Kobo et Boox offrent désormais une meilleure expérience avec davantage de liberté.</p>
-<ul>
-<li>Amazon supprime l'accès au Kindle Store pour les appareils antérieurs à 2013 et empêche leur réenregistrement, transformant des appareils fonctionnels en briques électroniques</li>
-<li>L'interface Kindle n'a pas évolué depuis 2018 et privilégie les publicités et les recommandations au lieu de la bibliothèque personnelle ; les appareils collectent des données détaillées sur les habitudes de lecture</li>
-<li>Kobo propose une approche durable avec réparations facilitées via iFixit, intégration native des bibliothèques, format ePub ouvert et aucune traçabilité ; Boox offre des tablettes e-encre sous Android avec accès complet aux apps</li>
-<li>Les affichages e-ink modernes de Kobo et Boox égalent ou surpassent ceux des Kindles grâce aux panneaux Carta 1300 ; les utilisateurs peuvent conserver leurs livres Amazon en les convertissant via Calibre</li>
-<li>Amazon autorise désormais le téléchargement DRM-free pour certains titres, reconnaissant que les formats propriétaires deviennent un handicap face aux standards ouverts</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>Les anciens Kindles ont eu une durée de vie remarquable (10-15 ans), ce qui justifie leur remplacement progressif</li>
-<li>Jailbreaker les vieux appareils ou utiliser des alternatives comme Calibre + KOReader reste viable pour continuer à lire</li>
-<li>Les alternatives (Kobo, Boox) offrent désormais une véritable concurrence avec meilleure intégration aux standards ouverts (EPUB)</li>
-<li>Le coût d'achat des Kindles reste compétitif et subventionné par Amazon pour fidéliser à l'écosystème</li>
-<li>Kindle Unlimited et l'écosystème intégré Apple/iPad/iPhone offrent une expérience pratique difficile à égaler</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Amazon force l'obsolescence en rendant les appareils inutilisables après réinitialisation, pas seulement en cessant le support (pratique plus agressive que la simple non-maintenance)</li>
-<li>L'impossibilité de télécharger des livres via USB après février 2025 crée une dépendance totale au cloud, même pour ses propres livres</li>
-<li>Les ebooks sont vendus au même prix que les livres physiques malgré l'absence de coûts de distribution et de fabrication, ce qui reflète la fixation des prix par l'industrie</li>
-<li>DRM et absence de vraie propriété : on loue plutôt qu'on possède, comme l'a montré la fermeture du Microsoft Store</li>
-<li>Kobo maintient ses appareils bien plus longtemps (même les modèles 2012 reçoivent les mises à jour), ce qui contraste fortement avec la stratégie d'Amazon</li>
-</ul>
-<hr />
-<p><a href="https://www.androidauthority.com/amazon-kindle-2026-3657863/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47835775">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">6a6ed23f</guid>
-      <comments>https://news.ycombinator.com/item?id=47835775</comments>
-      <pubDate>Mon, 20 Apr 2026 15:30:17 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://www.androidauthority.com/wp-content/uploads/2019/11/Amazon-Kindle-Oasis-with-warmth-and-brightness-slider.jpg"/>
-      </media:group>
     </item>
   </channel>
 </rss>
