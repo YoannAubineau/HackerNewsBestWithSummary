@@ -9,8 +9,48 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sat, 25 Apr 2026 22:08:18 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 23:11:09 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Les données de santé de 500 000 personnes de UK Biobank mises en vente sur Alibaba</title>
+      <link>https://www.bmj.com/content/393/bmj.s781</link>
+      <description>www.bmj.com/content/393/bmj.s781</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Les données de santé de 500 000 participants à UK Biobank auraient été compromises et proposées à la vente sur la plateforme Alibaba, révélant une faille majeure en matière de sécurité des données sensibles.</p>
+<ul>
+<li>Une fuite massive a exposé les informations médicales de 500 000 participants au programme britannique UK Biobank</li>
+<li>Les données volées sont commercialisées sur Alibaba, une plateforme de commerce électronique chinoise</li>
+<li>L'incident soulève des questions critiques sur la protection des données de santé et la gouvernance des grandes biobanques</li>
+</ul>
+<h2>Discussion sur Hacker News (33 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Les données de santé sensibles fuient régulièrement (GitHub, maintenant Alibaba), confirmant un problème systémique de sécurité des données médicales</li>
+<li>Il existe une différence significative entre accès contrôlé par des chercheurs liés par des contrats et confidentialité, versus publication sans consentement ni restrictions</li>
+<li>Les données génomiques et sanitaires devraient être traitées comme bien public avec protection légale stricte contre leur utilisation pour décisions discriminatoires (assurances, emploi)</li>
+<li>Les contrats gouvernementaux avec des acteurs comme Palantir posent des risques comparables ou pires qu'une fuite, car ils donnent accès massif et légalisé à des données sensibles sans vrai consentement</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Comparer une fuite criminelle à un contrat gouvernemental légal avec cadre de sécurité est une fausse équivalence : les choses mauvaises ne deviennent pas acceptables juste parce que d'autres choses mauvaises existent aussi</li>
+<li>Les chercheurs travaillant avec ces données sont déjà soumis à des restrictions fortes (pas de cloud, destruction obligatoire, consentement éclairé), ce qui n'existe pas chez les acheteurs illicites</li>
+<li>Publier les données sans consentement 'en promettant' que les entreprises ne les utiliseront pas mal est naïf : il est impossible de détecter ou poursuivre l'usage dans des 'boîtes noires' algorithmiques</li>
+<li>L'accès contrôlé par des professionnels liés contractuellement est substantiellement différent d'une publication ouverte, même si impérative légale existe contre les abus</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47889637">mellosouls</a> : « Already being discussed:UK Biobank health data keeps ending up on GitHubhttps://news.ycombinator.com/item?id=47875843UK Biobank health data listed for sale in China, government confirmshttps://news.ycombinator.com/item?id=47874732 »</li>
+<li><a href="https://news.ycombinator.com/item?id=47890640">cs02rm0</a> : « One thing that struck me was, when you look through the board and the committees, it's full of scientists, finance people, doctors, academics. There's maybe a couple of technologists - ML, IT delivery.If they've got anyone with a background in cyber security I can't see it.https://www.ukbiobank.ac.… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47889381">greg_dc</a> : « In fairness, is this any worse than what Palantir will do with the whole countries NHS records? And they're being paid by the government to do it! »</li>
+</ul>
+<hr />
+<p><a href="https://www.bmj.com/content/393/bmj.s781">Article original</a> · <a href="https://news.ycombinator.com/item?id=47888557">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">66a36a8e</guid>
+      <comments>https://news.ycombinator.com/item?id=47888557</comments>
+      <pubDate>Fri, 24 Apr 2026 11:09:36 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Pourquoi l'auteur abandonne le développement d'applications de bureau pour le web</title>
       <link>https://www.kalzumeus.com/2009/09/05/desktop-aps-versus-web-apps/</link>
@@ -3955,41 +3995,6 @@
       <media:group>
         <media:thumbnail url="https://www.bleepstatic.com/content/hl-images/2026/04/19/vercel-header-lg.jpg"/>
       </media:group>
-    </item>
-    <item>
-      <title>Notion a exposé les adresses email de tous les éditeurs de pages publiques</title>
-      <link>https://twitter.com/weezerOSINT/status/2045849358462222720</link>
-      <description>twitter.com/weezerOSINT/status/2045849358462222720</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> Une faille de sécurité sur Notion a permis l'accès aux adresses email de tous les utilisateurs ayant des droits d'édition sur des pages publiques.</p>
-<ul>
-<li>Les adresses email des éditeurs de pages publiques ont été exposées sans authentification requise</li>
-<li>La vulnérabilité affectait potentiellement des milliers de pages et leurs contributeurs</li>
-<li>Cette faille représentait un risque de phishing et de ciblage des utilisateurs</li>
-<li>Notion n'avait pas mis en place de restriction d'accès aux métadonnées des collaborateurs</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>Les solutions auto-hébergées et open-source (Docmost, Anytype, Joplin) offrent une alternative viable qui préserve la propriété des données et évite les fuites</li>
-<li>Une architecture décentralisée où les données résident chez l'utilisateur plutôt que sur les serveurs des entreprises réduirait structurellement les risques de fuite massive</li>
-<li>Notion a au moins reconnu le problème et s'engage à le corriger via des proxies d'email ou la suppression des PII des endpoints publics</li>
-<li>Le problème est documenté depuis 2022 et Notion en avertit les utilisateurs, ce qui permet une prise de décision informée</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Les entreprises n'ont aucun incitatif économique à corriger les failles de sécurité tant que les amendes restent symboliques comparées aux revenus</li>
-<li>Il faudrait un cadre réglementaire drastique (amendes proportionnelles au chiffre d'affaires, poursuites pénales contre les dirigeants) pour forcer le changement, ce qui n'existe pas</li>
-<li>Le problème persiste depuis 4 ans malgré sa documentation, montrant l'inertie organisationnelle des grandes entreprises même quand la solution semble simple</li>
-<li>Les alternatives open-source manquent de fonctionnalités intégrées (bases de données, collaboration temps réel) qui font l'attrait de Notion pour des cas d'usage complexes</li>
-</ul>
-<hr />
-<p><a href="https://twitter.com/weezerOSINT/status/2045849358462222720">Article original</a> · <a href="https://news.ycombinator.com/item?id=47824945">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">7acc9982</guid>
-      <comments>https://news.ycombinator.com/item?id=47824945</comments>
-      <pubDate>Sun, 19 Apr 2026 15:20:01 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
   </channel>
 </rss>
