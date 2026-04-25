@@ -9,8 +9,98 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sat, 25 Apr 2026 20:10:29 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 21:10:44 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Niri 26.04 ajoute le flou de fenêtre et améliore les screencasts</title>
+      <link>https://github.com/niri-wm/niri/releases/tag/v26.04</link>
+      <description>github.com/niri-wm/niri/releases/tag/v26.04</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Niri 26.04, un compositeur Wayland en mosaïque défilable, introduit la fonctionnalité la plus demandée : le flou d'arrière-plan pour les fenêtres. Cette version apporte aussi des améliorations significatives aux screencasts, aux animations et à l'architecture de rendu.</p>
+<ul>
+<li>Le flou d'arrière-plan fonctionne via le protocole ext-background-effect ou via des règles de configuration niri ; deux modes disponibles : flou xray (par défaut, plus efficace) et flou normal</li>
+<li>Les includes de configuration deviennent optionnels avec optional=true, et supportent l'expansion du tilde (~) pour le répertoire personnel</li>
+<li>Les screencasts PipeWire supportent désormais les curseurs en métadonnées dans les captures d'écran et de fenêtre, et une IPC Cast permet aux barres de voir les screencasts actifs</li>
+<li>Refactorisation majeure de l'architecture de rendu passant de fonctions pull-basées à push-basées, accélérant la construction de la liste de rendu de 2-8×</li>
+<li>Améliorations des animations synchronisées (unmaximize), corrections IME pour les pop-ups GTK 4, support des anciennes cartes graphiques Intel, et nombreuses corrections de bogues</li>
+</ul>
+<h2>Discussion sur Hacker News (23 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Excellente expérience utilisateur : plusieurs utilisateurs rapportent que le passage à Niri a été l'une de leurs meilleures décisions récentes, avec une gestion des fenêtres intuitive et des raccourcis clavier fluides.</li>
+<li>Modèle de fenêtres novateur et libérateur : le défilement horizontal sans limite de moniteur ou d'espaces de travail offre une flexibilité inédite comparée aux gestionnaires traditionnels (i3, sway).</li>
+<li>Logiciel très poli et mature : API stable entre les versions, notes de version détaillées, avec des améliorations significatives comme le vrai comportement Alt-Tab.</li>
+<li>Gestion efficace de nombreuses fenêtres : contrairement aux gestionnaires par application, Niri permet de regrouper des fenêtres par projet/activité sans surcharge mentale.</li>
+<li>Écosystème en expansion : création de variantes sur macOS (OmniWM) et intégration croissante avec des outils de configuration (dotfiles, shells de bureau composables).</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Courbe d'apprentissage importante pour les anciens utilisateurs : passage difficile depuis des gestionnaires traditionnels (i3, macOS), notamment concernant la navigation spatiale et la mémorisation des fenêtres.</li>
+<li>Problèmes techniques persistants : absence native de scratchpads, bug de cropping partielles au défilement, et incompatibilité drag-and-drop entre applications X et Wayland.</li>
+<li>Adaptation mentale requise : certains utilisateurs perdent la 'vision parfaite' d'un espace de travail qu'ils avaient avec i3, malgré la flexibilité accrue.</li>
+<li>Configuration initiale fragmentée : bien que le logiciel soit mature, intégrer tous les éléments du bureau (barre de titre, notifications, thèmes) reste complexe comparé aux environnements de bureau complets.</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47902852">nickjj</a> : « Niri is so good. I've switched to using it about 5 months ago and it was legit the best computing decision I can remember making in recent history to move away from Windows.I have a huge amount of gratitude towards the author of niri.My dotfiles have always included an install script for setting ev… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47902878">incanus77</a> : « Niri introduced scroll-based window management to me and it instantly clicked. I'm very happy to see a full-on Niri per-workspace emulation mode in OmniWM[1] for the Mac, recently and thankfully made compatible with Sequoia. It immediately became my main window manager.[1] https://github.com/BarutS… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47904289">_rousbound</a> : « For people that went from i3wm to Niri, I would love to be convinced.Being a i3wm(now sway) user, I tried Niri but found the following points a little bit uncanny:- (Cropping) Sometimes when I scroll by shifting focus, a little bit like 10% of the window I pushed to the left keeps appearing. I trie… »</li>
+</ul>
+<hr />
+<p><a href="https://github.com/niri-wm/niri/releases/tag/v26.04">Article original</a> · <a href="https://news.ycombinator.com/item?id=47902416">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">86c37470</guid>
+      <comments>https://news.ycombinator.com/item?id=47902416</comments>
+      <pubDate>Sat, 25 Apr 2026 15:59:15 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://opengraph.githubassets.com/d8b0853ec9bfdd523aed541e323a9b232de6d2ddb89a0ba3c06933c43b38cd3f/niri-wm/niri/releases/tag/v26.04"/>
+      </media:group>
+    </item>
+    <item>
+      <title>TorchTPU permet l'exécution native de PyTorch sur les TPU de Google</title>
+      <link>https://developers.googleblog.com/torchtpu-running-pytorch-natively-on-tpus-at-google-scale/</link>
+      <description>developers.googleblog.com/torchtpu-running-pytorch-natively-on-tpus-at-google-scale/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Google présente TorchTPU, une intégration permettant à PyTorch de fonctionner nativement et efficacement sur ses unités de traitement tensoriel (TPU). Le système est conçu pour permettre aux développeurs de migrer des charges de travail PyTorch existantes avec des modifications de code minimales, tout en offrant les outils pour exploiter pleinement les capacités matérielles.</p>
+<ul>
+<li>TorchTPU implémente trois modes d'exécution optimisés : Debug Eager (synchrone, pour le débogage), Strict Eager (asynchrone), et Fused Eager (fusion automatique des opérations pour gains de performance de 50 à 100%+)</li>
+<li>L'architecture utilise XLA comme compilateur backend principal pour générer des binaires TPU hautement optimisés, intégré avec torch.compile pour la compilation de graphe complet</li>
+<li>Le système supporte nativement les API distribuées PyTorch (DDP, FSDPv2, DTensor) et permet les exécutions divergentes (MPMD), contrairement à la limitation SPMD du prédécesseur PyTorch/XLA</li>
+<li>Les développeurs peuvent étendre les fonctionnalités avec des kernels personnalisés en Pallas et JAX, interfacés directement avec le pipeline de compilation</li>
+<li>Les améliorations prévues pour 2026 incluent la réduction des recompilations liées aux séquences dynamiques et la construction d'une bibliothèque de kernels TPU précompilés pour accélérer les premières itérations</li>
+</ul>
+<h2>Discussion sur Hacker News (6 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Si TorchTPU fonctionne réellement à l'échelle de 100 000 puces avec une intégration aussi simple (une ligne de code), c'est une avancée significative pour la portabilité des modèles PyTorch sur TPUs</li>
+<li>L'approche usability-first avec un backend natif (similaire à MPS) répond à un vrai problème : les ingénieurs ont besoin d'outils de production fiables, peu importe la vitesse du silicium</li>
+<li>Une meilleure ergonomie et portabilité du stack PyTorch/TPU pourrait réduire la friction adoption et les dépendances à des compilateurs externes</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>TorchTPU ressemble à un aveu que PyTorch/XLA sur TPUs n'a pas fonctionné comme prévu, ce qui soulève des questions sur la viabilité long terme d'une nouvelle approche</li>
+<li>Les TPUs restent inachetables pour la grande majorité des utilisateurs, limitant drastiquement l'impact pratique d'une meilleure intégration logicielle</li>
+<li>Le discours marketing ('one-line change', 'breakthrough fused eager mode') semble trop lissé et générique, typique d'une rédaction assistée par IA plutôt que réellement innovant</li>
+<li>Le manque de détails techniques sur l'architecture du backend et ses garanties crée du scepticisme sur le fait que 'cela marche' vraiment en production</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47887366">yu3zhou4</a> : « Adding a support for new hardware to PyTorch is actually quite convenient. I did that with WebGPU using the same PrivateUse1 mechanism TorchTPU used. Every hardware has its own slot and identifier, and when you want to add a support for a new one without merging it into PyTorch, PrivateUse1 works e… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47888609">sergiopreira</a> : « So Google is basically admitting PyTorch/XLA on TPUs didn't work — TorchTPU looks like them rebuilding what should have worked day one. Its hard to run production ML on a toolchain engineers can't trust, no matter how fast the silicon is. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47883599">in-silico</a> : « This is great to see.I did trained some research models using the existing PyTorch/XLA on TPUs, and it was a mess of undocumented behavior and bugs (silently hanging after 8 hours of training!).If anyone is trying to use PyTorch on TPU before TorchTPU is released, you can check out the training pip… »</li>
+</ul>
+<hr />
+<p><a href="https://developers.googleblog.com/torchtpu-running-pytorch-natively-on-tpus-at-google-scale/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47881786">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">c1ff2e40</guid>
+      <comments>https://news.ycombinator.com/item?id=47881786</comments>
+      <pubDate>Thu, 23 Apr 2026 20:53:27 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/Meta-A.2e16d0ba.fill-1200x600.png"/>
+      </media:group>
+    </item>
     <item>
       <title>Endless Toil, un plugin qui joue des sons de souffrance pendant la lecture de code</title>
       <link>https://github.com/AndrewVos/endless-toil</link>
@@ -3885,86 +3975,6 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://cdn.mos.cms.futurecdn.net/FMANT4DGMrKnDjrSVT8sui-1920-80.jpg"/>
-      </media:group>
-    </item>
-    <item>
-      <title>Les pièges courants qui empêchent d'écouter véritablement les utilisateurs en développement logiciel</title>
-      <link>https://ashley.rolfmore.com/stop-trying-to-engineer-your-way-out-of-listening-to-people/</link>
-      <description>ashley.rolfmore.com/stop-trying-to-engineer-your-way-out-of-listening-to-people/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> Écouter les gens est difficile et ne peut pas être remplacée par des frameworks ou systèmes. Les développeurs et designers doivent reconnaître leurs biais inconscients et les pièges qui les empêchent d'entendre vraiment ce que les gens disent.</p>
-<ul>
-<li>Les biais cognitifs courants incluent confondre l'écoute avec l'exécution de demandes, sous-estimer l'impact de sa spécialisation, réduire les connaissances techniques à un binaire trop simple, et généraliser à partir d'une seule personne</li>
-<li>Méconnaître la diversité des ressources disponibles (santé, compétences, finances), l'évolution dans le temps des besoins et des personas, et la différence entre ce que les gens disent et ce qu'ils pensent vraiment</li>
-<li>Adopter une posture de jugement envers les utilisateurs crée un obstacle insurmontable à l'écoute authentique</li>
-<li>Traiter un groupe de 80 personnes comme un ensemble homogène au lieu de 80 individus distincts efface les nuances essentielles</li>
-<li>L'écoute véritable révèle les opportunités commerciales cachées et réduit la dette technique causée par les malentendus</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>Écouter activement les gens plutôt que de chercher à résoudre rapidement leurs problèmes permet de mieux comprendre leurs vrais besoins et crée de meilleures solutions</li>
-<li>La communication écrite détaillée et précise, combinée à des explications progressives et contextualisées, évite les malentendus mieux que des réunions inefficaces ou des processus d'optimisation méthodologiques</li>
-<li>Reconnaître les limites cognitives humaines et les différences de contexte entre domaines (technique/non-technique) encourage l'empathie et l'adaptation au lieu du jugement précoce</li>
-<li>Les diagrammes et la documentation claire réduisent drastiquement le besoin de réunions prolongées et améliorent la rétention d'information</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Demander aux techniciens d'être communicants n'est pas justifié : c'est un problème bidirectionnel où les non-techniciens doivent aussi apprendre à exprimer clairement leurs besoins</li>
-<li>Trop insister sur l'écoute empathique revient à culpabiliser des individus alors que les vraies barrières sont systémiques (structures organisationnelles défaillantes, trop de réunions, mauvaise allocation de ressources)</li>
-<li>Les IA et outils d'automation détruisent la précision du langage en générant du contenu factuellement inexact, rendant inutile tout effort de clarté rigoureuse</li>
-<li>La lecture détaillée et l'écoute active demandent une vulnérabilité psychologique que les structures de pouvoir asymétriques en entreprise rendent impossible de maintenir durablement</li>
-</ul>
-<hr />
-<p><a href="https://ashley.rolfmore.com/stop-trying-to-engineer-your-way-out-of-listening-to-people/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47827259">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">c52eb146</guid>
-      <comments>https://news.ycombinator.com/item?id=47827259</comments>
-      <pubDate>Sun, 19 Apr 2026 20:09:09 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://images.unsplash.com/photo-1453738773917-9c3eff1db985?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wxMTc3M3wwfDF8c2VhcmNofDE2fHxsaXN0ZW58ZW58MHx8fHwxNzcwODU1NDg2fDA&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=2000"/>
-      </media:group>
-    </item>
-    <item>
-      <title>Des traders parient des millions avant les annonces de Trump, soulevant des soupçons de délit d'initié</title>
-      <link>https://www.bbc.com/news/articles/cge0grppe3po</link>
-      <description>www.bbc.com/news/articles/cge0grppe3po</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> La BBC a documenté un pattern récurrent de pics inhabituels d'échanges financiers survenant minutes ou heures avant les annonces majeures de Trump, suggérant que certains traders pourraient disposer d'informations non publiques. Bien que plusieurs cas impliquent des gains colossaux, les poursuites restent difficiles à engager faute de preuves identifiant la source des informations.</p>
-<ul>
-<li>Des volumes d'échanges anormalement élevés ont précédé au moins 5 annonces majeures (guerres, tarifs, changements géopolitiques), certains traders gagnant des millions de dollars</li>
-<li>Sur les marchés pétroliers, des bets ont surgi 47 minutes avant qu'une interview de Trump sur la fin de la guerre Iran-Israël ne soit rendue publique, générant 25% de baisse des prix</li>
-<li>Sur les marchés prédictifs décentralisés, des comptes créés précisément avant les événements (Maduro, frappes en Iran) ont remporté entre $436 000 et $1,2 million, puis sont restés inactifs</li>
-<li>Le délit d'initié est illégal depuis 1933 pour les civils et depuis 2012 pour les officiels, mais aucune poursuite n'a été engagée, les autorités citant la difficulté à identifier les sources d'information</li>
-<li>La SEC, le CFTC et la Maison-Blanche n'ont pas commenté les allégations ; Trump Jr est investisseur et conseiller dans les plateformes de prédiction scrutées</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>Le timing des trades coïncide de manière suspecte avec les annonces présidentielles, suggérant un accès à des informations non publiques</li>
-<li>Les règles actuelles sont insuffisantes : les officiels gouvernementaux devraient interdits de négocier des actions individuelles du tout, comme dans les grandes entreprises</li>
-<li>Les précédents (crise de 2008, pardons présidentiels) montrent qu'aucune conséquence n'intervient actuellement, rendant le système inefficace</li>
-<li>La Cour suprême a accru l'immunité présidentielle, éliminant tout recours légal réel</li>
-<li>Des traders sophistiqués avec accès à l'information peuvent réaliser des gains anormaux comparé à des stratégies ordinaires</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Faire la différence entre insider trading avéré et simple anticipation d'un comportement prévisible de Trump : les traders expérimentés peuvent prédire ses annonces sans information secrète</li>
-<li>Aucune preuve concrète d'accès à l'information de timing spécifique des annonces, seulement du &quot;smoke&quot; selon certains analystes</li>
-<li>Accuser de criminalité sans condamnation judiciaire viole la présomption d'innocence et constitue du journalisme irresponsable</li>
-<li>Le défaitisme face au problème encourage l'inaction plutôt que de chercher des solutions réelles</li>
-<li>Les grandes sociétés de trading algorithmique sont simplement très compétentes et utilisent des stratégies mathématiques légitimes dans un contexte de volatilité</li>
-</ul>
-<hr />
-<p><a href="https://www.bbc.com/news/articles/cge0grppe3po">Article original</a> · <a href="https://news.ycombinator.com/item?id=47829486">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">bf43ee44</guid>
-      <comments>https://news.ycombinator.com/item?id=47829486</comments>
-      <pubDate>Mon, 20 Apr 2026 01:50:35 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://ichef.bbci.co.uk/news/1024/branded_news/974f/live/6a5a6a20-3c95-11f1-9d5c-8ba507d7dbde.jpg"/>
       </media:group>
     </item>
   </channel>
