@@ -661,6 +661,45 @@ def test_fetch_hn_display_order_falls_back_to_proxy_when_direct_exhausts(
     assert _real_fetch_hn_display_order(2222) == [77]
 
 
+def test_top_comments_escape_markdown_in_author_and_text(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # A commenter controlling their handle or text could otherwise inject an
+    # active link into the rendered Markdown — and into the upstream LLM
+    # context — by including `[evil](https://x)` or `*emphasis*` etc. The
+    # escaper must neutralise these so the rendered bullet keeps the literal
+    # characters as text, not as Markdown syntax.
+    isolated_settings.discussion_budget = 10
+    payload = {
+        "children": [
+            _comment(
+                "[admin](https://evil)",
+                "voir [clic](https://evil/x) ou *gras* `code` #titre",
+                id=1,
+                children=[_comment("leaf", "leaf", id=11)],
+            ),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/300", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
+    result = fetch_discussion(300)
+    assert result is not None
+    md = result.top_comments_markdown
+    # Each control char appears backslash-escaped in the rendered line, so
+    # Markdown won't parse the injected `[admin](...)` or `[clic](...)` as
+    # links and won't render `*gras*` as emphasis.
+    line = next(line for line in md.splitlines() if line.startswith("- "))
+    assert r"\[admin\]" in line
+    assert r"\(https://evil\)" in line
+    assert r"\[clic\]" in line
+    assert r"\(https://evil/x\)" in line
+    assert r"\*gras\*" in line
+    assert r"\`code\`" in line
+    assert r"\#titre" in line
+    # The HN URL we control is intact (constructed from the integer id).
+    assert "(https://news.ycombinator.com/item?id=1)" in line
+
+
 def test_fetch_hn_display_order_returns_empty_when_proxy_also_fails(
     httpx_mock, monkeypatch, isolated_settings
 ):
