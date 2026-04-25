@@ -9,8 +9,51 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sat, 25 Apr 2026 12:09:21 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 13:27:20 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Les nouveaux adaptateurs USB 10 GbE offrent performance améliorée, taille réduite et prix inférieur</title>
+      <link>https://www.jeffgeerling.com/blog/2026/new-10-gbe-usb-adapters-cooler-smaller-cheaper/</link>
+      <description>www.jeffgeerling.com/blog/2026/new-10-gbe-usb-adapters-cooler-smaller-cheaper/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Les adaptateurs 10 GbE basés sur le chip RTL8159 constituent une alternative moins chère et plus compacte aux adaptateurs Thunderbolt encombrants et chauffants. Cependant, la vitesse réelle dépend fortement du type de port USB disponible sur votre ordinateur.</p>
+<ul>
+<li>Les nouveaux adaptateurs USB 10 GbE coûtent environ 80 $ contre plus de 200 $ pour les adaptateurs Thunderbolt, avec un encombrement nettement réduit</li>
+<li>La vitesse maximale de 10 Gbps n'est accessible que sur des ports USB 3.2 Gen 2x2 (20 Gbps) ; les autres ordinateurs testés n'ont atteint que 6-7 Gbps</li>
+<li>L'adaptateur WisdPi 10G consomme peu d'énergie (0,86 W) et reste frais (42,5°C maximum), contrairement aux anciens modèles Aquantia qui surchauffent</li>
+<li>Les adaptateurs 2,5G ou 5G restent un meilleur rapport qualité-prix si vous ne disposez pas de port USB 3.2 Gen 2x2</li>
+<li>Vérifier le type exact de port USB sur votre ordinateur est complexe, car les fabricants omettent généralement cette information</li>
+</ul>
+<h2>Discussion sur Hacker News (57 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Les adaptateurs 10 GbE USB offrent un bon rapport coût/performance pour les homelabs et petits environnements, avec du matériel d'entreprise ancien et abordable.</li>
+<li>Maintenir la rétrocompatibilité 10/100 Mbps dans les appareils bas de gamme reste utile pour les cas d'urgence et la compatibilité avec les TV et appareils hérités.</li>
+<li>Les câbles Cat6A offrent une solution pratique et bon marché pour 10 GbE à des distances résidentielles, plus accessible que les transpondeurs ou DACs pour l'utilisateur lambda.</li>
+<li>Le Framework Expansion Card 10 GbE qui prend en charge plusieurs vitesses (10/100 à 10 Gbps) montre qu'il n'est pas nécessaire de sacrifier la rétrocompatibilité même sur des appareils économiques.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Les adaptateurs USB Ethernet sur Linux présentent des problèmes chroniques de déconnexion et d'instabilité qui rendent même les transferts SCP peu fiables, limitant leur utilité pratique.</li>
+<li>Le 10 GbE base-T consomme beaucoup trop d'énergie et produit trop de chaleur comparé aux alternatives, et les tests montrent que certains modèles Realtek underperform par rapport aux adaptateurs 5 GbE moins chers.</li>
+<li>Les noms de versions USB (3.2 Gen2x2, etc.) restent confus et peu informatifs malgré les critiques répétées, créant de la confusion pour les utilisateurs ordinaires.</li>
+<li>Le 10 GbE se situe dans une zone d'inconfort : insuffisant pour les performances SSD (max 1,25 GB/s) mais excessif et coûteux pour les HDD, avec Thunderbolt ou 40+ GbE comme options plus pertinentes aux extrêmes.</li>
+<li>L'adoption résiduelle du 10 GbE base-T sur cuivre est entravée par la difficulté de maintenir des terminaisons parfaites et par le coût élevé des équipements réseau comparé aux solutions fibre ou 2,5 GbE.</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47900168">mort96</a> : « All these USB version names. I used to know what they all meant, but then the USB IF went ahead and renamed them all and made a bunch of versions have the same name and renamed some versions to have the same name as the old name of other versions.I have absolutely no idea what anyone means when the… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47899390">GeertJohan</a> : « A Framework expansion card was also announced this week. https://frame.work/nl/en/products/wisdpi-10g-ethernet-expans... »</li>
+<li><a href="https://news.ycombinator.com/item?id=47900444">realxrobau</a> : « Are there any that actually have a SFP+ port? That's all I want. No one wants to use 10g ethernet when DACs are cheaper than cat7, and you can just change it up to a $7 multimode when you need longer runs. »</li>
+</ul>
+<hr />
+<p><a href="https://www.jeffgeerling.com/blog/2026/new-10-gbe-usb-adapters-cooler-smaller-cheaper/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47899053">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">e8cf5298</guid>
+      <comments>https://news.ycombinator.com/item?id=47899053</comments>
+      <pubDate>Sat, 25 Apr 2026 05:56:12 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Firefox intègre le moteur de blocage des publicités de Brave</title>
       <link>https://itsfoss.com/news/firefox-ships-brave-adblock-engine/</link>
@@ -3889,42 +3932,6 @@
       <media:group>
         <media:thumbnail url="https://img.rts.ch/articles/2026/image/50gomb-29214558.image?w=1200&amp;h=630"/>
       </media:group>
-    </item>
-    <item>
-      <title>Atlassian active par défaut la collecte de données pour entraîner ses modèles d'IA</title>
-      <link>https://letsdatascience.com/news/atlassian-enables-default-data-collection-to-train-ai-f71343d8</link>
-      <description>letsdatascience.com/news/atlassian-enables-default-data-collection-to-train-ai-f71343d8</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> Atlassian a mis en place une collecte de données activée par défaut pour alimenter ses systèmes d'intelligence artificielle, soulevant des questions sur le consentement et la confidentialité des utilisateurs.</p>
-<ul>
-<li>Atlassian collecte désormais automatiquement les données des utilisateurs pour entraîner ses modèles d'IA</li>
-<li>Ce paramètre est activé par défaut, ce qui signifie que les utilisateurs doivent explicitement refuser de participer</li>
-<li>Cette pratique a généré une controverse avec plus de 570 points d'engagement et 126 commentaires sur les forums technologiques</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>La collecte de données pour l'IA est devenue une pratique standard chez les grands éditeurs SaaS (GitHub, Figma, Adobe, Vercel), Atlassian suit une tendance du marché</li>
-<li>Les données métier de Jira/Confluence pourraient constituer un dataset pertinent et de qualité pour entraîner des modèles d'IA</li>
-<li>Cette pratique pourrait financer l'innovation produit et réduire les coûts pour les utilisateurs</li>
-<li>Certains utilisateurs considèrent que partager des données pour l'amélioration collective des outils est acceptable</li>
-<li>L'absence de problème légal direct selon les régulations existantes (sauf Californie et quelques États)</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>L'opt-out par défaut avec contrôle non fonctionnels sur les instances existantes révèle une intention délibérée de friction, particulièrement pour l'ensemble du contenu (pas seulement métadonnées)</li>
-<li>Le délai jusqu'en mai 2026 avant activation du contrôle suggère une tactique pour contourner l'attention des clients et collecter les données sans consentement actif</li>
-<li>Risque majeur pour les entreprises stockant des données sensibles, codes propriétaires, secrets commerciaux et contenus réglementés (HIPAA)</li>
-<li>Atlassian souffre déjà de qualité produit déclinante (bugs critiques, recherche inutilisable, instabilité), la priorité donnée à l'IA plutôt qu'à la stabilité crédibilise les critiques</li>
-<li>Aligne avec un pattern d'abus client : impossibilité d'annuler les essais gratuits, formulaires de support bugués, absence de réelle alternative selon les tailles d'équipe</li>
-</ul>
-<hr />
-<p><a href="https://letsdatascience.com/news/atlassian-enables-default-data-collection-to-train-ai-f71343d8">Article original</a> · <a href="https://news.ycombinator.com/item?id=47833247">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">1340adc9</guid>
-      <comments>https://news.ycombinator.com/item?id=47833247</comments>
-      <pubDate>Mon, 20 Apr 2026 12:23:39 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
   </channel>
 </rss>
