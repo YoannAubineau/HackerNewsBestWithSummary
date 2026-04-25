@@ -9,8 +9,53 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sat, 25 Apr 2026 16:10:38 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 17:13:12 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Reproduction de résultats de Q‑Day Prize en remplaçant le matériel quantique par /dev/urandom</title>
+      <link>https://github.com/yuvadm/quantumslop/blob/25ad2e76ae58baa96f6219742459407db9dd17f5/URANDOM_DEMO.md</link>
+      <description>github.com/yuvadm/quantumslop/blob/25ad2e76ae58baa96f6219742459407db9dd17f5/URANDOM_DEMO.md</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Une analyse montre que les résultats de récupération de clés ECDLP du défi Q‑Day Prize peuvent être reproduits en remplaçant le backend IBM Quantum par des nombres aléatoires uniformes générés via os.urandom, sans aucun matériel quantique.</p>
+<ul>
+<li>Le patch de 30 lignes remplace uniquement la source de bits aléatoires dans solve_ecdlp(), laissant le reste du code (construction de circuits, vérificateur d·G == Q) intact et inchangé</li>
+<li>Tous les cas testés (4 à 17 bits) récupèrent les clés privées à des taux statistiquement identiques, y compris le résultat de 17 bits ayant remporté 1 BTC</li>
+<li>L'auteur du défi avait lui-même documenté que lorsque shots &gt;&gt; n, le bruit aléatoire seul récupère d avec probabilité élevée (régime classique)</li>
+<li>Les taux empiriques observés avec /dev/urandom correspondent exactement aux prédictions théoriques de probabilité pour du bruit uniforme passant le vérificateur classique</li>
+<li>L'ingénierie sous-jacente (oracles, topologie heavy-hex, estimation de phase) est légitime, mais la prétention d'attaque quantique repose sur l'interprétation erronée de résultats classiques</li>
+</ul>
+<h2>Discussion sur Hacker News (14 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Le remplacement du matériel quantique par /dev/urandom révèle une défaillance dans la validation du concours : une clé de 17 bits est trivialement cassable par force brute classique, ce qui n'est pas un exploit quantique légitime.</li>
+<li>Le projet démontre que les performances de récupération de clés n'étaient pas statistiquement différentes entre le matériel IBM et l'aléatoire pur, suggérant une absence de véritable avantage quantique dans cette démonstration.</li>
+<li>La cryptographie post-quantique est déjà disponible, rendant même un vrai ordinateur quantique potentiellement obsolète pour le cassage de chiffrement, son cas d'usage principal annoncé.</li>
+<li>Les escroqueries quantiques prolifèrent dans l'espace crypto avec des pièces soi-disant quantiquement sûres, exploitant la confusion du public sur les capacités réelles des ordinateurs quantiques.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Les expériences sur ordinateurs quantiques sont encore des démonstrations scientifiques précoces, pas des applications de production ; la comparaison avec les expériences de fusion est pertinente.</li>
+<li>Google a rapporté un avantage quantique vérifiable récemment, contredisant l'affirmation que les ordinateurs quantiques seraient une escroquerie de trois décennies.</li>
+<li>Une solution quantique pourrait être scientifiquement valide même si plus lente que la recherche aléatoire, l'important étant de démontrer l'effet quantique, pas la performance utilitaire.</li>
+<li>Réduire le débat au seul cas d'usage du cassage cryptographique ignore d'autres applications potentielles des ordinateurs quantiques encore en exploration.</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47898716">Strilanc</a> : « This was exactly the premise of my sigbovik April Fool's paper in 2025 [1]: for small numbers, Shor's algorithm succeeds quickly when fed random samples. And when your circuit is too long (given the error rate of the quantum computer), the quantum computer imitates a random number generator. So it'… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47897648">pigeons</a> : « Project Eleven just awarded 1 BTC for &quot;the largest quantum attack on ECC to date&quot;, a 17-bit elliptic curve key recovered on IBM Quantum hardware. Yuval Adam replaced the quantum computer with /dev/urandom. It still recovers the key. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47898360">dogma1138</a> : « Just to point it out this isn’t a jab at QC but rather a jab at project 11 and possibly the submission author, basically they failed to validate the submission properly and the code proves that the solution is classical.Recovering a 17bit ecc key isn’t a challenge for current classical computers vi… »</li>
+</ul>
+<hr />
+<p><a href="https://github.com/yuvadm/quantumslop/blob/25ad2e76ae58baa96f6219742459407db9dd17f5/URANDOM_DEMO.md">Article original</a> · <a href="https://news.ycombinator.com/item?id=47897647">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">5a175e0e</guid>
+      <comments>https://news.ycombinator.com/item?id=47897647</comments>
+      <pubDate>Sat, 25 Apr 2026 00:58:38 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://opengraph.githubassets.com/10b2ee876dca4199b077b7fb591f3a535df12b47a68ca6f65f9c775ac93f9cd5/yuvadm/quantumslop"/>
+      </media:group>
+    </item>
     <item>
       <title>Les caractéristiques distinctives des diners américains classiques</title>
       <link>https://blogs.loc.gov/picturethis/2026/04/the-classic-american-diner/</link>
@@ -3893,47 +3938,6 @@
       <comments>https://news.ycombinator.com/item?id=47832248</comments>
       <pubDate>Mon, 20 Apr 2026 10:04:40 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-    </item>
-    <item>
-      <title>Extension WebUSB pour Firefox : installation et configuration du stub natif</title>
-      <link>https://github.com/ArcaneNibble/awawausb</link>
-      <description>github.com/ArcaneNibble/awawausb</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> Cette extension ajoute la fonctionnalité WebUSB à Firefox via un programme natif séparé appelé &quot;native stub&quot; que l'utilisateur doit installer en parallèle de l'extension navigateur.</p>
-<ul>
-<li>L'extension nécessite l'installation d'un composant externe (native stub) sur l'ordinateur en plus du téléchargement dans Firefox, via des binaires préconstruits ou en compilant depuis les sources</li>
-<li>L'API WebUSB n'est disponible que sur la page principale et non dans les Web Workers, contrairement à Chrome</li>
-<li>Les binaires préconstruits sont fournis pour macOS (x86_64, ARM64), Linux (x86_64, aarch64) et Windows (AMD64, ARM64) avec des installateurs automatisés</li>
-<li>La configuration requiert de placer un fichier manifest JSON dans un répertoire spécifique selon le système d'exploitation (ou un registre sur Windows) pour que le navigateur localise le stub natif</li>
-<li>Android n'est pas supporté en raison de l'absence de capacités de native messaging</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>WebUSB offre un meilleur bac à sable qu'installer des exécutables non vérifiés : l'accès est restreint à un appareil spécifique après consentement explicite de l'utilisateur, sans permissions système larges</li>
-<li>Cas d'usage concrets et utiles : flashing GrapheneOS, configuration de claviers mécaniques, applications IoT, minidisques, radiofréquences sans logiciels supplémentaires</li>
-<li>Alternative plus sécurisée aux anciens systèmes (drivers malveillants, applications Windows slopware) : les utilisateurs font déjà confiance aux sites pour installer des outils, WebUSB contrôle mieux cette confiance</li>
-<li>Élimine la fragmentation multiplateforme : une application web unique remplace les binaires spécifiques par OS</li>
-<li>Le modèle de permission est transparent et limité dans le temps comparé aux accès système complets des applications natives</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Exposition USB d'appareils non conçus pour des interactions potentiellement malveillantes : clavier, carte réseau, équipements sensibles risquent des dégâts permanents</li>
-<li>Fatigue des permissions : 26+ permissions différentes dans les paramètres Chrome créent une habituation du clic-partout, neutralisant le consentement significatif</li>
-<li>Absence de standard véritable : seul Chromium l'implémente malgré le travail de Mozilla et Apple, c'est une API propriétaire non stabilisée</li>
-<li>Risques de tracking via identifiants USB et contournement de modèles de sécurité existants (ex : FIDO2 authentificateurs compromis si JS accède directement aux USB)</li>
-<li>Extension est la bonne approche : réserver cette API aux utilisateurs avertis plutôt que d'élargir la surface d'attaque par défaut pour tous les utilisateurs</li>
-</ul>
-<hr />
-<p><a href="https://github.com/ArcaneNibble/awawausb">Article original</a> · <a href="https://news.ycombinator.com/item?id=47832969">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">4ed46646</guid>
-      <comments>https://news.ycombinator.com/item?id=47832969</comments>
-      <pubDate>Mon, 20 Apr 2026 11:51:04 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://opengraph.githubassets.com/c4313db2ff945a30e3c52c5848999db751c22be748a34a0ac7edcf00f68ded17/ArcaneNibble/awawausb"/>
-      </media:group>
     </item>
   </channel>
 </rss>
