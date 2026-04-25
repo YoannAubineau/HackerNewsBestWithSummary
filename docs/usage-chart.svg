@@ -36,16 +36,16 @@
 <rect x="558.2" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
 <rect x="580.1" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
 <rect x="601.9" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
-<rect x="623.8" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
-<rect x="645.7" y="110.9" width="15.3" height="97.1" fill="#ff6600" rx="1"/>
-<rect x="667.5" y="176.5" width="15.3" height="31.5" fill="#ff6600" rx="1"/>
-<rect x="689.4" y="176.2" width="15.3" height="31.8" fill="#ff6600" rx="1"/>
-<text x="62.9" y="226" text-anchor="middle" fill="#666">26/03</text>
-<text x="172.3" y="226" text-anchor="middle" fill="#666">31/03</text>
-<text x="281.6" y="226" text-anchor="middle" fill="#666">05/04</text>
-<text x="390.9" y="226" text-anchor="middle" fill="#666">10/04</text>
-<text x="500.3" y="226" text-anchor="middle" fill="#666">15/04</text>
-<text x="609.6" y="226" text-anchor="middle" fill="#666">20/04</text>
-<text x="697.1" y="226" text-anchor="middle" fill="#666">24/04</text>
+<rect x="623.8" y="110.9" width="15.3" height="97.1" fill="#ff6600" rx="1"/>
+<rect x="645.7" y="176.5" width="15.3" height="31.5" fill="#ff6600" rx="1"/>
+<rect x="667.5" y="176.2" width="15.3" height="31.8" fill="#ff6600" rx="1"/>
+<rect x="689.4" y="208.0" width="15.3" height="0.0" fill="#ff6600" rx="1"/>
+<text x="62.9" y="226" text-anchor="middle" fill="#666">27/03</text>
+<text x="172.3" y="226" text-anchor="middle" fill="#666">01/04</text>
+<text x="281.6" y="226" text-anchor="middle" fill="#666">06/04</text>
+<text x="390.9" y="226" text-anchor="middle" fill="#666">11/04</text>
+<text x="500.3" y="226" text-anchor="middle" fill="#666">16/04</text>
+<text x="609.6" y="226" text-anchor="middle" fill="#666">21/04</text>
+<text x="697.1" y="226" text-anchor="middle" fill="#666">25/04</text>
 <text x="52" y="250" fill="#666">Last 30 days: $1.74 · limit $50.00</text>
 </svg>
