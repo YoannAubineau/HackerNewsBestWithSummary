@@ -9,8 +9,99 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sat, 25 Apr 2026 21:10:44 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 22:08:18 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Pourquoi l'auteur abandonne le développement d'applications de bureau pour le web</title>
+      <link>https://www.kalzumeus.com/2009/09/05/desktop-aps-versus-web-apps/</link>
+      <description>www.kalzumeus.com/2009/09/05/desktop-aps-versus-web-apps/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Un développeur explique son passage des applications de bureau aux applications web, en s'appuyant sur trois années d'expérience avec Bingo Card Creator. Les données montrent que la version web surpasse largement la version de bureau en termes de conversion, de rentabilité publicitaire et de satisfaction client.</p>
+<ul>
+<li>Le processus d'achat des logiciels partagés (téléchargement, installation, inscription) comporte 17 étapes où le client peut abandonner, d'où des taux de conversion de 1% ou moins</li>
+<li>La version web affiche un taux de conversion trial-to-purchase de 2,32% contre 1,35% pour le bureau, et réduit le coût d'acquisition client via AdWords de 20 $ à 9 $</li>
+<li>Les applications web génèrent moins de demandes de support (3 contre 15 pour les 50 derniers clients) car elles n'ont pas de problèmes d'installation ou de clés de licence</li>
+<li>Les données collectées en continu permettent d'expérimenter rapidement (67 mises à jour en 7 semaines) et de personnaliser l'expérience par utilisateur, impossibles avec les applications de bureau</li>
+<li>Les ventes d'août 2009 ont augmenté de 60% comparé à l'année précédente grâce à l'accumulation d'avantages du modèle web</li>
+</ul>
+<h2>Discussion sur Hacker News (76 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Les applications web offrent effectivement des avantages majeurs en termes de monétisation, distribution et métriques commerciales (conversion, analytics) que les applications desktop peinent à égaler.</li>
+<li>Même 17 ans plus tard, certains développeurs vivent toujours du desktop, mais cela reste une niche face à la domination des applications web et mobiles pour le grand public.</li>
+<li>Electron et les technologies web modernes ont brouillé les frontières : la plupart des applications 'desktop' contemporaines (Slack, VS Code, Spotify) sont en réalité des applications web, validant le pivot décrit.</li>
+<li>Les cycles de développement web plus rapides et la distribution simplifiée offrent un véritable avantage opérationnel aux entreprises.</li>
+<li>Le navigateur s'est imposé comme le seul moteur d'application universel viable, échappant à de multiples tentatives de monopolisation (Flash, Java).</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Les métriques commerciales citées (taux de conversion, onboarding) reflètent principalement un biais de sélection : les clients superfans téléchargeant une app sont naturellement plus engagés, ce qui ne prouve pas la supériorité technologique du web.</li>
+<li>Les applications desktop conservent des avantages irremplaçables pour les domaines critiques (logiciels créatifs, scientifiques, CAO, DAW) et l'expérience utilisateur n'y est pas négociable.</li>
+<li>Les applications web modernes consomment 10 à 100 fois plus de ressources qu'une équivalente desktop native, avec impacts significatifs sur l'environnement et l'accessibilité.</li>
+<li>L'argument s'applique uniquement aux logiciels commerciaux payants ; pour l'open source et les projets personnels, les critiques de monétisation et d'analytics sont non pertinentes et les desktop apps restent attrayantes.</li>
+<li>Electron représente 'le pire des deux mondes' : l'article anticipe une tendance technologique sans reconnaître que remplacer des vrais applications desktop par du JavaScript lourd crée une régression pour les utilisateurs.</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47892332">ryandrake</a> : « Almost all of Patrick's points are great if your software development goal is to make a buck. They don't seem to matter if you're writing open source, and I'd argue that desktop apps are still relevant and wonderful in the open source world. I just started a new hobby project, and am doing it as a… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47892625">franga2000</a> : « Not off to a great start... The &quot;look how many steps it takes to convert shareware users&quot; is insanely overblown.1-4. Google, find, read... this is the same for web apps. 2. Click download and wait a few seconds. Not enough time to give up because native apps are small. Heavy JS web apps might load… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47892578">neilv</a> : « &gt; However, the existence of pirates is a stitch in my craw, particularly when any schoolmarm typing the name of my software into Google is prompted to try stealing it instead:I wonder whether Google, in its Don't Be Evil era, ever considered what they should do about software piracy, and what they… »</li>
+</ul>
+<hr />
+<p><a href="https://www.kalzumeus.com/2009/09/05/desktop-aps-versus-web-apps/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47891801">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">97b0cf00</guid>
+      <comments>https://news.ycombinator.com/item?id=47891801</comments>
+      <pubDate>Fri, 24 Apr 2026 15:44:03 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
+    <item>
+      <title>Turbo Vision 2.0 : portage moderne avec support Unicode et couleurs étendues</title>
+      <link>https://github.com/magiblot/tvision</link>
+      <description>github.com/magiblot/tvision</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Turbo Vision 2.0 est une modernisation complète du framework classique de Turbo Vision pour interfaces textuelles. Le projet, lancé fin 2018 et rendu public en 2020, intègre le support cross-platform, Unicode UTF-8, couleurs 24-bit et l'intégration du presse-papiers système tout en maintenant la compatibilité rétroactive avec les applications existantes.</p>
+<ul>
+<li>Support complet de l'Unicode UTF-8 avec gestion des caractères de largeur variable et des caractères combinés, disponible sur Windows, Linux et macOS</li>
+<li>Palette de 24 millions de couleurs (RGB) en plus du mode 256 couleurs xterm, avec quantification automatique selon les capacités du terminal</li>
+<li>API étendue incluant gestion du presse-papiers système, minuteurs, événements texte en masse et clavier avancé (modifieurs, souris améliorée)</li>
+<li>Construction cross-platform avec CMake et support de GCC/Clang, MSVC, MinGW et Borland C++ (mode DOS/Windows sans Unicode)</li>
+<li>Rétrocompatibilité maximale : code legacy compilable sans modification, new TColorAttr et TAttrPair compatibles avec les types uchar/ushort originaux</li>
+</ul>
+<h2>Discussion sur Hacker News (25 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Turbo Vision représente un standard de qualité durable pour les frameworks TUI : même des alternatives modernes semblent manquer quelque chose comparé à son design originel</li>
+<li>Le port modernisé conserve remarquablement bien la compatibilité rétroactive et la compacité du code original, permettant de compiler du code de 1993 sans modifications majeures</li>
+<li>L'ajout du support Unicode et les améliorations (meilleur éditeur interne, palette améliorée) rendent la bibliothèque pertinente pour des projets contemporains tout en gardant son essence</li>
+<li>La qualité exceptionnelle de la documentation et des manuels Borland originaux reste un atout pédagogique unique, contrairement aux frameworks TUI modernes qui en manquent cruellement</li>
+<li>Plusieurs développeurs créent des wrappers modernes réussis (.NET, Oxygene) qui combinent l'excellence de Turbo Vision avec des APIs contemporaines et des outils visuels</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>L'absence de documentation moderne et de ressources accessibles en ligne (Stack Overflow, IA) force à apprendre par essai-erreur en se fiant à des exemples parfois bugués et à des livres anciens</li>
+<li>Des limitations du design originel persistent : pas de splitters natifs, layout manuel fastidieux, API palette archaïque, manque d'auto-layout contrairement aux frameworks actuels</li>
+<li>Ceci est une chaîne de portages (Pascal → C++ → C++ moderne) qui éloigne du véritable Turbo Vision Pascal original et crée une distance par rapport aux idiomes du langage source</li>
+<li>La complexité croissante des outils de build modernes (CMake, Autotools) contraste ironiquement avec la simplicité d'époque (F9 dans l'IDE) et reflète une régression de l'expérience utilisateur globale</li>
+<li>L'expérience tactile historique (souris en mode texte avec bloc jaune) est perdue dans les terminaux modernes, réduisant la fidélité de l'émulation au comportement d'origine</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47899642">vintagedave</a> : « How awesome to see this on the front page! I've been writing a wrapper for this repo. Right now I'm running Turbo Vision -- this repo -- under .Net on macOS. It's a magical feeling.The wrapper gives a higher level API, and solves some of the things like the rather antique palette API (or wraps it),… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47899131">warpech</a> : « My programming career literally started in a dumpster in the ’90s, when I found a Turbo Vision book someone had thrown away. I picked it up and immediately fell in love with the bluish TUIs that anyone could make. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47898784">jgord</a> : « Supercool .. the universe of possibilities really exploded when Borland came out with Turbo Pascal compiler, Turbo C++ and TurboVision.Compiler performance was superb and the manuals were a work of art - I just wished I had kept all of mine.This is a cultural treasure. »</li>
+</ul>
+<hr />
+<p><a href="https://github.com/magiblot/tvision">Article original</a> · <a href="https://news.ycombinator.com/item?id=47898597">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">61003390</guid>
+      <comments>https://news.ycombinator.com/item?id=47898597</comments>
+      <pubDate>Sat, 25 Apr 2026 04:18:01 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://repository-images.githubusercontent.com/184303095/5badcd00-9313-11ea-8554-4d4949084174"/>
+      </media:group>
+    </item>
     <item>
       <title>Niri 26.04 ajoute le flou de fenêtre et améliore les screencasts</title>
       <link>https://github.com/niri-wm/niri/releases/tag/v26.04</link>
@@ -3899,83 +3990,6 @@
       <comments>https://news.ycombinator.com/item?id=47824945</comments>
       <pubDate>Sun, 19 Apr 2026 15:20:01 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-    </item>
-    <item>
-      <title>Vercel révèle une violation de ses systèmes internes liée à une application tiers compromise</title>
-      <link>https://decipher.sc/2026/04/19/vercel-says-internal-systems-hit-in-breach/</link>
-      <description>decipher.sc/2026/04/19/vercel-says-internal-systems-hit-in-breach/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> Vercel a découvert une violation de ses systèmes internes le dimanche, affectant un nombre limité de clients. L'intrusion provient d'une application tiers dont l'accès OAuth Google Workspace a été compromis dans une attaque plus large.</p>
-<ul>
-<li>L'incident implique un accès non autorisé aux systèmes internes de Vercel, avec une application d'IA tiers comme point d'entrée initial</li>
-<li>Un nombre limité de clients de Vercel ont eu leurs identifiants compromise ; l'entreprise recommande de vérifier les journaux d'activité et de réinitialiser les variables d'environnement</li>
-<li>Context, un fournisseur d'IA, a identifié que l'attaquant a aussi compromis ses jetons OAuth en mars, en lien avec l'incident Vercel</li>
-<li>L'attaquant aurait utilisé un jeton OAuth compromis de Context pour accéder à Google Workspace de Vercel via un compte employé avec des permissions étendues</li>
-<li>Vercel a engagé des experts en réponse aux incidents et notifié les forces de l'ordre</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>La duplication de threads est problématique pour la qualité des discussions sur HN</li>
-<li>Consolider les commentaires sur un seul post facilite la lecture et évite la fragmentation</li>
-<li>Les modérateurs devraient fusionner ou rediriger les doublons vers le thread principal</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Aucun argument majeur n'est présenté dans cet extrait de commentaire</li>
-<li>Le commentaire se limite à signaler la duplication sans développer de position contradictoire</li>
-</ul>
-<hr />
-<p><a href="https://decipher.sc/2026/04/19/vercel-says-internal-systems-hit-in-breach/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47824976">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">e57944f4</guid>
-      <comments>https://news.ycombinator.com/item?id=47824976</comments>
-      <pubDate>Sun, 19 Apr 2026 15:23:39 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://decipher.sc/wp-content/uploads/2025/09/engin-akyurt-A9_IsUtjHm4-unsplash-scaled.jpg"/>
-      </media:group>
-    </item>
-    <item>
-      <title>Turtle WoW ferme après la victoire judiciaire de Blizzard contre le serveur privé</title>
-      <link>https://www.pcgamer.com/games/world-of-warcraft/turtle-wow-classic-server-announces-shutdown-after-blizzard-wins-injunction/</link>
-      <description>www.pcgamer.com/games/world-of-warcraft/turtle-wow-classic-server-announces-shutdown-after-blizzard-wins-injunction/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> Le serveur privé Turtle WoW ferme définitivement le 14 mai suite à une décision de justice favorable à Blizzard. Les développeurs ont accepté un règlement qui impose l'arrêt du projet après 8 ans d'existence.</p>
-<ul>
-<li>Le serveur a reçu une assignation à cesser après qu'un juge ait tranché en faveur de Blizzard dans un procès en contrefaçon lancé en septembre dernier</li>
-<li>Turtle WoW proposait une expérience &quot;Classic Plus&quot; de World of Warcraft avec nouveaux raids, zones et races jouables, sans augmenter le niveau maximum</li>
-<li>Les forums et réseaux sociaux associés fermeront le 16 octobre</li>
-<li>Les développeurs espèrent que les joueurs conserveront de bons souvenirs de cette aventure de 8 ans</li>
-<li>Contrairement aux rares serveurs fans autorisés comme Project 1999 (EverQuest) et Homecoming (City of Heroes), Turtle WoW n'a pas obtenu de cadre de licence officiel auprès de Blizzard</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>Blizzard dispose légalement et moralement du droit de protéger sa propriété intellectuelle contre l'exploitation commerciale d'un serveur utilisant ses assets et son code sans autorisation</li>
-<li>Turtle WoW généraient des revenus (donations, services payants) qui cannibalisaient potentiellement les abonnements Blizzard Classic, justifiant l'action en justice</li>
-<li>Les développeurs de Turtle auraient pu créer un jeu original indépendant plutôt que de construire sur l'IP existante, comme l'ont fait DotA 2 ou League of Legends</li>
-<li>Le travail technique était impressionnant mais reposait à 99% sur des assets et mécaniques copiées, pas sur une innovation suffisamment originale pour transcender l'infraction</li>
-<li>Sans application de ses droits, Blizzard affaiblirait sa position légale face aux pirates serveurs</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Blizzard aurait dû embaucher l'équipe talentueuse de Turtle plutôt que de détruire un projet supérieur à sa propre version Classic, générant de la goodwill comme Valve l'a fait avec Black Mesa</li>
-<li>Le refus de Blizzard de monétiser des serveurs par expansion maintient les contenus anciens pertinents (contrairement à FFXIV ou Old School RuneScape) pousse les fans vers les serveurs privés</li>
-<li>Blizzard n'applique ses droits sélectivement : elle ignore des serveurs comme Warmane depuis des années tandis qu'elle ferme Turtle, suggérant une motivation commerciale plutôt que morale</li>
-<li>La culture progresse par remixage et réinterprétation ; après 20 ans, Vanilla WoW devrait être du domaine public culturel comme Ultima I l'est pour le jeu vidéo</li>
-<li>Turtle créait du contenu original (nouvelles races, zones, quêtes) au-delà de la simple copie, justifiant une approche collaborative plutôt que destructrice</li>
-</ul>
-<hr />
-<p><a href="https://www.pcgamer.com/games/world-of-warcraft/turtle-wow-classic-server-announces-shutdown-after-blizzard-wins-injunction/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47825160">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">be449c40</guid>
-      <comments>https://news.ycombinator.com/item?id=47825160</comments>
-      <pubDate>Sun, 19 Apr 2026 15:48:40 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://cdn.mos.cms.futurecdn.net/FMANT4DGMrKnDjrSVT8sui-1920-80.jpg"/>
-      </media:group>
     </item>
   </channel>
 </rss>
