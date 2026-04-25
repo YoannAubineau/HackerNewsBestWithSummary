@@ -9,8 +9,51 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sat, 25 Apr 2026 01:32:17 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 03:00:03 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>SDL ajoute le support complet du DOS avec audio, vidéo et gestion d'interruptions</title>
+      <link>https://github.com/libsdl-org/SDL/pull/15377</link>
+      <description>github.com/libsdl-org/SDL/pull/15377</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>SDL intègre désormais un support natif du DOS incluant la gestion audio via Sound Blaster, l'affichage par VESA avec double-buffering, et une gestion optimisée des interruptions matérielles. Cette implémentation transfère le mixage audio de la routine d'interruption vers la boucle principale pour améliorer la stabilité.</p>
+<ul>
+<li>Gestion audio Sound Blaster avec détection automatique de la version (SB16 ou antérieur) et support du mono 8-bit ou stéréo 16-bit</li>
+<li>Affichage vidéo utilisant les interfaces VESA avec double-buffering, page-flipping et support des modes banked framebuffer</li>
+<li>Gestion des interruptions matérielles utilisant un mécanisme de compteur pour éviter les deadlocks quand l'audio est verrouillé</li>
+<li>Support clavier amélioré avec gestion des codes de balayage étendus et de la touche Pause, ainsi que vsync pour réduire le scintillement</li>
+<li>Optimisations incluant limitation du polling joystick à 60 Hz, allocation stratégique de mémoire DMA et support d'outils de compilation DJGPP variés</li>
+</ul>
+<h2>Discussion sur Hacker News (35 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>SDL acceptant un port DOS en amont est remarquable compte tenu que DOS est un OS obsolète ; cela démontre l'engagement de la communauté pour les cibles historiques et la préservation du rétro-computing.</li>
+<li>L'idée d'une interface de démarrage pré-OS affichant une liste de jeux classiques captive l'imagination et ouvre des possibilités nostalgiques amusantes.</li>
+<li>Il existe une demande réelle pour DOS : systèmes de contrôle industriel legacy, ordinateurs vendus avec FreeDOS pour raisons légales en Turquie, et stock exchanges historiques justifiant le maintien de la compatibilité.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Aucun vrai bénéfice pratique : virtuellement personne n'utilise DOS sérieusement ; accepter ce port augmente le coût de maintenance pour une base d'utilisateurs inexistante.</li>
+<li>Les systèmes DOS industriels critique ne seront jamais mis à jour avec des programmes SDL-based ; cette compatibilité résout un problème qui n'existe pas.</li>
+<li>Limitations techniques sévères de DOS/UEFI rendant l'implémentation problématique : pas de drivers audio (datasheets sous NDA), protocole graphique sans vsync (pire que VGA), et capacités BIOS extrêmement limitées comparées aux GPUs modernes.</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47893077">ronsor</a> : « All that's left now is SDL for UEFI, and then all our games can run in a pre-OS environment. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47893279">alnwlsn</a> : « This is an especially funny screenshot as DosBOX itself is built on SDL. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47893691">jlokier</a> : « Perfect! I was just doing some Turbo C development inside DOSBox-X inside Debian GNU/Linux inside VMware Fusion inside macOS this morning. »</li>
+</ul>
+<hr />
+<p><a href="https://github.com/libsdl-org/SDL/pull/15377">Article original</a> · <a href="https://news.ycombinator.com/item?id=47892291">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">9313eea8</guid>
+      <comments>https://news.ycombinator.com/item?id=47892291</comments>
+      <pubDate>Fri, 24 Apr 2026 16:20:15 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://opengraph.githubassets.com/130a8ef78cb07547e2b2b35f1d127906aa493471d2a583e2c0e4352eb2f1006e/libsdl-org/SDL/pull/15377"/>
+      </media:group>
+    </item>
     <item>
       <title>Google prévoit un investissement jusqu'à 40 milliards de dollars chez Anthropic</title>
       <link>https://www.bloomberg.com/news/articles/2026-04-24/google-plans-to-invest-up-to-40-billion-in-anthropic</link>
@@ -3853,47 +3896,6 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://www.androidauthority.com/wp-content/uploads/2019/11/Amazon-Kindle-Oasis-with-warmth-and-brightness-slider.jpg"/>
-      </media:group>
-    </item>
-    <item>
-      <title>Deezer signale que 44% des chansons téléchargées quotidiennement sont générées par l'IA</title>
-      <link>https://techcrunch.com/2026/04/20/deezer-says-44-of-songs-uploaded-to-its-platform-daily-are-ai-generated/</link>
-      <description>techcrunch.com/2026/04/20/deezer-says-44-of-songs-uploaded-to-its-platform-daily-are-ai-generated/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> Deezer reçoit 75 000 morceaux générés par l'IA par jour, soit 44% de tous les nouveaux uploads, mais leur consommation reste marginale à 1-3% des écoutes avec 85% détectées comme frauduleuses.</p>
-<ul>
-<li>Les uploads de musique IA ont explosé en un an : de 10 000 par jour en janvier 2024 à 75 000 en janvier 2025</li>
-<li>Deezer exclut automatiquement les pistes IA des recommandations algorithmiques et des playlists éditoriales, et ne stocke plus leurs versions haute résolution</li>
-<li>97% des utilisateurs ne peuvent pas différencier la musique entièrement générée par l'IA de celle créée par des humains selon un sondage Deezer</li>
-<li>52% des sondés s'opposent à l'inclusion de musique 100% IA dans les classements principaux, tandis que 80% demandent un étiquetage clair</li>
-<li>Deezer a taché 13,4 millions de pistes IA depuis juin 2025, tandis que Spotify et Apple Music adoptent d'autres approches</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>L'IA simplifie l'accès à la création musicale pour les amateurs ; la majorité des contenus générés reste invisible aux utilisateurs (85% sont demonetized/frauduleux) et ne cannibalisent pas réellement les artistes humains</li>
-<li>Les outils IA pour la musique ne diffèrent pas fondamentalement des innovations passées (synthétiseurs, samplers, DAWs numériques) qui ont aussi suscité des craintes avant de créer de nouveaux mouvements artistiques</li>
-<li>Le problème n'est pas la technologie elle-même mais son usage : un musicien humain utilisant l'IA pour générer un stem puis l'affinant manuellement ne pose pas les mêmes enjeux que le spam automatisé</li>
-<li>Techniquement, détecter l'IA générative dans l'audio reste trivial comparé au texte/images et les modèles actuels resteraient détectables à long terme</li>
-<li>Les plateformes peuvent implémenter des solutions simples (étiquetage, refus de promotion, améliorer la rémunération par utilisateur intentionnel vs autoplay)</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>44% d'uploads IA crée une pollution massive : spam de contenus générés par des scripts pour voler des parts de revenus via bots, rendant difficile la découverte d'artistes humains authentiques</li>
-<li>La vraie valeur artistique réside dans le processus créatif et l'intention humaine, pas juste le produit fini ; l'IA court-circuite la feedback loop entre artiste et création qui forge l'expression authentique</li>
-<li>Cela décourage les musiciens sérieux : l'effort créatif devient futile face à une commodification facile ; la relation humain-art (expérience partagée, live performance, émotion genuine) disparaît</li>
-<li>Les détecteurs d'IA ne peuvent pas résoudre le problème à long terme : course infinie entre détection et contournement, avec faux positifs pénalisant les vrais artistes</li>
-<li>Les plateformes avant tout n'appliqueront pas ces solutions volontairement ; l'écosystème artistique s'érode structurellement quand 99% du contenu est du slop indifférencié</li>
-</ul>
-<hr />
-<p><a href="https://techcrunch.com/2026/04/20/deezer-says-44-of-songs-uploaded-to-its-platform-daily-are-ai-generated/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47835928">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">103ac50f</guid>
-      <comments>https://news.ycombinator.com/item?id=47835928</comments>
-      <pubDate>Mon, 20 Apr 2026 15:41:02 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://techcrunch.com/wp-content/uploads/2026/04/Copy-of-2000x1000-EN-1240x600-1.jpg?resize=1200,581"/>
       </media:group>
     </item>
   </channel>
