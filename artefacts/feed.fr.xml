@@ -9,8 +9,50 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sat, 25 Apr 2026 07:29:10 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 08:17:35 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Interface audio Rodecaster Duo : SSH activé par défaut et firmware modifiable</title>
+      <link>https://hhh.hn/rodecaster-duo-fw/</link>
+      <description>hhh.hn/rodecaster-duo-fw/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Un utilisateur a découvert que son interface audio Rodecaster Duo possède SSH activé par défaut avec des clés publiques prédéfinies, et que le firmware peut être modifié sans vérification de signature. L'auteur a pu extraire le firmware, analyser le processus de mise à jour et créer un firmware personnalisé pour accéder à l'appareil en SSH.</p>
+<ul>
+<li>SSH est activé par défaut sur le Rodecaster Duo avec authentification par clé publique uniquement, utilisant deux clés RSA et Ed25519 intégrées au système</li>
+<li>Le processus de mise à jour du firmware est relativement simple : envoi d'une commande HID pour passer en mode mise à jour, puis copie d'une archive gzippée et de sa somme de contrôle MD5 sur le disque exposé</li>
+<li>Le firmware n'a pas de vérification de signature, permettant aux utilisateurs de créer et flasher des versions personnalisées du logiciel</li>
+<li>L'auteur a rapporté le problème de sécurité à RODE mais n'a pas reçu de réponse, et ignore pourquoi SSH était activé par défaut</li>
+<li>Le dual boot du Rodecaster Duo offre une protection contre les briques logicielles en disposant de deux partitions de démarrage alternatives</li>
+</ul>
+<h2>Discussion sur Hacker News (33 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>L'approche ouverte de Rode (firmware en tarball simple, pas de signature) est louée comme exemplaire et incite à l'achat, contrairement aux pratiques restrictives habituelles des fabricants.</li>
+<li>La découverte démontre que les appareils audio modernes sont des ordinateurs Linux complets, ce qui ouvre des possibilités légitimes de modification et personnalisation (résolution d'echo en gaming, mixage avancé, etc.).</li>
+<li>Le firmware de Rode est relativement propre et bien conçu comparé à d'autres appareils grand public, facilitant les corrections et modifications par l'utilisateur.</li>
+<li>L'utilisation d'IA (Claude) pour accélérer l'analyse de firmware est présentée comme un progrès positif qui démocratise l'accès à ce type de modification technique.</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>SSH activé par défaut sur le LAN (pas seulement l'USB) pose un réel risque de sécurité, même si le problème est facilement corrigeable.</li>
+<li>La Cyber Resilience Act (CRA) européenne risque de forcer les fabricants comme Rode à verrouiller complètement leurs appareils, fermant définitivement ces portes d'accès et de réparation.</li>
+<li>La découverte n'est pas techniquement impressionnante (nmap -p 22 aurait suffi) et ne mérite pas vraiment d'être qualifiée de &quot;hacking&quot; complexe.</li>
+<li>L'enthousiasme autour de cette ouverture doit être tempéré par des préoccupations réglementaires : les fabricants internationaux pourraient préférer fermer l'accès plutôt que de naviguer les obligations de conformité.</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47895644">rikafurude21</a> : « Its still crazy to me that everyone has a pocket AI-hacker ready to inspect firmware and modify their devices now. You just put the agent on it and it gives you access in minutes. You would have to be a Hotz tier hacker if you wanted to do anything close to this only last year, or at the very least… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47895199">yonatan8070</a> : « Having the firmware image just be a boring old tarball + hash sounds super nice. I wish more devices were this open, and I hope Rode won't see this and decide to lock the firmware upgrades down. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47898729">ZihangZ</a> : « Yeah, this is pretty common once a device has any real DSP in it. There's usually some stripped-down Linux on an ARM SoC underneath, and the vendor BSP just happens to ship with sshd on.Not necessarily malice, more like nobody on the audio side really owns the rootfs.The big question is whether it'… »</li>
+</ul>
+<hr />
+<p><a href="https://hhh.hn/rodecaster-duo-fw/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47894747">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">c1da6c4f</guid>
+      <comments>https://news.ycombinator.com/item?id=47894747</comments>
+      <pubDate>Fri, 24 Apr 2026 19:30:46 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Corée du Sud arrête un homme pour avoir partagé une fausse photo IA du loup échappé</title>
       <link>https://www.bbc.com/news/articles/c4gx1n0dl9no</link>
@@ -3870,46 +3912,6 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://loved-hug-5d84552294.media.strapiapp.com/large_sauna_hr_984f14dcae.png"/>
-      </media:group>
-    </item>
-    <item>
-      <title>À partir de 2027, tous les téléphones vendus dans l'UE doivent avoir des batteries amovibles</title>
-      <link>https://www.theolivepress.es/spain-news/2026/04/20/eu-to-force-replaceable-batteries-in-phones-and-tablets-from-2027/</link>
-      <description>www.theolivepress.es/spain-news/2026/04/20/eu-to-force-replaceable-batteries-in-phones-and-tablets-from-2027/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> L'Union européenne impose que tous les téléphones commercialisés sur son territoire disposent de batteries remplaçables à partir de 2027, une mesure visant à réduire les déchets électroniques et allonger la durée de vie des appareils.</p>
-<ul>
-<li>La nouvelle réglementation s'applique à tous les téléphones et tablettes vendus dans l'UE à partir de 2027</li>
-<li>Objectif : réduire les déchets électroniques en permettant aux utilisateurs de remplacer eux-mêmes la batterie usée</li>
-<li>Cette mesure vise à prolonger la durée de vie des appareils et à diminuer leur impact environnemental</li>
-<li>Les fabricants devront adapter la conception de leurs appareils pour se conformer à cette obligation</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>Réduit l'obsolescence programmée : les batteries dégradées ne forceront plus les utilisateurs à acheter des téléphones neufs, prolongeant la durée de vie des appareils et réduisant les déchets électroniques</li>
-<li>Démocratise la réparation : actuellement, remplacer une batterie chez Apple coûte ~100$, ce qui représente 50% du prix d'un téléphone ; avec des batteries amovibles, les réparations locales deviendraient accessibles et bon marché</li>
-<li>Restaure une fonctionnalité perdue : les téléphones anciens avaient des batteries amovibles ; cette régulation corrige une régression imposée par les fabricants, pas une limitation technique</li>
-<li>Crée un marché de pièces détachées : l'obligation de fournir des batteries pendant 5 ans après la fin de production garantit une disponibilité et permet une vraie économie circulaire</li>
-<li>Conforme à d'autres régulations EU : comme pour l'USB-C, les fabricants s'adaptent sans problème majeur ; les utilisateurs gagnent in fine en standardisation et commodité</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Compromet l'étanchéité et la durabilité : les batteries collées sont essentielles pour l'IP68 (submersion) ; les rendre amovibles réduirait la protection à IP55 et rendrait les téléphones plus fragiles aux chutes</li>
-<li>Favorise les téléphones à bas coût au détriment de la qualité : l'ajout de mécanismes de fixation rendra les appareils plus épais ou alourdit, poussant les fabricants à réduire la capacité batterie pour compenser</li>
-<li>Crée une fuite de sécurité : les utilisateurs non qualifiés risquent d'endommager les joints d'étanchéité ou d'installer des batteries contrefaites dangereuses (risque d'incendie)</li>
-<li>Loophole majeur : les batteries certifiées « 1000 cycles à 80% » sont exemptées ; tous les fabricants peuvent contourner la règle par du software (limitation de capacité) ou du marketing fallacieux</li>
-<li>Problème marginal : le vrai frein à la réparation n'est pas l'accès technique mais la disponibilité des pièces d'occasion et la préférence des consommateurs pour les appareils neufs plutôt que réparés</li>
-</ul>
-<hr />
-<p><a href="https://www.theolivepress.es/spain-news/2026/04/20/eu-to-force-replaceable-batteries-in-phones-and-tablets-from-2027/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47834195">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">e98a34fa</guid>
-      <comments>https://news.ycombinator.com/item?id=47834195</comments>
-      <pubDate>Mon, 20 Apr 2026 13:41:25 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://www.theolivepress.es/wp-content/uploads/2021/12/Insurance-company-scammed-out-of-E500000-by-mobile-phone-dealer-on-Spains-Costa-Blanca-scaled.jpg"/>
       </media:group>
     </item>
   </channel>
