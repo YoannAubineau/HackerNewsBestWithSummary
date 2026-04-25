@@ -9,8 +9,54 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sat, 25 Apr 2026 18:10:54 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 19:16:26 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Les outils de diagramme en texte brut connaissent un renouveau contemporain</title>
+      <link>https://unsung.aresluna.org/plain-text-has-been-around-for-decades-and-its-here-to-stay/</link>
+      <description>unsung.aresluna.org/plain-text-has-been-around-for-decades-and-its-here-to-stay/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Une catégorie d'outils de diagramme et de conception d'interface en texte brut ou ASCII a émergé récemment, combinant une approche minimaliste héritée des années 1970-1980 avec les technologies modernes et l'accessibilité web. Ces outils explorent les vertus de la contrainte volontaire et la durabilité du texte monospace comme format.</p>
+<ul>
+<li>Des outils comme Mockdown (web et mobile), Wiretext (web) et Monodraw (Mac) ciblent les utilisateurs qui préfèrent des choix visuels intentionnellement limités pour créer des diagrammes légers à intégrer dans le code source</li>
+<li>Ces solutions offrent une vision contemporaine des interfaces textuelles vintage, améliorées par les performances modernes, l'accès web, et les affordances tactiles</li>
+<li>La pratique de l'auto-contrainte devient de plus en plus pertinente à mesure que les ordinateurs deviennent plus puissants, notamment pour complexifier intentionnellement les tâches face à l'émergence de l'IA</li>
+<li>Le format texte monospace présente une puissance et une longévité notables : portabilité des fichiers et efficacité éprouvée de l'édition de texte comme interface</li>
+</ul>
+<h2>Discussion sur Hacker News (49 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>UTF-8 est devenu le standard universel, résolvant les problèmes historiques de codage et rendant le texte brut véritablement portable et accessible</li>
+<li>Le texte brut permet une flexibilité remarquable : formats structurés (JSON, Markdown, XML, YAML) restent éditables avec n'importe quel outil et processables par des scripts simples</li>
+<li>Les TUI modernes (avec protocoles graphiques kitty, terminaux réaméliorés) offrent une cohérence et une légèreté supérieures aux GUI complexes, particulièrement pour les workflows textuels dominants</li>
+<li>Le texte brut perdure précisément parce qu'il est le plus petit dénominateur commun : quand tout change, le texte brut + conventions simples (UTF-8, Markdown) reste fiable et durable</li>
+<li>Les caractères de dessin (box-drawing, éléments de bloc) permettent une expression visuelle riche directement en texte brut, relançant des diagrammes et interfaces des années 1970-1980</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Le texte brut n'est pas vraiment « plain » : encodages, ordre des octets, détection automatique le rendent complexe et sujet à des ruptures Unicode courantes dans les applications</li>
+<li>UTF-8 peut gaspiller l'espace sur les textes avec beaucoup de caractères non-ASCII (cyrillique, grec, caractères Han prennent 2-3 octets quand un octet suffirait dans d'autres schémas)</li>
+<li>Le texte brut ne peut pas embarquer nativement des images ou contenu graphique complexe, seulement des références externes fragiles ; cette limitation le rend incomplet pour les usages modernes</li>
+<li>À grande échelle, le texte brut devient désordonné (configs complexes sans structure forcée), et impose une charge cognitive bien supérieure aux formats structurés vraiment binaires avec schémas</li>
+<li>L'obsession du texte brut est une limite arbitraire : on gaspille des ressources de calcul massives pour dessiner du texte quand des GUI appropriées pourraient être plus efficaces et cohérentes</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47902612">epistasis</a> : « It's fun to see a plaintext accounting view as the example...I just switched from QuickBooks to Beancount+Fava for my sole proprietorship, and couldn't be happier. I've added a text-based simple invoice system, a text-based vehicle mileage tracker, and have validators that ensure that every expense… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47900317">TazeTSchnitzel</a> : « &gt; Fun to see a contemporary take on something that peaked between 1970s–1980sMaybe that was the peak, but you had some very good TUIs in the early 1990's for DOS apps, where Windows hadn't quite completely taken over yet, but you very likely had a VGA-compatible graphics card and monitor, meaning y… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47898522">ssivark</a> : « Couldn't help riffing off on a tangent from the title (since the article is about diagramming tools)...Dylan Beattie has a thought-provoking presentation for anyone who believes that &quot;plain text&quot; is a simple / solid substrate for computing: &quot;There's no such thing as plain text&quot; https://www.slidesha… »</li>
+</ul>
+<hr />
+<p><a href="https://unsung.aresluna.org/plain-text-has-been-around-for-decades-and-its-here-to-stay/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47897681">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">4bfcc073</guid>
+      <comments>https://news.ycombinator.com/item?id=47897681</comments>
+      <pubDate>Sat, 25 Apr 2026 01:03:09 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://unsung.aresluna.org/_media/plain-text-has-been-around-for-decades-and-its-here-to-stay/ogimage.png"/>
+      </media:group>
+    </item>
     <item>
       <title>Reproduction de résultats de Q‑Day Prize en remplaçant le matériel quantique par /dev/urandom</title>
       <link>https://github.com/yuvadm/quantumslop/blob/25ad2e76ae58baa96f6219742459407db9dd17f5/URANDOM_DEMO.md</link>
@@ -3902,41 +3948,6 @@
       <guid isPermaLink="false">20f37101</guid>
       <comments>https://news.ycombinator.com/item?id=47832222</comments>
       <pubDate>Mon, 20 Apr 2026 10:00:35 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-    </item>
-    <item>
-      <title>Un tremblement de terre de magnitude 7,4 s'est produit à 100 km à l'est-nord-est de Miyako au Japon</title>
-      <link>https://earthquake.usgs.gov/earthquakes/eventpage/us6000sri7/</link>
-      <description>earthquake.usgs.gov/earthquakes/eventpage/us6000sri7/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR</strong> : Un séisme de magnitude 7,4 a frappé une zone à 100 km à l'est-nord-est de Miyako, au Japon, selon l'USGS.</p>
-<ul>
-<li>Magnitude du tremblement de terre : 7,4</li>
-<li>Localisation : 100 km ENE de Miyako, Japon</li>
-<li>Source des données : United States Geological Survey (USGS)</li>
-<li>Forte mobilisation publique : 280 points et 129 commentaires sur Hacker News</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>Le système d'alerte précoce japonais (NERV) est remarquablement efficace, offrant 45+ secondes d'avertissement permettant de se mettre en sécurité, ce qui représente un accomplissement technologique majeur</li>
-<li>Les séismes de magnitude 7+ sont relativement fréquents au Japon et rarement catastrophiques grâce aux normes de construction parasismique strictes et aux protocoles d'alerte bien établis</li>
-<li>L'infrastructure d'alerte gouvernementale complète fonctionne bien, avec notifications push automatiques sur tous les téléphones et une population habituée aux procédures d'urgence</li>
-<li>Le système d'alerte précoce constitue une réussite humaine remarquable, démontrant comment la technologie peut sauver des vies de manière significative</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Les systèmes d'alerte centralisés sur des applications privées (plutôt que sur les alertes gouvernementales officielles) soulèvent des questions de fiabilité des services critiques d'urgence externalisés</li>
-<li>L'efficacité de l'avertissement dépend fortement de la distance à l'épicentre : les populations proches du foyer n'ont peu ou aucune notification d'avance</li>
-<li>Le délai de 45 secondes, bien qu'impressionnant, est en réalité simplement le temps de propagation de l'onde jusqu'à Tokyo, pas une vraie prédiction</li>
-<li>Relocaliser les infrastructures critiques d'urgence vers des entités privées présente des risques stratégiques et de dépendance</li>
-</ul>
-<hr />
-<p><a href="https://earthquake.usgs.gov/earthquakes/eventpage/us6000sri7/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47832248">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">80b1dcd9</guid>
-      <comments>https://news.ycombinator.com/item?id=47832248</comments>
-      <pubDate>Mon, 20 Apr 2026 10:04:40 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
     </item>
   </channel>
