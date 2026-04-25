@@ -9,8 +9,54 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sat, 25 Apr 2026 10:13:47 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 11:14:35 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Firefox intègre le moteur de blocage des publicités de Brave</title>
+      <link>https://itsfoss.com/news/firefox-ships-brave-adblock-engine/</link>
+      <description>itsfoss.com/news/firefox-ships-brave-adblock-engine/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Firefox 149 inclut désormais adblock-rust, le moteur de blocage des publicités et trackers open source de Brave, bien que cette addition n'ait pas été mentionnée dans les notes de version officielles. Ce moteur Rust, distribué sous licence MPL-2.0, était désactivé par défaut et sans interface utilisateur.</p>
+<ul>
+<li>Le moteur adblock-rust, développé par Brave et compatible avec la syntaxe des listes de filtres uBlock Origin, gère le blocage des requêtes réseau et le filtrage cosmétique</li>
+<li>L'intégration de Firefox a été réalisée via le bug Bugzilla 2013888 par l'ingénieur Mozilla Benjamin VanderSloot, titré « Add a prototype rich content blocking engine »</li>
+<li>Waterfox, un fork populaire de Firefox, a également adopté adblock-rust en s'appuyant sur l'implémentation de Firefox</li>
+<li>Les utilisateurs peuvent activer le moteur manuellement via about:config en définissant privacy.trackingprotection.content.protection.enabled sur true et en ajoutant des listes de filtres comme EasyList et EasyPrivacy</li>
+</ul>
+<h2>Discussion sur Hacker News (60 commentaires analysés)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>L'intégration d'un moteur de blocage natif basé sur du code Rust open source de Brave renforce les capacités de Firefox sans abandonner le support des extensions MV2 ni des add-ons comme uBlock Origin</li>
+<li>Firefox maintient des avantages distinctifs en matière de blocage des publicités et de suivi : le support MV2, uBlock Origin, et des capacités que Chrome/Chromium n'ont pas (webRequestBlocking en MV3)</li>
+<li>Cette amélioration arrive à point nommé pour rendre Firefox plus compétitif et justifier son usage, particulièrement pour les utilisateurs qui valorisent le blocage des publicités comme argument majeur</li>
+<li>Mozilla démontre une amélioration récente de sa trajectoire produit avec des nouvelles fonctionnalités utiles, donnant des raisons d'être optimiste sur son engagement envers les utilisateurs</li>
+<li>Contrairement aux autres navigateurs Chromium, Firefox permet toujours l'installation d'extensions MV2, ce qui offre une flexibilité durable pour le blocage des publicités</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Le mouvement pourrait être une étape vers l'abandon futur du support MV2, prétextant la disponibilité native du blocage des publicités, puis une transition progressive vers les publicités acceptées (tactique 'embrace, extend, extinguish')</li>
+<li>Le moteur de blocage natif fonctionne moins bien que uBlock Origin : les emplacements publicitaires restent visibles sous forme de zones blanches disgracieuses au lieu d'être supprimés proprement</li>
+<li>L'hypocrisie perçue de Mozilla après avoir exclu Brendan Eich, puis d'adopter la technologie de sa société (Brave) crée une contradiction éthique difficile à justifier</li>
+<li>Firefox continue de décevoir les utilisateurs avec des décisions produit controversées (Pocket, télémétrie, features non demandées), alimentant la conviction que Mozilla perd de vue ses utilisateurs pour poursuivre une base d'utilisateurs hypothétique</li>
+<li>Même avec cette amélioration, Firefox reste moins compétitif que les alternatives Chromium (Brave, Vivaldi, Cromite) en raison de sa base de code et de son écosystème moins mature</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47899472">evilpie</a> : « &gt; The Firefox team is experimenting with ways to improve the built-in Enhanced Tracking Protection feature in Firefox. This is one of the libraries we're going to experiment with.&gt; - We are not, and have no plans to abandon MV2 extensions. This will ensure certain types of add-ons, like ad-blockers… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47898192">devsda</a> : « I hope this isn't a precursor to removing support for other AdBlock addons(MV2) citing native availability of an AdBlock engine and then gradually shift to acceptable ads etc. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47898342">Steve6</a> : « I migrated from Firefox to Brave years ago, and it's been incredible. It's easy to turn off the crypto stuff and turn on more advanced privacy protection. Then it's just a fast browser with awesome adblocking.My favorite recent feature has been Brave Scriptlets, which are just little javascript fun… »</li>
+</ul>
+<hr />
+<p><a href="https://itsfoss.com/news/firefox-ships-brave-adblock-engine/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47897891">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">78d47895</guid>
+      <comments>https://news.ycombinator.com/item?id=47897891</comments>
+      <pubDate>Sat, 25 Apr 2026 01:47:33 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://itsfoss.com/content/images/2026/04/firefox-brave-adblock-rust-banner.png"/>
+      </media:group>
+    </item>
     <item>
       <title>Une théorie scientifique de l'apprentissage profond émerge progressivement</title>
       <link>https://arxiv.org/abs/2604.21691</link>
@@ -3879,47 +3925,6 @@
       <comments>https://news.ycombinator.com/item?id=47833247</comments>
       <pubDate>Mon, 20 Apr 2026 12:23:39 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-    </item>
-    <item>
-      <title>ggsql : une implémentation de la grammaire des graphiques basée sur la syntaxe SQL</title>
-      <link>https://opensource.posit.co/blog/2026-04-20_ggsql_alpha_release/</link>
-      <description>opensource.posit.co/blog/2026-04-20_ggsql_alpha_release/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p><strong>TL;DR :</strong> ggsql est un nouvel outil en alpha qui permet de créer des visualisations de données directement en SQL, combinant la grammaire des graphiques avec la syntaxe SQL. Il fonctionne dans Quarto, Jupyter, Positron et VS Code.</p>
-<ul>
-<li>ggsql utilise des clauses SQL declaratives (VISUALIZE, DRAW, PLACE, SCALE, LABEL) pour construire des visualisations composables et modulables, sans types de graphiques prédéfinis</li>
-<li>L'outil cible les utilisateurs de SQL qui n'ont pas accès ou ne maîtrisent pas R ou Python, et offre une alternative aux outils BI ou aux tentatives précédentes de visualisation en SQL</li>
-<li>L'absence de dépendances externes (R/Python) permet l'intégration dans d'autres outils, le sandboxing de code malveillant, et l'exécution efficace du pipeline de données entier en une seule requête SQL par couche</li>
-<li>Les couches de visualisation (point, histogram, boxplot, smooth, etc.) héritent automatiquement des mappages de données définis dans VISUALIZE, permettant une itération ergonomique</li>
-<li>Les développeurs s'appuient sur 18 ans d'expérience ggplot2 pour concevoir ggsql comme une &quot;ardoise vierge&quot;, avec des plans futurs incluant un moteur haute performance en Rust, l'interactivité et le support des données spatiales</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Arguments en faveur</strong> :</p>
-<ul>
-<li>Comble un besoin pour les utilisateurs SQL qui ne maîtrisent pas R ou Python, en proposant une syntaxe unifiée directement intégrée au langage de requête</li>
-<li>Permet des visualisations directement depuis des bases de données sans charger les données en mémoire en dataframe, réduisant la friction et les dépendances multiples</li>
-<li>Architecture modulaire et extensible (lecteurs multiples, renderers variés) ouvre la voie à un standard de visualisation cross-backend au-delà de ggplot2</li>
-<li>Cas d'usage prometteur pour les notebooks (marimo, Jupyter) et l'analytics agentic, avec déploiement envisagé via Posit Connect</li>
-<li>Ne prétend pas remplacer ggplot2 mais plutôt le compléter en atteignant de nouveaux contextes d'utilisation</li>
-</ul>
-<p><strong>Arguments contre</strong> :</p>
-<ul>
-<li>Manque de clarté initiale sur la proposition de valeur : n'a pas justifié pourquoi créer un nouveau DSL plutôt que d'étendre les outils existants (dbplyr + ggplot2)</li>
-<li>Ajoute une dépendance supplémentaire aux projets alors que les solutions R/Python existent déjà et sont bien établies</li>
-<li>Documentation insuffisante : explications obscures sur l'architecture backend, l'interaction avec les bases de données, et les capacités d'export/rendu (PDF, SVG, PNG)</li>
-<li>Risque du problème &quot;XKCD des standards&quot; : encore un autre outil de visualisation au lieu d'une vraie standardisation</li>
-<li>Fonctionnalités actuellement limitées (Vega-Lite uniquement en output, pas d'ajustements manuels reproducibles) et en alpha, rendant l'utilité concrète difficile à évaluer</li>
-</ul>
-<hr />
-<p><a href="https://opensource.posit.co/blog/2026-04-20_ggsql_alpha_release/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47833558">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">82f3a9da</guid>
-      <comments>https://news.ycombinator.com/item?id=47833558</comments>
-      <pubDate>Mon, 20 Apr 2026 12:51:20 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://opensource.posit.co/blog/2026-04-20_ggsql_alpha_release/ggsql.png"/>
-      </media:group>
     </item>
   </channel>
 </rss>
