@@ -6,6 +6,7 @@ import structlog
 import typer
 
 from app.check_models import check_llm_versions
+from app.feedly_lag import compute_lag, print_report
 from app.logging_setup import setup_logging
 from app.pipeline import (
     CycleResult,
@@ -105,6 +106,18 @@ def check_llm_versions_cmd() -> None:
     code = check_llm_versions()
     if code != 0:
         raise typer.Exit(code=code)
+
+
+@app.command("feedly-lag")
+def feedly_lag_cmd(
+    count: int = typer.Option(50, help="Number of recent items to inspect."),
+    feed_url: str | None = typer.Option(
+        None, help="Override settings.feed_self_url (use the public URL)."
+    ),
+) -> None:
+    """Show the delay between our_published_at and Feedly's crawled timestamp."""
+    measurements = compute_lag(feed_url=feed_url, count=count)
+    print_report(measurements)
 
 
 @app.command("migrate-partitions")

@@ -54,6 +54,12 @@ class Settings(BaseSettings):
     webshare_proxy_username: str = ""
     webshare_proxy_password: str = ""
 
+    # Feedly developer token, used by the `feedly-lag` CLI command to
+    # query Feedly Cloud for the `crawled` timestamp of each article.
+    # Generate one at https://feedly.com/v3/auth/dev. Empty by default;
+    # the command exits with a clear error when missing.
+    feedly_dev_token: str = ""
+
     artifacts_dir: Path = Path("artifacts")
 
     @property
