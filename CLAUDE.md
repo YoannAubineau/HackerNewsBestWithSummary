@@ -51,9 +51,11 @@ hourly on a public repo, so minutes are free.
   Its contents are exposed at the site root, so the feed URL is
   `https://.../feed.fr.xml` (no `/artefacts/` in the path).
 - **No queue, no retry service**. The pipeline keeps state via a `status`
-  field in each article's frontmatter (`pending` → `article_fetched` →
-  `discussion_fetched` → `summarized`, or `failed`). Each step iterates files
-  of the matching status. Crash-resumable for free.
+  field in each article's frontmatter (`pending` → `discussion_fetched` →
+  `article_fetched` → `summarized`, or `failed`). Discussion runs before
+  article fetch so the canonical article URL Algolia returns can replace
+  the (sometimes stale) hnrss `<link>` before we hit the publisher. Each
+  step iterates files of the matching status. Crash-resumable for free.
 - **Raw HTML / discussion text is never committed**. Article content is kept
   in sidecar files (`artefacts/articles/.../<hash>.raw.article.txt`,
   `<hash>.raw.discussion.txt`, `<hash>.raw.top_comments.txt`) which are
@@ -94,7 +96,11 @@ hourly on a public repo, so minutes are free.
   fetch fails.
 - `src/app/fetch_discussion.py`, Algolia API + comment selection: recursive
   degressive comment budget (default 500), plus pinning of the HN submitter's
-  own comments and their full ancestor chain. Also produces the
+  own comments and their full ancestor chain. The Algolia root payload also
+  carries the canonical article URL (HN's source of truth, which can drift
+  from the hnrss `<link>` after a moderator edit). The pipeline uses it to
+  overwrite `article.url` before `step_fetch_articles` runs. A `null` URL
+  (Ask/Show HN, polls) keeps the feed URL untouched. Also produces the
   "Commentaires les plus plébiscités" block rendered at the end of the
   discussion section. Per-comment scores are not exposed by any HN API
   (Algolia returns `points: null` on every child, Firebase doesn't carry

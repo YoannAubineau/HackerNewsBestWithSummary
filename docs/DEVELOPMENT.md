@@ -48,8 +48,8 @@ key to explore intermediate state:
 
 ```bash
 OPENROUTER_API_KEY=dummy uv run app fetch-feed         # step 1: RSS → pending files
-OPENROUTER_API_KEY=dummy uv run app fetch-articles     # step 2: HTTP + trafilatura
-OPENROUTER_API_KEY=dummy uv run app fetch-discussions  # step 3: Algolia HN API
+OPENROUTER_API_KEY=dummy uv run app fetch-discussions  # step 2: Algolia HN API + canonical URL
+OPENROUTER_API_KEY=dummy uv run app fetch-articles     # step 3: HTTP + trafilatura
 # step 4 (summarize) needs a real key
 OPENROUTER_API_KEY=dummy uv run app publish            # step 5: regenerate feed.fr.xml
 ```

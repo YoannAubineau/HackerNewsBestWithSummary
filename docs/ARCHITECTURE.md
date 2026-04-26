@@ -10,22 +10,22 @@ How the pipeline is laid out and what it's built with.
 flowchart LR
     hn[hnrss.org/best]
     pending([status:<br/>pending])
-    af([status:<br/>article_fetched])
     df([status:<br/>discussion_fetched])
+    af([status:<br/>article_fetched])
     summ([status:<br/>summarized])
     failed([_failed/])
     feed[feed.fr.xml]
     pages[GitHub Pages]
 
     hn -->|fetch-feed| pending
-    pending -->|fetch-articles<br/>trafilatura| af
-    af -->|fetch-discussions<br/>Algolia HN API| df
-    df -->|summarize<br/>OpenRouter LLM| summ
+    pending -->|fetch-discussions<br/>Algolia HN API| df
+    df -->|fetch-articles<br/>trafilatura| af
+    af -->|summarize<br/>OpenRouter LLM| summ
     summ -->|publish| feed
     feed --> pages
 
-    af -. max_attempts .-> failed
     df -. max_attempts .-> failed
+    af -. max_attempts .-> failed
     summ -. max_attempts .-> failed
 ```
 
@@ -39,23 +39,7 @@ where it left off.
    `artefacts/articles/YYYY/MM/DD/{short_hash}.md` with `status: pending`.
    The filename is the first eight hex characters of SHA-256 of the HN
    guid, so paths are stable and re-runs are idempotent.
-2. **`fetch-articles`** HTTP-fetches the linked URL, runs `trafilatura` to
-   extract the main content, and captures the `og:image` /
-   `twitter:image` metadata. Falls back to the feed's own summary if the
-   URL isn't HTML or extraction returns nothing. Pages that only serve a
-   "JavaScript required" shell (Mastodon, X/Twitter, Reddit, and other
-   SPA-only sites) are detected by fuzzy-matching trafilatura's output
-   against the raw HTML's `<noscript>` block, and flagged
-   `content_source: js_required` with no stored body text. When the URL
-   points to a YouTube video (`youtube.com/watch`, `youtu.be`, `shorts`,
-   `embed`, or `v`), the HTTP fetch is skipped entirely and the pipeline
-   pulls the video transcript via `youtube-transcript-api` (preferring
-   French then English, auto-generated captions accepted), stored with
-   `content_source: video_transcript`. A fresh `img.youtube.com`
-   thumbnail is always used as `image_url`, so the feed card still gets
-   an illustration even when the transcript fetch fails.
-   → `status: article_fetched`.
-3. **`fetch-discussions`** calls the Algolia HN API for the full comment
+2. **`fetch-discussions`** calls the Algolia HN API for the full comment
    tree and selects a recursive comment budget (default 500), degressively
    allocated to root threads ranked by HN score. The story submitter's
    own comments and their ancestor chain are always pinned, since they
@@ -65,7 +49,29 @@ where it left off.
    does not preserve and which HN never exposes as a numeric score. The
    first three valid IDs in that order become the verbatim
    "Commentaires les plus plébiscités" block rendered later in the
-   feed. → `status: discussion_fetched`.
+   feed. The Algolia root payload also carries the canonical article
+   URL (the value HN keeps in its own database, which can drift from the
+   hnrss `<link>` after a moderator edit or canonicalisation): when
+   non-null it overwrites `article.url`, so the next step fetches the
+   right page. Falls back to the feed URL when Algolia returns no `url`
+   (Ask/Show HN, polls) or the call fails outright.
+   → `status: discussion_fetched`.
+3. **`fetch-articles`** HTTP-fetches the (now canonical) article URL,
+   runs `trafilatura` to extract the main content, and captures the
+   `og:image` / `twitter:image` metadata. Falls back to the feed's own
+   summary if the URL isn't HTML or extraction returns nothing. Pages
+   that only serve a "JavaScript required" shell (Mastodon, X/Twitter,
+   Reddit, and other SPA-only sites) are detected by fuzzy-matching
+   trafilatura's output against the raw HTML's `<noscript>` block, and
+   flagged `content_source: js_required` with no stored body text. When
+   the URL points to a YouTube video (`youtube.com/watch`, `youtu.be`,
+   `shorts`, `embed`, or `v`), the HTTP fetch is skipped entirely and
+   the pipeline pulls the video transcript via `youtube-transcript-api`
+   (preferring French then English, auto-generated captions accepted),
+   stored with `content_source: video_transcript`. A fresh
+   `img.youtube.com` thumbnail is always used as `image_url`, so the
+   feed card still gets an illustration even when the transcript fetch
+   fails. → `status: article_fetched`.
 4. **`summarize`** calls the LLM twice per article: once to produce both
    a rewritten factual title and a structured article summary (single
    prompt, single call), once to synthesise the discussion into
