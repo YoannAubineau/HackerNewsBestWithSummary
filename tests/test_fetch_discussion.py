@@ -357,6 +357,135 @@ def test_top_comments_collapses_internal_whitespace(
     assert text == "line one line two"
 
 
+def test_top_comments_wrap_leading_blockquote_in_guillemets(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # A comment that starts by quoting an article excerpt (one or more
+    # lines prefixed with `>`) followed by a paragraph break and a reply
+    # gets the excerpt wrapped in `« … »`, with the leading `>` removed,
+    # so readers can see where the excerpt ends.
+    payload = {
+        "children": [
+            _comment(
+                "alice",
+                "<p>&gt; quoted excerpt<p>my reply",
+                id=1,
+                children=[_comment("leaf", "leaf", id=11)],
+            ),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/210", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
+    result = fetch_discussion(210)
+    assert result is not None
+    line = next(line for line in result.top_comments_markdown.splitlines() if "[alice]" in line)
+    text = line.split(" : ", 1)[1]
+    assert text == "« quoted excerpt » my reply"
+
+
+def test_top_comments_wrap_multi_line_blockquote(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # Multiple consecutive `>`-prefixed paragraphs at the start are merged
+    # into a single quoted span before the reply.
+    payload = {
+        "children": [
+            _comment(
+                "alice",
+                "<p>&gt; first quoted line<p>&gt; second quoted line<p>my reply",
+                id=1,
+                children=[_comment("leaf", "leaf", id=11)],
+            ),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/211", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
+    result = fetch_discussion(211)
+    assert result is not None
+    line = next(line for line in result.top_comments_markdown.splitlines() if "[alice]" in line)
+    text = line.split(" : ", 1)[1]
+    assert text == "« first quoted line second quoted line » my reply"
+
+
+def test_top_comments_no_wrap_without_leading_blockquote(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # A `>` appearing after the first paragraph must not trigger the
+    # wrap: only contiguous leading quoted paragraphs count.
+    payload = {
+        "children": [
+            _comment(
+                "alice",
+                "<p>plain opening<p>&gt; quoted later<p>more reply",
+                id=1,
+                children=[_comment("leaf", "leaf", id=11)],
+            ),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/212", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
+    result = fetch_discussion(212)
+    assert result is not None
+    line = next(line for line in result.top_comments_markdown.splitlines() if "[alice]" in line)
+    text = line.split(" : ", 1)[1]
+    assert "«" not in text
+    assert "»" not in text
+
+
+def test_top_comments_blockquote_only_comment(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # A comment that is entirely a quote (no following reply) still gets
+    # wrapped, so the closing `»` makes it clear the whole comment was a
+    # quote.
+    payload = {
+        "children": [
+            _comment(
+                "alice",
+                "<p>&gt; a<p>&gt; b",
+                id=1,
+                children=[_comment("leaf", "leaf", id=11)],
+            ),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/213", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
+    result = fetch_discussion(213)
+    assert result is not None
+    line = next(line for line in result.top_comments_markdown.splitlines() if "[alice]" in line)
+    text = line.split(" : ", 1)[1]
+    assert text == "« a b »"
+
+
+def test_top_comments_truncation_inside_blockquote_keeps_closing(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # When the 300-char truncation falls inside the wrapped excerpt, the
+    # closing `»` would be lost and the rendered line would carry an
+    # unclosed `«`. The truncation guard restores ` »…` at the end so the
+    # excerpt boundary stays visible.
+    long_quote = "x" * 500
+    payload = {
+        "children": [
+            _comment(
+                "alice",
+                f"<p>&gt; {long_quote}<p>reply",
+                id=1,
+                children=[_comment("leaf", "leaf", id=11)],
+            ),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/214", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
+    result = fetch_discussion(214)
+    assert result is not None
+    line = next(line for line in result.top_comments_markdown.splitlines() if "[alice]" in line)
+    text = line.split(" : ", 1)[1]
+    assert text.startswith("« ")
+    assert text.endswith(" »…")
+    assert len(text) <= 300
+
+
 def test_top_comments_limits_to_three(
     httpx_mock, isolated_settings, monkeypatch
 ):

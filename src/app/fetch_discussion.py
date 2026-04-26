@@ -26,6 +26,7 @@ _BLOCK_BREAK_RE = re.compile(r"</?(p|div|pre|blockquote|li)\s*>", re.IGNORECASE)
 _LINE_BREAK_RE = re.compile(r"<br\s*/?>", re.IGNORECASE)
 _BLANK_LINES_RE = re.compile(r"\n{3,}")
 _WHITESPACE_RE = re.compile(r"\s+")
+_BLOCKQUOTE_LINE_RE = re.compile(r"^>\s?")
 _COMMENT_ROW_RE = re.compile(
     r'class="athing comtr" id="(\d+)"[^>]*?>.*?indent="(\d+)"',
     re.DOTALL,
@@ -224,6 +225,42 @@ def _strip_html_preserving_paragraphs(text: str) -> str:
     return _BLANK_LINES_RE.sub("\n\n", text).strip()
 
 
+def _wrap_initial_blockquote(text: str) -> str:
+    """Wrap a leading ``>``-quoted excerpt in French guillemets.
+
+    HN comments commonly start by quoting a prior comment or article
+    excerpt with the markdown ``>`` prefix. After paragraph collapse and
+    whitespace squashing, the literal ``>`` survives but the end of the
+    quoted span becomes invisible, so readers cannot tell where the
+    excerpt stops and the reply begins. This helper extracts the
+    contiguous leading quoted paragraphs (each line non-empty and starting
+    with ``>``), drops the ``>`` prefixes, and wraps the whole excerpt in
+    ``« … »`` so the boundary is explicit. Returns ``text`` unchanged when
+    no leading blockquote is detected.
+    """
+    paragraphs = text.split("\n\n")
+    quoted_lines: list[str] = []
+    consumed = 0
+    for para in paragraphs:
+        para_lines = [line for line in para.splitlines() if line.strip()]
+        if not para_lines:
+            break
+        if not all(line.startswith(">") for line in para_lines):
+            break
+        for line in para_lines:
+            quoted_lines.append(_BLOCKQUOTE_LINE_RE.sub("", line))
+        consumed += 1
+    if consumed == 0:
+        return text
+    quoted = " ".join(quoted_lines).strip()
+    if not quoted:
+        return text
+    rest = "\n\n".join(paragraphs[consumed:])
+    if rest:
+        return f"« {quoted} »\n\n{rest}"
+    return f"« {quoted} »"
+
+
 def _render_comments(comments: Iterable[dict]) -> str:
     parts: list[str] = []
     for c in comments:
@@ -384,15 +421,18 @@ def _select_top_comments(
         node = by_id.get(cid)
         if node is None or node.author is None or node.text is None:
             continue
-        cleaned = _WHITESPACE_RE.sub(
-            " ", _strip_html_preserving_paragraphs(node.text)
-        ).strip()
+        with_paragraphs = _strip_html_preserving_paragraphs(node.text)
+        wrapped = _wrap_initial_blockquote(with_paragraphs)
+        cleaned = _WHITESPACE_RE.sub(" ", wrapped).strip()
         if not cleaned:
             continue
         if _link_text_ratio(node.text, len(cleaned)) > 0.5:
             continue
         if len(cleaned) > max_chars:
             cleaned = cleaned[: max_chars - 1].rstrip() + "\u2026"
+        if wrapped is not with_paragraphs and "\u00bb" not in cleaned:
+            cleaned = cleaned.rstrip("\u2026").rstrip()
+            cleaned = cleaned[: max_chars - 3].rstrip() + " \u00bb\u2026"
         picked.append(TopComment(id=cid, author=node.author, text=cleaned))
     return picked
 
