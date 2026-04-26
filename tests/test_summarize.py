@@ -27,8 +27,7 @@ def _call_result(content: str, model: str = "m") -> LLMCallResult:
 
 def test_parse_article_response_well_formed_json():
     text = (
-        '{"title": "un titre factuel", '
-        '"summary": "**TL;DR** : phrase.\\n- bullet 1\\n- bullet 2"}'
+        '{"title": "un titre factuel", "summary": "**TL;DR** : phrase.\\n- bullet 1\\n- bullet 2"}'
     )
     title, summary = _parse_article_response(text)
     assert title == "un titre factuel"
@@ -59,22 +58,14 @@ def test_parse_article_response_missing_title_keeps_summary():
 
 
 def test_parse_article_response_accepts_markdown_json_fence():
-    text = (
-        "```json\n"
-        '{"title": "titre", "summary": "corps"}\n'
-        "```"
-    )
+    text = '```json\n{"title": "titre", "summary": "corps"}\n```'
     title, summary = _parse_article_response(text)
     assert title == "titre"
     assert summary == "corps"
 
 
 def test_parse_article_response_accepts_bare_markdown_fence():
-    text = (
-        "```\n"
-        '{"title": "titre", "summary": "corps"}\n'
-        "```"
-    )
+    text = '```\n{"title": "titre", "summary": "corps"}\n```'
     title, summary = _parse_article_response(text)
     assert title == "titre"
     assert summary == "corps"
@@ -88,7 +79,7 @@ def test_compose_body_shows_discussion_comment_count():
         url="https://example.com/a",
         hn_url="https://news.ycombinator.com/item?id=1",
     )
-    assert "## Discussion sur Hacker News (42 commentaires analysés)" in body
+    assert "## Discussion sur Hacker News (42 commentaires)" in body
 
 
 def test_compose_body_singular_for_one_comment():
@@ -99,7 +90,7 @@ def test_compose_body_singular_for_one_comment():
         url="https://example.com/a",
         hn_url="https://news.ycombinator.com/item?id=1",
     )
-    assert "(1 commentaire analysé)" in body
+    assert "(1 commentaire)" in body
 
 
 def test_compose_body_omits_count_when_none():
@@ -110,7 +101,7 @@ def test_compose_body_omits_count_when_none():
         hn_url="https://news.ycombinator.com/item?id=1",
     )
     assert "## Discussion sur Hacker News\n" in body
-    assert "commentaires analysés" not in body
+    assert "commentaires" not in body
 
 
 def test_translate_title_returns_first_line(monkeypatch):
@@ -192,7 +183,7 @@ def test_compose_body_omits_count_when_zero():
         hn_url="https://news.ycombinator.com/item?id=1",
     )
     assert "## Discussion sur Hacker News\n" in body
-    assert "commentaires analysés" not in body
+    assert "commentaires" not in body
 
 
 def test_compose_body_inserts_top_comments_between_discussion_and_footer():

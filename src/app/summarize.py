@@ -124,8 +124,7 @@ def compose_body(
         heading = "## Discussion sur Hacker News"
         if discussion_comment_count:
             word = "commentaire" if discussion_comment_count == 1 else "commentaires"
-            heading += f" ({discussion_comment_count} {word} analysé"
-            heading += "s)" if discussion_comment_count > 1 else ")"
+            heading += f" ({discussion_comment_count} {word})"
         block = discussion_summary.strip()
         if top_comments_markdown and top_comments_markdown.strip():
             block += "\n\n" + top_comments_markdown.strip()
