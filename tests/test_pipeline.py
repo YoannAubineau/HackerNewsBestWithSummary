@@ -166,7 +166,9 @@ def test_run_cycle_collects_failures_from_steps(isolated_settings, monkeypatch):
     monkeypatch.setattr(pipeline, "step_publish", lambda: "")
 
     result = run_cycle()
-    assert result.failures == [("guid://a", "boom a"), ("guid://b", "boom b")]
+    # step_fetch_discussions runs before step_fetch_articles in the new order,
+    # so its failures are collected first.
+    assert result.failures == [("guid://b", "boom b"), ("guid://a", "boom a")]
 
 
 def test_step_summarize_trips_cost_breaker(isolated_settings, monkeypatch):
@@ -192,6 +194,7 @@ def test_step_fetch_articles_writes_submitter_sidecar_for_ask_hn(
     isolated_settings, httpx_mock
 ):
     article = _make_ask_hn_article(hn_item_id=42)
+    article.status = Status.DISCUSSION_FETCHED
     path = save(article)
     httpx_mock.add_response(
         url="https://hn.algolia.com/api/v1/items/42",
@@ -216,6 +219,7 @@ def test_step_fetch_articles_skips_sidecar_when_submitter_text_empty(
     isolated_settings, httpx_mock
 ):
     article = _make_ask_hn_article(hn_item_id=43)
+    article.status = Status.DISCUSSION_FETCHED
     path = save(article)
     httpx_mock.add_response(
         url="https://hn.algolia.com/api/v1/items/43",
@@ -236,8 +240,6 @@ def test_step_fetch_discussions_writes_top_comments_sidecar(
     from app import fetch_discussion as fd
 
     article = _make_article("guid-top-comments")
-    article.status = Status.ARTICLE_FETCHED
-    article.content_source = ContentSource.EXTRACTED
     article.hn_item_id = 500
     path = save(article)
 
@@ -275,12 +277,101 @@ def test_step_fetch_discussions_writes_top_comments_sidecar(
     assert "[alice](https://news.ycombinator.com/item?id=501)" in content
 
 
+def test_step_fetch_discussions_overwrites_url_with_algolia_canonical(
+    isolated_settings, httpx_mock
+):
+    article = _make_article("guid-url-canonical")
+    article.url = "https://feed.example.com/stale?utm=tracking"
+    article.hn_item_id = 600
+    path = save(article)
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/600",
+        json={
+            "id": 600,
+            "url": "https://canonical.example.com/article",
+            "children": [],
+        },
+    )
+
+    assert step_fetch_discussions() == 1
+
+    reloaded, _ = load(path)
+    assert reloaded.url == "https://canonical.example.com/article"
+    assert reloaded.status == Status.DISCUSSION_FETCHED
+
+
+def test_step_fetch_discussions_keeps_feed_url_when_algolia_url_missing(
+    isolated_settings, httpx_mock
+):
+    article = _make_article("guid-no-canonical")
+    article.url = "https://feed.example.com/keep-me"
+    article.hn_item_id = 601
+    path = save(article)
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/601",
+        json={"id": 601, "children": []},
+    )
+
+    assert step_fetch_discussions() == 1
+
+    reloaded, _ = load(path)
+    assert reloaded.url == "https://feed.example.com/keep-me"
+    assert reloaded.status == Status.DISCUSSION_FETCHED
+
+
+def test_step_fetch_discussions_keeps_feed_url_when_algolia_unreachable(
+    isolated_settings, httpx_mock
+):
+    article = _make_article("guid-algolia-down")
+    article.url = "https://feed.example.com/keep-me"
+    article.hn_item_id = 602
+    path = save(article)
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/602",
+        status_code=500,
+    )
+
+    assert step_fetch_discussions() == 1
+
+    reloaded, _ = load(path)
+    assert reloaded.url == "https://feed.example.com/keep-me"
+    assert reloaded.status == Status.DISCUSSION_FETCHED
+
+
+def test_step_fetch_discussions_drains_pre_swap_article_fetched(
+    isolated_settings, httpx_mock
+):
+    article = _make_article("guid-in-flight")
+    article.url = "https://feed.example.com/old"
+    article.status = Status.ARTICLE_FETCHED
+    article.hn_item_id = 603
+    path = save(article)
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/603",
+        json={
+            "id": 603,
+            "url": "https://canonical.example.com/in-flight",
+            "children": [],
+        },
+    )
+
+    assert step_fetch_discussions() == 1
+
+    reloaded, _ = load(path)
+    assert reloaded.status == Status.DISCUSSION_FETCHED
+    assert reloaded.url == "https://canonical.example.com/in-flight"
+
+
 def test_step_summarize_reads_and_clears_top_comments_sidecar(
     isolated_settings, monkeypatch
 ):
     isolated_settings.llm_sleep_seconds = 0
     article = _make_article("guid-top-flow")
-    article.status = Status.DISCUSSION_FETCHED
+    article.status = Status.ARTICLE_FETCHED
     article.content_source = ContentSource.EXTRACTED
     path = save(article)
     write_sidecar(path, "article", "raw article")
@@ -317,7 +408,7 @@ def test_step_summarize_reads_and_clears_top_comments_sidecar(
 def test_step_summarize_records_llm_metrics(isolated_settings, monkeypatch):
     isolated_settings.llm_sleep_seconds = 0
     article = _make_article("guid-metrics")
-    article.status = Status.DISCUSSION_FETCHED
+    article.status = Status.ARTICLE_FETCHED
     article.content_source = ContentSource.EXTRACTED
     path = save(article)
     write_sidecar(path, "article", "raw article")

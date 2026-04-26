@@ -44,6 +44,7 @@ class AlgoliaItem(BaseModel):
     id: int | None = None
     author: str | None = None
     text: str | None = None
+    url: str | None = None
     points: int | None = None
     children: list["AlgoliaItem"] = Field(default_factory=list)
 
@@ -63,6 +64,7 @@ class Discussion:
     comment_count: int
     text: str
     top_comments_markdown: str
+    url: str | None
 
 
 def fetch_discussion(hn_item_id: int) -> Discussion | None:
@@ -71,14 +73,19 @@ def fetch_discussion(hn_item_id: int) -> Discussion | None:
         return None
     settings = get_settings()
     comments = list(_iter_comments(payload, settings.discussion_budget))
-    if not comments:
-        return None
-    ordered_ids = _fetch_hn_display_order(hn_item_id)
-    top_comments = _select_top_comments(payload, ordered_ids)
+    if comments:
+        ordered_ids = _fetch_hn_display_order(hn_item_id)
+        top_comments = _select_top_comments(payload, ordered_ids)
+        text = _render_comments(comments)
+        top_comments_markdown = render_top_comments(top_comments)
+    else:
+        text = ""
+        top_comments_markdown = ""
     return Discussion(
         comment_count=len(comments),
-        text=_render_comments(comments),
-        top_comments_markdown=render_top_comments(top_comments),
+        text=text,
+        top_comments_markdown=top_comments_markdown,
+        url=payload.url,
     )
 
 

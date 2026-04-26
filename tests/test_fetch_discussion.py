@@ -367,10 +367,50 @@ def test_fetch_discussion_returns_none_on_http_error(httpx_mock):
     assert fetch_discussion(500) is None
 
 
-def test_fetch_discussion_returns_none_when_no_qualifying_roots(httpx_mock, isolated_settings):
-    payload = {"children": [_comment("alice", "leaf 1"), _comment("bob", "leaf 2")]}
+def test_fetch_discussion_returns_empty_when_no_qualifying_roots(httpx_mock, isolated_settings):
+    # When Algolia succeeds but no comment qualifies for inclusion (only leaves),
+    # the call still surfaces the canonical URL captured from the root payload,
+    # so callers can still update article.url. Comment fields are empty.
+    payload = {
+        "url": "https://example.com/canonical",
+        "children": [_comment("alice", "leaf 1"), _comment("bob", "leaf 2")],
+    }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/77", json=payload)
-    assert fetch_discussion(77) is None
+    result = fetch_discussion(77)
+    assert result is not None
+    assert result.comment_count == 0
+    assert result.text == ""
+    assert result.top_comments_markdown == ""
+    assert result.url == "https://example.com/canonical"
+
+
+def test_fetch_discussion_exposes_canonical_url(httpx_mock, isolated_settings):
+    isolated_settings.discussion_budget = 10
+    payload = {
+        "url": "https://example.com/article",
+        "children": [
+            _comment("alice", "root", children=[_comment("bob", "leaf reply")]),
+        ],
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/88", json=payload)
+    result = fetch_discussion(88)
+    assert result is not None
+    assert result.url == "https://example.com/article"
+
+
+def test_fetch_discussion_url_is_none_for_self_post(httpx_mock, isolated_settings):
+    # Ask HN / Show HN / polls have no external URL: Algolia returns no url
+    # field. Callers fall back to the feed URL.
+    isolated_settings.discussion_budget = 10
+    payload = {
+        "children": [
+            _comment("alice", "root", children=[_comment("bob", "leaf reply")]),
+        ],
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/89", json=payload)
+    result = fetch_discussion(89)
+    assert result is not None
+    assert result.url is None
 
 
 def test_fetch_submitter_text_strips_html_and_entities(httpx_mock):

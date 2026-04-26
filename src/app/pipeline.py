@@ -1,5 +1,6 @@
 import time
 from datetime import UTC, datetime
+from itertools import chain
 from pathlib import Path
 from typing import NamedTuple
 
@@ -62,7 +63,7 @@ def step_fetch_feed() -> int:
 
 def step_fetch_articles(failures: list[tuple[str, str]] | None = None) -> int:
     done = 0
-    for path, article, body in list(iter_by_status(Status.PENDING)):
+    for path, article, body in list(iter_by_status(Status.DISCUSSION_FETCHED)):
         if article.is_ask_or_show_hn:
             try:
                 submitter_text = fetch_submitter_text(article.hn_item_id)
@@ -96,14 +97,25 @@ def step_fetch_articles(failures: list[tuple[str, str]] | None = None) -> int:
 
 def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int:
     done = 0
-    for path, article, body in list(iter_by_status(Status.ARTICLE_FETCHED)):
+    # The second iterator drains any article left in ARTICLE_FETCHED by the
+    # pre-swap pipeline order (article fetch used to precede discussion fetch).
+    # Under the new order it is always empty in steady state. Remove once the
+    # in-flight inventory has cycled through.
+    sources = chain(
+        iter_by_status(Status.PENDING),
+        iter_by_status(Status.ARTICLE_FETCHED),
+    )
+    for path, article, body in list(sources):
         try:
             discussion = fetch_discussion(article.hn_item_id)
         except Exception as exc:  # noqa: BLE001
             _record_attempt(path, article, body, f"fetch_discussion: {exc}", failures)
             continue
         if discussion:
-            write_sidecar(path, "discussion", discussion.text)
+            if discussion.url:
+                article.url = discussion.url
+            if discussion.text:
+                write_sidecar(path, "discussion", discussion.text)
             if discussion.top_comments_markdown:
                 write_sidecar(path, "top_comments", discussion.top_comments_markdown)
             article.discussion_comment_count = discussion.comment_count
@@ -127,7 +139,7 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
             )
             return 0
     done = 0
-    for path, article, body in list(iter_by_status(Status.DISCUSSION_FETCHED)):
+    for path, article, body in list(iter_by_status(Status.ARTICLE_FETCHED)):
         article_text = read_sidecar(path, "article")
         discussion_text = read_sidecar(path, "discussion")
         top_comments_md = read_sidecar(path, "top_comments")
@@ -195,8 +207,8 @@ def step_publish() -> str:
 def run_cycle() -> CycleResult:
     failures: list[tuple[str, str]] = []
     step_fetch_feed()
-    step_fetch_articles(failures)
     step_fetch_discussions(failures)
+    step_fetch_articles(failures)
     step_summarize(failures)
     # Always publish, even when no new articles were summarized: a code-only
     # change on the publish side (description format, feed structure, …) must
