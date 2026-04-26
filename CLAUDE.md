@@ -28,9 +28,8 @@ hourly on a public repo, so minutes are free.
   PR text, CLAUDE.md, docs) must be in **English**. The conversation with the
   user happens in French, don't conflate the two. User-facing content inside
   the feed (summary text, feed title, section headings like "Résumé de
-  l'article", "Avis positifs", "Avis négatifs", "Commentaires les plus
-  plébiscités") stays in **French** because that's the user's target
-  reading language.
+  l'article", "Avis positifs", "Avis négatifs", "Top commentaires") stays
+  in **French** because that's the user's target reading language.
 - **No comments unless a reader would be surprised**. No "this line does X"
   comments. Add a comment only when there's a non-obvious invariant, a
   workaround, or a subtle constraint.
@@ -119,7 +118,7 @@ hourly on a public repo, so minutes are free.
   a `Discussion` with empty text and `canonical_dupe_id=NNN`, plus the
   payload's `title` and `created_at` so the caller can substitute the
   article identity without a second Algolia call. Also produces the
-  "Commentaires les plus plébiscités" block rendered at the end of the
+  "Top commentaires" block rendered at the end of the
   discussion section. Per-comment scores are not exposed by any HN API
   (Algolia returns `points: null` on every child, Firebase doesn't carry
   it either), and Algolia's `/items/{id}` returns children
@@ -189,7 +188,7 @@ hourly on a public repo, so minutes are free.
 - **HN HTML is the only source for comment ranking**: per-comment scores
   are not exposed by Algolia or Firebase, and Algolia returns children
   in chronological (ID-ascending) order, not HN's best order. The
-  "Commentaires les plus plébiscités" section therefore depends on a
+  "Top commentaires" section therefore depends on a
   fetch of `news.ycombinator.com/item?id=<id>` per article. HTTP 429
   from HN happens often enough on shared GitHub Actions IPs to be a
   real concern, even on a single request. `_fetch_hn_html` is wrapped

@@ -46,7 +46,7 @@ where it left off.
    to recover the display order of top-level comments, which Algolia
    does not preserve and which HN never exposes as a numeric score. The
    first three valid IDs in that order become the verbatim
-   "Commentaires les plus plébiscités" block rendered later in the
+   "Top commentaires" block rendered later in the
    feed. The Algolia root payload also carries the canonical article
    URL (the value HN keeps in its own database, which can drift from the
    hnrss `<link>` after a moderator edit or canonicalisation): when

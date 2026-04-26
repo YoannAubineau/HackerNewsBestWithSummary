@@ -398,7 +398,7 @@ def _select_top_comments(
 def render_top_comments(comments: list[TopComment]) -> str:
     if not comments:
         return ""
-    lines = ["**Commentaires les plus plébiscités** :", ""]
+    lines = ["**Top commentaires** :", ""]
     for c in comments:
         url = _HN_ITEM_URL.format(id=c.id)
         author = _escape_markdown(c.author)

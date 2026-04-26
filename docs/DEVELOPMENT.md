@@ -135,7 +135,7 @@ window absorbs that comfortably. The daily-cost circuit breaker
 
 Alongside the LLM-fed comment tree above, each article also reproduces
 the three top-ranked root comments of the Hacker News discussion
-verbatim, under a "Commentaires les plus plébiscités" heading at the
+verbatim, under a "Top commentaires" heading at the
 end of the discussion section. Each bullet quotes the comment text
 (truncated to 300 characters with a U+2026 ellipsis on overflow) and
 links to the full comment via `news.ycombinator.com/item?id=<id>`.

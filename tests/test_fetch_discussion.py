@@ -214,7 +214,7 @@ def test_top_comments_follow_hn_display_order(
     result = fetch_discussion(200)
     assert result is not None
     md = result.top_comments_markdown
-    assert md.startswith("**Commentaires les plus plébiscités** :")
+    assert md.startswith("**Top commentaires** :")
     assert md.index("carol") < md.index("alice") < md.index("bob")
 
 
