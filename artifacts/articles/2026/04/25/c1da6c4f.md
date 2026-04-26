@@ -55,11 +55,11 @@ Un utilisateur a découvert que son interface audio Rodecaster Duo possède SSH 
 - La découverte n'est pas techniquement impressionnante (nmap -p 22 aurait suffi) et ne mérite pas vraiment d'être qualifiée de "hacking" complexe.
 - L'enthousiasme autour de cette ouverture doit être tempéré par des préoccupations réglementaires : les fabricants internationaux pourraient préférer fermer l'accès plutôt que de naviguer les obligations de conformité.
 
-**Commentaires les plus plébiscités** :
+**Top commentaires** :
 
-- [rikafurude21](https://news.ycombinator.com/item?id=47895644) : « Its still crazy to me that everyone has a pocket AI-hacker ready to inspect firmware and modify their devices now. You just put the agent on it and it gives you access in minutes. You would have to be a Hotz tier hacker if you wanted to do anything close to this only last year, or at the very least… »
-- [yonatan8070](https://news.ycombinator.com/item?id=47895199) : « Having the firmware image just be a boring old tarball + hash sounds super nice. I wish more devices were this open, and I hope Rode won't see this and decide to lock the firmware upgrades down. »
-- [ZihangZ](https://news.ycombinator.com/item?id=47898729) : « Yeah, this is pretty common once a device has any real DSP in it. There's usually some stripped-down Linux on an ARM SoC underneath, and the vendor BSP just happens to ship with sshd on.Not necessarily malice, more like nobody on the audio side really owns the rootfs.The big question is whether it'… »
+- [rikafurude21](https://news.ycombinator.com/item?id=47895644) : Its still crazy to me that everyone has a pocket AI-hacker ready to inspect firmware and modify their devices now. You just put the agent on it and it gives you access in minutes. You would have to be a Hotz tier hacker if you wanted to do anything close to this only last year, or at the very least…
+- [yonatan8070](https://news.ycombinator.com/item?id=47895199) : Having the firmware image just be a boring old tarball + hash sounds super nice. I wish more devices were this open, and I hope Rode won't see this and decide to lock the firmware upgrades down.
+- [ZihangZ](https://news.ycombinator.com/item?id=47898729) : Yeah, this is pretty common once a device has any real DSP in it. There's usually some stripped-down Linux on an ARM SoC underneath, and the vendor BSP just happens to ship with sshd on. Not necessarily malice, more like nobody on the audio side really owns the rootfs. The big question is whether i…
 
 ---
 

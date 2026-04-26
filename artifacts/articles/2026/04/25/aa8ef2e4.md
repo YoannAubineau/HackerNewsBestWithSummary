@@ -51,11 +51,9 @@ Google s'engage à investir jusqu'à 40 milliards de dollars chez Anthropic, ave
 - Contraste frappant entre les dizaines de milliards investis en IA et l'absence de solutions pour la pauvreté et l'accès aux soins, même dans les pays riches
 - Les priorités d'allocation des ressources posent des questions éthiques sur les vraies urgences sociétales versus les courses technologiques entre géants
 
-**Commentaires les plus plébiscités** :
+**Top commentaires** :
 
-- [tomhow](https://news.ycombinator.com/item?id=47896084) : « Comments moved to https://news.ycombinator.com/item?id=47892074. »
-- [state\_less](https://news.ycombinator.com/item?id=47896121) : « Apparently many people don't realize that Google is already invested, they are simply reupping their ante. Anthropic is a MicroAmaGooVidia amalgamation, a Frankenstein of more or less dead capital reborn as an AI corporation.I suppose they could chose not to, but for 10B it's a simple choice to hed… »
-- [pingou](https://news.ycombinator.com/item?id=47895235) : « dupe: https://news.ycombinator.com/item?id=47894129 »
+- [state\_less](https://news.ycombinator.com/item?id=47896121) : Apparently many people don't realize that Google is already invested, they are simply reupping their ante. Anthropic is a MicroAmaGooVidia amalgamation, a Frankenstein of more or less dead capital reborn as an AI corporation. I suppose they could chose not to, but for 10B it's a simple choice to he…
 
 ---
 

@@ -54,11 +54,11 @@ Un homme de quarante ans a été arrêté en Corée du Sud pour avoir créé et 
 - L'article manque de détails cruciaux (intentions exactes, si le post visait explicitement les autorités, charges précises) rendant impossible de juger si l'arrestation est justifiée ou si c'est un exemple de bouc émissaire.
 - Des solutions simples existaient avant l'IA (Photoshop, prise de photo) ; focaliser sur l'IA détourne de la véritable leçon : les autorités ne devraient jamais aveuglément faire confiance à des sources non vérifiées.
 
-**Commentaires les plus plébiscités** :
+**Top commentaires** :
 
-- [_fw](https://news.ycombinator.com/item?id=47888095) : « Are you trying to tell me, in this the year of our lord 2026, somebody has been (rightfully or wrongfully) arrested for literally ‘crying wolf’?There’s something hilariously poetic about a ~2,500 year old fable being relevant today, because of AI. »
-- [kqp](https://news.ycombinator.com/item?id=47888410) : « It sounds like he didn’t actually file a false police report. They don’t even say they asked him whether it’s true. It seems the police just read a post by a random person on the internet, assumed it’s true, then arrested him when it wasn’t. The article is devastatingly light on info, though, so I… »
-- [sigmoid10](https://news.ycombinator.com/item?id=47888194) : « Title should be "Man arrested for deceptive and antisocial behavior".The only reason you are seeing this right now is because it has AI in the title. »
+- [\_fw](https://news.ycombinator.com/item?id=47888095) : Are you trying to tell me, in this the year of our lord 2026, somebody has been \(rightfully or wrongfully\) arrested for literally ‘crying wolf’? There’s something hilariously poetic about a ~2,500 year old fable being relevant today, because of AI.
+- [kqp](https://news.ycombinator.com/item?id=47888410) : It sounds like he didn’t actually file a false police report. They don’t even say they asked him whether it’s true. It seems the police just read a post by a random person on the internet, assumed it’s true, then arrested him when it wasn’t. The article is devastatingly light on info, though, so I…
+- [sigmoid10](https://news.ycombinator.com/item?id=47888194) : Title should be "Man arrested for deceptive and antisocial behavior". The only reason you are seeing this right now is because it has AI in the title.
 
 ---
 

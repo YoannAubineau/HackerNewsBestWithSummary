@@ -56,11 +56,11 @@ Apple devrait radicalement redéfinir ses stratégies produits en séparant clai
 - Le manque d'alternatives matérielles est un choix volontaire : le hardware iPad *pourrait* exécuter macOS ou une véritable fragmentation iOS/macOS, mais Apple refuse par segmentation de marché intentionnelle.
 - Face ID sur iPad Pro est inférieur à Touch ID : moins accessible pour malvoyants, beaucoup plus de faux négatifs/positifs, et performance catastrophique en faible luminosité.
 
-**Commentaires les plus plébiscités** :
+**Top commentaires** :
 
-- [bahmboo](https://news.ycombinator.com/item?id=47898924) : « Y'all look at as a paradigm shift. The rest of the world just wants to touch the screen when it makes sense.We trained billions of humans to touch the screen. »
-- [gehsty](https://news.ycombinator.com/item?id=47898907) : « The only thing I’d push back on is the weird and wacky iPad apps - our brains and fingers need some consistency in UI, doesn’t mean it can be fun though! »
-- [steveBK123](https://news.ycombinator.com/item?id=47874477) : « I've used Mac for 20 years and iPad on&off for 10 years.. largely I agree with Craig. Touch on MacOS is basically useless, you won't realize this until you try using an iPad like a MacBook for an extended period of time. Reaching up from keyboard/trackpad to touch the screen quickly gets fatiguing.… »
+- [bahmboo](https://news.ycombinator.com/item?id=47898924) : Y'all look at as a paradigm shift. The rest of the world just wants to touch the screen when it makes sense. We trained billions of humans to touch the screen.
+- [gehsty](https://news.ycombinator.com/item?id=47898907) : The only thing I’d push back on is the weird and wacky iPad apps - our brains and fingers need some consistency in UI, doesn’t mean it can be fun though!
+- [steveBK123](https://news.ycombinator.com/item?id=47874477) : I've used Mac for 20 years and iPad on&off for 10 years.. largely I agree with Craig. Touch on MacOS is basically useless, you won't realize this until you try using an iPad like a MacBook for an extended period of time. Reaching up from keyboard/trackpad to touch the screen quickly gets fatiguing.…
 
 ---
 
