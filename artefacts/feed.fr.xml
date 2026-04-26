@@ -9,8 +9,51 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sun, 26 Apr 2026 05:50:30 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 26 Apr 2026 06:36:20 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Les obstacles à la progression thérapeutique contre la maladie d'Alzheimer</title>
+      <link>https://freakonomics.com/podcast/why-has-there-been-so-little-progress-on-alzheimers-disease/</link>
+      <description>freakonomics.com/podcast/why-has-there-been-so-little-progress-on-alzheimers-disease/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Cet article examine les raisons pour lesquelles les avancées thérapeutiques contre la maladie d'Alzheimer restent limitées malgré des décennies de recherche et d'investissements importants.</p>
+<ul>
+<li>Les défis scientifiques fondamentaux dans la compréhension de la physiopathologie de la maladie compliquent le développement de traitements efficaces</li>
+<li>Les obstacles réglementaires et les critères d'évaluation clinique rendent difficile la validation de nouveaux médicaments</li>
+<li>Les facteurs économiques et structurels du secteur pharmaceutique influencent les priorités de recherche</li>
+<li>La complexité biologique de la démence et l'hétérogénéité des patients requièrent des approches plus sophistiquées</li>
+</ul>
+<h2>Discussion sur Hacker News (82 commentaires)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>Le blocage institutionnel autour de l'hypothèse amyloïde, renforcé par la fraude scientifique et les conflits d'intérêts, a détourné des milliards de dollars et décennies de recherche vers une impasse</li>
+<li>L'Alzheimer est une maladie hétérogène avec plusieurs facteurs contributifs, pas une cause unique, mais cette complexité a été ignorée au profit d'une narration simpliste pour obtenir des financements</li>
+<li>Le système de « gatekeeping » scientifique, où quelques experts contrôlent les financements, stifle systématiquement l'innovation et les hypothèses alternatives, un problème structurel récurrent en science</li>
+<li>De nouvelles pistes émergentes (vaccins contre la varicelle, syndrome post-viral, dysfonctionnement lymphatique, facteurs psychosociaux) sont maintenant explorables grâce aux outils récents et pourraient avoir été bloquées précédemment</li>
+<li>La fraude a été facilitée par un système de pairs trop confiants qui manque de diversité cognitive et d'incitations à remettre en question le consensus établi</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>La complexité intrinsèque du cerveau, les essais cliniques très longs et la difficulté de diagnostiquer précocement l'Alzheimer expliquent le manque de progrès bien au-delà de la fraude seule</li>
+<li>D'autres domaines (cellules souches, cancers) ont connu des fraudes similaires ou plus graves tout en progressant davantage, suggérant que la fraude n'est pas l'explication complète</li>
+<li>L'hypothèse amyloïde reposait sur des données solides (autopsies, mutations génétiques) et ne venait pas du néant, même si elle s'est avérée insuffisante ou partiellement erronée</li>
+<li>L'Alzheimer reçoit un financement substantiel comparé à d'autres maladies graves et moins connues, ce qui ne soutient pas l'idée d'une négligence relative du problème</li>
+<li>Beaucoup de revendications alternatives (lithium, microbiome, traumatisme infantile) demeurent hautement spéculatives sans données robustes, risquant de reproduire les mêmes erreurs du passé</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47907898">hn_throwaway_99</a> : « I'm surprised there was no mention (at least none that I found when searching) of the relatively recent research coming out of Harvard regarding the hypothesis that low levels of lithium in the brain are responsible for a lot of Alzheimer's cases.The research is still in the very early stages (larg… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47906620">jleyank</a> : « They had a biological model. They had multiple drugs that were showed activity against that model, and effectiveness in humans. Problem was, the model was wrong. Pharma’s burned billions chasing this as it’s possibly the biggest market imaginable.Whether it was fraudulent or just incorrect is a dif… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47906729">mehrshad</a> : « https://www.statnews.com/2019/06/25/alzheimers-cabal-thwarte...&quot;Despite being described as a “cabal,” the amyloid camp was neither organized nor nefarious. Those who championed the amyloid hypothesis truly believed it, and thought that focusing money and attention on it rather than competing ideas… »</li>
+</ul>
+<hr />
+<p><a href="https://freakonomics.com/podcast/why-has-there-been-so-little-progress-on-alzheimers-disease/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47905984">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">a9d5f9f2</guid>
+      <comments>https://news.ycombinator.com/item?id=47905984</comments>
+      <pubDate>Sun, 26 Apr 2026 00:12:47 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Un amateur de 23 ans résout un problème mathématique d'Erdős vieux de 60 ans avec ChatGPT</title>
       <link>https://www.scientificamerican.com/article/amateur-armed-with-chatgpt-vibe-maths-a-60-year-old-problem/</link>
@@ -3975,55 +4018,6 @@
       <comments>https://news.ycombinator.com/item?id=47844431</comments>
       <pubDate>Tue, 21 Apr 2026 04:12:12 +0000</pubDate>
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-    </item>
-    <item>
-      <title>Recueil de lois et principes fondamentaux en génie logiciel</title>
-      <link>https://lawsofsoftwareengineering.com</link>
-      <description>lawsofsoftwareengineering.com</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Un ensemble complet de lois, principes et biais qui régissent la conception de logiciels, l'organisation des équipes et le comportement humain dans les projets informatiques.</p>
-<ul>
-<li>
-<p><strong>Lois de conception système</strong> : Conway's Law (les systèmes reflètent la structure organisationnelle), Gall's Law (les systèmes complexes évoluent de systèmes simples), Law of Leaky Abstractions (les abstractions non triviales fuient toujours)</p>
-</li>
-<li>
-<p><strong>Principes de développement</strong> : DRY, KISS, SOLID, YAGNI (ne pas ajouter de fonctionnalités inutiles), Boy Scout Rule (laisser le code mieux qu'on l'a trouvé)</p>
-</li>
-<li>
-<p><strong>Lois sur les performances et ressources</strong> : Premature Optimization (l'optimisation prématurée est nuisible), Brooks's Law (ajouter des ressources à un projet tard l'aggrave), Amdahl's Law (limites de la parallélisation)</p>
-</li>
-<li>
-<p><strong>Dynamiques humaines et organisationnelles</strong> : Peter Principle (montée au niveau d'incompétence), Dilbert Principle (promotion des incompétents), Dunbar's Number (limite cognitive de 150 relations), Price's Law (racine carrée des participants fait 50% du travail)</p>
-</li>
-<li>
-<p><strong>Biais et fallacies</strong> : Dunning-Kruger Effect, Confirmation Bias, Sunk Cost Fallacy, Murphy's Law, et lois décrivant la mesure, l'estimation et les cycles technologiques</p>
-</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Confirmations</strong> :</p>
-<ul>
-<li>Les &quot;lois&quot; du génie logiciel sont des principes directeurs plutôt que des lois physiques, utiles pour guider les décisions mais nécessitant du jugement contextuel sur quand les appliquer.</li>
-<li>Boyd's Law sur l'itération rapide et la règle d'Ousterhout sur l'encapsulation de la complexité sont des principes importants manquant à la collection et méritent d'être ajoutés.</li>
-<li>Le principe de conception selon lequel supprimer une fonctionnalité devrait être aussi simple que supprimer un fichier/répertoire représente une approche structurelle utile et peu connue.</li>
-<li>Les modèles d'IA actuels sont effectivement utiles pour raisonner sur les performances et découvrir des solutions alternatives lors de l'optimisation de code.</li>
-</ul>
-<p><strong>Réfutations</strong> :</p>
-<ul>
-<li>La loi &quot;Premature Optimization&quot; est souvent mal citée : Knuth lui-même considérait qu'une amélioration facile de 12% valait la peine, et du code simple est souvent plus rapide et mène à des architectures moins complexes que l'optimisation horizontale tardive.</li>
-<li>Le théorème CAP est mal compris dans sa formulation &quot;choisir deux parmi trois&quot; : on ne peut pas vraiment choisir CA (qui implique un seul nœud), et la véritable heuristique utile est qu'il existe souvent un compromis entre cohérence et disponibilité.</li>
-<li>Ces &quot;lois&quot; contiennent tellement de contradictions internes qu'on peut toujours en invoquer une pour justifier n'importe quelle décision ; le vrai défi est de savoir quand en violer une et pourquoi.</li>
-<li>Le génie logiciel reste plus proche de la &quot;magie vaudoue&quot; que de la science : sans certification rigoureuse, normes établies et responsabilité légale comme dans les disciplines d'ingénierie classiques, ces principes restent peu fiables.</li>
-</ul>
-<hr />
-<p><a href="https://lawsofsoftwareengineering.com">Article original</a> · <a href="https://news.ycombinator.com/item?id=47847179">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">080c6784</guid>
-      <comments>https://news.ycombinator.com/item?id=47847179</comments>
-      <pubDate>Tue, 21 Apr 2026 11:04:56 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://lawsofsoftwareengineering.com/og-image.png"/>
-      </media:group>
     </item>
   </channel>
 </rss>
