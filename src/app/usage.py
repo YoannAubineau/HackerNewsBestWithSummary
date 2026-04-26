@@ -71,15 +71,13 @@ def record_usage() -> None:
         return
     payload = response.json().get("data") or {}
     usage = float(payload.get("usage") or 0)
-    limit_raw = payload.get("limit")
-    limit = float(limit_raw) if limit_raw is not None else None
 
     today = datetime.now(tz=UTC).date().isoformat()
     entries = _load_daily()
-    entries[today] = {"cumulative": usage, "limit": limit}
+    entries[today] = {"cumulative": usage}
     _save_daily(entries)
     _write_badge(usage)
-    log.info("usage_recorded", date=today, cumulative=usage, limit=limit)
+    log.info("usage_recorded", date=today, cumulative=usage)
 
 
 def _write_badge(usage: float) -> None:
@@ -101,8 +99,7 @@ def generate_chart(days: int = 30) -> None:
     window_start = today - timedelta(days=days - 1)
     dates = [window_start + timedelta(days=i) for i in range(days)]
     daily_spend = _derive_daily_spend(entries, dates)
-    limit = _latest_limit(entries)
-    svg = _render_svg(daily_spend, limit=limit)
+    svg = _render_svg(daily_spend)
     _CHART_PATH.parent.mkdir(parents=True, exist_ok=True)
     _CHART_PATH.write_text(svg, encoding="utf-8")
     log.info("usage_chart_written", days=days, path=str(_CHART_PATH))
@@ -150,15 +147,7 @@ def _derive_daily_spend(
     return result
 
 
-def _latest_limit(entries: dict[str, dict]) -> float | None:
-    if not entries:
-        return None
-    latest = max(entries)
-    value = entries[latest].get("limit")
-    return float(value) if value is not None else None
-
-
-def _render_svg(daily: list[tuple[date, float]], *, limit: float | None) -> str:
+def _render_svg(daily: list[tuple[date, float]]) -> str:
     width, height = 720, 260
     margin_top, margin_bottom = 24, 52
     margin_left, margin_right = 52, 12
@@ -215,8 +204,6 @@ def _render_svg(daily: list[tuple[date, float]], *, limit: float | None) -> str:
     # footer
     total = sum(v for _, v in daily)
     footer = f"Last {n} days: ${total:.2f}"
-    if limit is not None:
-        footer += f" · limit ${limit:.2f}"
     out.append(
         f'<text x="{margin_left}" y="{height - 10}" fill="#666">{footer}</text>'
     )

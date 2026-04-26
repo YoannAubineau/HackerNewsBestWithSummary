@@ -1,26 +1,20 @@
 {
   "2026-04-21": {
-    "cumulative": 0.75,
-    "limit": 50.0
+    "cumulative": 0.75
   },
   "2026-04-22": {
-    "cumulative": 1.055015,
-    "limit": 50.0
+    "cumulative": 1.055015
   },
   "2026-04-23": {
-    "cumulative": 1.397839,
-    "limit": 50.0
+    "cumulative": 1.397839
   },
   "2026-04-24": {
-    "cumulative": 1.743093,
-    "limit": 50.0
+    "cumulative": 1.743093
   },
   "2026-04-25": {
-    "cumulative": 2.050334,
-    "limit": 50.0
+    "cumulative": 2.050334
   },
   "2026-04-26": {
-    "cumulative": 2.161592,
-    "limit": 50.0
+    "cumulative": 2.161592
   }
 }
