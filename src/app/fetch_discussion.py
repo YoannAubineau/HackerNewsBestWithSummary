@@ -384,7 +384,9 @@ def _select_top_comments(
         node = by_id.get(cid)
         if node is None or node.author is None or node.text is None:
             continue
-        cleaned = _WHITESPACE_RE.sub(" ", _strip_html(node.text)).strip()
+        cleaned = _WHITESPACE_RE.sub(
+            " ", _strip_html_preserving_paragraphs(node.text)
+        ).strip()
         if not cleaned:
             continue
         if _link_text_ratio(node.text, len(cleaned)) > 0.5:

@@ -285,6 +285,29 @@ def test_top_comments_truncates_to_300_chars_with_ellipsis(
     assert short_text in short_line
 
 
+def test_top_comments_separates_paragraphs_with_space(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    payload = {
+        "children": [
+            _comment(
+                "alice",
+                "<p>First paragraph.</p><p>Second paragraph.</p>",
+                id=1,
+                children=[_comment("leaf", "leaf", id=11)],
+            ),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/204", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
+    result = fetch_discussion(204)
+    assert result is not None
+    md = result.top_comments_markdown
+    line = next(line for line in md.splitlines() if "[alice]" in line)
+    text = line.split(" : « ", 1)[1].rstrip(" »")
+    assert text == "First paragraph. Second paragraph."
+
+
 def test_top_comments_collapses_internal_whitespace(
     httpx_mock, isolated_settings, monkeypatch
 ):
