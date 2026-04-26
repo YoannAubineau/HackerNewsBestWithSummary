@@ -97,7 +97,10 @@ def step_fetch_articles(failures: list[tuple[str, str]] | None = None) -> int:
 
 
 def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int:
+    settings = get_settings()
+    threshold = settings.min_discussion_comments
     done = 0
+    skipped = 0
     # The second iterator drains any article left in ARTICLE_FETCHED by the
     # pre-swap pipeline order (article fetch used to precede discussion fetch).
     # Under the new order it is always empty in steady state. Remove once the
@@ -171,6 +174,23 @@ def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int
                 canonical_guid=canonical_guid,
             )
 
+        if discussion is not None and discussion.comment_count < threshold:
+            if not path.exists():
+                # Substitution rewrote the article identity to a canonical
+                # that doesn't yet exist on disk. Persist it at PENDING so
+                # the next cycle re-evaluates the canonical against fresh
+                # counts; otherwise the unlinked old path leaves us with
+                # no on-disk entry at all.
+                save(article, body)
+            log.info(
+                "article_skipped_low_comments",
+                guid=article.guid,
+                comment_count=discussion.comment_count,
+                threshold=threshold,
+            )
+            skipped += 1
+            continue
+
         if discussion:
             if discussion.url:
                 article.url = discussion.url
@@ -183,7 +203,7 @@ def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int
         article.status = Status.DISCUSSION_FETCHED
         save(article, body)
         done += 1
-    log.info("fetch_discussions", processed=done)
+    log.info("fetch_discussions", processed=done, skipped=skipped)
     return done
 
 

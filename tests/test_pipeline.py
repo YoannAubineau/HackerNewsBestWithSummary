@@ -248,6 +248,7 @@ def test_step_fetch_discussions_writes_top_comments_sidecar(
 ):
     from app import fetch_discussion as fd
 
+    isolated_settings.min_discussion_comments = 0
     article = _make_article("guid-top-comments")
     article.hn_item_id = 500
     path = save(article)
@@ -289,6 +290,7 @@ def test_step_fetch_discussions_writes_top_comments_sidecar(
 def test_step_fetch_discussions_overwrites_url_with_algolia_canonical(
     isolated_settings, httpx_mock
 ):
+    isolated_settings.min_discussion_comments = 0
     article = _make_article("guid-url-canonical")
     article.url = "https://feed.example.com/stale?utm=tracking"
     article.hn_item_id = 600
@@ -313,6 +315,7 @@ def test_step_fetch_discussions_overwrites_url_with_algolia_canonical(
 def test_step_fetch_discussions_keeps_feed_url_when_algolia_url_missing(
     isolated_settings, httpx_mock
 ):
+    isolated_settings.min_discussion_comments = 0
     article = _make_article("guid-no-canonical")
     article.url = "https://feed.example.com/keep-me"
     article.hn_item_id = 601
@@ -353,6 +356,7 @@ def test_step_fetch_discussions_keeps_feed_url_when_algolia_unreachable(
 def test_step_fetch_discussions_drains_pre_swap_article_fetched(
     isolated_settings, httpx_mock
 ):
+    isolated_settings.min_discussion_comments = 0
     article = _make_article("guid-in-flight")
     article.url = "https://feed.example.com/old"
     article.status = Status.ARTICLE_FETCHED
@@ -440,6 +444,7 @@ def test_step_fetch_discussions_substitutes_canonical_when_unknown(
 ):
     from app import fetch_discussion as fd
 
+    isolated_settings.min_discussion_comments = 0
     dupe_guid = "https://news.ycombinator.com/item?id=801"
     canonical_guid = "https://news.ycombinator.com/item?id=800"
 
@@ -502,6 +507,7 @@ def test_step_fetch_discussions_does_not_dedup_when_no_dupe_keyword(
     # "dupe" marker. Must process normally with the original identity.
     from app import fetch_discussion as fd
 
+    isolated_settings.min_discussion_comments = 0
     article = _make_article("guid-related-link")
     article.hn_item_id = 900
     path = save(article)
@@ -569,6 +575,149 @@ def test_step_fetch_discussions_records_attempt_when_canonical_unavailable(
     assert "1000" in reloaded.error
     # Below max_attempts: not surfaced as a hard failure yet.
     assert failures == []
+
+
+def _children_with_text(n: int, base_id: int = 10_000) -> list[dict]:
+    return [
+        {"id": base_id + i, "author": "u", "text": f"c{i}", "children": []}
+        for i in range(n)
+    ]
+
+
+def test_step_fetch_discussions_parks_article_below_threshold(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    from app import fetch_discussion as fd
+
+    article = _make_article("guid-thin-thread")
+    article.hn_item_id = 1100
+    path = save(article)
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/1100",
+        json={"id": 1100, "children": _children_with_text(3)},
+    )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
+
+    # Default threshold is 20; 3 < 20 so the article must stay parked.
+    assert step_fetch_discussions() == 0
+
+    assert path.exists()
+    reloaded, _ = load(path)
+    assert reloaded.status == Status.PENDING
+    assert reloaded.attempts == 0
+    assert reloaded.error is None
+    assert reloaded.discussion_fetched_at is None
+    assert reloaded.discussion_comment_count is None
+    assert not sidecar_path(path, "discussion").exists()
+    assert not sidecar_path(path, "top_comments").exists()
+    assert list(isolated_settings.failed_dir.rglob("*.md")) == []
+
+
+def test_step_fetch_discussions_promotes_after_thread_grows(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    from app import fetch_discussion as fd
+
+    article = _make_article("guid-late-bloomer")
+    article.hn_item_id = 1101
+    path = save(article)
+
+    isolated_settings.min_discussion_comments = 5
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/1101",
+        json={"id": 1101, "children": _children_with_text(2)},
+    )
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/1101",
+        json={"id": 1101, "children": _children_with_text(7)},
+    )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
+
+    assert step_fetch_discussions() == 0
+    parked, _ = load(path)
+    assert parked.status == Status.PENDING
+
+    assert step_fetch_discussions() == 1
+    promoted, _ = load(path)
+    assert promoted.status == Status.DISCUSSION_FETCHED
+    assert promoted.discussion_comment_count == 7
+    assert sidecar_path(path, "discussion").exists()
+
+
+def test_step_fetch_discussions_threshold_is_strict_lower_bound(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    from app import fetch_discussion as fd
+
+    isolated_settings.min_discussion_comments = 5
+    article = _make_article("guid-exactly-threshold")
+    article.hn_item_id = 1102
+    path = save(article)
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/1102",
+        json={"id": 1102, "children": _children_with_text(5)},
+    )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
+
+    # 5 == threshold → comparison is `<`, not `<=`, so the article advances.
+    assert step_fetch_discussions() == 1
+    reloaded, _ = load(path)
+    assert reloaded.status == Status.DISCUSSION_FETCHED
+    assert reloaded.discussion_comment_count == 5
+
+
+def test_step_fetch_discussions_parks_substituted_canonical_below_threshold(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    from app import fetch_discussion as fd
+
+    dupe_guid = "https://news.ycombinator.com/item?id=901"
+    canonical_guid = "https://news.ycombinator.com/item?id=900"
+
+    dupe = _make_article(dupe_guid)
+    dupe.hn_item_id = 901
+    dupe.title = "Stale dupe title"
+    original_published_at = dupe.our_published_at
+    old_path = save(dupe)
+    assert old_path.exists()
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/901",
+        json=_dupe_first_comment_payload(901, 900),
+    )
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/900",
+        json={
+            "id": 900,
+            "title": "Canonical original title",
+            "created_at": "2026-04-20T10:15:00Z",
+            "url": "https://canonical.example.com/article",
+            "children": _children_with_text(2, base_id=9000),
+        },
+    )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
+
+    # Default threshold is 20; canonical has only 2 comments, so the
+    # substituted entry must be parked at PENDING under the canonical guid.
+    assert step_fetch_discussions() == 0
+
+    new_path = path_for(canonical_guid, original_published_at)
+    assert not old_path.exists()
+    assert new_path.exists()
+    reloaded, _ = load(new_path)
+    assert reloaded.status == Status.PENDING
+    assert reloaded.hn_item_id == 900
+    assert reloaded.guid == canonical_guid
+    assert reloaded.hn_url == canonical_guid
+    assert reloaded.title == "Canonical original title"
+    assert reloaded.source_published_at == datetime(2026, 4, 20, 10, 15, tzinfo=UTC)
+    assert reloaded.our_published_at == original_published_at
+    assert reloaded.discussion_comment_count is None
+    assert reloaded.discussion_fetched_at is None
+    assert not sidecar_path(new_path, "discussion").exists()
+    assert list(isolated_settings.failed_dir.rglob("*.md")) == []
 
 
 def test_step_summarize_reads_and_clears_top_comments_sidecar(

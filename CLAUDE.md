@@ -175,6 +175,17 @@ hourly on a public repo, so minutes are free.
   new, so avoid unless you mean it.
 - **Cron is best-effort**: GitHub schedules run 5 to 15 min late under load.
   Not an issue at our cadence.
+- **Thin discussions are parked, not failed**: `step_fetch_discussions`
+  leaves articles at their current status (`pending`, or `article_fetched`
+  for legacy in-flight items) when their comment count is below
+  `MIN_DISCUSSION_COMMENTS` (default 20). No `attempts` bump, no move to
+  `_failed/`. Each later cycle picks them up again via the chained
+  `iter_by_status(PENDING)` / `iter_by_status(ARTICLE_FETCHED)` source, so
+  they graduate as soon as the discussion grows past the threshold. For a
+  substituted dupe whose canonical comes back below threshold, the
+  rewritten identity is saved at `pending` before parking so the new
+  on-disk entry exists at the canonical guid for re-pickup; the old
+  per-dupe path is already gone by then.
 - **HN HTML is the only source for comment ranking**: per-comment scores
   are not exposed by Algolia or Firebase, and Algolia returns children
   in chronological (ID-ascending) order, not HN's best order. The

@@ -60,7 +60,11 @@ where it left off.
    (`hn_item_id`, `guid`, `hn_url`, `title`, `source_published_at`) are
    rewritten in place to those of the canonical and processing
    continues with the canonical's discussion, so the LLM never sees
-   the duplicate and the feed never carries it.
+   the duplicate and the feed never carries it. Articles whose comment
+   count comes back below `MIN_DISCUSSION_COMMENTS` (default 20) stay
+   at their current status rather than advancing; each later cycle
+   rechecks them, so a story whose discussion grows past the threshold
+   eventually graduates and a story that never does simply stays parked.
    → `status: discussion_fetched`.
 3. **`fetch-articles`** HTTP-fetches the (now canonical) article URL,
    runs `trafilatura` to extract the main content, and captures the

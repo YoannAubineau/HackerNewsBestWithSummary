@@ -30,6 +30,12 @@ class Settings(BaseSettings):
     llm_sleep_seconds: float = 3.0
     http_timeout: float = 20.0
     max_attempts: int = 3
+    # Articles whose HN discussion has fewer comments than this stay at
+    # their current status (PENDING in the swapped pipeline, ARTICLE_FETCHED
+    # for legacy in-flight items) and are re-checked on every later cycle.
+    # Once the discussion grows past the threshold the article advances
+    # normally; if it never does it just stays parked. Set to 0 to disable.
+    min_discussion_comments: int = 20
     # Circuit breaker. When today's OpenRouter spend (current cumulative
     # minus the highest cumulative seen on any earlier UTC day) exceeds
     # this value, step_summarize bails out for the rest of the cycle.
