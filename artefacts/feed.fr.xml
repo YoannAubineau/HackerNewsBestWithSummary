@@ -9,8 +9,54 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sun, 26 Apr 2026 04:09:28 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 26 Apr 2026 05:50:30 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Un amateur de 23 ans résout un problème mathématique d'Erdős vieux de 60 ans avec ChatGPT</title>
+      <link>https://www.scientificamerican.com/article/amateur-armed-with-chatgpt-vibe-maths-a-60-year-old-problem/</link>
+      <description>www.scientificamerican.com/article/amateur-armed-with-chatgpt-vibe-maths-a-60-year-old-problem/</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Liam Price, un jeune homme sans formation mathématique avancée, a résolu un problème d'Erdős qui échappait aux mathématiciens depuis des décennies en utilisant ChatGPT Pro. Contrairement à d'autres solutions IA récentes, celle-ci se distingue par l'utilisation d'une méthode entièrement nouvelle et potentiellement applicable à d'autres problèmes.</p>
+<ul>
+<li>Le problème concernait les « ensembles primitifs » de nombres entiers où aucun nombre ne peut diviser les autres, et Erdős avait conjecturé que le score minimal de ces ensembles était exactement un</li>
+<li>L'IA a emprunté une voie totalement différente des approches standard en appliquant une formule bien connue dans d'autres domaines mathématiques mais jamais utilisée pour ce type de question</li>
+<li>Bien que la preuve brute de ChatGPT était de faible qualité, les mathématiciens experts comme Terence Tao et Jared Lichtman ont pu l'affiner et confirmer la validité du raisonnement</li>
+<li>Cette solution suggère que les chercheurs précédents s'étaient peut-être égarés au premier pas du problème, et que la découverte pourrait révéler une nouvelle façon de comprendre les nombres et leur structure</li>
+<li>Les experts voient potentiellement des applications plus larges de cette approche novatrice dans la résolution d'autres problèmes mathématiques connexes</li>
+</ul>
+<h2>Discussion sur Hacker News (147 commentaires)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>ChatGPT a démontré une capacité remarquable à résoudre des problèmes mathématiques ouverts en combinant des connaissances provenant de multiples domaines et en appliquant des approches non conventionnelles qu'aucun expert n'avait envisagées</li>
+<li>Les modèles de raisonnement avec extended thinking montrent une progression réelle : chaque nouvelle version d'IA résout quelques problèmes d'Erdős supplémentaires, confirmant l'augmentation des capacités</li>
+<li>L'IA excelle à synthétiser et généraliser les connaissances existantes, ce qui permet de contourner les biais cognitifs et les blocages professionnels que même les experts peuvent avoir</li>
+<li>Le résultat pose de vraies questions sur ce que signifie l'intelligence : la capacité à résoudre des problèmes ouverts en 80 minutes est une preuve tangible d'une forme d'intelligence, indépendamment du mécanisme sous-jacent</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>La plupart des tentatives par d'autres utilisateurs ont échoué ou produit des résultats médiocres, suggérant une proportion énorme d'échecs cachés; sans connaître le coût total en tokens et en ressources, on ne peut pas évaluer la réelle efficacité</li>
+<li>Le problème d'Erdős résolu n'a pas d'applications pratiques démontrées et représente une curiosité mathématique pure : consacrer massivement des ressources compute à des problèmes purement théoriques pose question sur l'allocation rationnelle des investissements en IA</li>
+<li>L'IA ne peut pas mémoriser ou réutiliser ses solutions, contrairement aux humains qui apprennent de leurs succès : sans long terme memory persistant, les capacités cognitives restent limitées</li>
+<li>La preuve brute produite par ChatGPT était de mauvaise qualité et a nécessité l'expertise d'un mathématicien humain (Lichtman) pour la valider et l'interpréter, confirmant que l'IA reste un outil dépendant du jugement humain</li>
+<li>D'autres systèmes de démonstration automatique existaient depuis des décennies avant les LLMs et ont résolu des problèmes mathématiques plus difficiles sans fanfare : l'innovation ici n'est pas fondamentalement nouvelle, et le succès peut refléter simplement une recherche exhaustive plutôt qu'une véritable intelligence</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47906766">ravenical</a> : « https://archive.ph/2w4fi »</li>
+<li><a href="https://news.ycombinator.com/item?id=47907544">CSMastermind</a> : « For the uninitiated, Paul Erdős was a pretty famous but very eccentric mathematician who lived for most of the 1900s.He had a habit of seeking out and documenting mathematical problems people were working on.The problems range in difficulty from &quot;easy homework for a current undergrad in math&quot; to &quot;y… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47906734">adamgordonbell</a> : « Here is the chat: don't search the internet. This is a test to see how well you can craft non-trivial, novel and creative proofs given a &quot;number theory and primitive sets&quot; math problem. Provide a full unconditional proof or disproof of the problem. {{problem}} REMEMBER - this unconditional argument… »</li>
+</ul>
+<hr />
+<p><a href="https://www.scientificamerican.com/article/amateur-armed-with-chatgpt-vibe-maths-a-60-year-old-problem/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47903126">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">71e58ff9</guid>
+      <comments>https://news.ycombinator.com/item?id=47903126</comments>
+      <pubDate>Sat, 25 Apr 2026 17:40:38 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+      <media:group>
+        <media:thumbnail url="https://static.scientificamerican.com/dam/asset/124ad289-58c2-4d51-87e8-aee854d10fc7/abstract-rubiks-cube.jpg?m=1777033076.511&amp;w=1200"/>
+      </media:group>
+    </item>
     <item>
       <title>Guide technique des normes USB, connecteurs, débits et câblage</title>
       <link>https://fabiensanglard.net/usbcheat/index.html</link>
@@ -3977,43 +4023,6 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://lawsofsoftwareengineering.com/og-image.png"/>
-      </media:group>
-    </item>
-    <item>
-      <title>Une application de vérification d'âge de l'Union européenne contournée en deux minutes par des chercheurs en cybersécurité</title>
-      <link>https://www.politico.eu/article/eu-brussels-launched-age-checking-app-hackers-say-took-them-2-minutes-break-it/</link>
-      <description>www.politico.eu/article/eu-brussels-launched-age-checking-app-hackers-say-took-them-2-minutes-break-it/</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>La Commission européenne a présenté mercredi une application mobile de vérification d'âge destinée à empêcher les enfants d'accéder aux réseaux sociaux, mais des experts en cybersécurité ont rapidement identifié des failles graves dans le code concernant la confidentialité et la sécurité.</p>
-<ul>
-<li>L'application, présentée comme « techniquement prête » par la présidente Ursula von der Leyen, a été contournée en seulement deux minutes</li>
-<li>La Commission a mis le code en open source pour permettre à chacun de vérifier sa sécurité</li>
-<li>L'outil est destiné à aider les pays européens à mettre en œuvre des interdictions d'accès aux réseaux sociaux pour les mineurs</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Confirmations</strong> :</p>
-<ul>
-<li>Le système présente des failles de sécurité concrètes : les selfies ne sont pas supprimés après vérification (stockage permanent sur l'appareil), ce qui reproduit les erreurs passées de Discord et brise la confiance des utilisateurs dans les systèmes de vérification d'âge.</li>
-<li>La vérification d'âge par application est fondamentalement contournable par partage de téléphone : un adulte peut donner son téléphone déverrouillé à un mineur, rendant le contrôle technique illusoire sans supervision parentale réelle.</li>
-<li>Le projet reflète une surveillance accrue déguisée en protection de l'enfance : il s'agit d'une expansion du contrôle d'identité en ligne plutôt qu'une simple vérification d'âge, avec des implications politiques et libertaires importantes ignorées dans le débat technique.</li>
-<li>Les critiques soulignent une fausse dichotomie : le projet ne peut satisfaire simultanément l'anonymat (ZKP) et la prévention d'abus (rate-limiting), car empêcher la réutilisation de credentials exige une traçabilité gouvernementale.</li>
-</ul>
-<p><strong>Réfutations</strong> :</p>
-<ul>
-<li>Le code publié est un prototype de démonstration, pas une version finale, et l'UE a volontairement ouvert la source pour invitation à l'examen externe avant déploiement—ce n'est pas une arnaque camouflée mais une démarche délibérément transparente.</li>
-<li>La &quot;faille majeure&quot; décrite (édition de fichiers JSON) ne fonctionne que sur téléphones rootés/déverrouillés, pas sur appareils standards ; comparer cela à un hack réel survalue la vulnérabilité initiale.</li>
-<li>Les preuves zéro-connaissance fonctionnent réellement : l'infrastructure eIDAS existante permet à l'app de prouver l'âge sans révéler l'identité au site relying party, distinct de l'authentification gouvernementale initiale qui reste séparée.</li>
-<li>L'alternative au contrôle parental technologique n'existe pas : supprimer tout contrôle équivaut à accepter l'accès mineur sans frein, comme laisser l'alcool à portée des enfants parce que &quot;la responsabilité parentale suffit&quot;.</li>
-</ul>
-<hr />
-<p><a href="https://www.politico.eu/article/eu-brussels-launched-age-checking-app-hackers-say-took-them-2-minutes-break-it/">Article original</a> · <a href="https://news.ycombinator.com/item?id=47831742">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">964cecdb</guid>
-      <comments>https://news.ycombinator.com/item?id=47831742</comments>
-      <pubDate>Mon, 20 Apr 2026 08:49:22 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://www.politico.eu/cdn-cgi/image/width=1200,height=630,fit=crop,quality=80,onerror=redirect/wp-content/uploads/2026/04/17/GettyImages-1829285149-scaled.jpg"/>
       </media:group>
     </item>
   </channel>
