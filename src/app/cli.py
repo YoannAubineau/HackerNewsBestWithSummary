@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import UTC, datetime
 from pathlib import Path
 
 import structlog
@@ -18,6 +19,7 @@ from app.pipeline import (
     step_publish,
     step_summarize,
 )
+from app.refresh_discussions import step_refresh_discussions
 from app.storage import migrate_partitions
 from app.usage import generate_chart, record_usage
 
@@ -106,6 +108,12 @@ def check_llm_versions_cmd() -> None:
     code = check_llm_versions()
     if code != 0:
         raise typer.Exit(code=code)
+
+
+@app.command("refresh-discussions")
+def refresh_discussions_cmd() -> None:
+    """Refresh discussion sections of articles not yet seen by Feedly."""
+    step_refresh_discussions(datetime.now(UTC))
 
 
 @app.command("feedly-lag")

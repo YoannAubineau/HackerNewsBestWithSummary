@@ -119,6 +119,7 @@ def _neutralize_steps(monkeypatch, *, summarize_count: int = 0) -> list[str]:
     monkeypatch.setattr(pipeline, "step_fetch_articles", lambda _failures=None: 0)
     monkeypatch.setattr(pipeline, "step_fetch_discussions", lambda _failures=None: 0)
     monkeypatch.setattr(pipeline, "step_summarize", lambda _failures=None: summarize_count)
+    monkeypatch.setattr(pipeline, "step_refresh_discussions", lambda _started_at: 0)
     monkeypatch.setattr(pipeline, "step_publish", lambda: calls.append("publish") or "")
     return calls
 

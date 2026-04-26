@@ -13,6 +13,7 @@ from app.fetch_discussion import fetch_discussion, fetch_submitter_text
 from app.llm import AllModelsFailedError, LLMCallResult, LLMError
 from app.models import Article, ContentSource, Status
 from app.publish import write_feed
+from app.refresh_discussions import step_refresh_discussions
 from app.rss_in import FeedEntry, fetch_source_feed
 from app.storage import (
     clear_sidecars,
@@ -285,11 +286,13 @@ def step_publish() -> str:
 
 
 def run_cycle() -> CycleResult:
+    cycle_started_at = _now()
     failures: list[tuple[str, str]] = []
     step_fetch_feed()
     step_fetch_discussions(failures)
     step_fetch_articles(failures)
     step_summarize(failures)
+    step_refresh_discussions(cycle_started_at)
     # Always publish, even when no new articles were summarized: a code-only
     # change on the publish side (description format, feed structure, …) must
     # flow through on the next cycle without waiting for a fresh HN submission.
