@@ -9,8 +9,50 @@
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>hn-best-summary</generator>
     <language>fr</language>
-    <lastBuildDate>Sun, 26 Apr 2026 03:23:48 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 26 Apr 2026 04:09:28 +0000</lastBuildDate>
     <ttl>15</ttl>
+    <item>
+      <title>Guide technique des normes USB, connecteurs, débits et câblage</title>
+      <link>https://fabiensanglard.net/usbcheat/index.html</link>
+      <description>fabiensanglard.net/usbcheat/index.html</description>
+      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
+<p>Ce document récapitule les éléments clés pour comprendre les spécifications USB, dont la nomenclature des générations, l'architecture des câbles et les débits de charge. Il clarifie les termes souvent confondus dans la documentation technique.</p>
+<ul>
+<li>La nomenclature USB Gen A x B désigne la génération (A) et le nombre de voies (B) ; le débit affiché (a) diffère du débit avec surcharge d'encodage (b) et du débit réel en lecture séquentielle (c)</li>
+<li>Les câbles USB varient : 4 fils (USB-A/B), 8 fils (USB-A/B multi-voies) ou 12 fils (USB-C avec 4 voies), chaque paire torsadée représentant une voie</li>
+<li>USB-C dispose de broches de détection (CC1, CC2) pour l'orientation et la négociation d'alimentation, ainsi que de canaux auxiliaires (SBU1, SBU2) pour DisplayPort et détection d'insertion</li>
+<li>Les spécifications USB s'étalent de USB 1.0 (1996) à USB 4.0 (2019), chacune apportant des améliorations de débit et de fonctionnalité</li>
+</ul>
+<h2>Discussion sur Hacker News (45 commentaires)</h2>
+<p><strong>Avis positifs</strong> :</p>
+<ul>
+<li>La relation entre Thunderbolt et USB4 est complexe mais importante : TB3 est la base d'USB4, TB4 est un profil strict d'USB4 avec toutes les fonctionnalités obligatoires, et TB5 est un profil strict d'USB4 v2, tous partageant des protocoles compatibles</li>
+<li>Le cheat sheet est utile et comble un besoin réel face à la confusion massive autour des normes USB, Thunderbolt et leurs combinaisons</li>
+<li>L'article de l'auteur sur les standards de connectivité est reconnu comme particulièrement éclairant et mérite d'être revisité régulièrement</li>
+<li>Les câbles Thunderbolt 5 offrent une simplification bienvenue : support garanti de tous les standards USB, DisplayPort 2.1, PCIe et puissance jusqu'à 240W, contrairement aux variantes USB4 fragmentées</li>
+</ul>
+<p><strong>Avis négatifs</strong> :</p>
+<ul>
+<li>Le nommage USB reste fondamentalement confus : USB 3.0, 3.1 et 3.2 Gen 1 sont la même chose (5 Gbps), ce qui crée une ambiguïté deliberée pour écouler les anciens stocks de connecteurs</li>
+<li>USB4 va dans la mauvaise direction en rendant de nombreuses fonctionnalités optionnelles (compatibilité rétroactive, DisplayPort Alt Mode), contrairement à Thunderbolt 4 qui les rend obligatoires, et certains appareils USB4 ne sont même pas compatibles avec l'USB 3</li>
+<li>Les noms marketing trompeurs persistent : les fabricants vendent des câbles et appareils 20 Gbps en USB 3.2, alors que les MacBooks modernes ignorent l'USB 3.2 Gen 2x2 au profit de Thunderbolt plus coûteux</li>
+<li>L'absence de clarté système : Windows et les OS ne rapportent nulle part les capacités réelles du matériel ou la vitesse négociée lors d'une connexion, laissant les utilisateurs dans l'incertitude</li>
+<li>Le manque de transparence sur les détails techniques : modulations de signaling (PAM3 11b/7t pour USB4v2), différences dans les profils de puissance, et pièges comme l'absence de support de puissance sur les câbles optiques Thunderbolt</li>
+</ul>
+<p><strong>Commentaires les plus plébiscités</strong> :</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=47905680">DHowett</a> : « Excellent article.If I could offer one correction, it would be that SBU (as specified by the USB 3.0 Promoter Group[1]) means &quot;Sideband Use&quot; rather than &quot;Secondary Bus&quot;.On some devices, it is used to carry UART; on others, audio.[1]: https://www.usb.org/sites/default/files/USB%20Type-C%20Spec%... (… »</li>
+<li><a href="https://news.ycombinator.com/item?id=47905824">1a527dd5</a> : « Tangent: Author has this fabulous post I'd highly recommend: https://fabiensanglard.net/mjolnir/index.htmlI read it once years ago and I come back to it every now and then wishing my current PC (10+ years and going) would gently die so I could finally build something small and tiny. »</li>
+<li><a href="https://news.ycombinator.com/item?id=47906275">floxy</a> : « I don't know what short-distance data communications will be like in 2050, but we know it will be called USB. »</li>
+</ul>
+<hr />
+<p><a href="https://fabiensanglard.net/usbcheat/index.html">Article original</a> · <a href="https://news.ycombinator.com/item?id=47904876">Discussion HN</a></p>
+]]></content:encoded>
+      <guid isPermaLink="false">e39bf219</guid>
+      <comments>https://news.ycombinator.com/item?id=47904876</comments>
+      <pubDate>Sat, 25 Apr 2026 21:51:18 +0000</pubDate>
+      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
+    </item>
     <item>
       <title>Utiliser l'assistance par IA pour finir les projets personnels abandonnés</title>
       <link>https://blog.matthewbrunelle.com/its-ok-to-use-coding-assistance-tools-to-revive-the-projects-you-never-were-going-to-finish/</link>
@@ -3972,43 +4014,6 @@
       <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
       <media:group>
         <media:thumbnail url="https://www.politico.eu/cdn-cgi/image/width=1200,height=630,fit=crop,quality=80,onerror=redirect/wp-content/uploads/2026/04/17/GettyImages-1829285149-scaled.jpg"/>
-      </media:group>
-    </item>
-    <item>
-      <title>Anthropic autorise à nouveau l'utilisation de Claude CLI dans OpenClaw selon les directives du personnel</title>
-      <link>https://docs.openclaw.ai/providers/anthropic</link>
-      <description>docs.openclaw.ai/providers/anthropic</description>
-      <content:encoded><![CDATA[<h2>Résumé de l'article</h2>
-<p>Anthropic a confirmé auprès de son personnel que l'utilisation de Claude CLI via OpenClaw est à nouveau autorisée. OpenClaw supporte maintenant à la fois l'accès par clé API Anthropic et la réutilisation de Claude CLI, avec plusieurs configurations et optimisations disponibles.</p>
-<ul>
-<li>OpenClaw traite l'utilisation de Claude CLI et la commande <code>claude -p</code> comme sanctionnées à moins qu'Anthropic ne publie une nouvelle politique</li>
-<li>Plusieurs méthodes d'authentification sont supportées : clé API Anthropic, CLI Anthropic, et jetons OAuth legacy</li>
-<li>Les modèles Claude supportent le cache de prompts (5 minutes par défaut avec clé API), la fenêtre de contexte 1M en bêta, et les niveaux de réflexion adaptatifs</li>
-<li>Le mode &quot;fast&quot; d'OpenClaw permet de router le trafic direct vers api.anthropic.com avec gestion automatique des niveaux de service</li>
-<li>Pour les déploiements en production, les clés API Anthropic restent le chemin recommandé pour un contrôle explicite de la facturation et une disponibilité continue</li>
-</ul>
-<h2>Discussion sur Hacker News</h2>
-<p><strong>Confirmations</strong> :</p>
-<ul>
-<li>La stratégie de communication d'Anthropic est confuse et peu professionnelle : annonces via Twitter ou postes Reddit au lieu de canaux officiels, créant de l'incertitude persistante chez les utilisateurs.</li>
-<li>Les restrictions répétées sur Claude CLI et les changements de politique imprévisibles ont endommagé la confiance des utilisateurs fidèles, les poussant à tester des alternatives (Codex, Kimi, GLM) malgré la qualité perçue de Claude.</li>
-<li>Les utilisateurs ressentent une hausse des prix combinée à une réduction des limites d'usage, interprétée comme une « enshittification » progressive du service malgré la goodwill initial d'Anthropic.</li>
-</ul>
-<p><strong>Réfutations</strong> :</p>
-<ul>
-<li>La distinction entre utiliser OpenClaw au sein d'une session Claude Code officielle (autorisé) versus détourner les credentials OAuth (facturation API supplémentaire) est légitime et conforme aux ToS, selon les défenseurs d'Anthropic.</li>
-<li>L'argument que les fournisseurs n'ont aucun « moat » est contesté : les données montrent une préférence utilisateur réelle pour différents modèles selon les tâches (Opus pour frontend, GPT 5.3+ pour backend), suggérant une différenciation durable plutôt qu'une interchangeabilité complète.</li>
-<li>Les hausses de prix et restrictions reflètent une contrainte réelle de compute, nécessaire pour atteindre la rentabilité d'un service qui brûle massivement du capital, et ne constituent pas une malveillance délibérée.</li>
-</ul>
-<hr />
-<p><a href="https://docs.openclaw.ai/providers/anthropic">Article original</a> · <a href="https://news.ycombinator.com/item?id=47844269">Discussion HN</a></p>
-]]></content:encoded>
-      <guid isPermaLink="false">d1e684ce</guid>
-      <comments>https://news.ycombinator.com/item?id=47844269</comments>
-      <pubDate>Tue, 21 Apr 2026 03:43:03 +0000</pubDate>
-      <source url="https://hnrss.org/best">Hacker News Best via hnrss.org</source>
-      <media:group>
-        <media:thumbnail url="https://clawdhub.mintlify.app/mintlify-assets/_next/image?url=%2F_mintlify%2Fapi%2Fog%3Fdivision%3DProviders%26title%3DAnthropic%26logoLight%3Dhttps%253A%252F%252Fmintcdn.com%252Fclawdhub%252FdpADRo8IUoiDztzJ%252Fassets%252Fpixel-lobster.svg%253Ffit%253Dmax%2526auto%253Dformat%2526n%253DdpADRo8IUoiDztzJ%2526q%253D85%2526s%253D8fdf719fb6d3eaad7c65231385bf28e5%26logoDark%3Dhttps%253A%252F%252Fmintcdn.com%252Fclawdhub%252FdpADRo8IUoiDztzJ%252Fassets%252Fpixel-lobster.svg%253Ffit%253Dmax%2526auto%253Dformat%2526n%253DdpADRo8IUoiDztzJ%2526q%253D85%2526s%253D8fdf719fb6d3eaad7c65231385bf28e5%26primaryColor%3D%2523FF5A36%26lightColor%3D%2523FF8A6B%26darkColor%3D%2523FF5A36%26backgroundLight%3D%2523ffffff%26backgroundDark%3D%25230e0c0d&amp;w=1200&amp;q=100"/>
       </media:group>
     </item>
   </channel>
