@@ -308,6 +308,32 @@ def test_top_comments_separates_paragraphs_with_space(
     assert text == "First paragraph. Second paragraph."
 
 
+def test_top_comments_handle_hn_unclosed_p_tags(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # HN's Algolia payloads use opening-only <p> as paragraph
+    # separators, never </p>. Real example from item 47908165.
+    payload = {
+        "children": [
+            _comment(
+                "alice",
+                "First.<p>Second.<p>Third.",
+                id=1,
+                children=[_comment("leaf", "leaf", id=11)],
+            ),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/206", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
+    result = fetch_discussion(206)
+    assert result is not None
+    line = next(
+        line for line in result.top_comments_markdown.splitlines() if "[alice]" in line
+    )
+    text = line.split(" : ", 1)[1]
+    assert text == "First. Second. Third."
+
+
 def test_top_comments_collapses_internal_whitespace(
     httpx_mock, isolated_settings, monkeypatch
 ):

@@ -22,7 +22,7 @@ _ALGOLIA_URL = "https://hn.algolia.com/api/v1/items/{id}"
 _HN_STORY_URL = "https://news.ycombinator.com/item?id={id}"
 _TAG_RE = re.compile(r"<[^>]+>")
 _LINK_RE = re.compile(r"<a\b[^>]*>(.*?)</a>", re.IGNORECASE | re.DOTALL)
-_BLOCK_BREAK_RE = re.compile(r"</(p|div|pre|blockquote|li)\s*>", re.IGNORECASE)
+_BLOCK_BREAK_RE = re.compile(r"</?(p|div|pre|blockquote|li)\s*>", re.IGNORECASE)
 _LINE_BREAK_RE = re.compile(r"<br\s*/?>", re.IGNORECASE)
 _BLANK_LINES_RE = re.compile(r"\n{3,}")
 _WHITESPACE_RE = re.compile(r"\s+")
