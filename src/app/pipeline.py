@@ -20,6 +20,7 @@ from app.storage import (
     find_existing,
     iter_by_status,
     move_to_failed,
+    path_for,
     read_sidecar,
     save,
     write_sidecar,
@@ -111,6 +112,65 @@ def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int
         except Exception as exc:  # noqa: BLE001
             _record_attempt(path, article, body, f"fetch_discussion: {exc}", failures)
             continue
+
+        if discussion and discussion.canonical_dupe_id is not None:
+            canonical_id = discussion.canonical_dupe_id
+            canonical_guid = f"https://news.ycombinator.com/item?id={canonical_id}"
+
+            if find_existing(canonical_guid) is not None:
+                clear_sidecars(path)
+                path.unlink(missing_ok=True)
+                log.info(
+                    "dupe_skipped",
+                    guid=article.guid,
+                    dupe_id=article.hn_item_id,
+                    canonical_id=canonical_id,
+                )
+                continue
+
+            try:
+                canonical_discussion = fetch_discussion(canonical_id)
+            except Exception as exc:  # noqa: BLE001
+                _record_attempt(
+                    path,
+                    article,
+                    body,
+                    f"fetch_discussion (canonical {canonical_id}): {exc}",
+                    failures,
+                )
+                continue
+            if (
+                canonical_discussion is None
+                or canonical_discussion.title is None
+                or canonical_discussion.source_published_at is None
+            ):
+                _record_attempt(
+                    path,
+                    article,
+                    body,
+                    f"dupe canonical {canonical_id} unavailable",
+                    failures,
+                )
+                continue
+
+            dupe_id = article.hn_item_id
+            clear_sidecars(path)
+            path.unlink(missing_ok=True)
+            article.hn_item_id = canonical_id
+            article.guid = canonical_guid
+            article.hn_url = canonical_guid
+            article.title = canonical_discussion.title
+            article.source_published_at = canonical_discussion.source_published_at
+
+            discussion = canonical_discussion
+            path = path_for(article.guid, article.our_published_at)
+            log.info(
+                "dupe_substituted",
+                dupe_id=dupe_id,
+                canonical_id=canonical_id,
+                canonical_guid=canonical_guid,
+            )
+
         if discussion:
             if discussion.url:
                 article.url = discussion.url

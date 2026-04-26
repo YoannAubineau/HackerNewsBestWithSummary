@@ -2,6 +2,7 @@ import html
 import re
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
+from datetime import datetime
 
 import httpx
 import structlog
@@ -46,6 +47,8 @@ class AlgoliaItem(BaseModel):
     text: str | None = None
     url: str | None = None
     points: int | None = None
+    title: str | None = None
+    created_at: datetime | None = None
     children: list["AlgoliaItem"] = Field(default_factory=list)
 
 
@@ -65,12 +68,29 @@ class Discussion:
     text: str
     top_comments_markdown: str
     url: str | None
+    canonical_dupe_id: int | None = None
+    title: str | None = None
+    source_published_at: datetime | None = None
 
 
 def fetch_discussion(hn_item_id: int) -> Discussion | None:
     payload = _fetch_algolia_item(hn_item_id)
     if payload is None:
         return None
+    canonical_dupe_id = find_dupe_canonical_id(payload)
+    if canonical_dupe_id is not None:
+        # The current entry was flagged as a duplicate by the first commenter;
+        # the caller will substitute or drop it, so skip the HN HTML scrape
+        # for top-comment ranking that we are about to throw away.
+        return Discussion(
+            comment_count=0,
+            text="",
+            top_comments_markdown="",
+            url=None,
+            canonical_dupe_id=canonical_dupe_id,
+            title=payload.title,
+            source_published_at=payload.created_at,
+        )
     comments = list(_iter_comments(payload))
     if comments:
         ordered_ids = _fetch_hn_display_order(hn_item_id)
@@ -85,7 +105,42 @@ def fetch_discussion(hn_item_id: int) -> Discussion | None:
         text=text,
         top_comments_markdown=top_comments_markdown,
         url=payload.url,
+        title=payload.title,
+        source_published_at=payload.created_at,
     )
+
+
+_DUPE_LINK_RE = re.compile(
+    r"https?://news\.ycombinator\.com/item\?id=(\d+)",
+    re.IGNORECASE,
+)
+
+
+def find_dupe_canonical_id(payload: AlgoliaItem) -> int | None:
+    """Return the HN item id this discussion was marked as a dupe of, or None.
+
+    Detects the moderator (and occasionally regular-user) pattern where the
+    first child comment carries a pointer like
+    ``dupe: https://news.ycombinator.com/item?id=NNN``. Algolia HTML-escapes
+    forward slashes (``&#x2F;``), so we ``html.unescape`` before matching.
+    The ``dupe`` keyword is required to avoid false positives on first
+    comments that legitimately link to a related HN thread.
+    """
+    if not payload.children:
+        return None
+    first = payload.children[0]
+    if not first.text:
+        return None
+    decoded = html.unescape(first.text)
+    if "dupe" not in decoded.lower():
+        return None
+    match = _DUPE_LINK_RE.search(decoded)
+    if match is None:
+        return None
+    canonical_id = int(match.group(1))
+    if canonical_id == payload.id:
+        return None
+    return canonical_id
 
 
 def fetch_submitter_text(hn_item_id: int) -> str:

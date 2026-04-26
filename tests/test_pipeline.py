@@ -11,7 +11,16 @@ from app.pipeline import (
     step_fetch_feed,
 )
 from app.rss_in import FeedEntry
-from app.storage import load, move_to_failed, read_sidecar, save, sidecar_path, write_sidecar
+from app.storage import (
+    load,
+    move_to_failed,
+    path_for,
+    read_sidecar,
+    save,
+    short_hash,
+    sidecar_path,
+    write_sidecar,
+)
 from app.summarize import ArticleSummary
 
 
@@ -364,6 +373,202 @@ def test_step_fetch_discussions_drains_pre_swap_article_fetched(
     reloaded, _ = load(path)
     assert reloaded.status == Status.DISCUSSION_FETCHED
     assert reloaded.url == "https://canonical.example.com/in-flight"
+
+
+def _dupe_first_comment_payload(item_id: int, canonical_id: int) -> dict:
+    return {
+        "id": item_id,
+        "title": "Dupe of an earlier post",
+        "created_at": "2026-04-24T20:00:30Z",
+        "url": "https://feed.example.com/dupe",
+        "children": [
+            {
+                "id": item_id + 1,
+                "author": "pingou",
+                "text": (
+                    f'dupe: <a href="https:&#x2F;&#x2F;news.ycombinator.com'
+                    f'&#x2F;item?id={canonical_id}">https:&#x2F;&#x2F;'
+                    f'news.ycombinator.com&#x2F;item?id={canonical_id}</a>'
+                ),
+                "children": [],
+            },
+        ],
+    }
+
+
+def test_step_fetch_discussions_drops_dupe_when_canonical_already_known(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    from app import fetch_discussion as fd
+
+    canonical_guid = "https://news.ycombinator.com/item?id=700"
+    canonical = _make_article(canonical_guid)
+    canonical.hn_item_id = 700
+    canonical.status = Status.SUMMARIZED
+    canonical_path = save(canonical)
+    assert canonical_path.exists()
+
+    dupe = _make_article("https://news.ycombinator.com/item?id=701")
+    dupe.hn_item_id = 701
+    dupe_path = save(dupe)
+    write_sidecar(dupe_path, "article", "stale article sidecar from a prior step")
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/701",
+        json=_dupe_first_comment_payload(701, 700),
+    )
+    monkeypatch.setattr(
+        fd,
+        "_fetch_hn_display_order",
+        lambda _id: (_ for _ in ()).throw(
+            AssertionError("HN scrape must be skipped on a dropped dupe"),
+        ),
+    )
+
+    assert step_fetch_discussions() == 0
+
+    assert not dupe_path.exists()
+    assert not sidecar_path(dupe_path, "article").exists()
+    # The canonical entry is left untouched (no double-write under its guid).
+    assert canonical_path.exists()
+    reloaded, _ = load(canonical_path)
+    assert reloaded.status == Status.SUMMARIZED
+
+
+def test_step_fetch_discussions_substitutes_canonical_when_unknown(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    from app import fetch_discussion as fd
+
+    dupe_guid = "https://news.ycombinator.com/item?id=801"
+    canonical_guid = "https://news.ycombinator.com/item?id=800"
+
+    dupe = _make_article(dupe_guid)
+    dupe.hn_item_id = 801
+    dupe.title = "Stale dupe title"
+    dupe.url = "https://feed.example.com/dupe"
+    original_published_at = dupe.our_published_at
+    old_path = save(dupe)
+    assert old_path.exists()
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/801",
+        json=_dupe_first_comment_payload(801, 800),
+    )
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/800",
+        json={
+            "id": 800,
+            "title": "Canonical original title",
+            "created_at": "2026-04-20T10:15:00Z",
+            "url": "https://canonical.example.com/article",
+            "children": [
+                {
+                    "id": 8001,
+                    "author": "alice",
+                    "text": "first canonical comment",
+                    "children": [],
+                },
+            ],
+        },
+    )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
+
+    assert step_fetch_discussions() == 1
+
+    new_path = path_for(canonical_guid, original_published_at)
+    assert not old_path.exists()
+    assert new_path.exists()
+    assert short_hash(canonical_guid) in new_path.name
+
+    reloaded, _ = load(new_path)
+    assert reloaded.hn_item_id == 800
+    assert reloaded.guid == canonical_guid
+    assert reloaded.hn_url == canonical_guid
+    assert reloaded.title == "Canonical original title"
+    assert reloaded.source_published_at == datetime(2026, 4, 20, 10, 15, tzinfo=UTC)
+    # our_published_at is the partition key and must not move when we substitute.
+    assert reloaded.our_published_at == original_published_at
+    assert reloaded.url == "https://canonical.example.com/article"
+    assert reloaded.status == Status.DISCUSSION_FETCHED
+    assert reloaded.discussion_comment_count == 1
+    assert read_sidecar(new_path, "discussion") == "[alice] first canonical comment"
+
+
+def test_step_fetch_discussions_does_not_dedup_when_no_dupe_keyword(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    # First comment legitimately links to another HN thread without the
+    # "dupe" marker. Must process normally with the original identity.
+    from app import fetch_discussion as fd
+
+    article = _make_article("guid-related-link")
+    article.hn_item_id = 900
+    path = save(article)
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/900",
+        json={
+            "id": 900,
+            "title": "Real article",
+            "created_at": "2026-04-21T12:00:00Z",
+            "url": "https://example.com/real",
+            "children": [
+                {
+                    "id": 901,
+                    "author": "alice",
+                    "text": (
+                        'related: <a href="https://news.ycombinator.com/item?id=42">'
+                        "older thread</a>"
+                    ),
+                    "children": [],
+                },
+            ],
+        },
+    )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
+
+    assert step_fetch_discussions() == 1
+
+    reloaded, _ = load(path)
+    assert reloaded.hn_item_id == 900
+    assert reloaded.guid == "guid-related-link"
+    assert reloaded.url == "https://example.com/real"
+    assert reloaded.status == Status.DISCUSSION_FETCHED
+
+
+def test_step_fetch_discussions_records_attempt_when_canonical_unavailable(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    from app import fetch_discussion as fd
+
+    isolated_settings.max_attempts = 3
+    dupe_guid = "https://news.ycombinator.com/item?id=1001"
+    dupe = _make_article(dupe_guid)
+    dupe.hn_item_id = 1001
+    path = save(dupe)
+
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/1001",
+        json=_dupe_first_comment_payload(1001, 1000),
+    )
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/1000",
+        status_code=500,
+    )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
+
+    failures: list[tuple[str, str]] = []
+    assert step_fetch_discussions(failures) == 0
+
+    assert path.exists()
+    reloaded, _ = load(path)
+    assert reloaded.status == Status.PENDING
+    assert reloaded.attempts == 1
+    assert reloaded.error is not None
+    assert "1000" in reloaded.error
+    # Below max_attempts: not surfaced as a hard failure yet.
+    assert failures == []
 
 
 def test_step_summarize_reads_and_clears_top_comments_sidecar(

@@ -52,7 +52,15 @@ where it left off.
    hnrss `<link>` after a moderator edit or canonicalisation): when
    non-null it overwrites `article.url`, so the next step fetches the
    right page. Falls back to the feed URL when Algolia returns no `url`
-   (Ask/Show HN, polls) or the call fails outright.
+   (Ask/Show HN, polls) or the call fails outright. Before any of that,
+   the step inspects the first child comment for the HN moderator dupe
+   pattern (`dupe: https://news.ycombinator.com/item?id=NNN`). If the
+   canonical NNN is already in storage the dupe entry is deleted and the
+   pipeline moves on. If NNN is unknown, the article's identity fields
+   (`hn_item_id`, `guid`, `hn_url`, `title`, `source_published_at`) are
+   rewritten in place to those of the canonical and processing
+   continues with the canonical's discussion, so the LLM never sees
+   the duplicate and the feed never carries it.
    → `status: discussion_fetched`.
 3. **`fetch-articles`** HTTP-fetches the (now canonical) article URL,
    runs `trafilatura` to extract the main content, and captures the

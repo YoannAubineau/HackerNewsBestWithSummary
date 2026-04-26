@@ -2,11 +2,13 @@ import pytest
 
 from app import fetch_discussion as fd
 from app.fetch_discussion import (
-    _fetch_hn_display_order as _real_fetch_hn_display_order,
-)
-from app.fetch_discussion import (
+    AlgoliaItem,
     fetch_discussion,
     fetch_submitter_text,
+    find_dupe_canonical_id,
+)
+from app.fetch_discussion import (
+    _fetch_hn_display_order as _real_fetch_hn_display_order,
 )
 
 
@@ -498,5 +500,148 @@ def test_fetch_hn_display_order_returns_empty_when_proxy_also_fails(
             status_code=429,
         )
     assert _real_fetch_hn_display_order(3333) == []
+
+
+def _algolia_item(**fields):
+    children = [AlgoliaItem.model_validate(c) for c in fields.pop("children", [])]
+    return AlgoliaItem(children=children, **fields)
+
+
+def test_find_dupe_canonical_id_extracts_from_first_comment():
+    # The HN-moderator pattern Algolia returns verbatim: forward slashes are
+    # entity-encoded as &#x2F;. find_dupe_canonical_id must unescape before
+    # matching, otherwise the regex misses the link.
+    payload = _algolia_item(
+        id=47895080,
+        children=[
+            {
+                "author": "pingou",
+                "text": (
+                    'dupe: <a href="https:&#x2F;&#x2F;news.ycombinator.com'
+                    '&#x2F;item?id=47894129">https:&#x2F;&#x2F;news.ycombinator.com'
+                    '&#x2F;item?id=47894129</a>'
+                ),
+            },
+        ],
+    )
+    assert find_dupe_canonical_id(payload) == 47894129
+
+
+def test_find_dupe_canonical_id_returns_none_without_keyword():
+    # First comment links to another HN thread but is not a dupe annotation;
+    # we must not dedupe to avoid false positives on related-discussion links.
+    payload = _algolia_item(
+        id=10,
+        children=[
+            {
+                "author": "alice",
+                "text": (
+                    'see also <a href="https://news.ycombinator.com/item?id=42">'
+                    'this thread</a>'
+                ),
+            },
+        ],
+    )
+    assert find_dupe_canonical_id(payload) is None
+
+
+def test_find_dupe_canonical_id_returns_none_without_link():
+    payload = _algolia_item(
+        id=10,
+        children=[{"author": "alice", "text": "looks like a dupe of an older one"}],
+    )
+    assert find_dupe_canonical_id(payload) is None
+
+
+def test_find_dupe_canonical_id_returns_none_when_no_children():
+    payload = _algolia_item(id=10, children=[])
+    assert find_dupe_canonical_id(payload) is None
+
+
+def test_find_dupe_canonical_id_returns_none_when_first_comment_text_empty():
+    payload = _algolia_item(
+        id=10,
+        children=[{"author": "alice", "text": None}],
+    )
+    assert find_dupe_canonical_id(payload) is None
+
+
+def test_find_dupe_canonical_id_ignores_self_pointer():
+    # Defensive: if the parsed id matches the current item, treat as not a
+    # dupe rather than trying to substitute the article with itself.
+    payload = _algolia_item(
+        id=10,
+        children=[
+            {
+                "author": "alice",
+                "text": 'dupe: <a href="https://news.ycombinator.com/item?id=10">x</a>',
+            },
+        ],
+    )
+    assert find_dupe_canonical_id(payload) is None
+
+
+def test_find_dupe_canonical_id_returns_first_link_when_multiple():
+    payload = _algolia_item(
+        id=10,
+        children=[
+            {
+                "author": "alice",
+                "text": (
+                    "dupe: https://news.ycombinator.com/item?id=42 "
+                    "(see also https://news.ycombinator.com/item?id=99)"
+                ),
+            },
+        ],
+    )
+    assert find_dupe_canonical_id(payload) == 42
+
+
+def test_fetch_discussion_short_circuits_on_dupe(httpx_mock, monkeypatch):
+    # When the first comment is a dupe pointer, fetch_discussion should
+    # surface the canonical id and skip the HN HTML scrape entirely.
+    payload = {
+        "id": 100,
+        "title": "Some article",
+        "created_at": "2026-04-24T20:00:30Z",
+        "children": [
+            _comment(
+                "pingou",
+                'dupe: <a href="https:&#x2F;&#x2F;news.ycombinator.com'
+                '&#x2F;item?id=99">x</a>',
+            ),
+            _comment("bob", "second comment, irrelevant"),
+        ],
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/100", json=payload)
+
+    def _explode(_id):
+        raise AssertionError("HN scrape should not happen on a dupe entry")
+
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", _explode)
+    result = fetch_discussion(100)
+    assert result is not None
+    assert result.canonical_dupe_id == 99
+    assert result.text == ""
+    assert result.top_comments_markdown == ""
+    assert result.url is None
+
+
+def test_fetch_discussion_populates_title_and_created_at(httpx_mock):
+    payload = {
+        "id": 200,
+        "title": "Original title",
+        "created_at": "2026-04-20T10:15:00Z",
+        "url": "https://example.com/x",
+        "children": [_comment("alice", "hello")],
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/200", json=payload)
+    result = fetch_discussion(200)
+    assert result is not None
+    assert result.title == "Original title"
+    assert result.source_published_at is not None
+    assert result.source_published_at.year == 2026
+    assert result.source_published_at.month == 4
+    assert result.source_published_at.day == 20
 
 
