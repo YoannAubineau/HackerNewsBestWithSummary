@@ -54,11 +54,11 @@ class Settings(BaseSettings):
     webshare_proxy_username: str = ""
     webshare_proxy_password: str = ""
 
-    artefacts_dir: Path = Path("artefacts")
+    artifacts_dir: Path = Path("artifacts")
 
     @property
     def articles_dir(self) -> Path:
-        return self.artefacts_dir / "articles"
+        return self.artifacts_dir / "articles"
 
     @property
     def failed_dir(self) -> Path:
@@ -66,7 +66,7 @@ class Settings(BaseSettings):
 
     @property
     def feed_output_path(self) -> Path:
-        return self.artefacts_dir / "feed.fr.xml"
+        return self.artifacts_dir / "feed.fr.xml"
 
     log_level: LogLevel = "INFO"
 

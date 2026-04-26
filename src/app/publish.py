@@ -9,7 +9,7 @@ from app.config import get_settings
 from app.models import Article, ContentSource
 from app.storage import iter_summarized, short_hash
 
-_LAST_REFRESH_PATH = Path("artefacts/last-refresh.json")
+_LAST_REFRESH_PATH = Path("artifacts/last-refresh.json")
 
 # html=False escapes any raw HTML that sneaks into the LLM output (prompt
 # injection via a crafted article could otherwise emit <script> tags that

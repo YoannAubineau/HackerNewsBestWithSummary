@@ -49,8 +49,8 @@ def test_archive_url_matches_storage_partition(isolated_settings):
     # source_published_at — otherwise the GitHub blob URL 404s.
     save(_make_article("g1", hn_item_id=1), "body")
     html = write_archive().read_text(encoding="utf-8")
-    assert "/artefacts/articles/2026/04/21/" in html
-    assert "/artefacts/articles/2026/04/20/" not in html
+    assert "/artifacts/articles/2026/04/21/" in html
+    assert "/artifacts/articles/2026/04/20/" not in html
 
 
 def test_archive_prefers_rewritten_title(isolated_settings):
@@ -151,7 +151,7 @@ def test_archive_rows_sorted_by_summarized_at_desc(isolated_settings):
 def test_archive_emits_single_file_only(isolated_settings):
     save(_make_article("g1", hn_item_id=1), "body")
     write_archive()
-    out = isolated_settings.artefacts_dir
+    out = isolated_settings.artifacts_dir
     assert (out / "archive.html").exists()
     # No more pre-sorted variants.
     assert not (out / "archive-best.html").exists()

@@ -104,7 +104,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add artefacts/ docs/
+          git add artifacts/ docs/
           if git diff --cached --quiet; then
             echo "Nothing to commit."
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -129,7 +129,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: artefacts
+          path: artifacts
 
       - id: deploy
         uses: actions/deploy-pages@v5

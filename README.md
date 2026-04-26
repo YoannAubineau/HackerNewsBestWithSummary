@@ -63,7 +63,7 @@ the full list of environment variables are in
 ## Architecture
 
 A five-stage hourly pipeline writes one Markdown file per article under
-`artefacts/articles/YYYY/MM/DD/` and regenerates `feed.fr.xml`. No
+`artifacts/articles/YYYY/MM/DD/` and regenerates `feed.fr.xml`. No
 database, no backend. Git is the data layer, GitHub Pages is the CDN.
 Full breakdown of the pipeline stages, storage layout, dependencies,
 and external services in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).

@@ -40,15 +40,15 @@ hourly on a public repo, so minutes are free.
 
 - **No database**. One Markdown file per article, frontmatter for metadata,
   body for the LLM output. Files partitioned
-  `artefacts/articles/YYYY/MM/DD/` by `our_published_at` (the date the
+  `artifacts/articles/YYYY/MM/DD/` by `our_published_at` (the date the
   article first appeared in our feed, captured from hnrss's
   `lastBuildDate`), not by its HN submission date. Filename is a 8-char
   SHA-256 short hash of the `guid` for deterministic idempotent naming.
 - **No backend**. The whole pipeline runs inside a single Actions job that
-  reads/writes the repo and pushes back. The `artefacts/` folder is
+  reads/writes the repo and pushes back. The `artifacts/` folder is
   uploaded by a dedicated Actions workflow and served statically by Pages.
   Its contents are exposed at the site root, so the feed URL is
-  `https://.../feed.fr.xml` (no `/artefacts/` in the path).
+  `https://.../feed.fr.xml` (no `/artifacts/` in the path).
 - **No queue, no retry service**. The pipeline keeps state via a `status`
   field in each article's frontmatter (`pending` → `discussion_fetched` →
   `article_fetched` → `summarized`, or `failed`). Discussion runs before
@@ -59,7 +59,7 @@ hourly on a public repo, so minutes are free.
   Each step iterates files of the matching status. Crash-resumable for
   free.
 - **Raw HTML / discussion text is never committed**. Article content is kept
-  in sidecar files (`artefacts/articles/.../<hash>.raw.article.txt`,
+  in sidecar files (`artifacts/articles/.../<hash>.raw.article.txt`,
   `<hash>.raw.discussion.txt`, `<hash>.raw.top_comments.txt`) which are
   gitignored, used during the cycle, and cleared once the summary
   succeeds. Only the summary itself ends up in git. Driven by copyright

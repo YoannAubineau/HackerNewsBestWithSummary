@@ -36,7 +36,7 @@ where it left off.
 
 1. **`fetch-feed`** polls `hnrss.org/best` and creates one Markdown file
    per HN item not yet seen, at
-   `artefacts/articles/YYYY/MM/DD/{short_hash}.md` with `status: pending`.
+   `artifacts/articles/YYYY/MM/DD/{short_hash}.md` with `status: pending`.
    The filename is the first eight hex characters of SHA-256 of the HN
    guid, so paths are stable and re-runs are idempotent.
 2. **`fetch-discussions`** calls the Algolia HN API for the full comment
@@ -91,9 +91,9 @@ where it left off.
    under the article-summary heading, while the discussion synthesis
    runs as usual. Each article gets up to three attempts with a
    cascading model fallback, after which it moves to
-   `artefacts/articles/_failed/…`. → `status: summarized`.
+   `artifacts/articles/_failed/…`. → `status: summarized`.
 5. **`publish`** walks summarised articles newest-first (by `hn_item_id`
-   desc), takes the top 100, and regenerates `artefacts/feed.fr.xml`.
+   desc), takes the top 100, and regenerates `artifacts/feed.fr.xml`.
    Only fires when at least one new summary was produced (or the feed
    file is missing). GitHub Pages redeploys the folder after the cycle
    commits.
@@ -107,11 +107,11 @@ Single source of truth is the filesystem, versioned by git, with no database.
 
 | Path | Contents |
 |---|---|
-| `artefacts/articles/YYYY/MM/DD/{short_hash}.md` | One article per file. YAML frontmatter holds all metadata (URLs, dates, `status`, image URL, model used, attempt count). The Markdown body holds the final summaries. |
-| `artefacts/articles/_failed/…` | Articles that exceeded `MAX_ATTEMPTS`. Kept for history rather than deleted. |
-| `artefacts/articles/**/*.raw.article.txt`, `*.raw.discussion.txt`, `*.raw.top_comments.txt` | Transient sidecars holding raw source content (or the pre-rendered top-comments block) between stages. **Gitignored** because they are copyright-sensitive and would bloat the repo. Cleared once the article reaches `summarized`. |
-| `artefacts/feed.fr.xml` | The published RSS feed. |
-| `artefacts/feed.xsl` | Client-side XSLT stylesheet applied by browsers when opening the feed URL directly. |
+| `artifacts/articles/YYYY/MM/DD/{short_hash}.md` | One article per file. YAML frontmatter holds all metadata (URLs, dates, `status`, image URL, model used, attempt count). The Markdown body holds the final summaries. |
+| `artifacts/articles/_failed/…` | Articles that exceeded `MAX_ATTEMPTS`. Kept for history rather than deleted. |
+| `artifacts/articles/**/*.raw.article.txt`, `*.raw.discussion.txt`, `*.raw.top_comments.txt` | Transient sidecars holding raw source content (or the pre-rendered top-comments block) between stages. **Gitignored** because they are copyright-sensitive and would bloat the repo. Cleared once the article reaches `summarized`. |
+| `artifacts/feed.fr.xml` | The published RSS feed. |
+| `artifacts/feed.xsl` | Client-side XSLT stylesheet applied by browsers when opening the feed URL directly. |
 
 ### Feed ordering
 
@@ -191,7 +191,7 @@ are never stored either.
 
 | Choice | Rationale |
 |---|---|
-| **Filesystem + git** | Articles are Markdown files under `artefacts/articles/YYYY/MM/DD/{short_hash}.md`. Git provides history, idempotency (deterministic filename), and deployment in one. |
+| **Filesystem + git** | Articles are Markdown files under `artifacts/articles/YYYY/MM/DD/{short_hash}.md`. Git provides history, idempotency (deterministic filename), and deployment in one. |
 | **No database** | Unwarranted at this scale. The repository itself is the data layer. |
 | **Gitignored sidecar files** | `.raw.article.txt`, `.raw.discussion.txt`, and `.raw.top_comments.txt` cache raw content (or the pre-rendered top-comments markdown) between pipeline stages and are never committed. |
 
@@ -200,7 +200,7 @@ are never stored either.
 | Component | Role |
 |---|---|
 | **`.github/workflows/cycle.yml`** | Hourly cron plus manual `workflow_dispatch`. Runs the pipeline end-to-end and deploys to Pages. |
-| **`.github/workflows/ci.yml`** | Runs ruff and pytest on every push to `main` and every pull request (skipped for commits that only touch `artefacts/`). |
+| **`.github/workflows/ci.yml`** | Runs ruff and pytest on every push to `main` and every pull request (skipped for commits that only touch `artifacts/`). |
 | **Dependabot** | Weekly batched PRs for Python deps (via `uv`) and GitHub Actions versions, plus real-time PRs for security advisories. |
 
 ### Actions used in the workflows
@@ -210,21 +210,21 @@ are never stored either.
 | **`actions/checkout`** | Clones the repository into the runner. |
 | **`astral-sh/setup-uv`** | Installs uv and caches its download directory across runs. |
 | **`actions/configure-pages`** | Sets up the Pages environment and OIDC token for deployment. |
-| **`actions/upload-pages-artifact`** | Packages the `artefacts/` folder as a Pages artifact. |
+| **`actions/upload-pages-artifact`** | Packages the `artifacts/` folder as a Pages artifact. |
 | **`actions/deploy-pages`** | Publishes the artifact to the Pages CDN. |
 
 ### Hosting and delivery
 
 | Component | Role |
 |---|---|
-| **GitHub Pages** | Static hosting. Serves the contents of `artefacts/` at the site root. |
+| **GitHub Pages** | Static hosting. Serves the contents of `artifacts/` at the site root. |
 | **Fastly** | CDN underneath Pages. Handles edge caching and TLS. |
 
 ### Browser-side rendering
 
 | Component | Role |
 |---|---|
-| **`artefacts/feed.xsl`** | XSLT 1.0 stylesheet applied by the browser when the feed URL is opened directly. Transforms the RSS into a styled HTML page. |
+| **`artifacts/feed.xsl`** | XSLT 1.0 stylesheet applied by the browser when the feed URL is opened directly. Transforms the RSS into a styled HTML page. |
 | **Browser-native XSLT engine** | Chrome, Firefox, and Safari all implement XSLT 1.0 client-side, so no extra runtime is required. |
 | **Inline CSS** (in the stylesheet) | Light/dark theme via `prefers-color-scheme`, responsive single-column layout. |
 | **Inline JavaScript** (in the stylesheet) | Appends the HN item ID to each article footer at render time, without touching the stored body. |

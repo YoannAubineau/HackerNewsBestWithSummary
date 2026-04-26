@@ -28,7 +28,7 @@ def write_archive() -> Path:
         key=lambda a: a.summarized_at or datetime.min.replace(tzinfo=UTC),
         reverse=True,
     )
-    path = settings.artefacts_dir / "archive.html"
+    path = settings.artifacts_dir / "archive.html"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(_render(articles), encoding="utf-8")
     return path
@@ -64,7 +64,7 @@ def _summary_url(article: Article) -> str:
     """Return the URL of the article's Markdown file rendered on GitHub."""
     when = article.our_published_at
     return (
-        f"{_REPO_BLOB_URL}/artefacts/articles/"
+        f"{_REPO_BLOB_URL}/artifacts/articles/"
         f"{when.year:04d}/{when.month:02d}/{when.day:02d}/"
         f"{short_hash(article.guid)}.md"
     )

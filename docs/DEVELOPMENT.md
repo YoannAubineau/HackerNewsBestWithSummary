@@ -25,7 +25,7 @@ uv run app cycle
 
 Fetches new HN Best articles, extracts their content, pulls the HN
 discussion, summarizes both via the LLM, regenerates
-`artefacts/feed.fr.xml`. First run ingests ~30 articles at once, which
+`artifacts/feed.fr.xml`. First run ingests ~30 articles at once, which
 costs roughly **US$1–2** on Claude Haiku 4.5. Each later run only
 processes genuinely new entries (typically 0–2 per hour).
 
@@ -35,11 +35,11 @@ processes genuinely new entries (typically 0–2 per hour).
 folder over HTTP:
 
 ```bash
-python -m http.server --directory artefacts 8000
+python -m http.server --directory artifacts 8000
 # then open http://localhost:8000/feed.fr.xml
 ```
 
-Validate the XML separately with `xmllint --noout artefacts/feed.fr.xml`.
+Validate the XML separately with `xmllint --noout artifacts/feed.fr.xml`.
 
 ### Work without spending LLM credits
 
@@ -87,10 +87,10 @@ uv run ruff format src/ tests/         # auto-format
 
 ### Git hygiene after a local run
 
-`uv run app cycle` writes new files under `artefacts/` that show up in
+`uv run app cycle` writes new files under `artifacts/` that show up in
 `git status`. On a fork you probably don't want to commit those. They
 are produced again on every GitHub Actions cycle. If you're just
-experimenting, either reset with `git checkout artefacts/` or ignore
+experimenting, either reset with `git checkout artifacts/` or ignore
 the folder locally.
 
 ## Configuration
@@ -117,7 +117,7 @@ except `OPENROUTER_API_KEY`.
 | `MIN_DISCUSSION_COMMENTS` | `20` | Articles whose HN discussion has fewer comments than this stay at their current status and are re-checked on every later cycle. They never reach the article fetch, the LLM, or the feed unless the discussion grows past the threshold. Set to `0` to disable. |
 | `DAILY_COST_LIMIT_USD` | `2.0` | Circuit breaker. When today's OpenRouter spend exceeds this value, `step_summarize` skips for the rest of the cycle. Set to `0` to disable. |
 | `USER_AGENT` | `hn-best-summary/0.1 (+...)` | Sent with every outbound HTTP request. |
-| `ARTEFACTS_DIR` | `artefacts` | Root of all generated output. Article store, failed-article subfolder, and the feed file are all derived from this path. |
+| `ARTIFACTS_DIR` | `artifacts` | Root of all generated output. Article store, failed-article subfolder, and the feed file are all derived from this path. |
 | `WEBSHARE_PROXY_USERNAME` | *unset* | Optional. Proxy Username from <https://dashboard.webshare.io/proxy/settings> (Residential plan only). When set together with `WEBSHARE_PROXY_PASSWORD`, YouTube transcript requests tunnel through Webshare's rotating residential pool. Required from GitHub Actions, whose datacenter IPs YouTube blocks. Ignored locally unless your own IP is blocked. |
 | `WEBSHARE_PROXY_PASSWORD` | *unset* | Optional. Proxy Password paired with `WEBSHARE_PROXY_USERNAME`. Both must be set for the proxy to be used. |
 | `LOG_LEVEL` | `INFO` | One of `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. |
