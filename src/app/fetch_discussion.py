@@ -21,9 +21,11 @@ from app.config import get_settings
 _ALGOLIA_URL = "https://hn.algolia.com/api/v1/items/{id}"
 _HN_STORY_URL = "https://news.ycombinator.com/item?id={id}"
 _TAG_RE = re.compile(r"<[^>]+>")
+_LINK_RE = re.compile(r"<a\b[^>]*>(.*?)</a>", re.IGNORECASE | re.DOTALL)
 _BLOCK_BREAK_RE = re.compile(r"</(p|div|pre|blockquote|li)\s*>", re.IGNORECASE)
 _LINE_BREAK_RE = re.compile(r"<br\s*/?>", re.IGNORECASE)
 _BLANK_LINES_RE = re.compile(r"\n{3,}")
+_WHITESPACE_RE = re.compile(r"\s+")
 _COMMENT_ROW_RE = re.compile(
     r'class="athing comtr" id="(\d+)"[^>]*?>.*?indent="(\d+)"',
     re.DOTALL,
@@ -196,6 +198,16 @@ def _strip_html(text: str) -> str:
     return html.unescape(_TAG_RE.sub("", text))
 
 
+def _link_text_ratio(raw_html: str, cleaned_length: int) -> float:
+    if cleaned_length == 0:
+        return 0.0
+    total = 0
+    for m in _LINK_RE.finditer(raw_html):
+        inner = _WHITESPACE_RE.sub(" ", _strip_html(m.group(1))).strip()
+        total += len(inner)
+    return total / cleaned_length
+
+
 def _strip_html_preserving_paragraphs(text: str) -> str:
     """Like ``_strip_html`` but keeps block boundaries as blank lines.
 
@@ -221,7 +233,6 @@ def _render_comments(comments: Iterable[dict]) -> str:
     return "\n".join(parts)
 
 
-_WHITESPACE_RE = re.compile(r"\s+")
 _HN_ITEM_URL = "https://news.ycombinator.com/item?id={id}"
 _MARKDOWN_SPECIAL_RE = re.compile(r"([\\\[\]()*_`#<>])")
 
@@ -375,6 +386,8 @@ def _select_top_comments(
             continue
         cleaned = _WHITESPACE_RE.sub(" ", _strip_html(node.text)).strip()
         if not cleaned:
+            continue
+        if _link_text_ratio(node.text, len(cleaned)) > 0.5:
             continue
         if len(cleaned) > max_chars:
             cleaned = cleaned[: max_chars - 1].rstrip() + "\u2026"

@@ -331,6 +331,111 @@ def test_top_comments_limits_to_three(
     assert "[u3]" not in md
 
 
+def test_top_comments_skip_when_link_text_dominates(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # A comment whose visible text is mostly the anchor text of a link
+    # adds little value once truncated, so we skip it and pick the next
+    # ranked comment instead. Here the link text (60 chars) covers more
+    # than half of the visible comment ("See: " + 60 chars = 65 chars).
+    link_text = "x" * 60
+    dominated = (
+        f'See: <a href="https://example.com/{link_text}">{link_text}</a>'
+    )
+    payload = {
+        "children": [
+            _comment("alice", dominated, id=1,
+                     children=[_comment("leaf", "leaf", id=11)]),
+            _comment("bob", "second kept", id=2,
+                     children=[_comment("leaf", "leaf", id=12)]),
+            _comment("carol", "third kept", id=3,
+                     children=[_comment("leaf", "leaf", id=13)]),
+            _comment("dave", "fourth kept", id=4,
+                     children=[_comment("leaf", "leaf", id=14)]),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/210", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1, 2, 3, 4])
+    result = fetch_discussion(210)
+    assert result is not None
+    md = result.top_comments_markdown
+    assert "[alice]" not in md
+    assert "[bob]" in md
+    assert "[carol]" in md
+    assert "[dave]" in md
+
+
+def test_top_comments_keep_when_link_text_is_short(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # A short link inside a longer paragraph stays well under half of
+    # the visible comment, so the comment is kept.
+    text = (
+        "I think this article misses the broader point about distributed "
+        'systems. See <a href="https://example.com">here</a> for context, '
+        "but the gist is that consistency trumps availability in finance."
+    )
+    payload = {
+        "children": [
+            _comment("alice", text, id=1,
+                     children=[_comment("leaf", "leaf", id=11)]),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/211", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
+    result = fetch_discussion(211)
+    assert result is not None
+    md = result.top_comments_markdown
+    assert "[alice]" in md
+
+
+def test_top_comments_keep_at_exactly_half(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # Boundary: link text equals exactly 50% of the visible comment.
+    # The threshold is strictly greater than half, so this is kept.
+    # Visible text: "abcd" + "wxyz" = 8 chars, link text "wxyz" = 4 chars.
+    text = 'abcd<a href="https://example.com">wxyz</a>'
+    payload = {
+        "children": [
+            _comment("alice", text, id=1,
+                     children=[_comment("leaf", "leaf", id=11)]),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/212", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1])
+    result = fetch_discussion(212)
+    assert result is not None
+    md = result.top_comments_markdown
+    assert "[alice]" in md
+
+
+def test_top_comments_skip_when_multiple_links_dominate(
+    httpx_mock, isolated_settings, monkeypatch
+):
+    # Two links whose combined text exceeds half the visible comment
+    # cause the comment to be skipped, even when no single link does.
+    text = (
+        'see <a href="https://a.example">aaaaaaaaaaaaaaaa</a> '
+        'and <a href="https://b.example">bbbbbbbbbbbbbbbb</a>'
+    )
+    payload = {
+        "children": [
+            _comment("alice", text, id=1,
+                     children=[_comment("leaf", "leaf", id=11)]),
+            _comment("bob", "kept comment", id=2,
+                     children=[_comment("leaf", "leaf", id=12)]),
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/213", json=payload)
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [1, 2])
+    result = fetch_discussion(213)
+    assert result is not None
+    md = result.top_comments_markdown
+    assert "[alice]" not in md
+    assert "[bob]" in md
+
+
 def test_top_comments_empty_when_hn_order_is_empty(httpx_mock, isolated_settings):
     # Stubbed _fetch_hn_display_order returns [] by default via the autouse
     # fixture; fetch_discussion must degrade to an empty section.
