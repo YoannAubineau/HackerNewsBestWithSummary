@@ -274,11 +274,11 @@ def test_top_comments_truncates_to_300_chars_with_ellipsis(
     assert result is not None
     md = result.top_comments_markdown
     long_line = next(line for line in md.splitlines() if "[long]" in line)
-    long_payload = long_line.split(" : « ", 1)[1].rstrip(" »")
+    long_payload = long_line.split(" : ", 1)[1]
     assert long_payload.endswith("\u2026")
     assert len(long_payload) == 300
     exact_line = next(line for line in md.splitlines() if "[exact]" in line)
-    exact_payload = exact_line.split(" : « ", 1)[1].rstrip(" »")
+    exact_payload = exact_line.split(" : ", 1)[1]
     assert exact_payload == exact_text
     assert "\u2026" not in exact_payload
     short_line = next(line for line in md.splitlines() if "[short]" in line)
@@ -304,7 +304,7 @@ def test_top_comments_separates_paragraphs_with_space(
     assert result is not None
     md = result.top_comments_markdown
     line = next(line for line in md.splitlines() if "[alice]" in line)
-    text = line.split(" : « ", 1)[1].rstrip(" »")
+    text = line.split(" : ", 1)[1]
     assert text == "First paragraph. Second paragraph."
 
 
@@ -325,7 +325,7 @@ def test_top_comments_collapses_internal_whitespace(
     assert result is not None
     md = result.top_comments_markdown
     line = next(line for line in md.splitlines() if "[alice]" in line)
-    text = line.split(" : « ", 1)[1].rstrip(" »")
+    text = line.split(" : ", 1)[1]
     assert "\n" not in text
     assert "  " not in text
     assert text == "line one line two"

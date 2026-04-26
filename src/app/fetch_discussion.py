@@ -405,5 +405,5 @@ def render_top_comments(comments: list[TopComment]) -> str:
         url = _HN_ITEM_URL.format(id=c.id)
         author = _escape_markdown(c.author)
         text = _escape_markdown(c.text)
-        lines.append(f"- [{author}]({url}) : « {text} »")
+        lines.append(f"- [{author}]({url}) : {text}")
     return "\n".join(lines)
