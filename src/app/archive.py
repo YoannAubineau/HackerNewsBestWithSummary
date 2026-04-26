@@ -149,7 +149,8 @@ _TEMPLATE = """<!DOCTYPE html>
 <script>
   new simpleDatatables.DataTable("#archive", {{
     searchable: true,
-    perPage: 20,
+    perPage: 25,
+    perPageSelect: [10, 25, 50, 75, 100],
     labels: {{
       perPage: "articles per page",
       info: "Showing {{start}} to {{end}} of {{rows}} articles"

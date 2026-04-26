@@ -126,6 +126,9 @@ def test_archive_wires_simple_datatables(isolated_settings):
     assert 'select: 4, sortable: false' in html
     # "Entered our feed" (index 3) drives the default sort indicator.
     assert 'select: 3, sort: "desc"' in html
+    # Per-page dropdown is customised to skip the library defaults.
+    assert 'perPage: 25' in html
+    assert 'perPageSelect: [10, 25, 50, 75, 100]' in html
 
 
 def test_archive_rows_sorted_by_summarized_at_desc(isolated_settings):
