@@ -3,7 +3,7 @@
 Each cycle calls ``record_usage`` which hits OpenRouter's ``/api/v1/auth/key``
 endpoint and stores the current cumulative spend against the date in
 ``docs/usage-daily.json``. ``generate_chart`` then renders a hand-crafted
-SVG bar chart of the last N days' deltas into ``docs/usage-chart.svg``.
+SVG bar chart of the last N days' deltas into ``artefacts/usage-chart.svg``.
 The JSON file holds at most one entry per UTC date, so it never grows
 without bound.
 """
@@ -21,8 +21,8 @@ log = structlog.get_logger()
 
 _OPENROUTER_KEY_URL = "https://openrouter.ai/api/v1/auth/key"
 _DAILY_PATH = Path("docs/usage-daily.json")
-_CHART_PATH = Path("docs/usage-chart.svg")
-_BADGE_PATH = Path("docs/llm-cost.json")
+_CHART_PATH = Path("artefacts/usage-chart.svg")
+_BADGE_PATH = Path("artefacts/llm-cost.json")
 
 
 def today_spend() -> float | None:

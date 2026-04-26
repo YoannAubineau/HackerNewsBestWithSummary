@@ -1,8 +1,8 @@
 # Hacker News Best with summaries
 
 [![CI](https://img.shields.io/github/actions/workflow/status/YoannAubineau/HackerNewsBestWithSummary/ci.yml?label=CI)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/ci.yml)
-[![Last feed refresh](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/YoannAubineau/HackerNewsBestWithSummary/main/docs/last-refresh.json)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/cycle.yml)
-[![Total LLM cost](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/YoannAubineau/HackerNewsBestWithSummary/main/docs/llm-cost.json)](#llm-cost-supported-by-the-author)
+[![Last feed refresh](https://img.shields.io/endpoint?url=https://yoannaubineau.github.io/HackerNewsBestWithSummary/last-refresh.json)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/cycle.yml)
+[![Total LLM cost](https://img.shields.io/endpoint?url=https://yoannaubineau.github.io/HackerNewsBestWithSummary/llm-cost.json)](#llm-cost-supported-by-the-author)
 [![Sponsors](https://img.shields.io/github/sponsors/YoannAubineau?label=Sponsors&color=blueviolet)](https://github.com/sponsors/YoannAubineau)
 
 Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with LLM-generated content:
@@ -36,7 +36,7 @@ if you'd like to see another language supported.
 
 Daily spend on OpenRouter over the last 30 days. Refreshed each hour by the cycle workflow.
 
-![Daily OpenRouter spend over the last 30 days](docs/usage-chart.svg)
+![Daily OpenRouter spend over the last 30 days](https://yoannaubineau.github.io/HackerNewsBestWithSummary/usage-chart.svg)
 
 These costs cover the LLM calls used to rephrase titles, summarize articles,
 and analyze Hacker News discussions.

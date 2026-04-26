@@ -17,3 +17,10 @@ build/
 # Transient article/discussion content — never committed (copyright + repo size)
 artefacts/articles/**/*.raw.*.txt
 
+# Generated artefacts — rebuilt each cycle, served by Pages from disk
+/artefacts/feed.fr.xml
+/artefacts/archive.html
+/artefacts/last-refresh.json
+/artefacts/llm-cost.json
+/artefacts/usage-chart.svg
+
