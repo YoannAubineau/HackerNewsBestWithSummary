@@ -62,7 +62,7 @@ def _date_cell(when: datetime | None) -> str:
 
 def _summary_url(article: Article) -> str:
     """Return the URL of the article's Markdown file rendered on GitHub."""
-    when = article.source_published_at
+    when = article.our_published_at
     return (
         f"{_REPO_BLOB_URL}/artefacts/articles/"
         f"{when.year:04d}/{when.month:02d}/{when.day:02d}/"

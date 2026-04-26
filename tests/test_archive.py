@@ -44,6 +44,15 @@ def test_archive_lists_every_summarized_article(isolated_settings):
     assert "github.com/YoannAubineau/HackerNewsBestWithSummary/blob/main" in html
 
 
+def test_archive_url_matches_storage_partition(isolated_settings):
+    # Link must mirror path_for(): partition by our_published_at, not
+    # source_published_at — otherwise the GitHub blob URL 404s.
+    save(_make_article("g1", hn_item_id=1), "body")
+    html = write_archive().read_text(encoding="utf-8")
+    assert "/artefacts/articles/2026/04/21/" in html
+    assert "/artefacts/articles/2026/04/20/" not in html
+
+
 def test_archive_prefers_rewritten_title(isolated_settings):
     save(
         _make_article("g1", hn_item_id=1, rewritten_title="Titre réécrit"),
