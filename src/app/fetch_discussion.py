@@ -71,8 +71,7 @@ def fetch_discussion(hn_item_id: int) -> Discussion | None:
     payload = _fetch_algolia_item(hn_item_id)
     if payload is None:
         return None
-    settings = get_settings()
-    comments = list(_iter_comments(payload, settings.discussion_budget))
+    comments = list(_iter_comments(payload))
     if comments:
         ordered_ids = _fetch_hn_display_order(hn_item_id)
         top_comments = _select_top_comments(payload, ordered_ids)
@@ -120,29 +119,13 @@ def _fetch_algolia_item(hn_item_id: int) -> AlgoliaItem | None:
         return None
 
 
-def _iter_comments(root: AlgoliaItem, budget: int) -> Iterator[dict]:
-    """Walk the comment tree with a recursive, degressive comment budget.
-
-    A "branch node" is a comment that has at least one direct reply. Non-pinned
-    branch nodes are included only if the budget reaches them; the budget at
-    each level is split triangularly across qualifying children (the
-    highest-ranked child gets the largest share).
-
-    Submitter comments (author == story author) and their full ancestor chain
-    are "pinned": always included, regardless of budget, and without consuming
-    budget that would otherwise be spent on non-pinned siblings.
-    """
-    pinned = _collect_pinned(root, root.author) if root.author else set()
-    yield from _distribute_children(root, budget, pinned, depth=0)
+def _iter_comments(root: AlgoliaItem) -> Iterator[dict]:
+    """Walk the comment tree depth-first and yield every comment with text."""
+    for child in root.children:
+        yield from _walk(child, depth=0)
 
 
-def _walk(
-    node: AlgoliaItem, budget: int, pinned: set[int], depth: int
-) -> Iterator[dict]:
-    is_pinned = id(node) in pinned
-    has_reply = bool(node.children)
-    if not (is_pinned or (budget > 0 and has_reply)):
-        return
+def _walk(node: AlgoliaItem, depth: int) -> Iterator[dict]:
     if node.text:
         yield {
             "author": node.author or "?",
@@ -150,62 +133,8 @@ def _walk(
             "text": _strip_html(node.text),
             "depth": depth,
         }
-    remaining = budget if is_pinned else max(0, budget - 1)
-    yield from _distribute_children(node, remaining, pinned, depth + 1)
-
-
-def _distribute_children(
-    parent: AlgoliaItem, budget: int, pinned: set[int], depth: int
-) -> Iterator[dict]:
-    children = parent.children
-    alloc_map: dict[int, int] = {}
-    if budget > 0:
-        non_pinned_qualifying = [
-            c for c in children if id(c) not in pinned and c.children
-        ]
-        allocations = _degressive_split(budget, len(non_pinned_qualifying))
-        alloc_map = {
-            id(c): a for c, a in zip(non_pinned_qualifying, allocations, strict=True)
-        }
-    for child in children:
-        if id(child) in pinned:
-            yield from _walk(child, 0, pinned, depth)
-        elif (alloc := alloc_map.get(id(child), 0)) > 0:
-            yield from _walk(child, alloc, pinned, depth)
-
-
-def _collect_pinned(root: AlgoliaItem, author: str) -> set[int]:
-    """Return the set of id()s for (a) every comment posted by ``author`` and
-    (b) each of its ancestors up to the story root."""
-    pinned: set[int] = set()
-    _mark_pinned(root, author, pinned, ancestors=[])
-    return pinned
-
-
-def _mark_pinned(
-    node: AlgoliaItem,
-    author: str,
-    pinned: set[int],
-    ancestors: list[AlgoliaItem],
-) -> None:
-    if node.author == author and node.text:
-        pinned.add(id(node))
-        for anc in ancestors:
-            pinned.add(id(anc))
     for child in node.children:
-        _mark_pinned(child, author, pinned, ancestors + [node])
-
-
-def _degressive_split(budget: int, n: int) -> list[int]:
-    """Triangular split: weight[i] = n-i. First slot gets the largest share."""
-    if n <= 0 or budget <= 0:
-        return []
-    weights = list(range(n, 0, -1))
-    total_weight = sum(weights)
-    allocs = [budget * w // total_weight for w in weights]
-    residue = budget - sum(allocs)
-    allocs[0] += residue
-    return allocs
+        yield from _walk(child, depth + 1)
 
 
 def _strip_html(text: str) -> str:

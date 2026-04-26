@@ -94,9 +94,9 @@ hourly on a public repo, so minutes are free.
   returned as `ContentSource.VIDEO_TRANSCRIPT`. `img.youtube.com`
   thumbnail is always used as `image_url`, even when the transcript
   fetch fails.
-- `src/app/fetch_discussion.py`, Algolia API + comment selection: recursive
-  degressive comment budget (default 500), plus pinning of the HN submitter's
-  own comments and their full ancestor chain. The Algolia root payload also
+- `src/app/fetch_discussion.py`, Algolia API + comment selection: walks the
+  full tree depth-first and yields every comment with text, in HN's natural
+  reply order, so all comments reach the LLM. The Algolia root payload also
   carries the canonical article URL (HN's source of truth, which can drift
   from the hnrss `<link>` after a moderator edit). The pipeline uses it to
   overwrite `article.url` before `step_fetch_articles` runs. A `null` URL
@@ -203,9 +203,9 @@ for the workflow.
 
 ## Testing philosophy
 
-We test **rules that can regress**, not plumbing. Good coverage on: comment
-selection (budget, pinning, degressive split), LLM cascade, feed structure,
-storage invariants, retry state machine. Skipped: CLI wiring (trivial),
+We test **rules that can regress**, not plumbing. Good coverage on: LLM
+cascade, feed structure, storage invariants, retry state machine. Skipped:
+CLI wiring (trivial),
 logging setup (no logic), full mocked `run_cycle()`. Real Actions runs catch
 integration bugs (like the two we already hit: wrong sort key, broken
 markdown rendering) better than mocks ever would.

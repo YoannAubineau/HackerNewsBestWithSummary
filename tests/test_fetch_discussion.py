@@ -2,12 +2,11 @@ import pytest
 
 from app import fetch_discussion as fd
 from app.fetch_discussion import (
-    _degressive_split,
-    fetch_discussion,
-    fetch_submitter_text,
+    _fetch_hn_display_order as _real_fetch_hn_display_order,
 )
 from app.fetch_discussion import (
-    _fetch_hn_display_order as _real_fetch_hn_display_order,
+    fetch_discussion,
+    fetch_submitter_text,
 )
 
 
@@ -29,87 +28,11 @@ def _comment(author, text, children=None, points=None, id=None):
     }
 
 
-def test_degressive_split_sums_to_budget():
-    assert _degressive_split(500, 10) == [95, 81, 72, 63, 54, 45, 36, 27, 18, 9]
-    assert sum(_degressive_split(500, 10)) == 500
-
-
-def test_degressive_split_is_monotonic():
-    allocs = _degressive_split(100, 5)
-    assert all(allocs[i] >= allocs[i + 1] for i in range(len(allocs) - 1))
-    assert sum(allocs) == 100
-
-
-def test_degressive_split_handles_edges():
-    assert _degressive_split(0, 5) == []
-    assert _degressive_split(100, 0) == []
-    assert _degressive_split(1, 3) == [1, 0, 0]
-
-
-def test_drops_leaf_comments(httpx_mock, isolated_settings):
-    isolated_settings.discussion_budget = 100
+def test_yields_every_comment_with_text(httpx_mock):
+    # Walk emits every comment with text in depth-first pre-order, including
+    # leaves and the submitter's own posts, with depth-driven indentation.
     payload = {
-        "children": [
-            _comment("alice", "root w/ reply", children=[_comment("bob", "leaf reply")]),
-            _comment("carol", "leaf root"),  # no children → skipped entirely
-        ]
-    }
-    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/42", json=payload)
-    result = fetch_discussion(42)
-    assert result is not None
-    # alice is included (branch node). bob is a leaf → excluded. carol excluded.
-    assert result.comment_count == 1
-    assert "alice" in result.text
-    assert "bob" not in result.text
-    assert "carol" not in result.text
-
-
-def test_budget_limits_total_count(httpx_mock, isolated_settings):
-    isolated_settings.discussion_budget = 3
-    # Ten qualifying roots, each with a qualifying child (so each would include 2).
-    payload = {
-        "children": [
-            _comment(
-                f"r{i}",
-                f"root {i}",
-                children=[_comment(f"r{i}_a", "a", children=[_comment(f"r{i}_b", "b")])],
-            )
-            for i in range(10)
-        ]
-    }
-    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/99", json=payload)
-    result = fetch_discussion(99)
-    assert result is not None
-    assert result.comment_count <= 3
-
-
-def test_top_root_gets_more_depth_than_later_root(httpx_mock, isolated_settings):
-    isolated_settings.discussion_budget = 10
-
-    # Each root is a long chain of branch nodes, so the budget binds before the
-    # tree runs out. With split (7, 3), top emits 7 nodes, bottom emits 3.
-    def chain(prefix: str, length: int) -> dict:
-        # Deepest branch node = has one leaf child (so it counts as a branch node).
-        node = _comment(f"{prefix}{length - 1}", f"{prefix}{length - 1}",
-                        children=[_comment(f"{prefix}leaf", "leaf")])
-        for i in range(length - 2, -1, -1):
-            node = _comment(f"{prefix}{i}", f"{prefix}{i}", children=[node])
-        return node
-
-    payload = {"children": [chain("top_", 10), chain("bottom_", 10)]}
-    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/77", json=payload)
-    result = fetch_discussion(77)
-    assert result is not None
-
-    top_count = sum(1 for line in result.text.splitlines() if "top_" in line)
-    bottom_count = sum(1 for line in result.text.splitlines() if "bottom_" in line)
-    assert top_count == 7
-    assert bottom_count == 3
-
-
-def test_output_grouped_by_root_subtree(httpx_mock, isolated_settings):
-    isolated_settings.discussion_budget = 20
-    payload = {
+        "author": "op",
         "children": [
             _comment(
                 "alice",
@@ -118,34 +41,49 @@ def test_output_grouped_by_root_subtree(httpx_mock, isolated_settings):
                     _comment(
                         "bob",
                         "alice's reply",
-                        children=[_comment("bob_child_leaf", "leaf")],
-                    )
+                        children=[_comment("op", "submitter leaf")],
+                    ),
+                    _comment("bob_sibling", "another reply"),
                 ],
             ),
-            _comment(
-                "carol",
-                "second root",
-                children=[
-                    _comment(
-                        "dave",
-                        "carol's reply",
-                        children=[_comment("dave_child_leaf", "leaf")],
-                    )
-                ],
-            ),
-        ]
+            _comment("carol", "leaf root"),
+        ],
     }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/55", json=payload)
     result = fetch_discussion(55)
     assert result is not None
     lines = result.text.splitlines()
-    # alice subtree (alice, bob) before carol subtree (carol, dave). Leaves excluded.
-    authors = [line.lstrip().split("[")[1].split(",")[0].split("]")[0] for line in lines]
-    assert authors == ["alice", "bob", "carol", "dave"]
+    assert lines == [
+        "[alice] first root",
+        "  [bob] alice's reply",
+        "    [op] submitter leaf",
+        "  [bob_sibling] another reply",
+        "[carol] leaf root",
+    ]
+    assert result.comment_count == 5
 
 
-def test_strips_html_and_entities(httpx_mock, isolated_settings):
-    isolated_settings.discussion_budget = 10
+def test_skips_comments_with_empty_text(httpx_mock):
+    # Deleted/dead comments come back with text=None and must not appear in
+    # the rendered output, even though their children still do.
+    payload = {
+        "children": [
+            _comment(
+                "alice",
+                "root",
+                children=[_comment(None, None, children=[_comment("bob", "deep")])],
+            )
+        ]
+    }
+    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/56", json=payload)
+    result = fetch_discussion(56)
+    assert result is not None
+    assert result.comment_count == 2
+    authors = [line.lstrip().split("[")[1].split("]")[0] for line in result.text.splitlines()]
+    assert authors == ["alice", "bob"]
+
+
+def test_strips_html_and_entities(httpx_mock):
     payload = {
         "children": [
             _comment(
@@ -160,192 +98,6 @@ def test_strips_html_and_entities(httpx_mock, isolated_settings):
     assert result is not None
     assert "<i>" not in result.text
     assert "'apostrophe'" in result.text
-
-
-def test_submitter_leaf_comment_is_pinned(httpx_mock, isolated_settings):
-    isolated_settings.discussion_budget = 10
-    payload = {
-        "author": "op",
-        "children": [
-            _comment(
-                "alice",
-                "root by alice",
-                children=[
-                    _comment(
-                        "bob",
-                        "reply by bob",
-                        children=[_comment("op", "leaf reply by submitter")],
-                    )
-                ],
-            ),
-            _comment("carol", "leaf by carol"),  # not submitter, not a branch → skipped
-        ],
-    }
-    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/1", json=payload)
-    result = fetch_discussion(1)
-    assert result is not None
-    # alice + bob + op (the leaf) all pinned as ancestor chain; carol dropped.
-    authors = [line.lstrip().split("[")[1].split(",")[0].split("]")[0]
-               for line in result.text.splitlines()]
-    assert authors == ["alice", "bob", "op"]
-
-
-def test_submitter_ancestor_chain_is_fully_included(httpx_mock, isolated_settings):
-    # Budget 0 + no qualifying siblings → output is exactly the pinned chain.
-    isolated_settings.discussion_budget = 0
-    payload = {
-        "author": "op",
-        "children": [
-            _comment(
-                "alice",
-                "depth 0",
-                children=[
-                    _comment(
-                        "bob",
-                        "depth 1",
-                        children=[
-                            _comment(
-                                "carol",
-                                "depth 2",
-                                children=[_comment("op", "depth 3 by submitter")],
-                            )
-                        ],
-                    )
-                ],
-            )
-        ],
-    }
-    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/2", json=payload)
-    result = fetch_discussion(2)
-    assert result is not None
-    authors = [line.lstrip().split("[")[1].split(",")[0].split("]")[0]
-               for line in result.text.splitlines()]
-    assert authors == ["alice", "bob", "carol", "op"]
-
-
-def test_pinned_nodes_do_not_consume_budget(httpx_mock, isolated_settings):
-    # A pinned chain of 6 nodes + 3 non-pinned qualifying roots. With budget=3
-    # distributed degressively across the 3 non-pinned roots (alloc [2,1,0]),
-    # u0 and u1 each emit themselves (their child is a leaf). The pinning does
-    # not shift budget away from non-pinned siblings.
-    isolated_settings.discussion_budget = 3
-    pinned_chain = _comment(
-        "alice",
-        "depth 0",
-        children=[
-            _comment(
-                "bob",
-                "depth 1",
-                children=[
-                    _comment(
-                        "carol",
-                        "depth 2",
-                        children=[
-                            _comment(
-                                "dave",
-                                "depth 3",
-                                children=[
-                                    _comment(
-                                        "erin",
-                                        "depth 4",
-                                        children=[_comment("op", "depth 5 by submitter")],
-                                    )
-                                ],
-                            )
-                        ],
-                    )
-                ],
-            )
-        ],
-    )
-    other_roots = [
-        _comment(f"u{i}", f"u{i}", children=[_comment(f"u{i}_child", "leaf")])
-        for i in range(3)
-    ]
-    payload = {"author": "op", "children": [pinned_chain, *other_roots]}
-    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/3", json=payload)
-    result = fetch_discussion(3)
-    assert result is not None
-    # 6 pinned + 2 non-pinned (u0 and u1, since alloc is [2,1,0] for 3 slots).
-    assert result.comment_count == 8
-    for author in ("alice", "bob", "carol", "dave", "erin", "op"):
-        assert f"[{author}]" in result.text
-    assert "[u0]" in result.text
-    assert "[u1]" in result.text
-    assert "[u2]" not in result.text
-
-
-def test_siblings_of_pinned_path_not_privileged(httpx_mock, isolated_settings):
-    # Budget 0: only the pinned path should survive, siblings of pinned
-    # ancestors are dropped (no budget, not pinned themselves).
-    isolated_settings.discussion_budget = 0
-    pinned_path = _comment(
-        "alice",
-        "pinned root",
-        children=[
-            _comment(
-                "bob",
-                "pinned middle",
-                children=[_comment("op", "submitter")],
-            ),
-            # Sibling of bob, has children → would qualify but no budget, not pinned.
-            _comment("bob_sibling", "sibling", children=[_comment("leaf", "leaf")]),
-        ],
-    )
-    # Root-level sibling of alice, also qualifying but not pinned.
-    alice_sibling = _comment(
-        "alice_sibling", "another root", children=[_comment("x", "leaf")]
-    )
-    payload = {"author": "op", "children": [pinned_path, alice_sibling]}
-    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/4", json=payload)
-    result = fetch_discussion(4)
-    assert result is not None
-    authors = [line.lstrip().split("[")[1].split(",")[0].split("]")[0]
-               for line in result.text.splitlines()]
-    assert authors == ["alice", "bob", "op"]
-
-
-def test_no_author_on_payload_behaves_like_budget_only(httpx_mock, isolated_settings):
-    # Missing `author` on root → fallback: everything is non-pinned.
-    isolated_settings.discussion_budget = 10
-    payload = {
-        "children": [
-            _comment("alice", "root", children=[_comment("bob", "leaf")]),
-            _comment("anon_leaf", "solo leaf"),
-        ]
-        # intentionally no "author" key
-    }
-    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/5", json=payload)
-    result = fetch_discussion(5)
-    assert result is not None
-    # Only alice qualifies (bob is a leaf; anon_leaf is a leaf root → skipped).
-    assert result.comment_count == 1
-    assert "[alice]" in result.text
-
-
-def test_submitter_with_multiple_comments_pins_all(httpx_mock, isolated_settings):
-    isolated_settings.discussion_budget = 0  # zero budget → only pins survive
-    payload = {
-        "author": "op",
-        "children": [
-            _comment(
-                "alice", "root 1",
-                children=[_comment("op", "op reply in root 1")],
-            ),
-            _comment(
-                "bob", "root 2",
-                children=[_comment("op", "op reply in root 2")],
-            ),
-            _comment("carol", "root 3", children=[_comment("leaf", "leaf")]),
-        ],
-    }
-    httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/6", json=payload)
-    result = fetch_discussion(6)
-    assert result is not None
-    # alice + op_reply_1 + bob + op_reply_2; carol's thread dropped.
-    assert result.comment_count == 4
-    assert "[carol]" not in result.text
-    assert result.text.count("[op]") == 2
 
 
 def test_fetch_discussion_returns_none_on_invalid_payload(httpx_mock):
@@ -367,13 +119,14 @@ def test_fetch_discussion_returns_none_on_http_error(httpx_mock):
     assert fetch_discussion(500) is None
 
 
-def test_fetch_discussion_returns_empty_when_no_qualifying_roots(httpx_mock, isolated_settings):
-    # When Algolia succeeds but no comment qualifies for inclusion (only leaves),
-    # the call still surfaces the canonical URL captured from the root payload,
-    # so callers can still update article.url. Comment fields are empty.
+def test_fetch_discussion_returns_empty_when_no_comments(httpx_mock):
+    # When Algolia succeeds but the discussion has no comments at all (or
+    # every comment has empty text), the call still surfaces the canonical
+    # URL captured from the root payload, so callers can still update
+    # article.url. Comment fields are empty.
     payload = {
         "url": "https://example.com/canonical",
-        "children": [_comment("alice", "leaf 1"), _comment("bob", "leaf 2")],
+        "children": [_comment("alice", None), _comment("bob", "")],
     }
     httpx_mock.add_response(url="https://hn.algolia.com/api/v1/items/77", json=payload)
     result = fetch_discussion(77)
@@ -384,8 +137,7 @@ def test_fetch_discussion_returns_empty_when_no_qualifying_roots(httpx_mock, iso
     assert result.url == "https://example.com/canonical"
 
 
-def test_fetch_discussion_exposes_canonical_url(httpx_mock, isolated_settings):
-    isolated_settings.discussion_budget = 10
+def test_fetch_discussion_exposes_canonical_url(httpx_mock):
     payload = {
         "url": "https://example.com/article",
         "children": [
@@ -398,10 +150,9 @@ def test_fetch_discussion_exposes_canonical_url(httpx_mock, isolated_settings):
     assert result.url == "https://example.com/article"
 
 
-def test_fetch_discussion_url_is_none_for_self_post(httpx_mock, isolated_settings):
+def test_fetch_discussion_url_is_none_for_self_post(httpx_mock):
     # Ask HN / Show HN / polls have no external URL: Algolia returns no url
     # field. Callers fall back to the feed URL.
-    isolated_settings.discussion_budget = 10
     payload = {
         "children": [
             _comment("alice", "root", children=[_comment("bob", "leaf reply")]),
@@ -445,7 +196,6 @@ def test_top_comments_follow_hn_display_order(
     # Algolia returns children in chronological order; HN's display order
     # can rearrange them by its internal best-ranking. top_comments must
     # follow HN's order, not the chronological Algolia order.
-    isolated_settings.discussion_budget = 10
     payload = {
         "children": [
             _comment("alice", "posted first", id=1,
@@ -472,7 +222,6 @@ def test_top_comments_skip_deleted_or_missing_from_tree(
     # HN may surface IDs that correspond to deleted comments (text=None,
     # author=None) or that aren't in the Algolia tree for some reason.
     # We skip them and keep consuming the ordered list until we fill n.
-    isolated_settings.discussion_budget = 50
     payload = {
         "children": [
             _comment(None, "no author", id=10,
@@ -504,7 +253,6 @@ def test_top_comments_skip_deleted_or_missing_from_tree(
 def test_top_comments_truncates_to_300_chars_with_ellipsis(
     httpx_mock, isolated_settings, monkeypatch
 ):
-    isolated_settings.discussion_budget = 10
     long_text = "a" * 500
     exact_text = "b" * 300
     short_text = "c" * 100
@@ -538,7 +286,6 @@ def test_top_comments_truncates_to_300_chars_with_ellipsis(
 def test_top_comments_collapses_internal_whitespace(
     httpx_mock, isolated_settings, monkeypatch
 ):
-    isolated_settings.discussion_budget = 10
     payload = {
         "children": [
             _comment(
@@ -562,7 +309,6 @@ def test_top_comments_collapses_internal_whitespace(
 def test_top_comments_limits_to_three(
     httpx_mock, isolated_settings, monkeypatch
 ):
-    isolated_settings.discussion_budget = 10
     payload = {
         "children": [
             _comment(f"u{i}", f"text {i}", id=1000 + i,
@@ -586,7 +332,6 @@ def test_top_comments_limits_to_three(
 def test_top_comments_empty_when_hn_order_is_empty(httpx_mock, isolated_settings):
     # Stubbed _fetch_hn_display_order returns [] by default via the autouse
     # fixture; fetch_discussion must degrade to an empty section.
-    isolated_settings.discussion_budget = 10
     payload = {
         "children": [
             _comment("alice", "root", id=1,
@@ -709,7 +454,6 @@ def test_top_comments_escape_markdown_in_author_and_text(
     # context — by including `[evil](https://x)` or `*emphasis*` etc. The
     # escaper must neutralise these so the rendered bullet keeps the literal
     # characters as text, not as Markdown syntax.
-    isolated_settings.discussion_budget = 10
     payload = {
         "children": [
             _comment(

@@ -40,10 +40,8 @@ where it left off.
    The filename is the first eight hex characters of SHA-256 of the HN
    guid, so paths are stable and re-runs are idempotent.
 2. **`fetch-discussions`** calls the Algolia HN API for the full comment
-   tree and selects a recursive comment budget (default 500), degressively
-   allocated to root threads ranked by HN score. The story submitter's
-   own comments and their ancestor chain are always pinned, since they
-   carry clarifications that are otherwise easy to miss. The same step
+   tree and forwards every comment with text to the LLM, depth-first in
+   HN's natural reply order. The same step
    also scrapes the HN HTML page (`news.ycombinator.com/item?id=<id>`)
    to recover the display order of top-level comments, which Algolia
    does not preserve and which HN never exposes as a numeric score. The

@@ -111,7 +111,6 @@ except `OPENROUTER_API_KEY`.
 | `FEED_TITLE` | `Hacker News: Best, with Summary` | Channel `<title>`. |
 | `FEED_DESCRIPTION` | (see `config.py`) | Channel `<description>`. |
 | `CHANNEL_SITE_URL` | `https://news.ycombinator.com/best` | URL used for the channel's plain `<link>`. Readers resolve the feed's icon from this page's favicon. |
-| `DISCUSSION_BUDGET` | `500` | Max number of HN comments sent to the LLM. Split recursively across root threads, decreasing by rank. |
 | `LLM_SLEEP_SECONDS` | `3.0` | Pause between two LLM calls to stay under rate limits. |
 | `HTTP_TIMEOUT` | `20.0` | Timeout in seconds for outbound HTTP calls. |
 | `MAX_ATTEMPTS` | `3` | How many cycles an article may fail in a row before being moved to `_failed/`. |
@@ -122,61 +121,18 @@ except `OPENROUTER_API_KEY`.
 | `WEBSHARE_PROXY_PASSWORD` | *unset* | Optional. Proxy Password paired with `WEBSHARE_PROXY_USERNAME`. Both must be set for the proxy to be used. |
 | `LOG_LEVEL` | `INFO` | One of `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. |
 
-## Comment selection budget
+## Comment selection
 
-A popular HN thread has hundreds to thousands of comments, too many to
-cram into a single LLM prompt, and most of them are short reactions that
-add little to a synthesis. `fetch_discussion.py` therefore walks the tree
-and picks a bounded subset before calling the model.
-
-### Rules
-
-1. **Leaves are dropped.** A comment with no reply is considered
-   low-signal and is never included, unless it is pinned (see 3).
-2. **Each included comment costs 1 unit of budget.** The starting budget
-   is `DISCUSSION_BUDGET` (default 500).
-3. **Submitter comments are pinned.** Any comment whose author matches
-   the story submitter is always included, along with every ancestor up
-   to the root. Pinned comments don't consume the budget, since they are
-   kept for their clarifying value and would otherwise be easy to miss.
-4. **Remaining budget is split triangularly across children, by HN
-   rank.** At any level, non-pinned "branch" children (those with at
-   least one reply of their own) receive allocations weighted
-   `n, n-1, …, 1`. The top-ranked thread gets the largest slice, the
-   next a bit less, and so on. Children with no budget are skipped.
-5. **Recursion.** Each included comment walks into its own children
-   with `budget - 1`, applying the same triangular split one level
-   deeper. The tree thins out naturally as depth increases.
-
-Allocations are a **ceiling, not a target**. Unused budget from a
-sub-thread that turns out to be shorter than expected is not
-redistributed to its siblings. The real number of comments emitted can
-therefore be less than `DISCUSSION_BUDGET`. Redistributing would take a
-second pass over the tree for marginal gain. When the budget overflows
-the tree, there was already enough room for every qualifying comment.
-
-### Why these rules
-
-- **Budget cap** keeps prompt size (and therefore latency and cost)
-  predictable regardless of how viral a thread goes.
-- **Triangular split** reflects HN's own ranking signal: top threads
-  tend to carry the most informative exchanges, so they deserve a
-  bigger share of the context window.
-- **Leaf drop** filters out pure reactions and ack-only replies.
-- **Submitter pinning** preserves the single most authoritative voice
-  in the thread (the poster's own clarifications and rebuttals).
-
-### Tuning
-
-Raising `DISCUSSION_BUDGET` lets the model see more of the deep
-sub-threads but inflates the prompt and the per-call cost. Lowering it
-tightens the focus on the top-ranked exchanges. 500 was chosen so that
-a typical front-page thread fits comfortably in a Haiku 4.5 context
-window without dominating it.
+`fetch_discussion.py` walks the Algolia comment tree depth-first and
+sends every comment that has text to the LLM, in HN's natural reply
+order. No cap, no leaf filter, no submitter pinning. Threads on this
+feed rarely exceed a few hundred comments and Haiku 4.5's context
+window absorbs that comfortably. The daily-cost circuit breaker
+(`DAILY_COST_LIMIT_USD`) is the safety net for outlier threads.
 
 ## Top comments block
 
-Independent of the LLM-fed budget above, each article also reproduces
+Alongside the LLM-fed comment tree above, each article also reproduces
 the three top-ranked root comments of the Hacker News discussion
 verbatim, under a "Commentaires les plus plébiscités" heading at the
 end of the discussion section. Each bullet quotes the comment text

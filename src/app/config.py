@@ -27,11 +27,6 @@ class Settings(BaseSettings):
     )
     channel_site_url: str = "https://news.ycombinator.com/best"
 
-    # Max comments sent to the LLM for the discussion summary. Spent recursively:
-    # degressive split across root comments (those with ≥1 reply), the top-ranked
-    # roots getting a bigger sub-budget that is itself split degressively among
-    # their own replying children, and so on. Leaf comments are never included.
-    discussion_budget: int = 500
     llm_sleep_seconds: float = 3.0
     http_timeout: float = 20.0
     max_attempts: int = 3
