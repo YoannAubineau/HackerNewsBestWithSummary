@@ -66,6 +66,14 @@
           article h2 a { color: var(--fg); text-decoration: none; }
           article h2 a:hover { color: var(--accent); }
           article time { color: var(--muted); font-size: .85rem; }
+          article .permalink {
+            margin-left: .5rem;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: .85rem;
+            opacity: .5;
+          }
+          article .permalink:hover { opacity: 1; color: var(--accent); }
           article .hnid { margin-top: 1rem; font-size: .8rem; color: var(--muted); opacity: .6; }
           article .hnid a { color: inherit; text-decoration: none; }
           article .hnid a:hover { opacity: 1; color: var(--accent); }
@@ -100,7 +108,7 @@
           </header>
           <main>
             <xsl:for-each select="channel/item">
-              <article>
+              <article id="article-{guid}">
                 <xsl:if test="media:group/media:thumbnail/@url">
                   <img class="thumb" src="{media:group/media:thumbnail/@url}" alt=""/>
                 </xsl:if>
@@ -114,6 +122,7 @@
                     <xsl:with-param name="pubDate" select="pubDate"/>
                   </xsl:call-template>
                 </time>
+                <a class="permalink" href="#article-{guid}" title="Lien permanent">#</a>
                 <div class="desc">
                   <xsl:value-of select="content:encoded" disable-output-escaping="yes"/>
                 </div>
@@ -133,6 +142,20 @@
               if (!navigator.clipboard) return;
               event.preventDefault();
               navigator.clipboard.writeText(a.getAttribute('data-hnid')).then(function () {
+                var original = a.textContent;
+                a.textContent = 'Copié !';
+                setTimeout(function () { a.textContent = original; }, 1500);
+              });
+            });
+          });
+          document.querySelectorAll('.permalink').forEach(function (a) {
+            a.addEventListener('click', function (event) {
+              var hash = a.getAttribute('href');
+              history.replaceState(null, '', hash);
+              if (!navigator.clipboard) return;
+              event.preventDefault();
+              var url = location.origin + location.pathname + hash;
+              navigator.clipboard.writeText(url).then(function () {
                 var original = a.textContent;
                 a.textContent = 'Copié !';
                 setTimeout(function () { a.textContent = original; }, 1500);
