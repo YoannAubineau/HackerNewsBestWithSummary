@@ -149,7 +149,7 @@ def _derive_daily_spend(
 
 def _render_svg(daily: list[tuple[date, float]]) -> str:
     width, height = 720, 260
-    margin_top, margin_bottom = 24, 52
+    margin_top, margin_bottom = 24, 28
     margin_left, margin_right = 52, 12
     plot_w = width - margin_left - margin_right
     plot_h = height - margin_top - margin_bottom
@@ -201,12 +201,6 @@ def _render_svg(daily: list[tuple[date, float]]) -> str:
                 f'text-anchor="middle" fill="#666">'
                 f'{day.strftime("%d/%m")}</text>'
             )
-    # footer
-    total = sum(v for _, v in daily)
-    footer = f"Last {n} days: ${total:.2f}"
-    out.append(
-        f'<text x="{margin_left}" y="{height - 10}" fill="#666">{footer}</text>'
-    )
     out.append("</svg>")
     return "\n".join(out)
 
