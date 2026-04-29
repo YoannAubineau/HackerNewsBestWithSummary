@@ -32,7 +32,10 @@ apprend au lecteur. Évite tout style putaclic, toute question, toute promesse v
 
 2. Un résumé structuré en Markdown :
    - commence par une à deux phrases de synthèse factuelle (sans préfixe "TL;DR" \
-ou autre étiquette),
+ou autre étiquette). Si l'article porte sur une entité identifiable \
+(logiciel, service, entreprise, personne, technologie, etc.) que le lecteur \
+peut ne pas connaître, la première phrase doit préciser en quelques mots ce \
+qu'est cette entité (nature, fonction) avant tout autre détail d'actualité.
    - saute une ligne,
    - puis donne 3 à 5 bullets synthétiques (préfixe "- ") avec les points clés.
 
