@@ -13,7 +13,7 @@ dependencies = [
     "markdown-it-py>=4.0.0",
     "pydantic>=2.9",
     "pydantic-settings>=2.5",
-    "typer>=0.15",
+    "typer>=0.25.0",
     "tenacity>=9.0",
     "structlog>=24.4",
     "youtube-transcript-api>=1.2.4",
@@ -23,8 +23,8 @@ dependencies = [
 dev = [
     "pytest>=8.3",
     "pytest-httpx>=0.32",
-    "pyright>=1.1.390",
-    "ruff>=0.9",
+    "pyright>=1.1.409",
+    "ruff>=0.15.12",
 ]
 
 [build-system]
