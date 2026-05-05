@@ -67,7 +67,3 @@ A five-stage hourly pipeline writes one Markdown file per article under
 database, no backend. Git is the data layer, GitHub Pages is the CDN.
 Full breakdown of the pipeline stages, storage layout, dependencies,
 and external services in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
-
-## License
-
-MIT, see [LICENSE](LICENSE).
