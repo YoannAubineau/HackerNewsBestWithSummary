@@ -21,10 +21,7 @@ class Settings(BaseSettings):
     feed_items_limit: int = 100
     feed_ttl_minutes: int = 15
     feed_title: str = "Hacker News: Best, with Summary"
-    feed_description: str = (
-        "Hacker News highest-voted recent links with article and discussion summaries "
-        "in French."
-    )
+    feed_description: str = "Le meilleur de Hacker News, résumé en français."
     channel_site_url: str = "https://news.ycombinator.com/best"
 
     llm_sleep_seconds: float = 3.0
