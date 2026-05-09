@@ -316,14 +316,22 @@ def _fetch_hn_html(hn_item_id: int) -> str:
     return response.text
 
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=2, min=2, max=10),
+    retry=retry_if_exception(_is_retryable_hn_error),
+    reraise=True,
+)
 def _fetch_hn_html_via_proxy(hn_item_id: int) -> str:
-    """Single attempt against HN through the Webshare residential proxy.
+    """Up to three attempts against HN through the Webshare residential pool.
 
     Each request comes from a fresh rotating residential IP, which
     bypasses HN's IP-based rate limiting on shared GitHub Actions
-    runners. Caller is responsible for checking that proxy credentials
-    are configured before invoking this. Raises ``httpx.HTTPError`` on
-    failure.
+    runners. Because Webshare rotates the IP on every HTTP request,
+    retrying here is meaningful: each attempt draws a different IP and
+    independently avoids any throttled address. Caller is responsible
+    for checking that proxy credentials are configured before invoking
+    this. Raises ``httpx.HTTPError`` on failure.
     """
     settings = get_settings()
     proxy_url = WebshareProxyConfig(
@@ -354,12 +362,12 @@ def _fetch_hn_display_order(hn_item_id: int) -> list[int]:
     to three times with exponential backoff, since GitHub Actions
     runners share IPs and tend to trip HN's rate limit even on a single
     request. When the direct retries are exhausted and Webshare proxy
-    credentials are configured, one last attempt routes through the
+    credentials are configured, up to three attempts route through the
     residential proxy pool already used by the YouTube transcript path
-    — that gives us a fresh IP per request and bypasses HN's
-    IP-based throttling entirely. If everything fails, the caller falls
-    back to an empty ``top_comments_markdown`` rather than crashing the
-    pipeline.
+    — because Webshare rotates the IP on every request, each retry
+    draws a fresh address and independently avoids any throttled IP.
+    If everything fails, the caller falls back to an empty
+    ``top_comments_markdown`` rather than crashing the pipeline.
     """
     try:
         text = _fetch_hn_html(hn_item_id)
