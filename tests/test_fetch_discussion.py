@@ -776,13 +776,38 @@ def test_fetch_hn_display_order_returns_empty_when_proxy_also_fails(
     monkeypatch.setattr(time, "sleep", lambda _: None)
     isolated_settings.webshare_proxy_username = "demo"
     isolated_settings.webshare_proxy_password = "secret"
-    # Three direct 429s + one proxy 429 → empty.
-    for _ in range(4):
+    # Three direct 429s + three proxy 429s → empty.
+    for _ in range(6):
         httpx_mock.add_response(
             url="https://news.ycombinator.com/item?id=3333",
             status_code=429,
         )
     assert _real_fetch_hn_display_order(3333) == []
+
+
+def test_fetch_hn_display_order_proxy_retries_then_succeeds(
+    httpx_mock, monkeypatch, isolated_settings
+):
+    import time
+    monkeypatch.setattr(time, "sleep", lambda _: None)
+    isolated_settings.webshare_proxy_username = "demo"
+    isolated_settings.webshare_proxy_password = "secret"
+    # Three direct 429s + one proxy 429 + one proxy 200 → ID extracted.
+    for _ in range(4):
+        httpx_mock.add_response(
+            url="https://news.ycombinator.com/item?id=4444",
+            status_code=429,
+        )
+    httpx_mock.add_response(
+        url="https://news.ycombinator.com/item?id=4444",
+        status_code=200,
+        text=(
+            '<tr class="athing comtr" id="99001">'
+            '<td><table><tr><td class="ind" indent="0">'
+            '<img></td></tr></table></td></tr>'
+        ),
+    )
+    assert _real_fetch_hn_display_order(4444) == [99001]
 
 
 def _algolia_item(**fields):

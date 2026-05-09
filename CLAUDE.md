@@ -195,10 +195,11 @@ hourly on a public repo, so minutes are free.
   in a tenacity retry (3 attempts, 2-10 s exponential backoff on 429
   / `ConnectError` / `ReadTimeout`). If those retries are exhausted
   and `WEBSHARE_PROXY_USERNAME` / `WEBSHARE_PROXY_PASSWORD` are set,
-  `_fetch_hn_display_order` falls back to a single attempt through
-  `_fetch_hn_html_via_proxy`, which routes the same GET through the
-  Webshare residential pool already used by the YouTube path — fresh
-  IP per request, sidesteps HN's IP throttling. If everything fails,
+  `_fetch_hn_display_order` falls back through
+  `_fetch_hn_html_via_proxy`, which retries up to three times against
+  the Webshare residential pool — because Webshare rotates the IP on
+  every request, each retry draws a fresh address and independently
+  sidesteps HN's IP throttling. If everything fails,
   the section degrades to empty rather than crashing. If HN ever
   rewrites its comment-row markup, update `_COMMENT_ROW_RE` in
   `fetch_discussion.py`.
