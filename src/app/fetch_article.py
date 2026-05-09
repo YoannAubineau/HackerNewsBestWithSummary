@@ -22,6 +22,8 @@ _YOUTUBE_HOST_PREFIXES = ("www.", "m.", "music.")
 _VIDEO_ID_RE = re.compile(r"^[A-Za-z0-9_-]{11}$")
 _YOUTUBE_PATH_VIDEO_ID_RE = re.compile(r"^/(?:shorts|embed|v)/([A-Za-z0-9_-]{11})(?:/|$)")
 _TRANSCRIPT_LANGUAGES = ("fr", "en")
+_TWITTER_HOSTS = {"x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"}
+_TWEET_PATH_RE = re.compile(r"^/(?P<user>[^/]+)/status/(?P<id>\d+)(?:/.*)?$")
 
 
 @dataclass
@@ -57,6 +59,16 @@ def fetch_article(url: str) -> ArticleContent:
             source=ContentSource.FEED_FALLBACK,
             image_url=thumbnail,
         )
+
+    tweet_id = _extract_tweet_id(url)
+    if tweet_id is not None:
+        # X.com / twitter.com block JS-less requests with an in-DOM error
+        # page (not a <noscript> block), so the normal trafilatura path is
+        # guaranteed to fail. Skip it entirely and use a public tweet API.
+        tweet = _fetch_tweet(*tweet_id)
+        if tweet is not None:
+            return tweet
+        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
     settings = get_settings()
     try:
@@ -144,6 +156,153 @@ def _fetch_youtube_transcript(video_id: str) -> str | None:
         return None
     parts = [snippet.text.strip() for snippet in fetched if snippet.text and snippet.text.strip()]
     return " ".join(parts) if parts else None
+
+
+def _extract_tweet_id(url: str) -> tuple[str, str] | None:
+    try:
+        parsed = urlparse(url)
+    except ValueError:
+        return None
+    host = (parsed.hostname or "").lower()
+    if host.startswith("www."):
+        host = host[len("www."):]
+    if host not in _TWITTER_HOSTS:
+        return None
+    match = _TWEET_PATH_RE.match(parsed.path)
+    if match is None:
+        return None
+    return match.group("user"), match.group("id")
+
+
+@dataclass
+class _Tweet:
+    text: str
+    author_handle: str
+    author_name: str
+    image_url: str | None
+    quote_text: str | None
+    quote_handle: str | None
+
+
+def _fetch_tweet(user: str, status_id: str) -> ArticleContent | None:
+    for fetcher in (_fetch_tweet_via_fxtwitter, _fetch_tweet_via_vxtwitter):
+        tweet = fetcher(user, status_id)
+        if tweet is not None:
+            return ArticleContent(
+                text=_render_tweet(tweet),
+                source=ContentSource.TWEET,
+                image_url=tweet.image_url,
+            )
+    return None
+
+
+def _fetch_tweet_via_fxtwitter(user: str, status_id: str) -> _Tweet | None:
+    settings = get_settings()
+    url = f"https://api.fxtwitter.com/{user}/status/{status_id}"
+    try:
+        response = httpx.get(
+            url,
+            timeout=settings.http_timeout,
+            headers={"User-Agent": settings.user_agent},
+            follow_redirects=True,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except (httpx.HTTPError, ValueError) as exc:
+        log.warning("tweet_fetch_failed", provider="fxtwitter", error=str(exc))
+        return None
+    if not isinstance(payload, dict) or payload.get("code") != 200:
+        code = payload.get("code") if isinstance(payload, dict) else None
+        log.warning("tweet_fetch_failed", provider="fxtwitter", code=code)
+        return None
+    tweet_data = payload.get("tweet")
+    if not isinstance(tweet_data, dict):
+        return None
+    text = (tweet_data.get("text") or "").strip()
+    author = tweet_data.get("author") or {}
+    handle = (author.get("screen_name") or "").strip()
+    name = (author.get("name") or "").strip()
+    if not text or not handle:
+        return None
+    image_url = None
+    media = tweet_data.get("media") or {}
+    photos = media.get("photos") if isinstance(media, dict) else None
+    if isinstance(photos, list) and photos:
+        first = photos[0]
+        if isinstance(first, dict):
+            image_url = first.get("url")
+    quote_text: str | None = None
+    quote_handle: str | None = None
+    quote = tweet_data.get("quote")
+    if isinstance(quote, dict):
+        qt = (quote.get("text") or "").strip()
+        qa = quote.get("author") or {}
+        qh = (qa.get("screen_name") or "").strip()
+        if qt and qh:
+            quote_text = qt
+            quote_handle = qh
+    return _Tweet(
+        text=text,
+        author_handle=handle,
+        author_name=name or handle,
+        image_url=image_url,
+        quote_text=quote_text,
+        quote_handle=quote_handle,
+    )
+
+
+def _fetch_tweet_via_vxtwitter(user: str, status_id: str) -> _Tweet | None:
+    settings = get_settings()
+    url = f"https://api.vxtwitter.com/{user}/status/{status_id}"
+    try:
+        response = httpx.get(
+            url,
+            timeout=settings.http_timeout,
+            headers={"User-Agent": settings.user_agent},
+            follow_redirects=True,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except (httpx.HTTPError, ValueError) as exc:
+        log.warning("tweet_fetch_failed", provider="vxtwitter", error=str(exc))
+        return None
+    if not isinstance(payload, dict):
+        return None
+    text = (payload.get("text") or "").strip()
+    handle = (payload.get("user_screen_name") or "").strip()
+    name = (payload.get("user_name") or "").strip()
+    if not text or not handle:
+        return None
+    image_url = None
+    media = payload.get("media_extended")
+    if isinstance(media, list) and media:
+        first = media[0]
+        if isinstance(first, dict):
+            image_url = first.get("url")
+    quote_text: str | None = None
+    quote_handle: str | None = None
+    quote = payload.get("qrt")
+    if isinstance(quote, dict):
+        qt = (quote.get("text") or "").strip()
+        qh = (quote.get("user_screen_name") or "").strip()
+        if qt and qh:
+            quote_text = qt
+            quote_handle = qh
+    return _Tweet(
+        text=text,
+        author_handle=handle,
+        author_name=name or handle,
+        image_url=image_url,
+        quote_text=quote_text,
+        quote_handle=quote_handle,
+    )
+
+
+def _render_tweet(tweet: _Tweet) -> str:
+    body = f"@{tweet.author_handle} ({tweet.author_name}):\n\n{tweet.text}"
+    if tweet.quote_text and tweet.quote_handle:
+        body += f"\n\n> @{tweet.quote_handle}: {tweet.quote_text}"
+    return body
 
 
 def _is_js_required_notice(extracted: str, html: str) -> bool:

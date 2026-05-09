@@ -27,9 +27,11 @@ from app.storage import (
 )
 from app.summarize import (
     compose_body,
+    format_tweet_verbatim,
     summarize_article,
     summarize_discussion,
     translate_title,
+    tweet_body_char_count,
 )
 from app.usage import today_spend
 
@@ -238,6 +240,17 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
                 if translated:
                     article.rewritten_title = translated
                 article_summary = "(no content)"
+                time.sleep(settings.llm_sleep_seconds)
+            elif (
+                article.content_source == ContentSource.TWEET
+                and article_text
+                and tweet_body_char_count(article_text) <= settings.tweet_verbatim_max_chars
+            ):
+                translated, call = translate_title(article.title)
+                calls.append(call)
+                if translated:
+                    article.rewritten_title = translated
+                article_summary = format_tweet_verbatim(article_text)
                 time.sleep(settings.llm_sleep_seconds)
             elif article_text:
                 summary, call = summarize_article(article_text, article.title)

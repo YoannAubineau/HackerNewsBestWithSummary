@@ -9,9 +9,11 @@ from app.summarize import (
     _render_discussion_markdown,
     _sanitize_llm_markdown,
     compose_body,
+    format_tweet_verbatim,
     summarize_article,
     summarize_discussion,
     translate_title,
+    tweet_body_char_count,
 )
 
 
@@ -434,3 +436,33 @@ def test_summarize_article_passes_amp_through_as_entity(monkeypatch):
     summarize_article("Tom & Jerry", "A & B")
     assert "A &amp; B" in captured["user"]
     assert "Tom &amp; Jerry" in captured["user"]
+
+
+def test_tweet_body_char_count_excludes_attribution():
+    article_text = "@jack (Jack):\n\nHello world"
+    assert tweet_body_char_count(article_text) == len("Hello world")
+
+
+def test_tweet_body_char_count_includes_quote():
+    article_text = "@a (A):\n\nMain text\n\n> @b: Quoted"
+    assert tweet_body_char_count(article_text) == len("Main text\n\n> @b: Quoted")
+
+
+def test_tweet_body_char_count_unexpected_shape_returns_full_length():
+    article_text = "no attribution here"
+    assert tweet_body_char_count(article_text) == len(article_text)
+
+
+def test_format_tweet_verbatim_renders_blockquote():
+    article_text = "@jack (Jack):\n\nJust setting up my twttr"
+    rendered = format_tweet_verbatim(article_text)
+    assert rendered.startswith("Tweet de @jack :\n\n")
+    assert "> Just setting up my twttr" in rendered
+
+
+def test_format_tweet_verbatim_preserves_blank_lines():
+    article_text = "@a (A):\n\nLine 1\n\nLine 2"
+    rendered = format_tweet_verbatim(article_text)
+    assert "> Line 1" in rendered
+    assert "> Line 2" in rendered
+    assert "\n>\n" in rendered  # blank-line marker keeps blockquote contiguous
