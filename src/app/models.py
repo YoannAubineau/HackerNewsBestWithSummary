@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class Status(StrEnum):
@@ -43,7 +43,3 @@ class Article(BaseModel):
     llm_output_tokens: int | None = None
     llm_latency_ms: int | None = None
     error: str | None = None
-    feed_summary: str = Field(
-        default="",
-        description="Summary provided by the source feed, kept as a fallback.",
-    )
