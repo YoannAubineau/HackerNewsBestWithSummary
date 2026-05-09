@@ -38,28 +38,26 @@ def _patch_transcript_api(monkeypatch, *, snippets=None, exc=None):
     )
 
 
-def test_http_error_falls_back_to_feed_summary(httpx_mock):
+def test_http_error_returns_empty_feed_fallback(httpx_mock):
     httpx_mock.add_response(url="https://example.com/a", status_code=500)
-    result = fetch_article("https://example.com/a", feed_fallback="summary from RSS")
+    result = fetch_article("https://example.com/a")
     assert result.source == ContentSource.FEED_FALLBACK
-    assert result.text == "summary from RSS"
+    assert result.text == ""
 
 
-def test_non_html_content_type_falls_back_to_feed_summary(httpx_mock):
+def test_non_html_content_type_returns_empty_feed_fallback(httpx_mock):
     httpx_mock.add_response(
         url="https://example.com/paper.pdf",
         status_code=200,
         headers={"content-type": "application/pdf"},
         content=b"%PDF-1.4 binary blob",
     )
-    result = fetch_article(
-        "https://example.com/paper.pdf", feed_fallback="summary from RSS"
-    )
+    result = fetch_article("https://example.com/paper.pdf")
     assert result.source == ContentSource.FEED_FALLBACK
-    assert result.text == "summary from RSS"
+    assert result.text == ""
 
 
-def test_empty_extraction_falls_back_to_feed_summary(httpx_mock):
+def test_empty_extraction_returns_empty_feed_fallback(httpx_mock):
     # trafilatura returns None/empty for pages with no extractable main content.
     # An almost-empty HTML body is a reliable way to trigger that branch.
     httpx_mock.add_response(
@@ -68,11 +66,9 @@ def test_empty_extraction_falls_back_to_feed_summary(httpx_mock):
         headers={"content-type": "text/html; charset=utf-8"},
         text="<html><body></body></html>",
     )
-    result = fetch_article(
-        "https://example.com/empty", feed_fallback="summary from RSS"
-    )
+    result = fetch_article("https://example.com/empty")
     assert result.source == ContentSource.FEED_FALLBACK
-    assert result.text == "summary from RSS"
+    assert result.text == ""
 
 
 def test_successful_extraction_returns_extracted_source(httpx_mock):
@@ -91,12 +87,9 @@ def test_successful_extraction_returns_extracted_source(httpx_mock):
         headers={"content-type": "text/html; charset=utf-8"},
         text=html,
     )
-    result = fetch_article(
-        "https://example.com/good", feed_fallback="summary from RSS"
-    )
+    result = fetch_article("https://example.com/good")
     assert result.source == ContentSource.EXTRACTED
     assert "paragraphe" in result.text
-    assert "summary from RSS" not in result.text
 
 
 def test_extract_image_url_picks_og_image():
@@ -222,7 +215,7 @@ def test_fetch_article_detects_js_required_noscript(httpx_mock):
         headers={"content-type": "text/html; charset=utf-8"},
         text=html,
     )
-    result = fetch_article("https://social.example/@user/1", feed_fallback="x")
+    result = fetch_article("https://social.example/@user/1")
     assert result.source == ContentSource.JS_REQUIRED
     assert result.text == ""
 
@@ -241,7 +234,7 @@ def test_fetch_article_captures_image_url(httpx_mock):
         headers={"content-type": "text/html; charset=utf-8"},
         text=html,
     )
-    result = fetch_article("https://example.com/article", feed_fallback="x")
+    result = fetch_article("https://example.com/article")
     assert result.image_url == "https://cdn.example.com/hero.jpg"
 
 
@@ -277,10 +270,7 @@ def test_fetch_article_youtube_returns_transcript(monkeypatch):
             _FakeSnippet(text=""),
         ],
     )
-    result = fetch_article(
-        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        feed_fallback="summary from RSS",
-    )
+    result = fetch_article("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     assert result.source == ContentSource.VIDEO_TRANSCRIPT
     assert result.text == "Bonjour tout le monde. Aujourd'hui on parle de Python."
     assert result.image_url == "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
@@ -288,23 +278,17 @@ def test_fetch_article_youtube_returns_transcript(monkeypatch):
 
 def test_fetch_article_youtube_falls_back_when_transcript_unavailable(monkeypatch):
     _patch_transcript_api(monkeypatch, exc=RuntimeError("no transcript"))
-    result = fetch_article(
-        "https://youtu.be/dQw4w9WgXcQ",
-        feed_fallback="summary from RSS",
-    )
+    result = fetch_article("https://youtu.be/dQw4w9WgXcQ")
     assert result.source == ContentSource.FEED_FALLBACK
-    assert result.text == "summary from RSS"
+    assert result.text == ""
     assert result.image_url == "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
 
 
 def test_fetch_article_youtube_falls_back_when_transcript_empty(monkeypatch):
     _patch_transcript_api(monkeypatch, snippets=[_FakeSnippet(text="   ")])
-    result = fetch_article(
-        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        feed_fallback="summary from RSS",
-    )
+    result = fetch_article("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     assert result.source == ContentSource.FEED_FALLBACK
-    assert result.text == "summary from RSS"
+    assert result.text == ""
 
 
 @pytest.mark.parametrize(
@@ -352,7 +336,7 @@ def test_fetch_article_tweet_via_fxtwitter(httpx_mock):
             photos=[{"url": "https://pbs.twimg.com/media/abc.jpg"}],
         ),
     )
-    result = fetch_article("https://x.com/jack/status/20", feed_fallback="x")
+    result = fetch_article("https://x.com/jack/status/20")
     assert result.source == ContentSource.TWEET
     assert "@jack" in result.text
     assert "Just setting up my twttr" in result.text
@@ -373,7 +357,7 @@ def test_fetch_article_tweet_includes_quote(httpx_mock):
             },
         ),
     )
-    result = fetch_article("https://twitter.com/alice/status/100", feed_fallback="x")
+    result = fetch_article("https://twitter.com/alice/status/100")
     assert result.source == ContentSource.TWEET
     assert "@bob: Bold claim incoming" in result.text
 
@@ -393,7 +377,7 @@ def test_fetch_article_tweet_falls_back_to_vxtwitter(httpx_mock):
             "media_extended": [{"url": "https://pbs.twimg.com/v/x.jpg"}],
         },
     )
-    result = fetch_article("https://x.com/alice/status/200", feed_fallback="rss")
+    result = fetch_article("https://x.com/alice/status/200")
     assert result.source == ContentSource.TWEET
     assert "@alice" in result.text
     assert "Recovered text" in result.text
@@ -407,11 +391,9 @@ def test_fetch_article_tweet_both_providers_fail(httpx_mock):
     httpx_mock.add_response(
         url="https://api.vxtwitter.com/dead/status/300", status_code=500
     )
-    result = fetch_article(
-        "https://x.com/dead/status/300", feed_fallback="rss summary"
-    )
+    result = fetch_article("https://x.com/dead/status/300")
     assert result.source == ContentSource.FEED_FALLBACK
-    assert result.text == "rss summary"
+    assert result.text == ""
 
 
 def test_fetch_article_tweet_deleted_returns_feed_fallback(httpx_mock):
@@ -423,11 +405,9 @@ def test_fetch_article_tweet_deleted_returns_feed_fallback(httpx_mock):
     httpx_mock.add_response(
         url="https://api.vxtwitter.com/gone/status/400", status_code=404
     )
-    result = fetch_article(
-        "https://x.com/gone/status/400", feed_fallback="rss summary"
-    )
+    result = fetch_article("https://x.com/gone/status/400")
     assert result.source == ContentSource.FEED_FALLBACK
-    assert result.text == "rss summary"
+    assert result.text == ""
 
 
 def test_fetch_article_tweet_empty_text_returns_feed_fallback(httpx_mock):
@@ -441,8 +421,6 @@ def test_fetch_article_tweet_empty_text_returns_feed_fallback(httpx_mock):
         status_code=200,
         json={"text": "", "user_screen_name": "quiet", "user_name": "Quiet"},
     )
-    result = fetch_article(
-        "https://x.com/quiet/status/500", feed_fallback="rss summary"
-    )
+    result = fetch_article("https://x.com/quiet/status/500")
     assert result.source == ContentSource.FEED_FALLBACK
-    assert result.text == "rss summary"
+    assert result.text == ""

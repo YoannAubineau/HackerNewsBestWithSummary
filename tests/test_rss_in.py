@@ -47,11 +47,6 @@ def test_ask_hn_flagged_when_link_equals_comments():
     assert ask.hn_url == "https://news.ycombinator.com/item?id=43"
 
 
-def test_feed_summary_captured():
-    entries = parse_feed_bytes(_FEED_SAMPLE)
-    assert "Points: 120" in entries[0].feed_summary
-
-
 def test_observed_at_carries_channel_last_build_date():
     entries = parse_feed_bytes(_FEED_SAMPLE)
     expected = datetime(2026, 4, 21, 10, 15, 30, tzinfo=UTC)

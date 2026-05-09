@@ -33,8 +33,17 @@ class ArticleContent:
     image_url: str | None = None
 
 
-def fetch_article(url: str, feed_fallback: str) -> ArticleContent:
-    """Fetch and extract the URL's main content, falling back to the feed's summary."""
+def fetch_article(url: str) -> ArticleContent:
+    """Fetch and extract the URL's main content.
+
+    On any failure (HTTP error, non-HTML content-type, empty extraction,
+    YouTube transcript blocked), returns an empty ``text`` with a source
+    that records *why* extraction did not produce content. The caller
+    must decide what to do with an empty body — we deliberately do not
+    fall back to the feed's own summary, which on hnrss is just metadata
+    boilerplate (article URL, points, comment count) and would only
+    pollute downstream summarization.
+    """
     video_id = _extract_youtube_video_id(url)
     if video_id is not None:
         thumbnail = f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg"
@@ -46,7 +55,7 @@ def fetch_article(url: str, feed_fallback: str) -> ArticleContent:
                 image_url=thumbnail,
             )
         return ArticleContent(
-            text=feed_fallback.strip(),
+            text="",
             source=ContentSource.FEED_FALLBACK,
             image_url=thumbnail,
         )
@@ -59,7 +68,7 @@ def fetch_article(url: str, feed_fallback: str) -> ArticleContent:
         tweet = _fetch_tweet(*tweet_id)
         if tweet is not None:
             return tweet
-        return ArticleContent(text=feed_fallback.strip(), source=ContentSource.FEED_FALLBACK)
+        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
     settings = get_settings()
     try:
@@ -71,11 +80,11 @@ def fetch_article(url: str, feed_fallback: str) -> ArticleContent:
         )
         response.raise_for_status()
     except httpx.HTTPError:
-        return ArticleContent(text=feed_fallback.strip(), source=ContentSource.FEED_FALLBACK)
+        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
     content_type = response.headers.get("content-type", "").split(";")[0].strip().lower()
     if content_type and not any(content_type.startswith(t) for t in _FETCHABLE_CONTENT_TYPES):
-        return ArticleContent(text=feed_fallback.strip(), source=ContentSource.FEED_FALLBACK)
+        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
     image_url = _extract_image_url(response.text, url)
 
@@ -98,7 +107,7 @@ def fetch_article(url: str, feed_fallback: str) -> ArticleContent:
             image_url=image_url,
         )
     return ArticleContent(
-        text=feed_fallback.strip(),
+        text="",
         source=ContentSource.FEED_FALLBACK,
         image_url=image_url,
     )

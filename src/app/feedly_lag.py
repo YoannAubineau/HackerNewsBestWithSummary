@@ -48,36 +48,6 @@ def _fetch_feedly_items(
     return response.json().get("items") or []
 
 
-def fetch_feedly_origin_ids(
-    *, feed_url: str | None = None, count: int = 100
-) -> set[str] | None:
-    """Set of ``originId`` values Feedly currently has for our feed.
-
-    Returns ``None`` when the call could not complete (no token, auth
-    error, network error, HTTP 5xx). Returns a (possibly empty) set
-    otherwise. Callers should treat ``None`` as "Feedly state unknown"
-    and behave conservatively — typically by skipping the work that
-    depends on that state, so a Feedly outage does not waste LLM calls.
-    """
-    settings = get_settings()
-    token = settings.feedly_dev_token
-    if not token:
-        return None
-    try:
-        items = _fetch_feedly_items(feed_url=feed_url, count=count, token=token)
-    except FeedlyAuthError as exc:
-        log.warning("feedly_origin_ids_auth_failed", error=str(exc))
-        return None
-    except httpx.HTTPError as exc:
-        log.warning("feedly_origin_ids_http_failed", error=str(exc))
-        return None
-    return {
-        item["originId"]
-        for item in items
-        if isinstance(item, dict) and item.get("originId")
-    }
-
-
 def compute_lag(*, feed_url: str | None = None, count: int = 50) -> list[Measurement]:
     settings = get_settings()
     token = settings.feedly_dev_token

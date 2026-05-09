@@ -25,7 +25,6 @@ class FeedEntry:
     hn_url: str
     hn_item_id: int
     source_published_at: datetime
-    feed_summary: str
     is_ask_or_show_hn: bool
     # The channel-level <lastBuildDate> — hnrss's own "I just looked at /best"
     # timestamp. For a brand-new article, this is within ~5–10 min of when it
@@ -81,7 +80,6 @@ def _map_entry(entry, observed_at: datetime) -> FeedEntry | None:
         hn_url=hn_url,
         hn_item_id=hn_item_id,
         source_published_at=_parse_published(entry),
-        feed_summary=(entry.get("summary") or "").strip(),
         is_ask_or_show_hn=is_ask_or_show,
         observed_at=observed_at,
     )

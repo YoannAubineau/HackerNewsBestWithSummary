@@ -13,7 +13,6 @@ from app.fetch_discussion import fetch_discussion, fetch_submitter_text
 from app.llm import AllModelsFailedError, LLMCallResult, LLMError
 from app.models import Article, ContentSource, Status
 from app.publish import write_feed
-from app.refresh_discussions import step_refresh_discussions
 from app.rss_in import FeedEntry, fetch_source_feed
 from app.storage import (
     clear_sidecars,
@@ -83,7 +82,7 @@ def step_fetch_articles(failures: list[tuple[str, str]] | None = None) -> int:
             done += 1
             continue
         try:
-            result = fetch_article(article.url, article.feed_summary)
+            result = fetch_article(article.url)
         except Exception as exc:  # noqa: BLE001
             _record_attempt(path, article, body, f"fetch_article: {exc}", failures)
             continue
@@ -232,7 +231,10 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
             discussion_summary: str | None = None
             calls: list[LLMCallResult] = []
 
-            if article.content_source == ContentSource.JS_REQUIRED:
+            if article.content_source in (
+                ContentSource.JS_REQUIRED,
+                ContentSource.FEED_FALLBACK,
+            ):
                 translated, call = translate_title(article.title)
                 calls.append(call)
                 if translated:
@@ -299,13 +301,11 @@ def step_publish() -> str:
 
 
 def run_cycle() -> CycleResult:
-    cycle_started_at = _now()
     failures: list[tuple[str, str]] = []
     step_fetch_feed()
     step_fetch_discussions(failures)
     step_fetch_articles(failures)
     step_summarize(failures)
-    step_refresh_discussions(cycle_started_at)
     # Always publish, even when no new articles were summarized: a code-only
     # change on the publish side (description format, feed structure, …) must
     # flow through on the next cycle without waiting for a fresh HN submission.
@@ -330,7 +330,7 @@ def backfill_images() -> int:
         if article.content_source == ContentSource.ASK_SHOW_HN:
             continue
         try:
-            result = fetch_article(article.url, feed_fallback="")
+            result = fetch_article(article.url)
         except Exception as exc:  # noqa: BLE001
             log.warning("backfill_fetch_failed", guid=article.guid, error=str(exc))
             continue
@@ -358,7 +358,6 @@ def _create_pending(entry: FeedEntry) -> None:
         our_published_at=entry.observed_at,
         status=Status.PENDING,
         is_ask_or_show_hn=entry.is_ask_or_show_hn,
-        feed_summary=entry.feed_summary,
     )
     save(article)
 
