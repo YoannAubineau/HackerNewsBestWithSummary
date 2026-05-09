@@ -16,8 +16,9 @@ A Python pipeline that:
    and a pro/con synthesis of the HN discussion
 4. Publishes the result as a static RSS 2.0 feed at
    `https://yoannaubineau.github.io/HackerNewsBestWithSummary/feed.fr.xml`,
-   consumed by the user in Feedly. The `.fr.` suffix leaves room for a
-   parallel `feed.en.xml` if English summaries are added later.
+   consumed by the user in an RSS reader. The `.fr.` suffix leaves
+   room for a parallel `feed.en.xml` if English summaries are added
+   later.
 
 The orchestration is a single GitHub Actions workflow (`cycle.yml`) that runs
 hourly on a public repo, so minutes are free.

@@ -237,9 +237,10 @@ _MARKDOWN_LINK_RE = re.compile(r"\[([^\]]*)\]\([^)]*\)")
 def _sanitize_llm_markdown(text: str) -> str:
     """Strip Markdown images and links from LLM output before publishing.
 
-    Images would auto-load in Feedly (IP leak / tracking pixel) and links
-    would render as clickable phishing redirections. The summarization
-    prompts never ask for either, so blanket-stripping is safe.
+    Images would auto-load in many RSS readers (IP leak / tracking
+    pixel) and links would render as clickable phishing redirections.
+    The summarization prompts never ask for either, so blanket-stripping
+    is safe.
     """
     text = _MARKDOWN_IMAGE_RE.sub("", text)
     text = _MARKDOWN_LINK_RE.sub(r"\1", text)

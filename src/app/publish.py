@@ -27,12 +27,12 @@ def build_feed() -> bytes:
     fg.id(settings.feed_self_url)
     fg.title(settings.feed_title)
     # The plain <link> points at HN's "best" page rather than at our own
-    # feed URL on purpose: most readers (Feedly, Reeder, …) fetch that URL
-    # and extract its favicon as the feed's icon. hnrss.org/best uses the
-    # same trick. <atom:link rel="self"> carries the canonical feed URL
-    # for validators and dedup logic. Order matters here — feedgen picks
-    # the *last* link without `rel` as the RSS <link>, so rel="self" must
-    # be declared first.
+    # feed URL on purpose: many RSS readers fetch that URL and extract
+    # its favicon as the feed's icon. hnrss.org/best uses the same
+    # trick. <atom:link rel="self"> carries the canonical feed URL for
+    # validators and dedup logic. Order matters here — feedgen picks
+    # the *last* link without `rel` as the RSS <link>, so rel="self"
+    # must be declared first.
     fg.link(href=settings.feed_self_url, rel="self")
     fg.link(href=settings.channel_site_url)
     fg.description(settings.feed_description)
