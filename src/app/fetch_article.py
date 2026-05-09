@@ -7,7 +7,7 @@ from urllib.parse import parse_qs, urljoin, urlparse
 import httpx
 import structlog
 import trafilatura
-from lxml import etree
+from lxml import etree  # pyright: ignore[reportAttributeAccessIssue]
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.proxies import WebshareProxyConfig
 
