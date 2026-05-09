@@ -57,6 +57,78 @@ def test_non_html_content_type_returns_empty_feed_fallback(httpx_mock):
     assert result.text == ""
 
 
+_FORESTER_XML_BODY = (
+    '<?xml version="1.0" encoding="UTF-8"?>'
+    '<?xml-stylesheet type="text/xsl" href="/forest/default.xsl"?>'
+    '<fr:tree xmlns:fr="http://www.forester-notes.org"'
+    ' xmlns:html="http://www.w3.org/1999/xhtml" root="false">'
+    "<fr:frontmatter><fr:title text=\"A note\">A note</fr:title></fr:frontmatter>"
+    "<fr:mainmatter>"
+    "<html:p>Un paragraphe substantiel destiné à l'extraction du contenu principal"
+    " de la note.</html:p>"
+    "<html:p>Un second paragraphe contenant des phrases utiles pour faire dépasser"
+    " le seuil de précision de l'extracteur.</html:p>"
+    "<html:ul>"
+    "<html:li>premier item de la liste avec assez de mots pour compter</html:li>"
+    "<html:li>second item de la liste avec assez de mots pour compter</html:li>"
+    "</html:ul>"
+    "</fr:mainmatter>"
+    "</fr:tree>"
+)
+
+
+def test_xml_forester_content_extracted(httpx_mock):
+    httpx_mock.add_response(
+        url="https://example.com/note.xml",
+        status_code=200,
+        headers={"content-type": "application/xml"},
+        text=_FORESTER_XML_BODY,
+    )
+    result = fetch_article("https://example.com/note.xml")
+    assert result.source == ContentSource.EXTRACTED
+    assert "paragraphe substantiel" in result.text
+
+
+def test_xml_text_xml_content_type_accepted(httpx_mock):
+    httpx_mock.add_response(
+        url="https://example.com/note2.xml",
+        status_code=200,
+        headers={"content-type": "text/xml; charset=utf-8"},
+        text=_FORESTER_XML_BODY,
+    )
+    result = fetch_article("https://example.com/note2.xml")
+    assert result.source == ContentSource.EXTRACTED
+    assert "paragraphe substantiel" in result.text
+
+
+def test_malformed_xml_returns_feed_fallback(httpx_mock):
+    httpx_mock.add_response(
+        url="https://example.com/broken.xml",
+        status_code=200,
+        headers={"content-type": "application/xml"},
+        content=b"\x00\x01\x02 not valid xml at all",
+    )
+    result = fetch_article("https://example.com/broken.xml")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_rss_atom_content_type_still_rejected(httpx_mock):
+    rss = (
+        "<?xml version='1.0'?><rss version='2.0'><channel><title>x</title>"
+        "<item><title>t</title><description>d</description></item></channel></rss>"
+    )
+    httpx_mock.add_response(
+        url="https://example.com/feed.rss",
+        status_code=200,
+        headers={"content-type": "application/rss+xml"},
+        text=rss,
+    )
+    result = fetch_article("https://example.com/feed.rss")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
 def test_empty_extraction_returns_empty_feed_fallback(httpx_mock):
     # trafilatura returns None/empty for pages with no extractable main content.
     # An almost-empty HTML body is a reliable way to trigger that branch.
