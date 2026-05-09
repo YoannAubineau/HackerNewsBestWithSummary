@@ -18,6 +18,7 @@ class ContentSource(StrEnum):
     ASK_SHOW_HN = "ask_show_hn"
     JS_REQUIRED = "js_required"
     VIDEO_TRANSCRIPT = "video_transcript"
+    TWEET = "tweet"
 
 
 class Article(BaseModel):
