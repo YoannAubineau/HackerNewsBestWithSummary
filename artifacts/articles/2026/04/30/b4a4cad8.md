@@ -22,7 +22,7 @@ llm_models_used:
 - anthropic/claude-4.5-haiku-20251001
 llm_output_tokens: 790
 our_published_at: '2026-04-30T17:16:23Z'
-rewritten_title: Le contenu demandé n'est pas accessible ou contient une erreur
+rewritten_title: Claude Code refuse les requêtes ou facture davantage si les commits mentionnent « OpenClaw »
 source_published_at: '2026-04-30T14:36:58Z'
 status: summarized
 summarized_at: '2026-04-30T17:31:04.881192Z'
@@ -32,12 +32,11 @@ url: https://twitter.com/theo/status/2049645973350363168
 
 ## Résumé de l'article
 
-La page ou le contenu n'a pas pu être chargé correctement. Une erreur technique s'est produite, accompagnée d'un message suggérant que certaines extensions de navigateur liées à la confidentialité pourraient interférer avec l'affichage du contenu.
+Tweet de @theo :
 
-- Un problème technique empêche l'accès au contenu demandé
-- Les extensions de confidentialité sur des navigateurs peuvent être impliquées dans le dysfonctionnement
-- Un rechargement ou la désactivation temporaire d'extensions est recommandée
-- Le titre original suggère un sujet concernant Claude Code et des restrictions tarifaires, mais le contenu disponible ne permet pas de vérifier cette information
+> Fun fact - if you have a recent commit that mentions OpenClaw in a json blob, Claude Code will either refuse your request or bill you extra money.
+>
+> This is an empty repo, I'm just calling Claude Code directly. Insanity.
 
 ## Discussion sur Hacker News (222 commentaires)
 

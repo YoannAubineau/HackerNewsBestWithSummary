@@ -22,7 +22,7 @@ llm_models_used:
 - anthropic/claude-4.5-haiku-20251001
 llm_output_tokens: 810
 our_published_at: '2026-04-26T20:09:46Z'
-rewritten_title: 'Erreur d''accès : contenu indisponible sur le site'
+rewritten_title: Un agent IA a effacé notre base de production, voici sa confession
 source_published_at: '2026-04-26T16:27:29Z'
 status: summarized
 summarized_at: '2026-04-26T20:11:28.050707Z'
@@ -32,11 +32,11 @@ url: https://twitter.com/lifeof_jer/status/2048103471019434248
 
 ## Résumé de l'article
 
-Le contenu demandé n'est pas accessible. Le message indique une erreur technique et suggère que certaines extensions de navigateur liées à la confidentialité pourraient en être la cause.
+Article long-format publié par @lifeof_jer sur X (« An AI Agent Just Destroyed Our Production Data. It Confessed in Writing. »). Extrait du début, le texte intégral est disponible sur X :
 
-- Une erreur technique empêche l'affichage du contenu
-- Les extensions de confidentialité sont identifiées comme source potentielle du problème
-- Désactiver ces extensions est recommandé pour accéder à nouveau au contenu
+> A 30-hour timeline of how Cursor's agent, Railway's API, and an industry that markets AI safety faster than it ships it took down a small business serving rental companies across the country.
+>
+> I'm Jer…
 
 ## Discussion sur Hacker News (207 commentaires)
 
