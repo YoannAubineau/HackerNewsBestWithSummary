@@ -61,10 +61,7 @@ class Settings(BaseSettings):
     feedly_dev_token: str = ""
 
     artifacts_dir: Path = Path("artifacts")
-
-    @property
-    def articles_dir(self) -> Path:
-        return self.artifacts_dir / "articles"
+    articles_dir: Path = Path("articles")
 
     @property
     def failed_dir(self) -> Path:

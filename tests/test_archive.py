@@ -49,8 +49,8 @@ def test_archive_url_matches_storage_partition(isolated_settings):
     # source_published_at — otherwise the GitHub blob URL 404s.
     save(_make_article("g1", hn_item_id=1), "body")
     html = write_archive().read_text(encoding="utf-8")
-    assert "/artifacts/articles/2026/04/21/" in html
-    assert "/artifacts/articles/2026/04/20/" not in html
+    assert "/articles/2026/04/21/" in html
+    assert "/articles/2026/04/20/" not in html
 
 
 def test_archive_prefers_rewritten_title(isolated_settings):

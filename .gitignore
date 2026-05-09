@@ -15,10 +15,11 @@ build/
 .claude/
 
 # Transient article/discussion content — never committed (copyright + repo size)
-artifacts/articles/**/*.raw.*.txt
+articles/**/*.raw.*.txt
 
 # Generated artifacts — rebuilt each cycle, served by Pages from disk
 /artifacts/feed.fr.xml
+/artifacts/feed.xsl
 /artifacts/archive.html
 /artifacts/last-refresh.json
 /artifacts/llm-cost.json

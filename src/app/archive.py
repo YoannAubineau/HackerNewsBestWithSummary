@@ -64,7 +64,7 @@ def _summary_url(article: Article) -> str:
     """Return the URL of the article's Markdown file rendered on GitHub."""
     when = article.our_published_at
     return (
-        f"{_REPO_BLOB_URL}/artifacts/articles/"
+        f"{_REPO_BLOB_URL}/articles/"
         f"{when.year:04d}/{when.month:02d}/{when.day:02d}/"
         f"{short_hash(article.guid)}.md"
     )
