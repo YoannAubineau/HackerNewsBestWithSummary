@@ -36,7 +36,7 @@ where it left off.
 
 1. **`fetch-feed`** polls `hnrss.org/best` and creates one Markdown file
    per HN item not yet seen, at
-   `artifacts/articles/YYYY/MM/DD/{short_hash}.md` with `status: pending`.
+   `articles/YYYY/MM/DD/{short_hash}.md` with `status: pending`.
    The filename is the first eight hex characters of SHA-256 of the HN
    guid, so paths are stable and re-runs are idempotent.
 2. **`fetch-discussions`** calls the Algolia HN API for the full comment
@@ -91,7 +91,7 @@ where it left off.
    under the article-summary heading, while the discussion synthesis
    runs as usual. Each article gets up to three attempts with a
    cascading model fallback, after which it moves to
-   `artifacts/articles/_failed/…`. → `status: summarized`.
+   `articles/_failed/…`. → `status: summarized`.
 5. **`publish`** walks summarised articles newest-first (by `hn_item_id`
    desc), takes the top 100, and regenerates `artifacts/feed.fr.xml`.
    Only fires when at least one new summary was produced (or the feed
@@ -107,11 +107,12 @@ Single source of truth is the filesystem, versioned by git, with no database.
 
 | Path | Contents |
 |---|---|
-| `artifacts/articles/YYYY/MM/DD/{short_hash}.md` | One article per file. YAML frontmatter holds all metadata (URLs, dates, `status`, image URL, model used, attempt count). The Markdown body holds the final summaries. |
-| `artifacts/articles/_failed/…` | Articles that exceeded `MAX_ATTEMPTS`. Kept for history rather than deleted. |
-| `artifacts/articles/**/*.raw.article.txt`, `*.raw.discussion.txt`, `*.raw.top_comments.txt` | Transient sidecars holding raw source content (or the pre-rendered top-comments block) between stages. **Gitignored** because they are copyright-sensitive and would bloat the repo. Cleared once the article reaches `summarized`. |
-| `artifacts/feed.fr.xml` | The published RSS feed. |
-| `artifacts/feed.xsl` | Client-side XSLT stylesheet applied by browsers when opening the feed URL directly. |
+| `articles/YYYY/MM/DD/{short_hash}.md` | One article per file. YAML frontmatter holds all metadata (URLs, dates, `status`, image URL, model used, attempt count). The Markdown body holds the final summaries. |
+| `articles/_failed/…` | Articles that exceeded `MAX_ATTEMPTS`. Kept for history rather than deleted. |
+| `articles/**/*.raw.article.txt`, `*.raw.discussion.txt`, `*.raw.top_comments.txt` | Transient sidecars holding raw source content (or the pre-rendered top-comments block) between stages. **Gitignored** because they are copyright-sensitive and would bloat the repo. Cleared once the article reaches `summarized`. |
+| `src/app/feed.xsl` | Source-of-truth XSLT 1.0 stylesheet (committed). Copied to `artifacts/feed.xsl` by `publish.write_feed()` so the relative `<?xml-stylesheet?>` PI in the served feed resolves. |
+| `artifacts/feed.fr.xml` | The published RSS feed (generated, gitignored). |
+| `artifacts/feed.xsl` | Copy of the source stylesheet, served by Pages alongside the feed (generated, gitignored). |
 
 ### Feed ordering
 
@@ -191,7 +192,7 @@ are never stored either.
 
 | Choice | Rationale |
 |---|---|
-| **Filesystem + git** | Articles are Markdown files under `artifacts/articles/YYYY/MM/DD/{short_hash}.md`. Git provides history, idempotency (deterministic filename), and deployment in one. |
+| **Filesystem + git** | Articles are Markdown files under `articles/YYYY/MM/DD/{short_hash}.md`. Git provides history, idempotency (deterministic filename), and deployment in one. |
 | **No database** | Unwarranted at this scale. The repository itself is the data layer. |
 | **Gitignored sidecar files** | `.raw.article.txt`, `.raw.discussion.txt`, and `.raw.top_comments.txt` cache raw content (or the pre-rendered top-comments markdown) between pipeline stages and are never committed. |
 
@@ -200,7 +201,7 @@ are never stored either.
 | Component | Role |
 |---|---|
 | **`.github/workflows/cycle.yml`** | Hourly cron plus manual `workflow_dispatch`. Runs the pipeline end-to-end and deploys to Pages. |
-| **`.github/workflows/ci.yml`** | Runs ruff and pytest on every push to `main` and every pull request (skipped for commits that only touch `artifacts/`). |
+| **`.github/workflows/ci.yml`** | Runs ruff and pytest on every push to `main` and every pull request (skipped for commits that only touch `artifacts/` or `articles/`). |
 | **Dependabot** | Weekly batched PRs for Python deps (via `uv`) and GitHub Actions versions, plus real-time PRs for security advisories. |
 
 ### Actions used in the workflows
@@ -224,7 +225,7 @@ are never stored either.
 
 | Component | Role |
 |---|---|
-| **`artifacts/feed.xsl`** | XSLT 1.0 stylesheet applied by the browser when the feed URL is opened directly. Transforms the RSS into a styled HTML page. |
+| **`src/app/feed.xsl`** | XSLT 1.0 stylesheet applied by the browser when the feed URL is opened directly. Transforms the RSS into a styled HTML page. Source-of-truth file in the repo; published as `artifacts/feed.xsl` by `publish.write_feed()`. |
 | **Browser-native XSLT engine** | Chrome, Firefox, and Safari all implement XSLT 1.0 client-side, so no extra runtime is required. |
 | **Inline CSS** (in the stylesheet) | Light/dark theme via `prefers-color-scheme`, responsive single-column layout. |
 | **Inline JavaScript** (in the stylesheet) | Appends the HN item ID to each article footer at render time, without touching the stored body. |

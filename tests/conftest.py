@@ -13,5 +13,7 @@ def isolated_settings(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     settings = config_module.get_settings()
     settings.artifacts_dir = tmp_path / "artifacts"
     settings.artifacts_dir.mkdir(parents=True, exist_ok=True)
+    settings.articles_dir = tmp_path / "articles"
+    settings.articles_dir.mkdir(parents=True, exist_ok=True)
     yield settings
     config_module.reset_settings()

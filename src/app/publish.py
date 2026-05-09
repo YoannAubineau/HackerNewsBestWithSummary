@@ -1,4 +1,5 @@
 import json
+import shutil
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -10,6 +11,7 @@ from app.models import Article, ContentSource
 from app.storage import iter_summarized, short_hash
 
 _LAST_REFRESH_PATH = Path("artifacts/last-refresh.json")
+_XSL_SOURCE_PATH = Path(__file__).parent / "feed.xsl"
 
 # html=False escapes any raw HTML that sneaks into the LLM output (prompt
 # injection via a crafted article could otherwise emit <script> tags that
@@ -58,8 +60,17 @@ def write_feed() -> Path:
     data = build_feed()
     settings.feed_output_path.parent.mkdir(parents=True, exist_ok=True)
     settings.feed_output_path.write_bytes(data)
+    _copy_xsl_stylesheet()
     _write_last_refresh()
     return settings.feed_output_path
+
+
+def _copy_xsl_stylesheet() -> None:
+    """Copy the source XSL alongside the feed so the relative PI resolves."""
+    settings = get_settings()
+    dest = settings.artifacts_dir / "feed.xsl"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(_XSL_SOURCE_PATH, dest)
 
 
 def _write_last_refresh() -> None:
