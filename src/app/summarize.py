@@ -119,6 +119,32 @@ def summarize_discussion(text: str, title: str) -> tuple[str, LLMCallResult]:
     return markdown, result
 
 
+def tweet_body_char_count(article_text: str) -> int:
+    """Length of the tweet body (text + optional quote), excluding attribution."""
+    parts = article_text.split("\n\n", 1)
+    if len(parts) < 2 or not parts[0].endswith(":"):
+        return len(article_text)
+    return len(parts[1])
+
+
+def format_tweet_verbatim(article_text: str) -> str:
+    """Render the tweet as a French-attributed Markdown blockquote."""
+    parts = article_text.split("\n\n", 1)
+    if len(parts) < 2 or not parts[0].endswith(":"):
+        body = article_text
+        attribution_handle = ""
+    else:
+        attribution_handle = parts[0].split(" ", 1)[0].rstrip(":")
+        body = parts[1]
+    lines: list[str] = []
+    if attribution_handle:
+        lines.append(f"Tweet de {attribution_handle} :")
+        lines.append("")
+    for line in body.splitlines():
+        lines.append(f"> {line}" if line else ">")
+    return "\n".join(lines)
+
+
 def compose_body(
     *,
     article_summary: str | None,

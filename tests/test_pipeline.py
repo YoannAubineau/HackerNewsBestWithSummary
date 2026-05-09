@@ -759,6 +759,83 @@ def test_step_summarize_reads_and_clears_top_comments_sidecar(
     assert read_sidecar(path, "top_comments") is None
 
 
+def test_step_summarize_short_tweet_uses_verbatim(isolated_settings, monkeypatch):
+    isolated_settings.llm_sleep_seconds = 0
+    isolated_settings.tweet_verbatim_max_chars = 1000
+    article = _make_article("guid-tweet-short")
+    article.status = Status.ARTICLE_FETCHED
+    article.content_source = ContentSource.TWEET
+    path = save(article)
+    write_sidecar(path, "article", "@jack (Jack):\n\nHello world")
+    write_sidecar(path, "discussion", "raw discussion")
+
+    def boom_summarize_article(text, title):  # noqa: ARG001
+        raise AssertionError("summarize_article must not run for short tweets")
+
+    def fake_translate_title(title):  # noqa: ARG001
+        return "titre traduit", LLMCallResult(
+            content="", model="m", input_tokens=1, output_tokens=1, latency_ms=1,
+        )
+
+    def fake_summarize_discussion(text, title):  # noqa: ARG001
+        return "**Avis positifs** :\n- ok", LLMCallResult(
+            content="", model="m", input_tokens=1, output_tokens=1, latency_ms=1,
+        )
+
+    monkeypatch.setattr(pipeline, "summarize_article", boom_summarize_article)
+    monkeypatch.setattr(pipeline, "translate_title", fake_translate_title)
+    monkeypatch.setattr(pipeline, "summarize_discussion", fake_summarize_discussion)
+    monkeypatch.setattr(pipeline, "today_spend", lambda: None)
+
+    assert pipeline.step_summarize() == 1
+
+    reloaded, final_body = load(path)
+    assert reloaded.status == Status.SUMMARIZED
+    assert reloaded.rewritten_title == "titre traduit"
+    assert "Tweet de @jack :" in final_body
+    assert "> Hello world" in final_body
+
+
+def test_step_summarize_long_tweet_uses_summarize_article(isolated_settings, monkeypatch):
+    isolated_settings.llm_sleep_seconds = 0
+    isolated_settings.tweet_verbatim_max_chars = 50
+    article = _make_article("guid-tweet-long")
+    article.status = Status.ARTICLE_FETCHED
+    article.content_source = ContentSource.TWEET
+    path = save(article)
+    long_body = "x" * 200
+    write_sidecar(path, "article", f"@blogger (Blogger):\n\n{long_body}")
+    write_sidecar(path, "discussion", "raw discussion")
+
+    def fake_summarize_article(text, title):  # noqa: ARG001
+        return ArticleSummary(
+            rewritten_title="titre réécrit",
+            summary_markdown="- résumé",
+        ), LLMCallResult(
+            content="", model="m", input_tokens=1, output_tokens=1, latency_ms=1,
+        )
+
+    def boom_translate_title(title):  # noqa: ARG001
+        raise AssertionError("translate_title must not run for long tweets")
+
+    def fake_summarize_discussion(text, title):  # noqa: ARG001
+        return "**Avis positifs** :\n- ok", LLMCallResult(
+            content="", model="m", input_tokens=1, output_tokens=1, latency_ms=1,
+        )
+
+    monkeypatch.setattr(pipeline, "summarize_article", fake_summarize_article)
+    monkeypatch.setattr(pipeline, "translate_title", boom_translate_title)
+    monkeypatch.setattr(pipeline, "summarize_discussion", fake_summarize_discussion)
+    monkeypatch.setattr(pipeline, "today_spend", lambda: None)
+
+    assert pipeline.step_summarize() == 1
+
+    reloaded, final_body = load(path)
+    assert reloaded.status == Status.SUMMARIZED
+    assert reloaded.rewritten_title == "titre réécrit"
+    assert "- résumé" in final_body
+
+
 def test_step_summarize_records_llm_metrics(isolated_settings, monkeypatch):
     isolated_settings.llm_sleep_seconds = 0
     article = _make_article("guid-metrics")

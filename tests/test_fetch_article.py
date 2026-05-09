@@ -6,6 +6,7 @@ from app import fetch_article as fetch_article_module
 from app.fetch_article import (
     _collect_noscript_text,
     _extract_image_url,
+    _extract_tweet_id,
     _extract_youtube_video_id,
     _is_js_required_notice,
     _NoscriptCollector,
@@ -286,5 +287,140 @@ def test_fetch_article_youtube_falls_back_when_transcript_unavailable(monkeypatc
 def test_fetch_article_youtube_falls_back_when_transcript_empty(monkeypatch):
     _patch_transcript_api(monkeypatch, snippets=[_FakeSnippet(text="   ")])
     result = fetch_article("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+@pytest.mark.parametrize(
+    "url,expected",
+    [
+        ("https://x.com/jack/status/20", ("jack", "20")),
+        ("https://twitter.com/jack/status/20", ("jack", "20")),
+        ("https://mobile.x.com/jack/status/20", ("jack", "20")),
+        ("https://mobile.twitter.com/jack/status/20", ("jack", "20")),
+        ("https://www.x.com/jack/status/20", ("jack", "20")),
+        ("https://x.com/jack/status/20/photo/1", ("jack", "20")),
+        ("https://x.com/jack/status/20?s=20", ("jack", "20")),
+        ("https://x.com/jack", None),
+        ("https://x.com/i/lists/123", None),
+        ("https://x.com/search?q=foo", None),
+        ("https://example.com/jack/status/20", None),
+        ("https://x.com/jack/status/notanumber", None),
+    ],
+)
+def test_extract_tweet_id(url, expected):
+    assert _extract_tweet_id(url) == expected
+
+
+def _fxtwitter_payload(text="Hello world", screen_name="jack",
+                       name="Jack", photos=None, quote=None):
+    tweet: dict = {
+        "text": text,
+        "author": {"screen_name": screen_name, "name": name},
+    }
+    if photos is not None:
+        tweet["media"] = {"photos": photos}
+    if quote is not None:
+        tweet["quote"] = quote
+    return {"code": 200, "tweet": tweet}
+
+
+def test_fetch_article_tweet_via_fxtwitter(httpx_mock):
+    httpx_mock.add_response(
+        url="https://api.fxtwitter.com/jack/status/20",
+        status_code=200,
+        json=_fxtwitter_payload(
+            text="Just setting up my twttr",
+            screen_name="jack",
+            name="jack",
+            photos=[{"url": "https://pbs.twimg.com/media/abc.jpg"}],
+        ),
+    )
+    result = fetch_article("https://x.com/jack/status/20")
+    assert result.source == ContentSource.TWEET
+    assert "@jack" in result.text
+    assert "Just setting up my twttr" in result.text
+    assert result.image_url == "https://pbs.twimg.com/media/abc.jpg"
+
+
+def test_fetch_article_tweet_includes_quote(httpx_mock):
+    httpx_mock.add_response(
+        url="https://api.fxtwitter.com/alice/status/100",
+        status_code=200,
+        json=_fxtwitter_payload(
+            text="Look at this take",
+            screen_name="alice",
+            name="Alice",
+            quote={
+                "text": "Bold claim incoming",
+                "author": {"screen_name": "bob"},
+            },
+        ),
+    )
+    result = fetch_article("https://twitter.com/alice/status/100")
+    assert result.source == ContentSource.TWEET
+    assert "@bob: Bold claim incoming" in result.text
+
+
+def test_fetch_article_tweet_falls_back_to_vxtwitter(httpx_mock):
+    httpx_mock.add_response(
+        url="https://api.fxtwitter.com/alice/status/200",
+        status_code=500,
+    )
+    httpx_mock.add_response(
+        url="https://api.vxtwitter.com/alice/status/200",
+        status_code=200,
+        json={
+            "text": "Recovered text",
+            "user_screen_name": "alice",
+            "user_name": "Alice",
+            "media_extended": [{"url": "https://pbs.twimg.com/v/x.jpg"}],
+        },
+    )
+    result = fetch_article("https://x.com/alice/status/200")
+    assert result.source == ContentSource.TWEET
+    assert "@alice" in result.text
+    assert "Recovered text" in result.text
+    assert result.image_url == "https://pbs.twimg.com/v/x.jpg"
+
+
+def test_fetch_article_tweet_both_providers_fail(httpx_mock):
+    httpx_mock.add_response(
+        url="https://api.fxtwitter.com/dead/status/300", status_code=500
+    )
+    httpx_mock.add_response(
+        url="https://api.vxtwitter.com/dead/status/300", status_code=500
+    )
+    result = fetch_article("https://x.com/dead/status/300")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_fetch_article_tweet_deleted_returns_feed_fallback(httpx_mock):
+    httpx_mock.add_response(
+        url="https://api.fxtwitter.com/gone/status/400",
+        status_code=200,
+        json={"code": 404, "message": "Tweet not found"},
+    )
+    httpx_mock.add_response(
+        url="https://api.vxtwitter.com/gone/status/400", status_code=404
+    )
+    result = fetch_article("https://x.com/gone/status/400")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_fetch_article_tweet_empty_text_returns_feed_fallback(httpx_mock):
+    httpx_mock.add_response(
+        url="https://api.fxtwitter.com/quiet/status/500",
+        status_code=200,
+        json=_fxtwitter_payload(text="", screen_name="quiet", name="Quiet"),
+    )
+    httpx_mock.add_response(
+        url="https://api.vxtwitter.com/quiet/status/500",
+        status_code=200,
+        json={"text": "", "user_screen_name": "quiet", "user_name": "Quiet"},
+    )
+    result = fetch_article("https://x.com/quiet/status/500")
     assert result.source == ContentSource.FEED_FALLBACK
     assert result.text == ""
