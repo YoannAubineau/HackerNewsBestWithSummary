@@ -806,6 +806,59 @@ def test_step_summarize_records_llm_metrics(isolated_settings, monkeypatch):
     assert reloaded.llm_latency_ms == 2400
 
 
+def test_step_summarize_translates_title_when_feed_fallback(
+    isolated_settings, monkeypatch
+):
+    """FEED_FALLBACK must skip summarize_article entirely.
+
+    The feed boilerplate (article URL, points, comment count) was the only
+    "content" available, and feeding it to the summarizer just produced
+    metadata-shaped paragraphs. The branch now mirrors JS_REQUIRED:
+    translate the title and emit "(no content)".
+    """
+    isolated_settings.llm_sleep_seconds = 0
+    article = _make_article("guid-feed-fallback")
+    article.status = Status.ARTICLE_FETCHED
+    article.content_source = ContentSource.FEED_FALLBACK
+    article.title = "Original English Title"
+    path = save(article)
+    # No article sidecar — fetch_article now returns text="" on this path.
+    write_sidecar(path, "discussion", "raw discussion")
+
+    summarize_article_calls = []
+
+    def fake_summarize_article(text, title):
+        summarize_article_calls.append((text, title))
+        raise AssertionError("summarize_article must not be called")
+
+    def fake_translate_title(title):
+        return "titre français traduit", LLMCallResult(
+            content="ignored", model="m", input_tokens=10, output_tokens=5,
+            latency_ms=50,
+        )
+
+    def fake_summarize_discussion(text, title):
+        return "**Avis positifs** :\n- ok", LLMCallResult(
+            content="ignored", model="m", input_tokens=20, output_tokens=10,
+            latency_ms=80,
+        )
+
+    monkeypatch.setattr(pipeline, "summarize_article", fake_summarize_article)
+    monkeypatch.setattr(pipeline, "translate_title", fake_translate_title)
+    monkeypatch.setattr(pipeline, "summarize_discussion", fake_summarize_discussion)
+    monkeypatch.setattr(pipeline, "today_spend", lambda: None)
+
+    assert pipeline.step_summarize() == 1
+    assert summarize_article_calls == []
+
+    reloaded, body = load(path)
+    assert reloaded.status == Status.SUMMARIZED
+    assert reloaded.rewritten_title == "titre français traduit"
+    assert "## Résumé de l'article\n\n(no content)" in body
+    assert "## Discussion sur Hacker News" in body
+    assert "**Avis positifs**" in body
+
+
 def _make_feed_entry(guid: str, hn_item_id: int = 42) -> FeedEntry:
     return FeedEntry(
         guid=guid,
@@ -814,7 +867,6 @@ def _make_feed_entry(guid: str, hn_item_id: int = 42) -> FeedEntry:
         hn_url=f"https://news.ycombinator.com/item?id={hn_item_id}",
         hn_item_id=hn_item_id,
         source_published_at=datetime(2026, 4, 21, 8, 0, tzinfo=UTC),
-        feed_summary="",
         is_ask_or_show_hn=False,
         observed_at=datetime(2026, 4, 22, 9, 0, tzinfo=UTC),
     )

@@ -80,7 +80,7 @@ def step_fetch_articles(failures: list[tuple[str, str]] | None = None) -> int:
             done += 1
             continue
         try:
-            result = fetch_article(article.url, article.feed_summary)
+            result = fetch_article(article.url)
         except Exception as exc:  # noqa: BLE001
             _record_attempt(path, article, body, f"fetch_article: {exc}", failures)
             continue
@@ -229,7 +229,10 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
             discussion_summary: str | None = None
             calls: list[LLMCallResult] = []
 
-            if article.content_source == ContentSource.JS_REQUIRED:
+            if article.content_source in (
+                ContentSource.JS_REQUIRED,
+                ContentSource.FEED_FALLBACK,
+            ):
                 translated, call = translate_title(article.title)
                 calls.append(call)
                 if translated:
@@ -314,7 +317,7 @@ def backfill_images() -> int:
         if article.content_source == ContentSource.ASK_SHOW_HN:
             continue
         try:
-            result = fetch_article(article.url, feed_fallback="")
+            result = fetch_article(article.url)
         except Exception as exc:  # noqa: BLE001
             log.warning("backfill_fetch_failed", guid=article.guid, error=str(exc))
             continue
@@ -342,7 +345,6 @@ def _create_pending(entry: FeedEntry) -> None:
         our_published_at=entry.observed_at,
         status=Status.PENDING,
         is_ask_or_show_hn=entry.is_ask_or_show_hn,
-        feed_summary=entry.feed_summary,
     )
     save(article)
 
