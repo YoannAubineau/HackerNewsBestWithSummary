@@ -7,6 +7,7 @@ from urllib.parse import parse_qs, urljoin, urlparse
 import httpx
 import structlog
 import trafilatura
+from lxml import etree
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.proxies import WebshareProxyConfig
 
@@ -15,7 +16,13 @@ from app.models import ContentSource
 
 log = structlog.get_logger()
 
-_FETCHABLE_CONTENT_TYPES = ("text/html", "application/xhtml+xml")
+_FETCHABLE_CONTENT_TYPES = (
+    "text/html",
+    "application/xhtml+xml",
+    "application/xml",
+    "text/xml",
+)
+_XML_CONTENT_TYPES = ("application/xml", "text/xml")
 _JS_NOTICE_SIMILARITY_THRESHOLD = 0.9
 _YOUTUBE_HOSTS = {"youtube.com", "youtu.be"}
 _YOUTUBE_HOST_PREFIXES = ("www.", "m.", "music.")
@@ -88,8 +95,19 @@ def fetch_article(url: str) -> ArticleContent:
 
     image_url = _extract_image_url(response.text, url)
 
+    if any(content_type.startswith(t) for t in _XML_CONTENT_TYPES):
+        html_for_extraction = _xml_to_html(response.content)
+        if html_for_extraction is None:
+            return ArticleContent(
+                text="",
+                source=ContentSource.FEED_FALLBACK,
+                image_url=image_url,
+            )
+    else:
+        html_for_extraction = response.text
+
     extracted = trafilatura.extract(
-        response.text,
+        html_for_extraction,
         include_comments=False,
         include_tables=False,
         favor_precision=True,
@@ -303,6 +321,30 @@ def _render_tweet(tweet: _Tweet) -> str:
     if tweet.quote_text and tweet.quote_handle:
         body += f"\n\n> @{tweet.quote_handle}: {tweet.quote_text}"
     return body
+
+
+def _xml_to_html(content: bytes) -> str | None:
+    """Strip XML namespaces and wrap as HTML for trafilatura.
+
+    Forester-style sources (e.g. forester-notes.org) ship article text
+    inside namespaced HTML elements like ``<html:p>`` under custom roots
+    like ``<fr:tree><fr:mainmatter>``. trafilatura's heuristics anchor on
+    plain ``<html><body>``, so we drop every namespace, then wrap the
+    serialized tree in a minimal HTML shell.
+    """
+    parser = etree.XMLParser(recover=True, resolve_entities=False, no_network=True)
+    try:
+        root = etree.fromstring(content, parser=parser)
+    except etree.XMLSyntaxError:
+        return None
+    if root is None:
+        return None
+    for el in root.iter():
+        if isinstance(el.tag, str):
+            el.tag = etree.QName(el).localname
+    etree.cleanup_namespaces(root)
+    body = etree.tostring(root, encoding="unicode", method="xml")
+    return f"<html><body>{body}</body></html>"
 
 
 def _is_js_required_notice(extracted: str, html: str) -> bool:
