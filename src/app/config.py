@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     # minus the highest cumulative seen on any earlier UTC day) exceeds
     # this value, step_summarize bails out for the rest of the cycle.
     # Set to 0 to disable.
-    daily_cost_limit_usd: float = 2.0
+    daily_cost_limit_usd: float = 1.0
     # Tweets shorter than this are quoted verbatim instead of summarized.
     # Below the typical LLM summary length (~1000 chars on this feed), the
     # summary would be longer than the original — pointless and noisy.
