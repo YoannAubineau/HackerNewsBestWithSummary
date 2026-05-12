@@ -35,6 +35,8 @@ def today_spend() -> float | None:
     breaker if we can't measure).
     """
     settings = get_settings()
+    if not settings.openrouter_api_key:
+        return None
     try:
         response = httpx.get(
             _OPENROUTER_KEY_URL,
@@ -59,6 +61,8 @@ def today_spend() -> float | None:
 def record_usage() -> None:
     """Query OpenRouter and store today's cumulative spend."""
     settings = get_settings()
+    if not settings.openrouter_api_key:
+        return
     try:
         response = httpx.get(
             _OPENROUTER_KEY_URL,

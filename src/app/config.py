@@ -9,7 +9,11 @@ LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
-    openrouter_api_key: str
+    # Required at runtime only by code paths that actually call OpenRouter
+    # (LLM completions in llm.py, spend probing in usage.py). Leaving it
+    # empty lets non-LLM subcommands and dev tooling (lint, tests, publish,
+    # fetch-feed...) run without the secret configured.
+    openrouter_api_key: str = ""
     openrouter_model: str = "anthropic/claude-haiku-4.5"
     openrouter_fallback_models: tuple[str, ...] = (
         "nvidia/nemotron-3-super-120b-a12b:free",

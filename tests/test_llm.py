@@ -2,7 +2,7 @@ import json as json_mod
 
 import pytest
 
-from app.llm import AllModelsFailedError, complete
+from app.llm import AllModelsFailedError, LLMError, complete
 
 
 def _openrouter_response(
@@ -113,6 +113,13 @@ def test_complete_sets_json_object_response_format_when_requested(
     complete("system", "user", json=True)
     sent = json_mod.loads(httpx_mock.get_request().content)
     assert sent["response_format"] == {"type": "json_object"}
+
+
+def test_complete_raises_when_api_key_is_empty(httpx_mock, isolated_settings):
+    isolated_settings.openrouter_api_key = ""
+    with pytest.raises(LLMError, match="OPENROUTER_API_KEY"):
+        complete("system", "user")
+    assert httpx_mock.get_requests() == []
 
 
 def test_complete_exposes_usage_and_latency(httpx_mock, isolated_settings):
