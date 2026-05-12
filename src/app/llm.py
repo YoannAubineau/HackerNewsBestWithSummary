@@ -38,6 +38,8 @@ def complete(system_prompt: str, user_prompt: str, *, json: bool = False) -> LLM
     callers must tolerate malformed JSON from providers that ignore it.
     """
     settings = get_settings()
+    if not settings.openrouter_api_key:
+        raise LLMError("OPENROUTER_API_KEY is required to call the LLM")
     candidates = [settings.openrouter_model, *settings.openrouter_fallback_models]
     last_error: Exception | None = None
     for model in candidates:
