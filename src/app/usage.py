@@ -161,8 +161,7 @@ def _render_svg(daily: list[tuple[date, float]]) -> str:
     slot_w = plot_w / n
     bar_w = slot_w * 0.7
 
-    max_spend = max((v for _, v in daily), default=0.0)
-    y_max = _nice_ceiling(max_spend) if max_spend > 0 else 0.1
+    y_max = get_settings().daily_cost_limit_usd + 0.5
 
     out: list[str] = []
     out.append(
@@ -174,10 +173,9 @@ def _render_svg(daily: list[tuple[date, float]]) -> str:
     out.append(
         f'<rect width="{width}" height="{height}" fill="#fafafa" stroke="#e5e5e5"/>'
     )
-    # gridlines + y-axis labels at quarters
-    for i in range(5):
-        y = margin_top + plot_h * (1 - i / 4)
-        value = y_max * i / 4
+    for i in range(4):
+        y = margin_top + plot_h * (1 - i / 3)
+        value = y_max * i / 3
         out.append(
             f'<line x1="{margin_left}" y1="{y:.1f}" x2="{width - margin_right}" '
             f'y2="{y:.1f}" stroke="#e5e5e5"/>'
@@ -207,16 +205,3 @@ def _render_svg(daily: list[tuple[date, float]]) -> str:
             )
     out.append("</svg>")
     return "\n".join(out)
-
-
-def _nice_ceiling(value: float) -> float:
-    """Round ``value`` up to a human-friendly tick."""
-    if value <= 0:
-        return 1.0
-    if value < 0.1:
-        return round(value + 0.02, 2)
-    if value < 1:
-        return round(value * 1.2 + 0.05, 1)
-    if value < 10:
-        return float(int(value * 1.2) + 1)
-    return float(int(value * 1.15 / 5 + 1) * 5)
