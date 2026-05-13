@@ -3,7 +3,6 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/YoannAubineau/HackerNewsBestWithSummary/ci.yml?label=CI)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/ci.yml)
 [![Last feed refresh](https://img.shields.io/endpoint?url=https://yoannaubineau.github.io/HackerNewsBestWithSummary/last-refresh.json)](https://github.com/YoannAubineau/HackerNewsBestWithSummary/actions/workflows/cycle.yml)
 [![Total LLM cost](https://img.shields.io/endpoint?url=https://yoannaubineau.github.io/HackerNewsBestWithSummary/llm-cost.json)](#llm-cost-supported-by-the-author)
-[![Sponsors](https://img.shields.io/github/sponsors/YoannAubineau?label=Sponsors&color=blueviolet)](https://github.com/sponsors/YoannAubineau)
 
 Republishes the [Hacker News Best](https://hnrss.org/best) feed, enriched with LLM-generated content:
 
