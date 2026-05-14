@@ -891,7 +891,7 @@ def test_step_summarize_translates_title_when_feed_fallback(
     The feed boilerplate (article URL, points, comment count) was the only
     "content" available, and feeding it to the summarizer just produced
     metadata-shaped paragraphs. The branch now mirrors JS_REQUIRED:
-    translate the title and emit "(no content)".
+    translate the title and emit "(unable to load content)".
     """
     isolated_settings.llm_sleep_seconds = 0
     article = _make_article("guid-feed-fallback")
@@ -931,7 +931,7 @@ def test_step_summarize_translates_title_when_feed_fallback(
     reloaded, body = load(path)
     assert reloaded.status == Status.SUMMARIZED
     assert reloaded.rewritten_title == "titre français traduit"
-    assert "## Résumé de l'article\n\n(no content)" in body
+    assert "## Résumé de l'article\n\n(unable to load content)" in body
     assert "## Discussion sur Hacker News" in body
     assert "**Avis positifs**" in body
 
