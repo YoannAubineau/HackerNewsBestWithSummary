@@ -239,7 +239,7 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
                 calls.append(call)
                 if translated:
                     article.rewritten_title = translated
-                article_summary = "(no content)"
+                article_summary = "(unable to load content)"
                 time.sleep(settings.llm_sleep_seconds)
             elif (
                 article.content_source == ContentSource.TWEET

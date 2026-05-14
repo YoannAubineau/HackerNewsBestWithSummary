@@ -87,7 +87,7 @@ where it left off.
    prompt, single call), once to synthesise the discussion into
    `Avis positifs` / `Avis négatifs` bullets. Articles flagged
    `js_required` skip the article-summary call altogether and fall back
-   to a cheap title-translation call plus a `(no content)` placeholder
+   to a cheap title-translation call plus a `(unable to load content)` placeholder
    under the article-summary heading, while the discussion synthesis
    runs as usual. Each article gets up to three attempts with a
    cascading model fallback, after which it moves to
