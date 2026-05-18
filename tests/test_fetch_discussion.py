@@ -660,8 +660,8 @@ def test_fetch_hn_display_order_parses_top_level_only(httpx_mock):
 
 
 def test_fetch_hn_display_order_returns_empty_on_http_error(httpx_mock):
-    # 5xx is not in the retry list (only 429 / ConnectError / ReadTimeout
-    # are transient). Returns immediately rather than retrying.
+    # 5xx is not in the direct retry list (only ConnectError / ReadTimeout
+    # are retried on the same IP). Returns immediately rather than retrying.
     httpx_mock.add_response(
         url="https://news.ycombinator.com/item?id=8888",
         status_code=503,
@@ -669,57 +669,38 @@ def test_fetch_hn_display_order_returns_empty_on_http_error(httpx_mock):
     assert _real_fetch_hn_display_order(8888) == []
 
 
-def test_fetch_hn_display_order_retries_on_429(httpx_mock, monkeypatch):
-    import time
-    monkeypatch.setattr(time, "sleep", lambda _: None)
-    # First call rate-limited, second succeeds. The wrapper should retry
-    # transparently and return the parsed order on the second response.
-    httpx_mock.add_response(
-        url="https://news.ycombinator.com/item?id=9999",
-        status_code=429,
-    )
-    httpx_mock.add_response(
-        url="https://news.ycombinator.com/item?id=9999",
-        text=(
-            '<tr class="athing comtr" id="42">'
-            '<td><table><tr><td class="ind" indent="0">'
-            '<img></td></tr></table></td></tr>'
-        ),
-    )
-    assert _real_fetch_hn_display_order(9999) == [42]
-
-
-def test_fetch_hn_display_order_gives_up_after_three_429_without_proxy(
+def test_fetch_hn_display_order_does_not_retry_direct_on_429(
     httpx_mock, monkeypatch, isolated_settings
 ):
-    import time
-    monkeypatch.setattr(time, "sleep", lambda _: None)
+    # 429 on the direct path is not retried: HN's rate-limit window is much
+    # longer than the 2-10 s backoff would cover, and the same throttled IP
+    # would just see another 429. With no proxy configured the call returns
+    # empty after a single direct attempt. Registering only one response
+    # plus pytest-httpx's default strict matching proves no retry happened.
+    monkeypatch.setattr("time.sleep", lambda _: None)
     isolated_settings.webshare_proxy_username = ""
     isolated_settings.webshare_proxy_password = ""
-    for _ in range(3):
-        httpx_mock.add_response(
-            url="https://news.ycombinator.com/item?id=1111",
-            status_code=429,
-        )
+    httpx_mock.add_response(
+        url="https://news.ycombinator.com/item?id=1111",
+        status_code=429,
+    )
     assert _real_fetch_hn_display_order(1111) == []
 
 
-def test_fetch_hn_display_order_falls_back_to_proxy_when_direct_exhausts(
+def test_fetch_hn_display_order_falls_back_to_proxy_immediately_on_429(
     httpx_mock, monkeypatch, isolated_settings
 ):
-    import time
-    monkeypatch.setattr(time, "sleep", lambda _: None)
+    # One direct 429 (no direct retry on 429 anymore) → immediate proxy
+    # attempt which succeeds. pytest-httpx matches at the transport layer
+    # and consumes registered responses in order, so the second response
+    # is the one returned to the proxy call.
+    monkeypatch.setattr("time.sleep", lambda _: None)
     isolated_settings.webshare_proxy_username = "demo"
     isolated_settings.webshare_proxy_password = "secret"
-    # Three direct 429s exhaust the tenacity retry, then the proxy attempt
-    # against the same target URL succeeds. pytest-httpx matches at the
-    # transport layer and consumes registered responses in order, so the
-    # fourth response is the one returned to the proxy call.
-    for _ in range(3):
-        httpx_mock.add_response(
-            url="https://news.ycombinator.com/item?id=2222",
-            status_code=429,
-        )
+    httpx_mock.add_response(
+        url="https://news.ycombinator.com/item?id=2222",
+        status_code=429,
+    )
     httpx_mock.add_response(
         url="https://news.ycombinator.com/item?id=2222",
         text=(
@@ -772,12 +753,12 @@ def test_top_comments_escape_markdown_in_author_and_text(
 def test_fetch_hn_display_order_returns_empty_when_proxy_also_fails(
     httpx_mock, monkeypatch, isolated_settings
 ):
-    import time
-    monkeypatch.setattr(time, "sleep", lambda _: None)
+    monkeypatch.setattr("time.sleep", lambda _: None)
     isolated_settings.webshare_proxy_username = "demo"
     isolated_settings.webshare_proxy_password = "secret"
-    # Three direct 429s + three proxy 429s → empty.
-    for _ in range(6):
+    # One direct 429 + three proxy 429s → empty. The proxy path still retries
+    # because each Webshare request rotates to a fresh residential IP.
+    for _ in range(4):
         httpx_mock.add_response(
             url="https://news.ycombinator.com/item?id=3333",
             status_code=429,
@@ -788,12 +769,12 @@ def test_fetch_hn_display_order_returns_empty_when_proxy_also_fails(
 def test_fetch_hn_display_order_proxy_retries_then_succeeds(
     httpx_mock, monkeypatch, isolated_settings
 ):
-    import time
-    monkeypatch.setattr(time, "sleep", lambda _: None)
+    monkeypatch.setattr("time.sleep", lambda _: None)
     isolated_settings.webshare_proxy_username = "demo"
     isolated_settings.webshare_proxy_password = "secret"
-    # Three direct 429s + one proxy 429 + one proxy 200 → ID extracted.
-    for _ in range(4):
+    # One direct 429 + one proxy 429 + one proxy 200 → ID extracted. The
+    # proxy retry on 429 is meaningful because each attempt draws a fresh IP.
+    for _ in range(2):
         httpx_mock.add_response(
             url="https://news.ycombinator.com/item?id=4444",
             status_code=429,

@@ -286,13 +286,27 @@ def _escape_markdown(text: str) -> str:
     return _MARKDOWN_SPECIAL_RE.sub(r"\\\1", text)
 
 
-def _is_retryable_hn_error(exc: BaseException) -> bool:
-    """Retry HN HTML fetches on transient errors only.
+def _is_retryable_hn_direct_error(exc: BaseException) -> bool:
+    """Retry the direct HN fetch only on connection-level transients.
 
-    HN HTTP 429 is the dominant failure mode (shared GitHub Actions IPs
-    get rate-limited even on a single request). Connection-level
-    timeouts and resets are also transient. Any other HTTP error
-    (404, 5xx, malformed response) is treated as terminal.
+    HN's 429 on a shared GitHub Actions IP typically lasts longer than
+    the 2-10 s exponential backoff covers, and we would just hit the
+    same throttled IP. Falling through immediately to the Webshare proxy
+    path — where each retry draws a fresh residential IP — is strictly
+    more productive than burning seconds on the local IP. Connection-
+    level transients (timeouts, resets) remain worth retrying on the
+    same IP. Any other HTTP error (404, 5xx, malformed response) is
+    treated as terminal.
+    """
+    return isinstance(exc, (httpx.ConnectError, httpx.ReadTimeout))
+
+
+def _is_retryable_hn_proxy_error(exc: BaseException) -> bool:
+    """Retry the proxy HN fetch on 429 and connection-level transients.
+
+    Webshare rotates the egress IP on every request, so a 429 from one
+    attempt does not predict a 429 from the next — each retry draws a
+    fresh address that independently sidesteps HN's IP throttling.
     """
     if isinstance(exc, httpx.HTTPStatusError):
         return exc.response.status_code == 429
@@ -302,7 +316,7 @@ def _is_retryable_hn_error(exc: BaseException) -> bool:
 @retry(
     stop=stop_after_attempt(3),
     wait=wait_exponential(multiplier=2, min=2, max=10),
-    retry=retry_if_exception(_is_retryable_hn_error),
+    retry=retry_if_exception(_is_retryable_hn_direct_error),
     reraise=True,
 )
 def _fetch_hn_html(hn_item_id: int) -> str:
@@ -319,7 +333,7 @@ def _fetch_hn_html(hn_item_id: int) -> str:
 @retry(
     stop=stop_after_attempt(3),
     wait=wait_exponential(multiplier=2, min=2, max=10),
-    retry=retry_if_exception(_is_retryable_hn_error),
+    retry=retry_if_exception(_is_retryable_hn_proxy_error),
     reraise=True,
 )
 def _fetch_hn_html_via_proxy(hn_item_id: int) -> str:
@@ -358,16 +372,17 @@ def _fetch_hn_display_order(hn_item_id: int) -> list[int]:
     fetch it and pick out each ``<tr class="athing comtr">`` with
     ``indent="0"``.
 
-    Transient HN failures (HTTP 429, connection resets) are retried up
-    to three times with exponential backoff, since GitHub Actions
-    runners share IPs and tend to trip HN's rate limit even on a single
-    request. When the direct retries are exhausted and Webshare proxy
-    credentials are configured, up to three attempts route through the
-    residential proxy pool already used by the YouTube transcript path
-    — because Webshare rotates the IP on every request, each retry
-    draws a fresh address and independently avoids any throttled IP.
-    If everything fails, the caller falls back to an empty
-    ``top_comments_markdown`` rather than crashing the pipeline.
+    Connection-level transients (``ConnectError``, ``ReadTimeout``) are
+    retried up to three times directly. A 429, on the other hand, is
+    not retried on the direct path: HN's rate-limit window is far
+    longer than the 2-10 s exponential backoff covers, and the same
+    shared GitHub Actions IP would just hit the same throttle. Instead,
+    we fall through immediately to Webshare when credentials are
+    configured. There the retries do pay off: each request draws a
+    fresh rotating residential IP, so a 429 on one attempt does not
+    predict a 429 on the next. If everything fails, the caller falls
+    back to an empty ``top_comments_markdown`` rather than crashing
+    the pipeline.
     """
     try:
         text = _fetch_hn_html(hn_item_id)

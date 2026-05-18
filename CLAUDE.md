@@ -225,15 +225,18 @@ hourly on a public repo, so minutes are free.
   fetch of `news.ycombinator.com/item?id=<id>` per article. HTTP 429
   from HN happens often enough on shared GitHub Actions IPs to be a
   real concern, even on a single request. `_fetch_hn_html` is wrapped
-  in a tenacity retry (3 attempts, 2-10 s exponential backoff on 429
-  / `ConnectError` / `ReadTimeout`). If those retries are exhausted
-  and `WEBSHARE_PROXY_USERNAME` / `WEBSHARE_PROXY_PASSWORD` are set,
-  `_fetch_hn_display_order` falls back through
+  in a tenacity retry (3 attempts, 2-10 s exponential backoff) but
+  only on connection-level transients (`ConnectError`, `ReadTimeout`):
+  a 429 is treated as terminal on the direct path because HN's
+  rate-limit window outlasts that backoff, and the same shared IP
+  would just trip again. When `WEBSHARE_PROXY_USERNAME` /
+  `WEBSHARE_PROXY_PASSWORD` are set, `_fetch_hn_display_order` falls
+  through immediately on any direct failure (429 included) to
   `_fetch_hn_html_via_proxy`, which retries up to three times against
-  the Webshare residential pool — because Webshare rotates the IP on
-  every request, each retry draws a fresh address and independently
-  sidesteps HN's IP throttling. If everything fails,
-  the section degrades to empty rather than crashing. If HN ever
+  the Webshare residential pool. *There* the 429-retry is meaningful:
+  Webshare rotates the IP on every request, so each retry draws a
+  fresh address that independently sidesteps HN's IP throttling. If
+  everything fails, the section degrades to empty rather than crashing. If HN ever
   rewrites its comment-row markup, update `_COMMENT_ROW_RE` in
   `fetch_discussion.py`.
 - **Dupe detection looks at the first comment only**: HN moderators
