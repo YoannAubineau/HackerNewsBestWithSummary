@@ -6,10 +6,12 @@ import structlog
 import typer
 
 from app.check_models import check_llm_versions
+from app.config import get_settings
 from app.logging_setup import setup_logging
 from app.pipeline import (
     CycleResult,
     backfill_images,
+    reprocess_placeholders,
     run_cycle,
     step_fetch_articles,
     step_fetch_discussions,
@@ -105,6 +107,32 @@ def check_llm_versions_cmd() -> None:
     code = check_llm_versions()
     if code != 0:
         raise typer.Exit(code=code)
+
+
+@app.command("reprocess-placeholders")
+def reprocess_placeholders_cmd() -> None:
+    """Re-run extraction for articles whose body still shows the load-failure placeholder.
+
+    Resets matching ``SUMMARIZED`` articles back to ``PENDING`` (clearing
+    every downstream field and the body text), then runs one full cycle
+    with the daily cost breaker temporarily disabled so the backfill can
+    complete in a single invocation even when its LLM spend exceeds the
+    normal daily limit. Intended as a one-off maintenance step after
+    ``fetch_article`` gains new extractors.
+    """
+    reset = reprocess_placeholders()
+    if reset == 0:
+        log.info("reprocess_placeholders_noop")
+        return
+    log.info("reprocess_placeholders_running_cycle", reset=reset)
+    settings = get_settings()
+    original_limit = settings.daily_cost_limit_usd
+    settings.daily_cost_limit_usd = 0.0
+    try:
+        result = run_cycle()
+    finally:
+        settings.daily_cost_limit_usd = original_limit
+    _emit_failures(result)
 
 
 @app.command("migrate-partitions")

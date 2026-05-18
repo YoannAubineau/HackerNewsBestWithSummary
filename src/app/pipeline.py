@@ -1,3 +1,4 @@
+import re
 import time
 from datetime import UTC, datetime
 from itertools import chain
@@ -311,6 +312,63 @@ def run_cycle() -> CycleResult:
     # flow through on the next cycle without waiting for a fresh HN submission.
     step_publish()
     return CycleResult(failures=failures)
+
+
+_PLACEHOLDER_ARTICLE_SUMMARY_RE = re.compile(
+    r"^## Résumé de l'article\s*\n+\((?:no content|unable to load content)\)",
+    re.MULTILINE,
+)
+
+
+def reprocess_placeholders() -> int:
+    """Reset summarized articles whose body still shows the load-failure placeholder.
+
+    Walks every ``SUMMARIZED`` article and re-queues for the pipeline
+    those whose body's article-summary section is just the literal
+    ``(unable to load content)`` (or the legacy ``(no content)``).
+    Matching is anchored on the ``## Résumé de l'article`` heading so
+    occurrences of the same phrase inside a discussion comment do not
+    trigger a false-positive reset.
+
+    Status drops back to ``PENDING`` and every field downstream of the
+    feed entry (status timestamps, content_source, LLM bookkeeping,
+    image_url, rewritten_title, attempts, error) is cleared so the
+    next cycle runs the full discussion + article + summary chain
+    against fresh logic. ``guid``, ``url``, ``hn_*``, ``title`` and the
+    two ``*_published_at`` timestamps are preserved — they identify the
+    article and key the on-disk partition. Body is wiped because the
+    placeholder text is exactly what we want to overwrite.
+
+    Designed as a one-off backfill after ``fetch_article`` gains new
+    extractors. Caller is responsible for bypassing the daily cost
+    breaker if the resulting reprocessing batch would exceed it.
+    """
+    from app.storage import iter_summarized
+
+    reset = 0
+    for path, article, body in list(iter_summarized()):
+        if not _PLACEHOLDER_ARTICLE_SUMMARY_RE.search(body):
+            continue
+        article.status = Status.PENDING
+        article.attempts = 0
+        article.content_source = None
+        article.article_fetched_at = None
+        article.discussion_fetched_at = None
+        article.discussion_comment_count = None
+        article.summarized_at = None
+        article.image_url = None
+        article.rewritten_title = None
+        article.llm_models_used = None
+        article.llm_input_tokens = None
+        article.llm_output_tokens = None
+        article.llm_latency_ms = None
+        article.error = None
+        clear_sidecars(path)
+        save(article)
+        reset += 1
+        log.info("placeholder_reset", guid=article.guid, url=article.url)
+    log.info("reprocess_placeholders", reset=reset)
+    return reset
 
 
 def backfill_images() -> int:
