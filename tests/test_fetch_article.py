@@ -496,3 +496,57 @@ def test_fetch_article_tweet_empty_text_returns_feed_fallback(httpx_mock):
     result = fetch_article("https://x.com/quiet/status/500")
     assert result.source == ContentSource.FEED_FALLBACK
     assert result.text == ""
+
+
+def test_fetch_article_retries_via_proxy_on_http_error(httpx_mock, isolated_settings):
+    isolated_settings.webshare_proxy_username = "demo"
+    isolated_settings.webshare_proxy_password = "secret"
+    httpx_mock.add_response(
+        url="https://example.com/blocked",
+        status_code=403,
+    )
+    html = (
+        "<html><body><article>"
+        "<p>Premier paragraphe substantiel récupéré via le proxy résidentiel.</p>"
+        "<p>Second paragraphe avec assez de contenu pour passer le seuil de précision.</p>"
+        "</article></body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://example.com/blocked",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=html,
+    )
+    result = fetch_article("https://example.com/blocked")
+    assert result.source == ContentSource.EXTRACTED
+    assert "paragraphe substantiel" in result.text
+
+
+def test_fetch_article_does_not_retry_when_proxy_creds_missing(
+    httpx_mock, isolated_settings
+):
+    isolated_settings.webshare_proxy_username = ""
+    isolated_settings.webshare_proxy_password = ""
+    httpx_mock.add_response(
+        url="https://example.com/blocked-no-creds",
+        status_code=403,
+    )
+    result = fetch_article("https://example.com/blocked-no-creds")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_fetch_article_falls_back_when_proxy_also_fails(httpx_mock, isolated_settings):
+    isolated_settings.webshare_proxy_username = "demo"
+    isolated_settings.webshare_proxy_password = "secret"
+    httpx_mock.add_response(
+        url="https://example.com/double-blocked",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://example.com/double-blocked",
+        status_code=403,
+    )
+    result = fetch_article("https://example.com/double-blocked")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
