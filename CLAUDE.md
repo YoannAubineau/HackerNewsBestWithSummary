@@ -108,6 +108,15 @@ hourly on a public repo, so minutes are free.
   pages by fuzzy-matching trafilatura's output against the raw HTML's
   `<noscript>` block (ratio ≥ 0.9 via `difflib.SequenceMatcher`), in
   which case it returns `ContentSource.JS_REQUIRED` with empty text.
+  Mastodon-style status URLs (`/@<user>/<numeric_id>` on any host)
+  short-circuit the HTML path too: the same URL is refetched with
+  ``Accept: application/activity+json``, which on every Mastodon
+  (and most ActivityPub-compatible) server returns a clean ``Note``
+  JSON. The ``content`` field is HTML-stripped (block closers and
+  ``<br>`` preserved as newlines so paragraphs do not collapse into one
+  run), the federated handle ``@user@host`` is prepended as
+  attribution, and the first image attachment becomes ``image_url``.
+  Pleroma and Misskey use different paths and are not detected.
   YouTube URLs
   (`youtube.com/watch`, `youtu.be`, `shorts`, `embed`, `v`) short-circuit
   the HTML path: the video transcript is pulled via

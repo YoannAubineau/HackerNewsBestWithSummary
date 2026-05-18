@@ -6,6 +6,7 @@ from app import fetch_article as fetch_article_module
 from app.fetch_article import (
     _collect_noscript_text,
     _extract_image_url,
+    _extract_mastodon_handle,
     _extract_tweet_id,
     _extract_youtube_video_id,
     _is_js_required_notice,
@@ -282,12 +283,12 @@ def test_fetch_article_detects_js_required_noscript(httpx_mock):
         "</body></html>"
     )
     httpx_mock.add_response(
-        url="https://social.example/@user/1",
+        url="https://example.com/spa",
         status_code=200,
         headers={"content-type": "text/html; charset=utf-8"},
         text=html,
     )
-    result = fetch_article("https://social.example/@user/1")
+    result = fetch_article("https://example.com/spa")
     assert result.source == ContentSource.JS_REQUIRED
     assert result.text == ""
 
@@ -550,3 +551,99 @@ def test_fetch_article_falls_back_when_proxy_also_fails(httpx_mock, isolated_set
     result = fetch_article("https://example.com/double-blocked")
     assert result.source == ContentSource.FEED_FALLBACK
     assert result.text == ""
+
+
+@pytest.mark.parametrize(
+    "url,expected",
+    [
+        ("https://social.hails.org/@hailey/116446826733136456",
+         ("hailey", "social.hails.org")),
+        ("https://partyon.xyz/@nullagent/116499715071759135",
+         ("nullagent", "partyon.xyz")),
+        ("https://grapheneos.social/@GrapheneOS/116550899908879585",
+         ("GrapheneOS", "grapheneos.social")),
+        ("https://social.example/@user/12345/", ("user", "social.example")),
+        # Twitter pattern — different shape, must not match.
+        ("https://x.com/jack/status/20", None),
+        # Mastodon-looking but with extra path segment — skip.
+        ("https://social.example/@user/12345/photo/1", None),
+        # No status id.
+        ("https://social.example/@user", None),
+        # Username without leading @ — not a Mastodon post URL.
+        ("https://social.example/user/12345", None),
+    ],
+)
+def test_extract_mastodon_handle(url, expected):
+    assert _extract_mastodon_handle(url) == expected
+
+
+_MASTODON_NOTE = {
+    "@context": ["https://www.w3.org/ns/activitystreams"],
+    "type": "Note",
+    "id": "https://social.example/users/hailey/statuses/12345",
+    "attributedTo": "https://social.example/users/hailey",
+    "content": "<p>Un message fédiveré assez long pour être intéressant.</p>",
+    "published": "2026-05-01T10:00:00Z",
+}
+
+
+def test_fetch_article_mastodon_returns_extracted(httpx_mock):
+    httpx_mock.add_response(
+        url="https://social.example/@hailey/12345",
+        status_code=200,
+        json=_MASTODON_NOTE,
+        match_headers={"Accept": "application/activity+json"},
+    )
+    result = fetch_article("https://social.example/@hailey/12345")
+    assert result.source == ContentSource.EXTRACTED
+    assert "fédiveré" in result.text
+    assert "@hailey@social.example" in result.text
+
+
+def test_fetch_article_mastodon_strips_html_and_unescapes(httpx_mock):
+    note = {**_MASTODON_NOTE, "content": "<p>Voir &lt;ici&gt; le détail.</p>"}
+    httpx_mock.add_response(
+        url="https://social.example/@hailey/12346",
+        json=note,
+    )
+    result = fetch_article("https://social.example/@hailey/12346")
+    assert "<ici>" in result.text
+    assert "<p>" not in result.text
+
+
+def test_fetch_article_mastodon_extracts_first_image(httpx_mock):
+    note = {
+        **_MASTODON_NOTE,
+        "attachment": [
+            {"type": "Document", "mediaType": "image/png",
+             "url": "https://cdn.social.example/abc.png"},
+            {"type": "Document", "mediaType": "image/jpeg",
+             "url": "https://cdn.social.example/second.jpg"},
+        ],
+    }
+    httpx_mock.add_response(
+        url="https://social.example/@hailey/12347",
+        json=note,
+    )
+    result = fetch_article("https://social.example/@hailey/12347")
+    assert result.image_url == "https://cdn.social.example/abc.png"
+
+
+def test_fetch_article_mastodon_falls_back_on_http_error(httpx_mock):
+    httpx_mock.add_response(
+        url="https://social.example/@hailey/dead",
+        status_code=404,
+    )
+    result = fetch_article("https://social.example/@hailey/dead")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_fetch_article_mastodon_falls_back_on_empty_content(httpx_mock):
+    note = {**_MASTODON_NOTE, "content": ""}
+    httpx_mock.add_response(
+        url="https://social.example/@hailey/empty",
+        json=note,
+    )
+    result = fetch_article("https://social.example/@hailey/empty")
+    assert result.source == ContentSource.FEED_FALLBACK
