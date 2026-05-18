@@ -99,8 +99,13 @@ hourly on a public repo, so minutes are free.
   own summary if extraction fails or the URL isn't HTML. `text/plain`
   responses (e.g. FreeBSD security advisories served as `.asc` plain
   text) are accepted and returned verbatim as `ContentSource.EXTRACTED`,
-  bypassing trafilatura. Other non-HTML/non-XML content types (PDF,
-  application/octet-stream, …) are rejected to `FEED_FALLBACK`.
+  bypassing trafilatura. `application/pdf` responses are routed to
+  `_extract_pdf_text`, which uses `pypdfium2` to concatenate per-page
+  text (PDFium handles multi-column academic layouts much better than
+  pure-Python parsers); failures (corrupt bytes, password-protected,
+  scanned PDF without an OCR layer) fall back to `FEED_FALLBACK`. Other
+  binary content types (`application/octet-stream`, …) are rejected
+  outright.
   trafilatura runs twice when needed: first with `favor_precision=True`,
   and if that yields nothing (old HTML 4.01 layouts, listing pages,
   gallery sites without a clear single main-content region), once more
