@@ -17,6 +17,7 @@ dependencies = [
     "tenacity>=9.0",
     "structlog>=24.4",
     "youtube-transcript-api>=1.2.4",
+    "pypdfium2>=4.30",
 ]
 
 [dependency-groups]

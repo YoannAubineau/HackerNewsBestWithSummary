@@ -6,6 +6,7 @@ from html.parser import HTMLParser
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
+import pypdfium2
 import structlog
 import trafilatura
 from lxml import etree  # pyright: ignore[reportAttributeAccessIssue]
@@ -106,6 +107,11 @@ def fetch_article(url: str) -> ArticleContent:
         if not body:
             return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
         return ArticleContent(text=body, source=ContentSource.EXTRACTED)
+    if content_type.startswith("application/pdf"):
+        body = _extract_pdf_text(response.content)
+        if not body:
+            return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+        return ArticleContent(text=body, source=ContentSource.EXTRACTED)
     if content_type and not any(content_type.startswith(t) for t in _FETCHABLE_CONTENT_TYPES):
         return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
@@ -140,6 +146,40 @@ def fetch_article(url: str) -> ArticleContent:
         source=ContentSource.FEED_FALLBACK,
         image_url=image_url,
     )
+
+
+def _extract_pdf_text(content: bytes) -> str | None:
+    """Return concatenated page text from a PDF, or None on failure.
+
+    Used for academic-paper URLs that publishers serve as
+    ``application/pdf`` (the dominant source on HN is ``vldb.org``,
+    ``arxiv.org`` and similar). PDFium handles multi-column academic
+    layouts noticeably better than pure-Python parsers. Failures
+    (corrupt bytes, password-protected document, empty PDF without an
+    OCR layer) return ``None`` so the caller falls back to
+    ``FEED_FALLBACK`` rather than crashing the cycle.
+    """
+    if not content:
+        return None
+    try:
+        document = pypdfium2.PdfDocument(content)
+    except pypdfium2.PdfiumError as exc:
+        log.warning("pdf_open_failed", error=str(exc))
+        return None
+    try:
+        parts: list[str] = []
+        for page in document:
+            try:
+                text = page.get_textpage().get_text_range()
+            except pypdfium2.PdfiumError:
+                continue
+            if text and text.strip():
+                parts.append(text.strip())
+    finally:
+        document.close()
+    if not parts:
+        return None
+    return "\n\n".join(parts)
 
 
 def _extract_main_content(html_for_extraction: str) -> str | None:

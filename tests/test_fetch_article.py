@@ -1,3 +1,4 @@
+import base64
 from dataclasses import dataclass
 
 import pytest
@@ -7,6 +8,7 @@ from app.fetch_article import (
     _collect_noscript_text,
     _extract_image_url,
     _extract_mastodon_handle,
+    _extract_pdf_text,
     _extract_tweet_id,
     _extract_youtube_video_id,
     _is_js_required_notice,
@@ -14,6 +16,24 @@ from app.fetch_article import (
     fetch_article,
 )
 from app.models import ContentSource
+
+# 587-byte minimal PDF containing the literal text "HN test PDF" on a
+# single page. Hand-crafted so the suite does not depend on a fixture
+# file. Parses cleanly with pypdfium2; if it ever stops doing so, the
+# extraction unit test below will catch the regression.
+_TINY_PDF_BYTES = base64.b64decode(
+    "JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2"
+    "JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5k"
+    "b2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMC"
+    "A2MTIgNzkyXSAvQ29udGVudHMgNCAwIFIgL1Jlc291cmNlcyA8PCAvRm9udCA8PCAvRjEgNSAw"
+    "IFIgPj4gPj4gPj4KZW5kb2JqCjQgMCBvYmoKPDwgL0xlbmd0aCA0NCA+PgpzdHJlYW0KQlQgL0"
+    "YxIDI0IFRmIDEwMCA3MDAgVGQgKEhOIHRlc3QgUERGKSBUaiBFVAplbmRzdHJlYW0KZW5kb2Jq"
+    "CjUgMCBvYmoKPDwgL1R5cGUgL0ZvbnQgL1N1YnR5cGUgL1R5cGUxIC9CYXNlRm9udCAvSGVsdm"
+    "V0aWNhID4+CmVuZG9iagp4cmVmCjAgNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkg"
+    "MDAwMDAgbiAKMDAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMD"
+    "AyNDEgMDAwMDAgbiAKMDAwMDAwMDMzNCAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDYgL1Jv"
+    "b3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjQwNAolJUVPRgo="
+)
 
 
 @dataclass
@@ -48,12 +68,12 @@ def test_http_error_returns_empty_feed_fallback(httpx_mock):
 
 def test_non_html_content_type_returns_empty_feed_fallback(httpx_mock):
     httpx_mock.add_response(
-        url="https://example.com/paper.pdf",
+        url="https://example.com/blob.bin",
         status_code=200,
-        headers={"content-type": "application/pdf"},
-        content=b"%PDF-1.4 binary blob",
+        headers={"content-type": "application/octet-stream"},
+        content=b"\x00\x01\x02 raw binary",
     )
-    result = fetch_article("https://example.com/paper.pdf")
+    result = fetch_article("https://example.com/blob.bin")
     assert result.source == ContentSource.FEED_FALLBACK
     assert result.text == ""
 
@@ -724,5 +744,41 @@ def test_fetch_article_empty_text_plain_falls_back(httpx_mock):
         text="   \n  ",
     )
     result = fetch_article("https://example.com/empty.txt")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_extract_pdf_text_returns_text_for_valid_pdf():
+    assert _extract_pdf_text(_TINY_PDF_BYTES) == "HN test PDF"
+
+
+def test_extract_pdf_text_returns_none_on_corrupt_bytes():
+    assert _extract_pdf_text(b"%PDF-1.4 not a real document") is None
+
+
+def test_extract_pdf_text_returns_none_on_empty_input():
+    assert _extract_pdf_text(b"") is None
+
+
+def test_fetch_article_extracts_pdf_content(httpx_mock):
+    httpx_mock.add_response(
+        url="https://example.com/paper.pdf",
+        status_code=200,
+        headers={"content-type": "application/pdf"},
+        content=_TINY_PDF_BYTES,
+    )
+    result = fetch_article("https://example.com/paper.pdf")
+    assert result.source == ContentSource.EXTRACTED
+    assert "HN test PDF" in result.text
+
+
+def test_fetch_article_corrupt_pdf_falls_back(httpx_mock):
+    httpx_mock.add_response(
+        url="https://example.com/broken.pdf",
+        status_code=200,
+        headers={"content-type": "application/pdf"},
+        content=b"%PDF-1.4 garbage",
+    )
+    result = fetch_article("https://example.com/broken.pdf")
     assert result.source == ContentSource.FEED_FALLBACK
     assert result.text == ""
