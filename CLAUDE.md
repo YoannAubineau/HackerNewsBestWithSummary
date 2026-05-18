@@ -96,7 +96,15 @@ hourly on a public repo, so minutes are free.
 - `src/app/rss_in.py`, parses the hnrss feed and detects Ask HN / Show HN
   (when `entry.link == entry.comments`).
 - `src/app/fetch_article.py`, HTTP + trafilatura, falls back to the feed's
-  own summary if extraction fails or the URL isn't HTML. When the direct
+  own summary if extraction fails or the URL isn't HTML. `text/plain`
+  responses (e.g. FreeBSD security advisories served as `.asc` plain
+  text) are accepted and returned verbatim as `ContentSource.EXTRACTED`,
+  bypassing trafilatura. Other non-HTML/non-XML content types (PDF,
+  application/octet-stream, …) are rejected to `FEED_FALLBACK`.
+  trafilatura runs twice when needed: first with `favor_precision=True`,
+  and if that yields nothing (old HTML 4.01 layouts, listing pages,
+  gallery sites without a clear single main-content region), once more
+  with `favor_recall=True` before giving up. When the direct
   HTTP fetch raises any `httpx.HTTPError` (the dominant case is publishers
   like nytimes.com, fastcompany.com, openai.com and medium.com returning
   403 to non-browser User-Agents from cloud IPs),
