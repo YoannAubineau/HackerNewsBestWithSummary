@@ -40,6 +40,13 @@ class Settings(BaseSettings):
     # Once the discussion grows past the threshold the article advances
     # normally; if it never does it just stays parked. Set to 0 to disable.
     min_discussion_comments: int = 20
+    # Escape valve for the parking above: articles older than this many
+    # hours (counted from our_published_at, i.e. when they first hit our
+    # ingest) graduate even with a thin discussion, so an interesting
+    # Best-feed entry that never grows past the comment threshold still
+    # produces a feed item (article summary alone) rather than rotting at
+    # PENDING forever. Set to 0 to disable (legacy behaviour: never expire).
+    pending_grace_hours: int = 24
     # Circuit breaker. When today's OpenRouter spend (current cumulative
     # minus the highest cumulative seen on any earlier UTC day) exceeds
     # this value, step_summarize bails out for the rest of the cycle.
