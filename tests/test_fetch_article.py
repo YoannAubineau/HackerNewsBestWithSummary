@@ -647,3 +647,82 @@ def test_fetch_article_mastodon_falls_back_on_empty_content(httpx_mock):
     )
     result = fetch_article("https://social.example/@hailey/empty")
     assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_retries_extraction_with_permissive_mode(
+    httpx_mock, monkeypatch
+):
+    httpx_mock.add_response(
+        url="https://example.com/sparse",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text="<html><body><article><p>x</p></article></body></html>",
+    )
+    calls: list[dict] = []
+
+    def fake_extract(_html, **kwargs):
+        calls.append(kwargs)
+        if kwargs.get("favor_precision"):
+            return None
+        return "Recovered prose via permissive mode."
+
+    monkeypatch.setattr(
+        fetch_article_module.trafilatura, "extract", fake_extract
+    )
+    result = fetch_article("https://example.com/sparse")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Recovered prose" in result.text
+    assert len(calls) == 2
+    # First call is the strict precision attempt; the retry must not be
+    # precision-favored (otherwise it would behave identically).
+    assert calls[0].get("favor_precision") is True
+    assert calls[1].get("favor_precision") is not True
+
+
+def test_fetch_article_falls_back_when_both_extraction_modes_empty(
+    httpx_mock, monkeypatch
+):
+    httpx_mock.add_response(
+        url="https://example.com/nothing",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text="<html><body></body></html>",
+    )
+    monkeypatch.setattr(
+        fetch_article_module.trafilatura,
+        "extract",
+        lambda _html, **_kwargs: None,
+    )
+    result = fetch_article("https://example.com/nothing")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_fetch_article_returns_text_plain_verbatim(httpx_mock):
+    advisory = (
+        "FreeBSD-SA-26:13.exec Security Advisory\n"
+        "The FreeBSD Project\n\n"
+        "Topic: Improper handling of execve(2) flags.\n"
+        "Affected: All currently supported versions of FreeBSD.\n"
+    )
+    httpx_mock.add_response(
+        url="https://example.com/advisory.txt",
+        status_code=200,
+        headers={"content-type": "text/plain; charset=utf-8"},
+        text=advisory,
+    )
+    result = fetch_article("https://example.com/advisory.txt")
+    assert result.source == ContentSource.EXTRACTED
+    assert "FreeBSD-SA-26:13" in result.text
+
+
+def test_fetch_article_empty_text_plain_falls_back(httpx_mock):
+    httpx_mock.add_response(
+        url="https://example.com/empty.txt",
+        status_code=200,
+        headers={"content-type": "text/plain; charset=utf-8"},
+        text="   \n  ",
+    )
+    result = fetch_article("https://example.com/empty.txt")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""

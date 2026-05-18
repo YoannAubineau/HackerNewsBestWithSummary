@@ -101,6 +101,11 @@ def fetch_article(url: str) -> ArticleContent:
         return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
     content_type = response.headers.get("content-type", "").split(";")[0].strip().lower()
+    if content_type.startswith("text/plain"):
+        body = response.text.strip()
+        if not body:
+            return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+        return ArticleContent(text=body, source=ContentSource.EXTRACTED)
     if content_type and not any(content_type.startswith(t) for t in _FETCHABLE_CONTENT_TYPES):
         return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
@@ -117,13 +122,8 @@ def fetch_article(url: str) -> ArticleContent:
     else:
         html_for_extraction = response.text
 
-    extracted = trafilatura.extract(
-        html_for_extraction,
-        include_comments=False,
-        include_tables=False,
-        favor_precision=True,
-    )
-    if extracted and extracted.strip():
+    extracted = _extract_main_content(html_for_extraction)
+    if extracted:
         if _is_js_required_notice(extracted, response.text):
             return ArticleContent(
                 text="",
@@ -131,7 +131,7 @@ def fetch_article(url: str) -> ArticleContent:
                 image_url=image_url,
             )
         return ArticleContent(
-            text=extracted.strip(),
+            text=extracted,
             source=ContentSource.EXTRACTED,
             image_url=image_url,
         )
@@ -140,6 +140,34 @@ def fetch_article(url: str) -> ArticleContent:
         source=ContentSource.FEED_FALLBACK,
         image_url=image_url,
     )
+
+
+def _extract_main_content(html_for_extraction: str) -> str | None:
+    """Run trafilatura with precision, retry with recall on empty output.
+
+    ``favor_precision=True`` skips pages whose structure does not clearly
+    mark a single main-content region (old HTML 4.01 layouts, listing
+    pages, gallery sites). Retrying with ``favor_recall=True`` recovers
+    those at the price of occasionally pulling in surrounding boilerplate
+    — an acceptable trade-off when the alternative is no body at all.
+    """
+    extracted = trafilatura.extract(
+        html_for_extraction,
+        include_comments=False,
+        include_tables=False,
+        favor_precision=True,
+    )
+    if extracted and extracted.strip():
+        return extracted.strip()
+    extracted = trafilatura.extract(
+        html_for_extraction,
+        include_comments=False,
+        include_tables=False,
+        favor_recall=True,
+    )
+    if extracted and extracted.strip():
+        return extracted.strip()
+    return None
 
 
 def _http_get_with_proxy_fallback(url: str) -> httpx.Response | None:
