@@ -31,10 +31,11 @@ def test_parse_article_response_well_formed_json():
     text = (
         '{"title": "un titre factuel", "summary": "**TL;DR** : phrase.\\n- bullet 1\\n- bullet 2"}'
     )
-    title, summary = _parse_article_response(text)
+    title, summary, content_usable = _parse_article_response(text)
     assert title == "un titre factuel"
     assert summary.startswith("**TL;DR**")
     assert "bullet 2" in summary
+    assert content_usable is True
 
 
 def test_parse_article_response_raises_on_invalid_json():
@@ -54,23 +55,52 @@ def test_parse_article_response_raises_on_non_object_top_level():
 
 def test_parse_article_response_missing_title_keeps_summary():
     text = '{"summary": "le corps"}'
-    title, summary = _parse_article_response(text)
+    title, summary, content_usable = _parse_article_response(text)
     assert title is None
     assert summary == "le corps"
+    assert content_usable is True
 
 
 def test_parse_article_response_accepts_markdown_json_fence():
     text = '```json\n{"title": "titre", "summary": "corps"}\n```'
-    title, summary = _parse_article_response(text)
+    title, summary, _ = _parse_article_response(text)
     assert title == "titre"
     assert summary == "corps"
 
 
 def test_parse_article_response_accepts_bare_markdown_fence():
     text = '```\n{"title": "titre", "summary": "corps"}\n```'
-    title, summary = _parse_article_response(text)
+    title, summary, _ = _parse_article_response(text)
     assert title == "titre"
     assert summary == "corps"
+
+
+def test_parse_article_response_returns_false_when_llm_flags_unusable():
+    text = '{"title": "titre", "summary": "bla", "content_usable": false}'
+    _, _, content_usable = _parse_article_response(text)
+    assert content_usable is False
+
+
+def test_parse_article_response_returns_true_when_llm_flags_usable():
+    text = '{"title": "titre", "summary": "bla", "content_usable": true}'
+    _, _, content_usable = _parse_article_response(text)
+    assert content_usable is True
+
+
+def test_parse_article_response_defaults_to_true_when_field_absent():
+    text = '{"title": "titre", "summary": "bla"}'
+    _, _, content_usable = _parse_article_response(text)
+    assert content_usable is True
+
+
+def test_parse_article_response_raises_on_non_bool_content_usable():
+    text = '{"title": "t", "summary": "s", "content_usable": "yes"}'
+    with pytest.raises(LLMOutputError):
+        _parse_article_response(text)
+
+
+def test_article_system_prompt_documents_content_usable_contract():
+    assert "content_usable" in summarize._ARTICLE_SYSTEM
 
 
 def test_compose_body_shows_discussion_comment_count():
@@ -144,10 +174,23 @@ def test_summarize_article_propagates_call_metrics(monkeypatch):
     assert captured["json"] is True
     assert summary.rewritten_title == "un titre"
     assert summary.summary_markdown == "- point"
+    assert summary.content_usable is True
     assert call.model == "anthropic/claude-haiku-4.5"
     assert call.input_tokens == 1000
     assert call.output_tokens == 200
     assert call.latency_ms == 1234
+
+
+def test_summarize_article_propagates_content_usable_false(monkeypatch):
+    def fake_complete(system, user, *, json=False):
+        return _call_result(
+            '{"title": "titre traduit", "summary": "blabla", "content_usable": false}'
+        )
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    summary, _ = summarize_article("bandeau cookies", "Original Title")
+    assert summary.content_usable is False
+    assert summary.rewritten_title == "titre traduit"
 
 
 def test_summarize_discussion_propagates_call_metrics(monkeypatch):

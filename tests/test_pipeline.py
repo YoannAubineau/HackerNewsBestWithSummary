@@ -1,5 +1,7 @@
 from datetime import UTC, datetime
 
+import pytest
+
 from app import pipeline
 from app.llm import LLMCallResult
 from app.models import Article, ContentSource, Status
@@ -289,6 +291,50 @@ def test_reprocess_placeholders_ignores_marker_inside_comment(isolated_settings)
     reloaded, body_after = load(path)
     assert reloaded.status == Status.SUMMARIZED
     assert body_after == body_before
+
+
+@pytest.mark.parametrize(
+    "first_sentence",
+    [
+        # The four shapes observed in articles 48132488, 48109519, 48073680,
+        # 47982512 — all variants of the LLM admitting it had nothing useful
+        # to summarize.
+        "Le contenu fourni ne contient pas d'information exploitable sur le sujet.",
+        "Le contenu fourni ne contient que un message d'acceptation de cookies.",
+        "Le contenu demandé n'a pas pu être récupéré.",
+        "Le contenu ne contient que des métadonnées sans le texte réel.",
+    ],
+)
+def test_reprocess_placeholders_resets_legacy_llm_failure_markers(
+    isolated_settings, first_sentence
+):
+    body = (
+        "## Résumé de l'article\n\n"
+        f"{first_sentence}\n\n"
+        "## Discussion sur Hacker News (42 commentaires)\n\n"
+        "**Avis positifs**\n\n- Pour 1\n"
+    )
+    article = _make_summarized_article(
+        guid=f"g-llm-{hash(first_sentence)}", hn_item_id=abs(hash(first_sentence)) % 10_000
+    )
+    save(article, body)
+    assert reprocess_placeholders() == 1
+
+
+def test_reprocess_placeholders_keeps_summary_starting_with_le_contenu(
+    isolated_settings,
+):
+    # A real summary may legitimately begin with "Le contenu" followed by a
+    # positive sentence. Only the failure shapes ("ne contient pas", "ne
+    # contient que", "n'a pas pu") must trigger a reset.
+    body = (
+        "## Résumé de l'article\n\n"
+        "Le contenu est riche et propose plusieurs angles techniques.\n\n"
+        "- bla bla bla\n"
+    )
+    article = _make_summarized_article(guid="g-real-le-contenu", hn_item_id=4242)
+    save(article, body)
+    assert reprocess_placeholders() == 0
 
 
 def test_step_summarize_trips_cost_breaker(isolated_settings, monkeypatch):
@@ -992,6 +1038,60 @@ def test_step_summarize_records_llm_metrics(isolated_settings, monkeypatch):
     assert reloaded.llm_input_tokens == 1300
     assert reloaded.llm_output_tokens == 280
     assert reloaded.llm_latency_ms == 2400
+
+
+def test_step_summarize_drops_to_placeholder_when_llm_flags_unusable(
+    isolated_settings, monkeypatch
+):
+    """When summarize_article returns content_usable=False, the article
+    summary must be replaced by the (unable to load content) placeholder
+    and content_source bumped to FEED_FALLBACK so reprocess_placeholders
+    will sweep it up on the next improvement. The LLM-provided title is
+    preserved (already paid for, and the prompt asks for a faithful
+    translation of the original title even when content is unusable)."""
+    isolated_settings.llm_sleep_seconds = 0
+    article = _make_article("guid-unusable")
+    article.status = Status.ARTICLE_FETCHED
+    article.content_source = ContentSource.EXTRACTED
+    article.title = "Original English Title"
+    path = save(article)
+    write_sidecar(path, "article", "noise extracted from a cookie banner")
+    write_sidecar(path, "discussion", "raw discussion")
+
+    def fake_summarize_article(text, title):  # noqa: ARG001
+        return ArticleSummary(
+            rewritten_title="titre français traduit",
+            summary_markdown="hallucinated junk that must not reach the feed",
+            content_usable=False,
+        ), LLMCallResult(
+            content="ignored", model="m", input_tokens=100, output_tokens=20,
+            latency_ms=300,
+        )
+
+    def boom_translate_title(title):  # noqa: ARG001
+        raise AssertionError("translate_title must not run when LLM already gave a title")
+
+    def fake_summarize_discussion(text, title):  # noqa: ARG001
+        return "**Avis positifs** :\n- ok", LLMCallResult(
+            content="ignored", model="m", input_tokens=20, output_tokens=10,
+            latency_ms=80,
+        )
+
+    monkeypatch.setattr(pipeline, "summarize_article", fake_summarize_article)
+    monkeypatch.setattr(pipeline, "translate_title", boom_translate_title)
+    monkeypatch.setattr(pipeline, "summarize_discussion", fake_summarize_discussion)
+    monkeypatch.setattr(pipeline, "today_spend", lambda: None)
+
+    assert pipeline.step_summarize() == 1
+
+    reloaded, body = load(path)
+    assert reloaded.status == Status.SUMMARIZED
+    assert reloaded.content_source == ContentSource.FEED_FALLBACK
+    assert reloaded.rewritten_title == "titre français traduit"
+    assert "## Résumé de l'article\n\n(unable to load content)" in body
+    assert "hallucinated junk" not in body
+    # Discussion summary travels independently of the article verdict.
+    assert "**Avis positifs**" in body
 
 
 def test_step_summarize_translates_title_when_feed_fallback(

@@ -256,9 +256,20 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
             elif article_text:
                 summary, call = summarize_article(article_text, article.title)
                 calls.append(call)
-                article_summary = summary.summary_markdown
                 if summary.rewritten_title:
                     article.rewritten_title = summary.rewritten_title
+                if summary.content_usable:
+                    article_summary = summary.summary_markdown
+                else:
+                    # The LLM saw the extracted text and judged it not
+                    # usable (cookie banner, Cloudflare challenge, error
+                    # page, off-topic content). Drop its summary, switch
+                    # content_source to FEED_FALLBACK so reprocess_placeholders
+                    # will sweep this article up after a future fetch-side
+                    # improvement, and keep the (already paid for) French
+                    # title the model returned.
+                    article.content_source = ContentSource.FEED_FALLBACK
+                    article_summary = "(unable to load content)"
                 time.sleep(settings.llm_sleep_seconds)
 
             if discussion_text:
@@ -319,6 +330,19 @@ _PLACEHOLDER_ARTICLE_SUMMARY_RE = re.compile(
     re.MULTILINE,
 )
 
+# Historical LLM-failure shapes from articles summarized before the
+# content_usable flag existed. The model used to fall back to French
+# self-reports ("Le contenu fourni ne contient pas…", "Le contenu
+# demandé n'a pas pu être récupéré…", "Le contenu ne contient que…").
+# Anchored on the section heading + the literal "Le contenu " prefix +
+# one of the failure verbs to avoid sweeping real summaries that
+# happen to start with "Le contenu est riche…".
+_LLM_FAILURE_ARTICLE_SUMMARY_RE = re.compile(
+    r"^## Résumé de l'article\s*\n+Le contenu (?:fourni |demandé |)"
+    r"(?:ne contient (?:pas|que)|n'a pas pu être récupéré)",
+    re.MULTILINE,
+)
+
 
 def reprocess_placeholders() -> int:
     """Reset summarized articles whose body still shows the load-failure placeholder.
@@ -347,7 +371,10 @@ def reprocess_placeholders() -> int:
 
     reset = 0
     for path, article, body in list(iter_summarized()):
-        if not _PLACEHOLDER_ARTICLE_SUMMARY_RE.search(body):
+        if not (
+            _PLACEHOLDER_ARTICLE_SUMMARY_RE.search(body)
+            or _LLM_FAILURE_ARTICLE_SUMMARY_RE.search(body)
+        ):
             continue
         article.status = Status.PENDING
         article.attempts = 0

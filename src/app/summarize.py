@@ -39,10 +39,20 @@ qu'est cette entité (nature, fonction) avant tout autre détail d'actualité.
    - saute une ligne,
    - puis donne 3 à 5 bullets synthétiques (préfixe "- ") avec les points clés.
 
-Réponds uniquement par un objet JSON valide avec exactement deux champs string :
-- "title" : le titre réécrit, une seule ligne, sans préfixe ni en-tête.
-- "summary" : le résumé Markdown (les sauts de ligne et les bullets doivent être \
-échappés correctement dans la chaîne JSON).
+Réponds uniquement par un objet JSON valide avec exactement trois champs :
+- "title" (string) : le titre réécrit, une seule ligne, sans préfixe ni en-tête. \
+Si le contenu n'est pas exploitable (voir "content_usable" ci-dessous), retourne à la \
+place une traduction française fidèle du titre original entre <original_title>, sans \
+décrire l'échec.
+- "summary" (string) : le résumé Markdown (les sauts de ligne et les bullets doivent être \
+échappés correctement dans la chaîne JSON). Si "content_usable" est false, retourne une \
+chaîne courte expliquant pourquoi le contenu n'est pas exploitable — elle sera ignorée \
+côté serveur.
+- "content_usable" (booléen) : true si le contenu fourni te permet de produire un résumé \
+factuel fidèle de l'article annoncé par le titre ; false sinon. Mets false notamment \
+quand le contenu est en fait un message d'erreur, un bandeau d'acceptation de cookies, \
+une page de challenge Cloudflare, un texte « JavaScript requis », des métadonnées sans \
+texte, ou tout contenu hors sujet par rapport au titre.
 
 Aucun texte hors du JSON, pas de bloc de code, pas de commentaire.
 
@@ -86,6 +96,7 @@ class LLMOutputError(LLMError):
 class ArticleSummary:
     rewritten_title: str | None
     summary_markdown: str
+    content_usable: bool = True
 
 
 def summarize_article(text: str, title: str) -> tuple[ArticleSummary, LLMCallResult]:
@@ -94,9 +105,16 @@ def summarize_article(text: str, title: str) -> tuple[ArticleSummary, LLMCallRes
         f"<content_to_summarize>\n{_esc(text)}\n</content_to_summarize>"
     )
     result = complete(_ARTICLE_SYSTEM, user, json=True)
-    rewritten, summary = _parse_article_response(result.content)
+    rewritten, summary, content_usable = _parse_article_response(result.content)
     summary = _sanitize_llm_markdown(summary)
-    return ArticleSummary(rewritten_title=rewritten, summary_markdown=summary), result
+    return (
+        ArticleSummary(
+            rewritten_title=rewritten,
+            summary_markdown=summary,
+            content_usable=content_usable,
+        ),
+        result,
+    )
 
 
 def translate_title(title: str) -> tuple[str | None, LLMCallResult]:
@@ -170,13 +188,18 @@ def compose_body(
     return "\n\n".join(parts) + "\n"
 
 
-def _parse_article_response(text: str) -> tuple[str | None, str]:
+def _parse_article_response(text: str) -> tuple[str | None, str, bool]:
     """Parse the LLM's JSON article response.
 
-    Raises ``LLMOutputError`` on any malformed JSON, missing key, or wrong
-    type. The pipeline catches this as an LLM error and the article is
-    re-tried (or marked failed after max_attempts), instead of publishing
-    raw model output that bypasses the JSON contract.
+    Returns ``(title, summary, content_usable)``. ``content_usable``
+    defaults to ``True`` if the field is absent — kept tolerant for the
+    transition window after the schema change. A non-boolean value
+    raises ``LLMOutputError`` so the cascade retries with another model.
+
+    Raises ``LLMOutputError`` on any malformed JSON, missing required key,
+    or wrong type. The pipeline catches this as an LLM error and the
+    article is re-tried (or marked failed after max_attempts), instead
+    of publishing raw model output that bypasses the JSON contract.
     """
     try:
         data = json.loads(_strip_code_fence(text))
@@ -190,7 +213,10 @@ def _parse_article_response(text: str) -> tuple[str | None, str]:
         raise LLMOutputError("article response: missing or non-string 'summary'")
     title = raw_title.strip() if isinstance(raw_title, str) else ""
     summary = raw_summary.strip()
-    return (title or None), summary
+    raw_flag = data.get("content_usable", True)
+    if not isinstance(raw_flag, bool):
+        raise LLMOutputError("article response: 'content_usable' must be a boolean")
+    return (title or None), summary, raw_flag
 
 
 def _parse_discussion_response(text: str) -> tuple[list[str], list[str]]:
