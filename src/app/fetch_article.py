@@ -1,6 +1,7 @@
 import re
 from dataclasses import dataclass
 from difflib import SequenceMatcher
+from html import unescape as html_unescape
 from html.parser import HTMLParser
 from urllib.parse import parse_qs, urljoin, urlparse
 
@@ -31,6 +32,13 @@ _YOUTUBE_PATH_VIDEO_ID_RE = re.compile(r"^/(?:shorts|embed|v)/([A-Za-z0-9_-]{11}
 _TRANSCRIPT_LANGUAGES = ("fr", "en")
 _TWITTER_HOSTS = {"x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"}
 _TWEET_PATH_RE = re.compile(r"^/(?P<user>[^/]+)/status/(?P<id>\d+)(?:/.*)?$")
+_MASTODON_PATH_RE = re.compile(r"^/@(?P<user>[^/]+)/(?P<id>\d+)/?$")
+_HTML_BLOCK_BREAK_RE = re.compile(
+    r"</?(p|div|pre|blockquote|li)\s*>", re.IGNORECASE
+)
+_HTML_LINE_BREAK_RE = re.compile(r"<br\s*/?>", re.IGNORECASE)
+_HTML_TAG_RE = re.compile(r"<[^>]+>")
+_BLANK_LINES_RE = re.compile(r"\n{3,}")
 
 
 @dataclass
@@ -75,6 +83,17 @@ def fetch_article(url: str) -> ArticleContent:
         tweet = _fetch_tweet(*tweet_id)
         if tweet is not None:
             return tweet
+        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+
+    mastodon = _extract_mastodon_handle(url)
+    if mastodon is not None:
+        # Mastodon (and other fediverse) status pages are React/Vue shells
+        # that render content client-side, so the trafilatura path returns
+        # nothing. The same URL serves a clean ActivityPub Note JSON when
+        # requested with the right Accept header.
+        note = _fetch_mastodon_note(url, *mastodon)
+        if note is not None:
+            return note
         return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
     response = _http_get_with_proxy_fallback(url)
@@ -369,6 +388,86 @@ def _render_tweet(tweet: _Tweet) -> str:
     if tweet.quote_text and tweet.quote_handle:
         body += f"\n\n> @{tweet.quote_handle}: {tweet.quote_text}"
     return body
+
+
+def _extract_mastodon_handle(url: str) -> tuple[str, str] | None:
+    """Return ``(user, host)`` for a Mastodon-style status URL, or None.
+
+    Detects the fediverse status URL shape ``/@<user>/<numeric_id>``,
+    optionally with a trailing slash. ``host`` is returned so the caller
+    can render the full federated handle (``@user@host``). Pleroma,
+    Misskey and friends use different paths and are not detected.
+    """
+    try:
+        parsed = urlparse(url)
+    except ValueError:
+        return None
+    host = (parsed.hostname or "").lower()
+    if not host:
+        return None
+    match = _MASTODON_PATH_RE.match(parsed.path)
+    if match is None:
+        return None
+    return match.group("user"), host
+
+
+def _fetch_mastodon_note(url: str, user: str, host: str) -> ArticleContent | None:
+    settings = get_settings()
+    try:
+        response = httpx.get(
+            url,
+            timeout=settings.http_timeout,
+            headers={
+                "User-Agent": settings.user_agent,
+                "Accept": "application/activity+json",
+            },
+            follow_redirects=True,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except (httpx.HTTPError, ValueError) as exc:
+        log.warning("mastodon_fetch_failed", url=url, error=str(exc))
+        return None
+    if not isinstance(payload, dict):
+        return None
+    body = _strip_html_text(payload.get("content") or "")
+    if not body:
+        return None
+    image_url = _first_mastodon_image(payload)
+    return ArticleContent(
+        text=f"@{user}@{host}:\n\n{body}",
+        source=ContentSource.EXTRACTED,
+        image_url=image_url,
+    )
+
+
+def _first_mastodon_image(payload: dict) -> str | None:
+    attachments = payload.get("attachment")
+    if not isinstance(attachments, list):
+        return None
+    for att in attachments:
+        if not isinstance(att, dict):
+            continue
+        media = (att.get("mediaType") or "")
+        if isinstance(media, str) and media.startswith("image/"):
+            href = att.get("url")
+            if isinstance(href, str) and href:
+                return href
+    return None
+
+
+def _strip_html_text(text: str) -> str:
+    """Strip HTML tags from ActivityPub content while keeping block boundaries.
+
+    Mastodon ``Note.content`` is HTML (``<p>``, ``<br>``, ``<a>``); plain
+    tag removal would glue paragraphs into one mashed run. Block closers
+    and ``<br>`` become newlines first so the LLM sees readable prose.
+    """
+    text = _HTML_BLOCK_BREAK_RE.sub("\n\n", text)
+    text = _HTML_LINE_BREAK_RE.sub("\n", text)
+    text = _HTML_TAG_RE.sub("", text)
+    text = html_unescape(text)
+    return _BLANK_LINES_RE.sub("\n\n", text).strip()
 
 
 def _xml_to_html(content: bytes) -> str | None:
