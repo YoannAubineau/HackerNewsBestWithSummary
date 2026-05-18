@@ -13,6 +13,7 @@ from app.fetch_article import (
     _extract_tweet_id,
     _extract_youtube_video_id,
     _is_cloudflare_challenge,
+    _is_cookie_banner_only,
     _is_js_required_notice,
     _NoscriptCollector,
     fetch_article,
@@ -343,6 +344,60 @@ def test_fetch_article_detects_cloudflare_challenge(httpx_mock):
         text=html,
     )
     result = fetch_article("https://example.com/cf")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+@pytest.mark.parametrize(
+    "extracted",
+    [
+        "We use cookies to improve your experience. Accept all cookies",
+        "Manage cookie preferences and continue",
+        "Accept all cookies\nReject all cookies",
+        "Nous utilisons des cookies. Accepter tous les cookies. Refuser tous les cookies.",
+        "Gérer mes préférences cookies",
+    ],
+)
+def test_is_cookie_banner_only_matches_consent_phrases(extracted):
+    assert _is_cookie_banner_only(extracted) is True
+
+
+@pytest.mark.parametrize(
+    "extracted",
+    [
+        # Real article that happens to mention cookies — must not match.
+        "This article explains how HTTP cookies work in modern browsers"
+        " and what session cookies are used for.",
+        # Short technical note about cookie security; no consent UI.
+        "Setting the Secure flag on cookies is mandatory for HTTPS.",
+        # Empty / blank input.
+        "",
+        "   \n  ",
+    ],
+)
+def test_is_cookie_banner_only_false_on_real_content(extracted):
+    assert _is_cookie_banner_only(extracted) is False
+
+
+def test_fetch_article_drops_cookie_banner_to_feed_fallback(httpx_mock):
+    # trafilatura legitimately extracts the visible body of a cookie
+    # consent wall when the publisher's CMP is rendered server-side
+    # (epicfurious-style scenarios beyond the Cloudflare path). The
+    # extracted text is a banner, not the article — must not reach the
+    # LLM as if it were content.
+    html = (
+        "<html><body><article>"
+        "<p>We use cookies to improve your experience. Accept all cookies"
+        " or manage cookie preferences below.</p>"
+        "</article></body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://example.com/cookie-wall",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=html,
+    )
+    result = fetch_article("https://example.com/cookie-wall")
     assert result.source == ContentSource.FEED_FALLBACK
     assert result.text == ""
 
