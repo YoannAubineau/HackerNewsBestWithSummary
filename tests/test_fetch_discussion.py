@@ -1,4 +1,5 @@
 import pytest
+from structlog.testing import capture_logs
 
 from app import fetch_discussion as fd
 from app.fetch_discussion import (
@@ -789,6 +790,85 @@ def test_fetch_hn_display_order_proxy_retries_then_succeeds(
         ),
     )
     assert _real_fetch_hn_display_order(4444) == [99001]
+
+
+def test_fetch_hn_html_emits_diagnostic_on_4xx_direct(
+    httpx_mock, monkeypatch, isolated_settings
+):
+    # Diagnostic instrumentation: every 4xx from the direct HN scrape must
+    # emit one `hn_html_blocked` warning carrying status, Retry-After, and a
+    # short body snippet, so we can tell from logs alone whether HN signals
+    # a documented TTL and whether direct vs proxy see the same body. The
+    # response must still raise so the existing proxy fallback triggers.
+    monkeypatch.setattr("time.sleep", lambda _: None)
+    isolated_settings.webshare_proxy_username = ""
+    isolated_settings.webshare_proxy_password = ""
+    httpx_mock.add_response(
+        url="https://news.ycombinator.com/item?id=5555",
+        status_code=429,
+        headers={"Retry-After": "30"},
+        text="Sorry, you can only make so many requests.\n\nPlease try again later.",
+    )
+    with capture_logs() as logs:
+        assert _real_fetch_hn_display_order(5555) == []
+    blocked = [e for e in logs if e["event"] == "hn_html_blocked"]
+    assert len(blocked) == 1
+    entry = blocked[0]
+    assert entry["status"] == 429
+    assert entry["retry_after"] == "30"
+    assert entry["via_proxy"] is False
+    assert entry["hn_item_id"] == 5555
+    assert "Sorry, you can only make so many requests." in entry["body_snippet"]
+    assert "\n" not in entry["body_snippet"]
+
+
+def test_fetch_hn_html_proxy_tags_via_proxy_true(
+    httpx_mock, monkeypatch, isolated_settings
+):
+    # Diagnostic instrumentation: when the fallback to Webshare also hits a
+    # 4xx, the warning must carry via_proxy=True so we can distinguish which
+    # path saw the block when correlating logs across runs.
+    monkeypatch.setattr("time.sleep", lambda _: None)
+    isolated_settings.webshare_proxy_username = "demo"
+    isolated_settings.webshare_proxy_password = "secret"
+    # 1 direct 429 (not retried) + 3 proxy 429 (retried, all draw a fresh
+    # Webshare IP). Each request must produce one `hn_html_blocked` warning
+    # tagged with the path that saw it.
+    for _ in range(4):
+        httpx_mock.add_response(
+            url="https://news.ycombinator.com/item?id=6666",
+            status_code=429,
+            text="<html><body>blocked</body></html>",
+        )
+    with capture_logs() as logs:
+        assert _real_fetch_hn_display_order(6666) == []
+    blocked = [e for e in logs if e["event"] == "hn_html_blocked"]
+    via_proxy_flags = [e["via_proxy"] for e in blocked]
+    assert via_proxy_flags.count(False) == 1
+    assert via_proxy_flags.count(True) == 3
+    assert all(e["status"] == 429 for e in blocked)
+
+
+def test_fetch_hn_html_does_not_emit_diagnostic_on_200(
+    httpx_mock, monkeypatch, isolated_settings
+):
+    # The diagnostic warning must stay silent on success — otherwise it
+    # would flood the cycle logs (one entry per healthy item).
+    monkeypatch.setattr("time.sleep", lambda _: None)
+    isolated_settings.webshare_proxy_username = ""
+    isolated_settings.webshare_proxy_password = ""
+    httpx_mock.add_response(
+        url="https://news.ycombinator.com/item?id=7878",
+        status_code=200,
+        text=(
+            '<tr class="athing comtr" id="42">'
+            '<td><table><tr><td class="ind" indent="0">'
+            '<img></td></tr></table></td></tr>'
+        ),
+    )
+    with capture_logs() as logs:
+        assert _real_fetch_hn_display_order(7878) == [42]
+    assert [e for e in logs if e["event"] == "hn_html_blocked"] == []
 
 
 def _algolia_item(**fields):

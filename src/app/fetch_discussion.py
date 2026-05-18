@@ -313,6 +313,33 @@ def _is_retryable_hn_proxy_error(exc: BaseException) -> bool:
     return isinstance(exc, (httpx.ConnectError, httpx.ReadTimeout))
 
 
+def _log_hn_response_block(
+    resp: httpx.Response, *, hn_item_id: int, via_proxy: bool
+) -> None:
+    """Diagnostic warning for HN HTML 4xx responses.
+
+    Temporary instrumentation: the cycle workflow has been logging
+    ``hn_display_order_proxy_failed`` warnings almost every hour, ~88 % of
+    them on the same item, while that item responds 200 OK from a
+    residential IP. We want to capture HN's ``Retry-After`` (if any) and a
+    snippet of the 4xx body to tell whether HN signals a documented TTL,
+    whether 403 vs 429 mean different things, and whether the Webshare
+    pool sees the same body as the direct path. Remove once we have a few
+    days of samples and have decided on a long-term remediation.
+    """
+    if not (400 <= resp.status_code < 500):
+        return
+    body_snippet = _WHITESPACE_RE.sub(" ", resp.text).strip()[:200] if resp.text else ""
+    log.warning(
+        "hn_html_blocked",
+        hn_item_id=hn_item_id,
+        status=resp.status_code,
+        retry_after=resp.headers.get("retry-after"),
+        body_snippet=body_snippet,
+        via_proxy=via_proxy,
+    )
+
+
 @retry(
     stop=stop_after_attempt(3),
     wait=wait_exponential(multiplier=2, min=2, max=10),
@@ -326,6 +353,7 @@ def _fetch_hn_html(hn_item_id: int) -> str:
         timeout=settings.http_timeout,
         headers={"User-Agent": settings.user_agent},
     )
+    _log_hn_response_block(response, hn_item_id=hn_item_id, via_proxy=False)
     response.raise_for_status()
     return response.text
 
@@ -358,6 +386,7 @@ def _fetch_hn_html_via_proxy(hn_item_id: int) -> str:
         headers={"User-Agent": settings.user_agent},
         proxy=proxy_url,
     )
+    _log_hn_response_block(response, hn_item_id=hn_item_id, via_proxy=True)
     response.raise_for_status()
     return response.text
 
