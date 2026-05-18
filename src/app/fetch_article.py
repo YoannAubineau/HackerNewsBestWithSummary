@@ -117,6 +117,19 @@ def fetch_article(url: str) -> ArticleContent:
 
     image_url = _extract_image_url(response.text, url)
 
+    if _is_cloudflare_challenge(response.text):
+        # Cloudflare's interstitial page leaks just enough markup
+        # (cookie banner, JS variable) for trafilatura to pull out
+        # something non-empty, but that "something" is never the
+        # article. Short-circuit to FEED_FALLBACK so step_summarize
+        # skips the LLM call instead of producing a hallucinated
+        # "the content does not contain..." summary.
+        return ArticleContent(
+            text="",
+            source=ContentSource.FEED_FALLBACK,
+            image_url=image_url,
+        )
+
     if any(content_type.startswith(t) for t in _XML_CONTENT_TYPES):
         html_for_extraction = _xml_to_html(response.content)
         if html_for_extraction is None:
@@ -597,6 +610,22 @@ def _xml_to_html(content: bytes) -> str | None:
     etree.cleanup_namespaces(root)
     body = etree.tostring(root, encoding="unicode", method="xml")
     return f"<html><body>{body}</body></html>"
+
+
+def _is_cloudflare_challenge(html: str) -> bool:
+    """True when the response body is a Cloudflare interstitial page.
+
+    Cloudflare's managed/JS challenge always (a) injects a script that
+    sets ``window._cf_chl_opt = {…}`` and (b) renders a stable visible
+    string ``Enable JavaScript and cookies to continue``. Either marker
+    alone is unambiguous enough — they don't appear together in real
+    publisher pages. Tested against the body curl returned for
+    epicfurious.com (article HN id 48109519).
+    """
+    return (
+        "_cf_chl_opt" in html
+        or "Enable JavaScript and cookies to continue" in html
+    )
 
 
 def _is_js_required_notice(extracted: str, html: str) -> bool:

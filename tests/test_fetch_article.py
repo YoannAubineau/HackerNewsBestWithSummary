@@ -11,6 +11,7 @@ from app.fetch_article import (
     _extract_pdf_text,
     _extract_tweet_id,
     _extract_youtube_video_id,
+    _is_cloudflare_challenge,
     _is_js_required_notice,
     _NoscriptCollector,
     fetch_article,
@@ -294,6 +295,55 @@ def test_is_js_required_notice_rejects_real_articles():
 def test_is_js_required_notice_false_without_noscript():
     html = "<html><body><p>short content</p></body></html>"
     assert _is_js_required_notice("short content", html) is False
+
+
+def test_is_cloudflare_challenge_matches_cf_chl_opt_marker():
+    # The challenge JS always sets `window._cf_chl_opt = {...}` — the
+    # most specific signal across challenge variants.
+    html = (
+        "<html><body>"
+        "<script>(function(){window._cf_chl_opt = {cFPWv:'g',cH:'abc'};})();</script>"
+        "</body></html>"
+    )
+    assert _is_cloudflare_challenge(html) is True
+
+
+def test_is_cloudflare_challenge_matches_user_visible_string():
+    html = (
+        "<html><body>"
+        "<h1>Enable JavaScript and cookies to continue</h1>"
+        "</body></html>"
+    )
+    assert _is_cloudflare_challenge(html) is True
+
+
+def test_is_cloudflare_challenge_false_on_normal_html():
+    html = (
+        "<html><head><title>Real article</title></head><body>"
+        "<article><p>Content about JavaScript and cookies in browsers.</p></article>"
+        "</body></html>"
+    )
+    assert _is_cloudflare_challenge(html) is False
+
+
+def test_fetch_article_detects_cloudflare_challenge(httpx_mock):
+    # Faithful shape of the body curl returned for epicfurious.com:
+    # tiny page, `_cf_chl_opt` JS variable, the user-visible string.
+    html = (
+        "<!DOCTYPE html><html><body>"
+        "<h1>Enable JavaScript and cookies to continue</h1>"
+        "<script>(function(){window._cf_chl_opt = {cFPWv:'g',cH:'P5u8'};})();"
+        "</script></body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://example.com/cf",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=html,
+    )
+    result = fetch_article("https://example.com/cf")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
 
 
 def test_fetch_article_detects_js_required_noscript(httpx_mock):
