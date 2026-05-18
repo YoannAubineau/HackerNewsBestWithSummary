@@ -77,16 +77,8 @@ def fetch_article(url: str) -> ArticleContent:
             return tweet
         return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
-    settings = get_settings()
-    try:
-        response = httpx.get(
-            url,
-            timeout=settings.http_timeout,
-            headers={"User-Agent": settings.user_agent},
-            follow_redirects=True,
-        )
-        response.raise_for_status()
-    except httpx.HTTPError:
+    response = _http_get_with_proxy_fallback(url)
+    if response is None:
         return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
     content_type = response.headers.get("content-type", "").split(";")[0].strip().lower()
@@ -129,6 +121,62 @@ def fetch_article(url: str) -> ArticleContent:
         source=ContentSource.FEED_FALLBACK,
         image_url=image_url,
     )
+
+
+def _http_get_with_proxy_fallback(url: str) -> httpx.Response | None:
+    """GET ``url`` directly, then retry through Webshare on any HTTP error.
+
+    Publishers like nytimes.com, fastcompany.com, openai.com and medium.com
+    return 403 to non-browser User-Agents from cloud IP ranges (GitHub
+    Actions runners included). Routing the retry through Webshare's
+    rotating residential pool — already wired in for YouTube transcripts
+    and HN comment-ranking scraping — bypasses those blocks for a tiny
+    per-request cost. Returns ``None`` when both attempts fail, or when
+    the direct attempt fails and Webshare credentials are not configured.
+    """
+    settings = get_settings()
+    headers = {"User-Agent": settings.user_agent}
+    try:
+        response = httpx.get(
+            url,
+            timeout=settings.http_timeout,
+            headers=headers,
+            follow_redirects=True,
+        )
+        response.raise_for_status()
+        return response
+    except httpx.HTTPError as direct_exc:
+        if not (
+            settings.webshare_proxy_username and settings.webshare_proxy_password
+        ):
+            return None
+        proxy_url = WebshareProxyConfig(
+            proxy_username=settings.webshare_proxy_username,
+            proxy_password=settings.webshare_proxy_password,
+        ).url
+        try:
+            response = httpx.get(
+                url,
+                timeout=settings.http_timeout,
+                headers=headers,
+                follow_redirects=True,
+                proxy=proxy_url,
+            )
+            response.raise_for_status()
+        except httpx.HTTPError as proxy_exc:
+            log.warning(
+                "article_fetch_proxy_failed",
+                url=url,
+                direct_error=str(direct_exc),
+                proxy_error=str(proxy_exc),
+            )
+            return None
+        log.info(
+            "article_fetch_via_proxy",
+            url=url,
+            direct_error=str(direct_exc),
+        )
+        return response
 
 
 def _extract_youtube_video_id(url: str) -> str | None:

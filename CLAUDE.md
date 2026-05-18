@@ -96,11 +96,19 @@ hourly on a public repo, so minutes are free.
 - `src/app/rss_in.py`, parses the hnrss feed and detects Ask HN / Show HN
   (when `entry.link == entry.comments`).
 - `src/app/fetch_article.py`, HTTP + trafilatura, falls back to the feed's
-  own summary if extraction fails or the URL isn't HTML. Also detects
-  JavaScript-required SPA pages by fuzzy-matching trafilatura's output
-  against the raw HTML's `<noscript>` block (ratio ≥ 0.9 via
-  `difflib.SequenceMatcher`), in which case it returns
-  `ContentSource.JS_REQUIRED` with empty text. YouTube URLs
+  own summary if extraction fails or the URL isn't HTML. When the direct
+  HTTP fetch raises any `httpx.HTTPError` (the dominant case is publishers
+  like nytimes.com, fastcompany.com, openai.com and medium.com returning
+  403 to non-browser User-Agents from cloud IPs),
+  `_http_get_with_proxy_fallback` retries once through the Webshare
+  residential pool when credentials are configured — same pool used by
+  the YouTube transcript and HN comment-ranking paths. On a second
+  failure (or when credentials are absent) the call returns
+  `ContentSource.FEED_FALLBACK`. Also detects JavaScript-required SPA
+  pages by fuzzy-matching trafilatura's output against the raw HTML's
+  `<noscript>` block (ratio ≥ 0.9 via `difflib.SequenceMatcher`), in
+  which case it returns `ContentSource.JS_REQUIRED` with empty text.
+  YouTube URLs
   (`youtube.com/watch`, `youtu.be`, `shorts`, `embed`, `v`) short-circuit
   the HTML path: the video transcript is pulled via
   `youtube-transcript-api` (`fr` then `en`, auto-generated accepted) and
