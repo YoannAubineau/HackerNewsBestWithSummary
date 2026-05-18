@@ -1,9 +1,9 @@
 ---
-article_fetched_at: '2026-05-18T15:04:19.240396Z'
+article_fetched_at: '2026-05-18T15:12:10.933018Z'
 attempts: 0
 content_source: extracted
-discussion_comment_count: 278
-discussion_fetched_at: '2026-05-18T15:04:15.122145Z'
+discussion_comment_count: 284
+discussion_fetched_at: '2026-05-18T15:12:07.539022Z'
 error: null
 guid: https://news.ycombinator.com/item?id=48177228
 hn_item_id: 48177228
