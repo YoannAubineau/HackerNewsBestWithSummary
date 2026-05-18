@@ -164,6 +164,12 @@ def fetch_article(url: str) -> ArticleContent:
                 source=ContentSource.JS_REQUIRED,
                 image_url=image_url,
             )
+        if _is_cookie_banner_only(extracted):
+            return ArticleContent(
+                text="",
+                source=ContentSource.FEED_FALLBACK,
+                image_url=image_url,
+            )
         return ArticleContent(
             text=extracted,
             source=ContentSource.EXTRACTED,
@@ -721,6 +727,36 @@ def _is_cloudflare_challenge(html: str) -> bool:
         "_cf_chl_opt" in html
         or "Enable JavaScript and cookies to continue" in html
     )
+
+
+_COOKIE_BANNER_PHRASES = (
+    "accept all cookies",
+    "reject all cookies",
+    "manage cookie preferences",
+    "manage your cookie",
+    "we use cookies and similar",
+    "we and our partners use cookies",
+    "accepter tous les cookies",
+    "refuser tous les cookies",
+    "gérer mes préférences cookies",
+    "gérer mes préférences en matière de cookies",
+    "consentement aux cookies",
+)
+
+
+def _is_cookie_banner_only(extracted: str) -> bool:
+    """True when the extracted text is a cookie consent banner.
+
+    Triggers on a handful of imperative phrases that only appear in
+    Consent Management Platform (CMP) UI dumps. Real articles that
+    merely *mention* cookies — including technical pieces about HTTP
+    cookies — do not contain these exact "Accept all cookies" / "Manage
+    cookie preferences" button labels and so are not affected. No
+    length threshold: we keep short legitimate content (statuses, brief
+    notes, security advisories) intact.
+    """
+    lowered = extracted.lower()
+    return any(phrase in lowered for phrase in _COOKIE_BANNER_PHRASES)
 
 
 def _is_js_required_notice(extracted: str, html: str) -> bool:
