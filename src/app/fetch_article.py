@@ -34,6 +34,10 @@ _TRANSCRIPT_LANGUAGES = ("fr", "en")
 _TWITTER_HOSTS = {"x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"}
 _TWEET_PATH_RE = re.compile(r"^/(?P<user>[^/]+)/status/(?P<id>\d+)(?:/.*)?$")
 _MASTODON_PATH_RE = re.compile(r"^/@(?P<user>[^/]+)/(?P<id>\d+)/?$")
+_GITHUB_HOSTS = {"github.com"}
+_GITHUB_PR_ISSUE_PATH_RE = re.compile(
+    r"^/(?P<owner>[^/]+)/(?P<repo>[^/]+)/(?P<kind>pull|issues)/(?P<num>\d+)(?:/.*)?$"
+)
 _HTML_BLOCK_BREAK_RE = re.compile(
     r"</?(p|div|pre|blockquote|li)\s*>", re.IGNORECASE
 )
@@ -95,6 +99,17 @@ def fetch_article(url: str) -> ArticleContent:
         note = _fetch_mastodon_note(url, *mastodon)
         if note is not None:
             return note
+        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+
+    github = _extract_github_pr_issue(url)
+    if github is not None:
+        # GitHub PR / issue pages have no <article> element and rich
+        # content lives in JS-rendered div.js-comment-body, so trafilatura
+        # latches onto the sidebar / suggestions instead. The REST API
+        # returns a clean body + title + author in one call.
+        result = _fetch_github_pr_issue(*github)
+        if result is not None:
+            return result
         return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
     response = _http_get_with_proxy_fallback(url)
@@ -506,6 +521,86 @@ def _render_tweet(tweet: _Tweet) -> str:
     if tweet.quote_text and tweet.quote_handle:
         body += f"\n\n> @{tweet.quote_handle}: {tweet.quote_text}"
     return body
+
+
+def _extract_github_pr_issue(url: str) -> tuple[str, str, str, str] | None:
+    """Return ``(owner, repo, kind, num)`` for a GitHub PR or issue URL.
+
+    ``kind`` is the URL path segment as it appears (``pull`` or
+    ``issues``) — the caller maps that to the API noun (``pulls`` /
+    ``issues``). Returns ``None`` for any non-PR/issue github.com URL
+    (repo root, lists, discussions, gists, …).
+    """
+    try:
+        parsed = urlparse(url)
+    except ValueError:
+        return None
+    host = (parsed.hostname or "").lower()
+    if host.startswith("www."):
+        host = host[len("www."):]
+    if host not in _GITHUB_HOSTS:
+        return None
+    match = _GITHUB_PR_ISSUE_PATH_RE.match(parsed.path)
+    if match is None:
+        return None
+    return (
+        match.group("owner"),
+        match.group("repo"),
+        match.group("kind"),
+        match.group("num"),
+    )
+
+
+def _fetch_github_pr_issue(
+    owner: str, repo: str, kind: str, num: str
+) -> ArticleContent | None:
+    """Fetch a PR or issue via the GitHub REST API and format it for the LLM.
+
+    Anonymous rate limit is 60/hr per IP. Set ``GITHUB_TOKEN`` to lift
+    to 5000/hr. Returns ``None`` on any HTTP/JSON failure (caller falls
+    back to ``FEED_FALLBACK``) and on empty body (a PR / issue with no
+    description is too thin to summarize meaningfully).
+    """
+    settings = get_settings()
+    api_kind = "pulls" if kind == "pull" else "issues"
+    api_url = f"https://api.github.com/repos/{owner}/{repo}/{api_kind}/{num}"
+    headers = {
+        "User-Agent": settings.user_agent,
+        "Accept": "application/vnd.github+json",
+    }
+    if settings.github_token:
+        headers["Authorization"] = f"Bearer {settings.github_token}"
+    try:
+        response = httpx.get(
+            api_url,
+            timeout=settings.http_timeout,
+            headers=headers,
+            follow_redirects=True,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except (httpx.HTTPError, ValueError) as exc:
+        log.warning("github_fetch_failed", url=api_url, error=str(exc))
+        return None
+    if not isinstance(payload, dict):
+        return None
+    title = (payload.get("title") or "").strip()
+    body = (payload.get("body") or "").strip()
+    user_obj = payload.get("user") or {}
+    user_login = (user_obj.get("login") or "").strip() if isinstance(user_obj, dict) else ""
+    if not body:
+        return None
+    kind_label = "PR" if kind == "pull" else "Issue"
+    header_line = (
+        f"@{user_login} ({kind_label} #{num} — {title}):"
+        if user_login
+        else f"{kind_label} #{num} — {title}:"
+    )
+    return ArticleContent(
+        text=f"{header_line}\n\n{body}",
+        source=ContentSource.EXTRACTED,
+        image_url=None,
+    )
 
 
 def _extract_mastodon_handle(url: str) -> tuple[str, str] | None:

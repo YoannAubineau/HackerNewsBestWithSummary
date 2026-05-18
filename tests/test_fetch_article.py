@@ -6,6 +6,7 @@ import pytest
 from app import fetch_article as fetch_article_module
 from app.fetch_article import (
     _collect_noscript_text,
+    _extract_github_pr_issue,
     _extract_image_url,
     _extract_mastodon_handle,
     _extract_pdf_text,
@@ -535,6 +536,93 @@ def test_fetch_article_tweet_both_providers_fail(httpx_mock):
         url="https://api.vxtwitter.com/dead/status/300", status_code=500
     )
     result = fetch_article("https://x.com/dead/status/300")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+@pytest.mark.parametrize(
+    "url,expected",
+    [
+        (
+            "https://github.com/oven-sh/bun/pull/30412",
+            ("oven-sh", "bun", "pull", "30412"),
+        ),
+        (
+            "https://github.com/oven-sh/bun/issues/123",
+            ("oven-sh", "bun", "issues", "123"),
+        ),
+        (
+            "https://github.com/oven-sh/bun/pull/30412/files",
+            ("oven-sh", "bun", "pull", "30412"),
+        ),
+        (
+            "https://www.github.com/o/r/pull/1",
+            ("o", "r", "pull", "1"),
+        ),
+        ("https://github.com/oven-sh/bun", None),
+        ("https://github.com/oven-sh/bun/pulls", None),
+        ("https://github.com/oven-sh/bun/discussions/1", None),
+        ("https://gist.github.com/anon/abc/pull/1", None),
+        ("https://example.com/oven-sh/bun/pull/1", None),
+    ],
+)
+def test_extract_github_pr_issue(url, expected):
+    assert _extract_github_pr_issue(url) == expected
+
+
+def test_fetch_article_github_pr_via_api(httpx_mock):
+    httpx_mock.add_response(
+        url="https://api.github.com/repos/oven-sh/bun/pulls/30412",
+        status_code=200,
+        json={
+            "title": "Rewrite Bun in Rust",
+            "body": "This PR rewrites Bun's runtime in Rust.\n\nDetails follow.",
+            "user": {"login": "Jarred-Sumner"},
+        },
+    )
+    result = fetch_article("https://github.com/oven-sh/bun/pull/30412")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Rewrite Bun in Rust" in result.text
+    assert "This PR rewrites Bun's runtime in Rust." in result.text
+    assert "@Jarred-Sumner" in result.text
+    assert "PR #30412" in result.text
+
+
+def test_fetch_article_github_issue_via_api(httpx_mock):
+    httpx_mock.add_response(
+        url="https://api.github.com/repos/o/r/issues/7",
+        status_code=200,
+        json={
+            "title": "Bug: thing crashes",
+            "body": "Steps to reproduce: …",
+            "user": {"login": "alice"},
+        },
+    )
+    result = fetch_article("https://github.com/o/r/issues/7")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Bug: thing crashes" in result.text
+    assert "Steps to reproduce" in result.text
+    assert "Issue #7" in result.text
+
+
+def test_fetch_article_github_empty_body_falls_back(httpx_mock):
+    # A PR with no description is too thin to summarize. Don't pretend.
+    httpx_mock.add_response(
+        url="https://api.github.com/repos/o/r/pulls/9",
+        status_code=200,
+        json={"title": "x", "body": "", "user": {"login": "a"}},
+    )
+    result = fetch_article("https://github.com/o/r/pull/9")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_fetch_article_github_api_error_falls_back(httpx_mock):
+    httpx_mock.add_response(
+        url="https://api.github.com/repos/o/r/pulls/9",
+        status_code=403,  # rate-limited
+    )
+    result = fetch_article("https://github.com/o/r/pull/9")
     assert result.source == ContentSource.FEED_FALLBACK
     assert result.text == ""
 

@@ -69,6 +69,12 @@ class Settings(BaseSettings):
     webshare_proxy_username: str = ""
     webshare_proxy_password: str = ""
 
+    # Optional GitHub API token. Anonymous calls are rate-limited to
+    # 60/hr per IP, which is usually enough for our cadence (~1 cycle/hr,
+    # rarely more than a few GitHub URLs per cycle). Setting a token
+    # lifts the limit to 5000/hr.
+    github_token: str = ""
+
     artifacts_dir: Path = Path("artifacts")
     articles_dir: Path = Path("articles")
 
