@@ -5,6 +5,11 @@ on:
   schedule:
     - cron: "0 * * * *"
   workflow_dispatch:
+    inputs:
+      disable_cost_breaker:
+        description: "Skip the daily LLM cost cap for this run only (default: respect daily_cost_limit_usd)"
+        type: boolean
+        default: false
 
 concurrency:
   group: cycle
@@ -41,9 +46,17 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           WEBSHARE_PROXY_USERNAME: ${{ secrets.WEBSHARE_PROXY_USERNAME }}
           WEBSHARE_PROXY_PASSWORD: ${{ secrets.WEBSHARE_PROXY_PASSWORD }}
+          DISABLE_COST_BREAKER: ${{ inputs.disable_cost_breaker == true }}
         run: |
           owner_lc="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
           export FEED_SELF_URL="https://${owner_lc}.github.io/${{ github.event.repository.name }}/feed.fr.xml"
+          # workflow_dispatch escape hatch: set DAILY_COST_LIMIT_USD=0 only
+          # when the operator explicitly checked the dispatch input. Schedule
+          # runs leave DISABLE_COST_BREAKER as the default 'false' and inherit
+          # the normal limit from config.py.
+          if [ "$DISABLE_COST_BREAKER" = "true" ]; then
+            export DAILY_COST_LIMIT_USD=0
+          fi
           uv run app cycle
 
       - name: Report cycle failure
