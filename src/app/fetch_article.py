@@ -190,7 +190,22 @@ def _extract_main_content(html_for_extraction: str) -> str | None:
     pages, gallery sites). Retrying with ``favor_recall=True`` recovers
     those at the price of occasionally pulling in surrounding boilerplate
     — an acceptable trade-off when the alternative is no body at all.
+
+    On pages that put rich sidebar widgets *inside* the ``<main>``
+    element (theregister.com is the canonical case), both passes latch
+    onto the sidebar instead of the article body. So before falling
+    back to the full HTML, try the same precision/recall pair on the
+    isolated first ``<article>`` subtree.
     """
+    isolated = _isolated_article_html(html_for_extraction)
+    if isolated is not None:
+        extracted = _run_trafilatura(isolated)
+        if extracted is not None:
+            return extracted
+    return _run_trafilatura(html_for_extraction)
+
+
+def _run_trafilatura(html_for_extraction: str) -> str | None:
     extracted = trafilatura.extract(
         html_for_extraction,
         include_comments=False,
@@ -208,6 +223,28 @@ def _extract_main_content(html_for_extraction: str) -> str | None:
     if extracted and extracted.strip():
         return extracted.strip()
     return None
+
+
+def _isolated_article_html(html_for_extraction: str) -> str | None:
+    """Return ``<html><body><article>…</article></body></html>`` or None.
+
+    Picks the first ``<article>`` descendant of ``<main>`` when present,
+    otherwise the first ``<article>`` anywhere in the document. Returns
+    ``None`` when no ``<article>`` is found or parsing fails, so the
+    caller can fall back to the original HTML.
+    """
+    try:
+        tree = etree.HTML(html_for_extraction)
+    except (ValueError, etree.XMLSyntaxError):
+        return None
+    if tree is None:
+        return None
+    candidates = tree.xpath("//main//article[1]") or tree.xpath("//article[1]")
+    if not candidates:
+        return None
+    article = candidates[0]
+    body = etree.tostring(article, encoding="unicode", method="html")
+    return f"<html><body>{body}</body></html>"
 
 
 def _http_get_with_proxy_fallback(url: str) -> httpx.Response | None:

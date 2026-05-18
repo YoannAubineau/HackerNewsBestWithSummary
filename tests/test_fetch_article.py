@@ -699,6 +699,95 @@ def test_fetch_article_retries_extraction_with_permissive_mode(
     assert calls[1].get("favor_precision") is not True
 
 
+def test_fetch_article_isolates_article_inside_main_before_trafilatura(
+    httpx_mock, monkeypatch
+):
+    """Some pages (e.g. theregister.com) put sidebar widgets inside <main>
+    that defeat trafilatura's main-content heuristics: the precision pass
+    latches onto the sidebar and the recall retry does the same. Targeting
+    the first <article> descendant of <main> isolates the real body."""
+    html = (
+        "<html><body>"
+        "<main>"
+        "<aside><ul>"
+        "<li>Sidebar widget link one carrying enough text to look meaningful</li>"
+        "<li>Sidebar widget link two padded with additional chatter</li>"
+        "<li>Sidebar widget link three repeating yet more boilerplate prose</li>"
+        "</ul></aside>"
+        "<article>"
+        "<h1>Real article title</h1>"
+        "<p>Body paragraph alpha with the substantive prose we actually want.</p>"
+        "<p>Body paragraph beta reinforcing the article body so it has substance.</p>"
+        "</article>"
+        "</main>"
+        "</body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://example.com/register-like",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=html,
+    )
+    seen_html: list[str] = []
+
+    def fake_extract(html_arg, **_kwargs):
+        seen_html.append(html_arg)
+        if "<article>" in html_arg and "Sidebar widget link one" not in html_arg:
+            return (
+                "Real article title\n\n"
+                "Body paragraph alpha with the substantive prose we actually want.\n\n"
+                "Body paragraph beta reinforcing the article body so it has substance."
+            )
+        return "Sidebar widget link one\nSidebar widget link two\nSidebar widget link three"
+
+    monkeypatch.setattr(
+        fetch_article_module.trafilatura, "extract", fake_extract
+    )
+    result = fetch_article("https://example.com/register-like")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Body paragraph alpha" in result.text
+    assert "Sidebar widget link" not in result.text
+    assert seen_html, "trafilatura.extract was never called"
+    assert "<article>" in seen_html[0]
+    assert "Sidebar widget link one" not in seen_html[0]
+
+
+def test_fetch_article_falls_back_to_full_html_when_no_article_tag(
+    httpx_mock, monkeypatch
+):
+    """Pages without <main>/<article> keep the legacy precision/recall
+    pass on the full HTML — the new isolation step must not regress
+    them when there is nothing to isolate."""
+    html = (
+        "<html><body>"
+        "<div class='content'>"
+        "<p>Legacy article body that lives outside any semantic tag.</p>"
+        "<p>Second legacy paragraph rounding out the body content.</p>"
+        "</div>"
+        "</body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://example.com/no-article",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=html,
+    )
+    seen_html: list[str] = []
+
+    def fake_extract(html_arg, **_kwargs):
+        seen_html.append(html_arg)
+        return "Legacy article body extracted from the full HTML."
+
+    monkeypatch.setattr(
+        fetch_article_module.trafilatura, "extract", fake_extract
+    )
+    result = fetch_article("https://example.com/no-article")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Legacy article body" in result.text
+    assert seen_html, "trafilatura.extract was never called"
+    assert "Legacy article body that lives outside" in seen_html[0]
+
+
 def test_fetch_article_falls_back_when_both_extraction_modes_empty(
     httpx_mock, monkeypatch
 ):
