@@ -746,6 +746,7 @@ def test_step_fetch_discussions_parks_article_below_threshold(
 ):
     from app import fetch_discussion as fd
 
+    isolated_settings.pending_grace_hours = 0  # focus on the threshold gate
     article = _make_article("guid-thin-thread")
     article.hn_item_id = 1100
     path = save(article)
@@ -781,6 +782,7 @@ def test_step_fetch_discussions_promotes_after_thread_grows(
     path = save(article)
 
     isolated_settings.min_discussion_comments = 5
+    isolated_settings.pending_grace_hours = 0  # focus on the threshold gate
     httpx_mock.add_response(
         url="https://hn.algolia.com/api/v1/items/1101",
         json={"id": 1101, "children": _children_with_text(2)},
@@ -800,6 +802,98 @@ def test_step_fetch_discussions_promotes_after_thread_grows(
     assert promoted.status == Status.DISCUSSION_FETCHED
     assert promoted.discussion_comment_count == 7
     assert sidecar_path(path, "discussion").exists()
+
+
+def test_step_fetch_discussions_graduates_thin_thread_past_grace_window(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    """Articles whose discussion stayed thin for longer than
+    pending_grace_hours graduate anyway: a Best-feed entry that never
+    grows past the comment threshold should still produce a feed item
+    (article summary alone) rather than rotting at PENDING forever.
+    Observed case: HN id 48085685 (cocoawithlove.com)."""
+    from app import fetch_discussion as fd
+
+    isolated_settings.min_discussion_comments = 20
+    isolated_settings.pending_grace_hours = 24
+
+    article = _make_article("guid-stale-thin")
+    article.hn_item_id = 1200
+    # Article first observed >25h ago — past the grace window.
+    article.our_published_at = datetime(2026, 5, 1, 0, 0, tzinfo=UTC)
+    path = save(article)
+
+    monkeypatch.setattr(
+        pipeline, "_now",
+        lambda: datetime(2026, 5, 2, 1, 0, tzinfo=UTC),  # 25h after
+    )
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/1200",
+        json={"id": 1200, "children": _children_with_text(3)},
+    )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
+
+    assert step_fetch_discussions() == 1
+    reloaded, _ = load(path)
+    assert reloaded.status == Status.DISCUSSION_FETCHED
+    assert reloaded.discussion_comment_count == 3
+    assert sidecar_path(path, "discussion").exists()
+
+
+def test_step_fetch_discussions_still_parks_within_grace_window(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    from app import fetch_discussion as fd
+
+    isolated_settings.min_discussion_comments = 20
+    isolated_settings.pending_grace_hours = 24
+
+    article = _make_article("guid-fresh-thin")
+    article.hn_item_id = 1201
+    article.our_published_at = datetime(2026, 5, 1, 0, 0, tzinfo=UTC)
+    path = save(article)
+
+    monkeypatch.setattr(
+        pipeline, "_now",
+        lambda: datetime(2026, 5, 1, 10, 0, tzinfo=UTC),  # 10h after
+    )
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/1201",
+        json={"id": 1201, "children": _children_with_text(3)},
+    )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
+
+    assert step_fetch_discussions() == 0
+    reloaded, _ = load(path)
+    assert reloaded.status == Status.PENDING
+
+
+def test_step_fetch_discussions_grace_disabled_keeps_legacy_parking(
+    isolated_settings, httpx_mock, monkeypatch
+):
+    from app import fetch_discussion as fd
+
+    isolated_settings.min_discussion_comments = 20
+    isolated_settings.pending_grace_hours = 0  # disabled — never expire
+
+    article = _make_article("guid-no-grace")
+    article.hn_item_id = 1202
+    article.our_published_at = datetime(2026, 1, 1, 0, 0, tzinfo=UTC)
+    path = save(article)
+
+    monkeypatch.setattr(
+        pipeline, "_now",
+        lambda: datetime(2026, 6, 1, 0, 0, tzinfo=UTC),  # 5 months later
+    )
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/1202",
+        json={"id": 1202, "children": _children_with_text(3)},
+    )
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
+
+    assert step_fetch_discussions() == 0
+    reloaded, _ = load(path)
+    assert reloaded.status == Status.PENDING
 
 
 def test_step_fetch_discussions_threshold_is_strict_lower_bound(
@@ -830,6 +924,7 @@ def test_step_fetch_discussions_parks_substituted_canonical_below_threshold(
 ):
     from app import fetch_discussion as fd
 
+    isolated_settings.pending_grace_hours = 0  # focus on the threshold gate
     dupe_guid = "https://news.ycombinator.com/item?id=901"
     canonical_guid = "https://news.ycombinator.com/item?id=900"
 

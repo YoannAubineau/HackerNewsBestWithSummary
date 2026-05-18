@@ -102,6 +102,7 @@ def step_fetch_articles(failures: list[tuple[str, str]] | None = None) -> int:
 def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int:
     settings = get_settings()
     threshold = settings.min_discussion_comments
+    grace_hours = settings.pending_grace_hours
     done = 0
     skipped = 0
     # The second iterator drains any article left in ARTICLE_FETCHED by the
@@ -178,21 +179,35 @@ def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int
             )
 
         if discussion is not None and discussion.comment_count < threshold:
-            if not path.exists():
-                # Substitution rewrote the article identity to a canonical
-                # that doesn't yet exist on disk. Persist it at PENDING so
-                # the next cycle re-evaluates the canonical against fresh
-                # counts; otherwise the unlinked old path leaves us with
-                # no on-disk entry at all.
-                save(article, body)
+            age_hours = (
+                _now() - article.our_published_at
+            ).total_seconds() / 3600
+            within_grace = grace_hours <= 0 or age_hours < grace_hours
+            if within_grace:
+                if not path.exists():
+                    # Substitution rewrote the article identity to a canonical
+                    # that doesn't yet exist on disk. Persist it at PENDING so
+                    # the next cycle re-evaluates the canonical against fresh
+                    # counts; otherwise the unlinked old path leaves us with
+                    # no on-disk entry at all.
+                    save(article, body)
+                log.info(
+                    "article_skipped_low_comments",
+                    guid=article.guid,
+                    comment_count=discussion.comment_count,
+                    threshold=threshold,
+                    age_hours=round(age_hours, 1),
+                )
+                skipped += 1
+                continue
             log.info(
-                "article_skipped_low_comments",
+                "article_graduated_past_grace",
                 guid=article.guid,
                 comment_count=discussion.comment_count,
                 threshold=threshold,
+                age_hours=round(age_hours, 1),
+                grace_hours=grace_hours,
             )
-            skipped += 1
-            continue
 
         if discussion:
             if discussion.url:
