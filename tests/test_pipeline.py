@@ -5,6 +5,7 @@ from app.llm import LLMCallResult
 from app.models import Article, ContentSource, Status
 from app.pipeline import (
     _record_attempt,
+    reprocess_placeholders,
     run_cycle,
     step_fetch_articles,
     step_fetch_discussions,
@@ -178,6 +179,116 @@ def test_run_cycle_collects_failures_from_steps(isolated_settings, monkeypatch):
     # step_fetch_discussions runs before step_fetch_articles in the new order,
     # so its failures are collected first.
     assert result.failures == [("guid://b", "boom b"), ("guid://a", "boom a")]
+
+
+def _make_summarized_article(
+    *,
+    guid: str = "https://news.ycombinator.com/item?id=99",
+    hn_item_id: int = 99,
+    content_source: ContentSource = ContentSource.FEED_FALLBACK,
+) -> Article:
+    article = Article(
+        guid=guid,
+        url="https://example.com/blocked",
+        hn_url=f"https://news.ycombinator.com/item?id={hn_item_id}",
+        hn_item_id=hn_item_id,
+        title="Some old article",
+        rewritten_title="Some old article (rewritten)",
+        source_published_at=datetime(2026, 4, 21, 8, 0, tzinfo=UTC),
+        our_published_at=datetime(2026, 4, 21, 9, 0, tzinfo=UTC),
+        status=Status.SUMMARIZED,
+        content_source=content_source,
+        article_fetched_at=datetime(2026, 4, 21, 10, 0, tzinfo=UTC),
+        discussion_fetched_at=datetime(2026, 4, 21, 10, 5, tzinfo=UTC),
+        discussion_comment_count=42,
+        summarized_at=datetime(2026, 4, 21, 10, 30, tzinfo=UTC),
+        image_url="https://example.com/og.jpg",
+        attempts=1,
+        llm_models_used=["anthropic/claude-haiku-4.5"],
+        llm_input_tokens=1234,
+        llm_output_tokens=567,
+        llm_latency_ms=890,
+    )
+    return article
+
+
+_PLACEHOLDER_BODY = (
+    "## Résumé de l'article\n\n"
+    "(unable to load content)\n\n"
+    "## Discussion sur Hacker News (42 commentaires)\n\n"
+    "**Avis positifs**\n\n- Pour 1\n\n"
+    "**Avis négatifs**\n\n- Contre 1\n"
+)
+
+_LEGACY_PLACEHOLDER_BODY = _PLACEHOLDER_BODY.replace(
+    "(unable to load content)", "(no content)"
+)
+
+_REAL_SUMMARY_BODY = (
+    "## Résumé de l'article\n\n"
+    "Un résumé bien réel avec du contenu utile.\n\n"
+    "## Discussion sur Hacker News (42 commentaires)\n\n"
+    "**Avis positifs**\n\n- Pour 1\n"
+)
+
+_MARKER_IN_COMMENT_BODY = (
+    "## Résumé de l'article\n\n"
+    "Un résumé bien réel.\n\n"
+    "## Discussion sur Hacker News (42 commentaires)\n\n"
+    "**Avis positifs**\n\n- Pour 1\n\n"
+    "**Top commentaires** :\n\n"
+    "- [duxup](https://news.ycombinator.com/item?id=48037082) :"
+    " The summary but no content seems wrong here.\n"
+)
+
+
+def test_reprocess_placeholders_resets_unable_to_load_body(isolated_settings):
+    article = _make_summarized_article(guid="g1", hn_item_id=1)
+    path = save(article, _PLACEHOLDER_BODY)
+    assert reprocess_placeholders() == 1
+    reloaded, body = load(path)
+    assert reloaded.status == Status.PENDING
+    assert reloaded.attempts == 0
+    assert reloaded.content_source is None
+    assert reloaded.summarized_at is None
+    assert reloaded.article_fetched_at is None
+    assert reloaded.discussion_fetched_at is None
+    assert reloaded.discussion_comment_count is None
+    assert reloaded.llm_models_used is None
+    assert reloaded.llm_input_tokens is None
+    assert reloaded.image_url is None
+    assert reloaded.rewritten_title is None
+    assert reloaded.error is None
+    assert body.strip() == ""
+
+
+def test_reprocess_placeholders_resets_legacy_no_content_marker(isolated_settings):
+    article = _make_summarized_article(guid="g2", hn_item_id=2)
+    save(article, _LEGACY_PLACEHOLDER_BODY)
+    assert reprocess_placeholders() == 1
+
+
+def test_reprocess_placeholders_ignores_real_summaries(isolated_settings):
+    article = _make_summarized_article(guid="g3", hn_item_id=3)
+    path = save(article, _REAL_SUMMARY_BODY)
+    _, body_before = load(path)
+    assert reprocess_placeholders() == 0
+    reloaded, body_after = load(path)
+    assert reloaded.status == Status.SUMMARIZED
+    assert body_after == body_before
+
+
+def test_reprocess_placeholders_ignores_marker_inside_comment(isolated_settings):
+    # The placeholder string appears inside a Top commentaires bullet rather
+    # than as the article summary itself — this is the kateadaviesdesigns
+    # false-positive shape and must not trigger a reset.
+    article = _make_summarized_article(guid="g4", hn_item_id=4)
+    path = save(article, _MARKER_IN_COMMENT_BODY)
+    _, body_before = load(path)
+    assert reprocess_placeholders() == 0
+    reloaded, body_after = load(path)
+    assert reloaded.status == Status.SUMMARIZED
+    assert body_after == body_before
 
 
 def test_step_summarize_trips_cost_breaker(isolated_settings, monkeypatch):
