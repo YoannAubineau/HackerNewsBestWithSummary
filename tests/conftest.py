@@ -15,5 +15,9 @@ def isolated_settings(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     settings.artifacts_dir.mkdir(parents=True, exist_ok=True)
     settings.articles_dir = tmp_path / "articles"
     settings.articles_dir.mkdir(parents=True, exist_ok=True)
+    # Tests opt in to Wayback explicitly. Leaving it on would force every
+    # existing fetch_article test that exercises a failure path to also
+    # mock archive.org calls, which is unrelated to what they verify.
+    settings.wayback_enabled = False
     yield settings
     config_module.reset_settings()

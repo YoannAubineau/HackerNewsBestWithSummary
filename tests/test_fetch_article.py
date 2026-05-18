@@ -10,6 +10,7 @@ from app.fetch_article import (
     _extract_image_url,
     _extract_mastodon_handle,
     _extract_pdf_text,
+    _extract_substack_slug,
     _extract_tweet_id,
     _extract_youtube_video_id,
     _is_cloudflare_challenge,
@@ -770,12 +771,12 @@ def test_fetch_article_falls_back_when_proxy_also_fails(httpx_mock, isolated_set
     "url,expected",
     [
         ("https://social.hails.org/@hailey/116446826733136456",
-         ("hailey", "social.hails.org")),
+         ("hailey", "social.hails.org", "116446826733136456")),
         ("https://partyon.xyz/@nullagent/116499715071759135",
-         ("nullagent", "partyon.xyz")),
+         ("nullagent", "partyon.xyz", "116499715071759135")),
         ("https://grapheneos.social/@GrapheneOS/116550899908879585",
-         ("GrapheneOS", "grapheneos.social")),
-        ("https://social.example/@user/12345/", ("user", "social.example")),
+         ("GrapheneOS", "grapheneos.social", "116550899908879585")),
+        ("https://social.example/@user/12345/", ("user", "social.example", "12345")),
         # Twitter pattern — different shape, must not match.
         ("https://x.com/jack/status/20", None),
         # Mastodon-looking but with extra path segment — skip.
@@ -859,6 +860,109 @@ def test_fetch_article_mastodon_falls_back_on_empty_content(httpx_mock):
         json=note,
     )
     result = fetch_article("https://social.example/@hailey/empty")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+_MASTODON_REST_STATUS = {
+    "id": "12345",
+    "content": (
+        "<p>Annonce d'un produit, premier paragraphe avec assez de"
+        " contenu pour franchir les seuils.</p>"
+    ),
+    "media_attachments": [],
+    "url": "https://social.example/@hailey/12345",
+}
+
+
+def test_fetch_article_mastodon_falls_back_to_rest_api_on_authorized_fetch(
+    httpx_mock,
+):
+    # Mastodon servers with "authorized fetch" enabled reject anonymous
+    # ActivityPub requests with 401. The public Mastodon REST API
+    # /api/v1/statuses/<id> still serves the same content without auth.
+    httpx_mock.add_response(
+        url="https://partyon.xyz/@nullagent/116499715071759135",
+        status_code=401,
+        match_headers={"Accept": "application/activity+json"},
+    )
+    httpx_mock.add_response(
+        url="https://partyon.xyz/api/v1/statuses/116499715071759135",
+        status_code=200,
+        json=_MASTODON_REST_STATUS,
+    )
+    result = fetch_article("https://partyon.xyz/@nullagent/116499715071759135")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Annonce d'un produit" in result.text
+    assert "@nullagent@partyon.xyz" in result.text
+
+
+def test_fetch_article_mastodon_falls_back_to_rest_api_on_403(httpx_mock):
+    httpx_mock.add_response(
+        url="https://social.example/@hailey/12345",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://social.example/api/v1/statuses/12345",
+        status_code=200,
+        json=_MASTODON_REST_STATUS,
+    )
+    result = fetch_article("https://social.example/@hailey/12345")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Annonce d'un produit" in result.text
+
+
+def test_fetch_article_mastodon_rest_extracts_first_image(httpx_mock):
+    status = {
+        **_MASTODON_REST_STATUS,
+        "media_attachments": [
+            {
+                "id": "1",
+                "type": "image",
+                "url": "https://cdn.social.example/abc.jpg",
+                "preview_url": "https://cdn.social.example/abc-preview.jpg",
+            },
+            {
+                "id": "2",
+                "type": "image",
+                "url": "https://cdn.social.example/second.jpg",
+            },
+        ],
+    }
+    httpx_mock.add_response(
+        url="https://social.example/@hailey/12345",
+        status_code=401,
+    )
+    httpx_mock.add_response(
+        url="https://social.example/api/v1/statuses/12345",
+        status_code=200,
+        json=status,
+    )
+    result = fetch_article("https://social.example/@hailey/12345")
+    assert result.image_url == "https://cdn.social.example/abc.jpg"
+
+
+def test_fetch_article_mastodon_rest_falls_back_when_unavailable(httpx_mock):
+    httpx_mock.add_response(
+        url="https://social.example/@hailey/12345",
+        status_code=401,
+    )
+    httpx_mock.add_response(
+        url="https://social.example/api/v1/statuses/12345",
+        status_code=500,
+    )
+    result = fetch_article("https://social.example/@hailey/12345")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_fetch_article_mastodon_skips_rest_on_404(httpx_mock):
+    # A genuine 404 means the post is gone — no point trying the REST
+    # API which would also 404 and waste a request.
+    httpx_mock.add_response(
+        url="https://social.example/@hailey/deleted",
+        status_code=404,
+    )
+    result = fetch_article("https://social.example/@hailey/deleted")
     assert result.source == ContentSource.FEED_FALLBACK
 
 
@@ -1064,3 +1168,352 @@ def test_fetch_article_corrupt_pdf_falls_back(httpx_mock):
     result = fetch_article("https://example.com/broken.pdf")
     assert result.source == ContentSource.FEED_FALLBACK
     assert result.text == ""
+
+
+@pytest.mark.parametrize(
+    "url,expected",
+    [
+        ("https://radleybalko.substack.com/p/truth-power-and-honest-journalism",
+         ("radleybalko", "truth-power-and-honest-journalism")),
+        ("https://newsletter.substack.com/p/article-slug/",
+         ("newsletter", "article-slug")),
+        # Sub-subdomains are not what Substack uses but the regex should
+        # only take the first label as the publication slug.
+        ("https://www.substack.com/p/foo", None),
+        # Substack home, archive, etc. — not an article URL.
+        ("https://example.substack.com/", None),
+        ("https://example.substack.com/archive", None),
+        ("https://example.substack.com/about", None),
+        # Custom domain — not detected, falls through to normal path.
+        ("https://blog.example.com/p/foo", None),
+        # Trailing path segments — not a clean article URL.
+        ("https://example.substack.com/p/foo/comments", None),
+    ],
+)
+def test_extract_substack_slug(url, expected):
+    assert _extract_substack_slug(url) == expected
+
+
+def _build_substack_feed(entries):
+    """Return a minimal RSS 2.0 feed bytes with content:encoded entries.
+
+    Each entry is ``{"link": <url>, "title": <str>, "content": <html>}``.
+    """
+    items = "".join(
+        f"<item><title>{e['title']}</title>"
+        f"<link>{e['link']}</link>"
+        f"<guid>{e['link']}</guid>"
+        f"<content:encoded><![CDATA[{e['content']}]]></content:encoded>"
+        "</item>"
+        for e in entries
+    )
+    rss = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<rss version="2.0" '
+        'xmlns:content="http://purl.org/rss/1.0/modules/content/">'
+        "<channel><title>Test Substack</title>"
+        "<link>https://example.substack.com</link>"
+        f"{items}"
+        "</channel></rss>"
+    )
+    return rss.encode("utf-8")
+
+
+_SUBSTACK_ARTICLE_HTML = (
+    "<article>"
+    "<h1>Le titre de l'article</h1>"
+    "<p>Premier paragraphe substantiel rédigé pour passer le seuil de"
+    " trafilatura en mode précision. Avec assez de mots concrets.</p>"
+    "<p>Deuxième paragraphe avec encore du contenu utile pour que le"
+    " détecteur de contenu principal ne rejette pas la page.</p>"
+    "</article>"
+)
+
+
+def test_fetch_article_substack_returns_extracted_from_feed(httpx_mock):
+    feed = _build_substack_feed(
+        [
+            {
+                "link": "https://example.substack.com/p/article-cible",
+                "title": "Article cible",
+                "content": _SUBSTACK_ARTICLE_HTML,
+            },
+        ]
+    )
+    httpx_mock.add_response(
+        url="https://example.substack.com/feed",
+        status_code=200,
+        headers={"content-type": "application/rss+xml"},
+        content=feed,
+    )
+    result = fetch_article("https://example.substack.com/p/article-cible")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Premier paragraphe substantiel" in result.text
+
+
+def test_fetch_article_substack_matches_link_with_trailing_slash(httpx_mock):
+    feed = _build_substack_feed(
+        [
+            {
+                "link": "https://example.substack.com/p/article-slug/",
+                "title": "Slash",
+                "content": _SUBSTACK_ARTICLE_HTML,
+            },
+        ]
+    )
+    httpx_mock.add_response(
+        url="https://example.substack.com/feed",
+        status_code=200,
+        headers={"content-type": "application/rss+xml"},
+        content=feed,
+    )
+    result = fetch_article("https://example.substack.com/p/article-slug")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Premier paragraphe substantiel" in result.text
+
+
+def test_fetch_article_substack_falls_through_when_article_missing(httpx_mock):
+    feed = _build_substack_feed(
+        [
+            {
+                "link": "https://example.substack.com/p/other",
+                "title": "Other",
+                "content": _SUBSTACK_ARTICLE_HTML,
+            },
+        ]
+    )
+    httpx_mock.add_response(
+        url="https://example.substack.com/feed",
+        status_code=200,
+        headers={"content-type": "application/rss+xml"},
+        content=feed,
+    )
+    # When the article isn't in the feed (too old), the dispatcher must
+    # fall through to the normal HTTP path. Mock the article URL too so
+    # the test can observe the normal path succeeding.
+    httpx_mock.add_response(
+        url="https://example.substack.com/p/missing",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=(
+            "<html><body><article>"
+            "<p>Contenu récupéré directement depuis le HTML de la page,"
+            " assez long pour passer le seuil de trafilatura.</p>"
+            "<p>Second paragraphe pour bien assurer le seuil.</p>"
+            "</article></body></html>"
+        ),
+    )
+    result = fetch_article("https://example.substack.com/p/missing")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Contenu récupéré directement" in result.text
+
+
+_WAYBACK_SNAPSHOT_HTML = (
+    "<html><head><title>Archived</title></head><body>"
+    "<article>"
+    "<h1>Le titre</h1>"
+    "<p>Le contenu archivé sur Wayback, avec assez de phrases substantielles"
+    " pour passer le seuil de précision de trafilatura sans difficulté.</p>"
+    "<p>Un second paragraphe avec du contenu utile et concret pour assurer"
+    " la qualité de l'extraction par l'outil.</p>"
+    "</article>"
+    "</body></html>"
+)
+
+
+def _wayback_api_response(snapshot_url=None, *, available=True, status="200"):
+    if snapshot_url is None:
+        return {"archived_snapshots": {}}
+    return {
+        "archived_snapshots": {
+            "closest": {
+                "url": snapshot_url,
+                "available": available,
+                "status": status,
+                "timestamp": "20250101120000",
+            }
+        }
+    }
+
+
+def test_fetch_article_wayback_recovers_on_403(httpx_mock, isolated_settings):
+    isolated_settings.wayback_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://archive.org/wayback/available?url=https%3A%2F%2Fpaywalled.example%2Farticle",
+        status_code=200,
+        json=_wayback_api_response(
+            "http://web.archive.org/web/20250101120000/https://paywalled.example/article"
+        ),
+    )
+    httpx_mock.add_response(
+        url="http://web.archive.org/web/20250101120000id_/https://paywalled.example/article",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=_WAYBACK_SNAPSHOT_HTML,
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.EXTRACTED
+    assert "contenu archivé sur Wayback" in result.text
+
+
+def test_fetch_article_wayback_bails_when_no_snapshot(httpx_mock, isolated_settings):
+    isolated_settings.wayback_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/dead",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://archive.org/wayback/available?url=https%3A%2F%2Fpaywalled.example%2Fdead",
+        status_code=200,
+        json=_wayback_api_response(None),
+    )
+    result = fetch_article("https://paywalled.example/dead")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_fetch_article_wayback_bails_when_snapshot_unavailable(
+    httpx_mock, isolated_settings
+):
+    isolated_settings.wayback_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/x",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://archive.org/wayback/available?url=https%3A%2F%2Fpaywalled.example%2Fx",
+        status_code=200,
+        json=_wayback_api_response(
+            "http://web.archive.org/web/20250101120000/https://paywalled.example/x",
+            available=False,
+        ),
+    )
+    result = fetch_article("https://paywalled.example/x")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_wayback_bails_when_snapshot_fetch_fails(
+    httpx_mock, isolated_settings
+):
+    isolated_settings.wayback_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/y",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://archive.org/wayback/available?url=https%3A%2F%2Fpaywalled.example%2Fy",
+        status_code=200,
+        json=_wayback_api_response(
+            "http://web.archive.org/web/20250101120000/https://paywalled.example/y"
+        ),
+    )
+    httpx_mock.add_response(
+        url="http://web.archive.org/web/20250101120000id_/https://paywalled.example/y",
+        status_code=404,
+    )
+    result = fetch_article("https://paywalled.example/y")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_wayback_recovers_on_empty_extraction(
+    httpx_mock, isolated_settings
+):
+    isolated_settings.wayback_enabled = True
+    # Direct fetch succeeds but trafilatura can't find any content on
+    # this layout — the dispatcher should still try Wayback before
+    # giving up.
+    httpx_mock.add_response(
+        url="https://example.com/sparse-page",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text="<html><body></body></html>",
+    )
+    httpx_mock.add_response(
+        url="https://archive.org/wayback/available?url=https%3A%2F%2Fexample.com%2Fsparse-page",
+        status_code=200,
+        json=_wayback_api_response(
+            "http://web.archive.org/web/20250101120000/https://example.com/sparse-page"
+        ),
+    )
+    httpx_mock.add_response(
+        url="http://web.archive.org/web/20250101120000id_/https://example.com/sparse-page",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=_WAYBACK_SNAPSHOT_HTML,
+    )
+    result = fetch_article("https://example.com/sparse-page")
+    assert result.source == ContentSource.EXTRACTED
+    assert "contenu archivé sur Wayback" in result.text
+
+
+def test_fetch_article_wayback_recovers_on_js_required(
+    httpx_mock, isolated_settings
+):
+    isolated_settings.wayback_enabled = True
+    js_only_html = (
+        "<html><body>"
+        "<noscript>You need to enable JavaScript to run this app.</noscript>"
+        "</body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://spa.example/route",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=js_only_html,
+    )
+    httpx_mock.add_response(
+        url="https://archive.org/wayback/available?url=https%3A%2F%2Fspa.example%2Froute",
+        status_code=200,
+        json=_wayback_api_response(
+            "http://web.archive.org/web/20250101120000/https://spa.example/route"
+        ),
+    )
+    httpx_mock.add_response(
+        url="http://web.archive.org/web/20250101120000id_/https://spa.example/route",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=_WAYBACK_SNAPSHOT_HTML,
+    )
+    result = fetch_article("https://spa.example/route")
+    assert result.source == ContentSource.EXTRACTED
+    assert "contenu archivé sur Wayback" in result.text
+
+
+def test_fetch_article_wayback_disabled_skips_archive_call(
+    httpx_mock, isolated_settings
+):
+    isolated_settings.wayback_enabled = False
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    # No mock for the wayback API — if the code attempted it, httpx_mock
+    # would error on the unmocked request.
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_substack_falls_through_on_feed_http_error(httpx_mock):
+    httpx_mock.add_response(
+        url="https://example.substack.com/feed",
+        status_code=500,
+    )
+    httpx_mock.add_response(
+        url="https://example.substack.com/p/article",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=(
+            "<html><body><article>"
+            "<p>Contenu de l'article récupéré directement via le HTML de"
+            " la page de l'article, assez long pour trafilatura.</p>"
+            "<p>Encore un paragraphe pour franchir le seuil.</p>"
+            "</article></body></html>"
+        ),
+    )
+    result = fetch_article("https://example.substack.com/p/article")
+    assert result.source == ContentSource.EXTRACTED
+    assert "Contenu de l'article récupéré directement" in result.text

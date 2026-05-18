@@ -3,8 +3,9 @@ from dataclasses import dataclass
 from difflib import SequenceMatcher
 from html import unescape as html_unescape
 from html.parser import HTMLParser
-from urllib.parse import parse_qs, urljoin, urlparse
+from urllib.parse import parse_qs, quote, urljoin, urlparse
 
+import feedparser
 import httpx
 import pypdfium2
 import structlog
@@ -34,6 +35,14 @@ _TRANSCRIPT_LANGUAGES = ("fr", "en")
 _TWITTER_HOSTS = {"x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"}
 _TWEET_PATH_RE = re.compile(r"^/(?P<user>[^/]+)/status/(?P<id>\d+)(?:/.*)?$")
 _MASTODON_PATH_RE = re.compile(r"^/@(?P<user>[^/]+)/(?P<id>\d+)/?$")
+_SUBSTACK_HOST_SUFFIX = ".substack.com"
+_SUBSTACK_PATH_RE = re.compile(r"^/p/(?P<slug>[^/]+)/?$")
+_WAYBACK_API = "https://archive.org/wayback/available"
+# Inserted after the timestamp segment of a Wayback snapshot URL, the
+# ``id_`` flag asks archive.org to return the raw archived response
+# without rewriting links or injecting the toolbar — exactly what
+# trafilatura needs.
+_WAYBACK_RAW_FLAG_RE = re.compile(r"(/web/\d{14})/")
 _GITHUB_HOSTS = {"github.com"}
 _GITHUB_PR_ISSUE_PATH_RE = re.compile(
     r"^/(?P<owner>[^/]+)/(?P<repo>[^/]+)/(?P<kind>pull|issues)/(?P<num>\d+)(?:/.*)?$"
@@ -101,6 +110,17 @@ def fetch_article(url: str) -> ArticleContent:
             return note
         return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
+    substack = _extract_substack_slug(url)
+    if substack is not None:
+        # Substack post pages render via JS for paywalled posts and
+        # occasionally return 403 on bot-shaped UAs. The public
+        # ``/feed`` RSS exposes the full article body in
+        # ``content:encoded`` with no auth. Fall through to the normal
+        # HTTP path when the post is too old to appear in the feed.
+        article = _fetch_substack_article(url, *substack)
+        if article is not None:
+            return article
+
     github = _extract_github_pr_issue(url)
     if github is not None:
         # GitHub PR / issue pages have no <article> element and rich
@@ -112,6 +132,21 @@ def fetch_article(url: str) -> ArticleContent:
             return result
         return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
 
+    result = _fetch_article_via_http(url)
+    if result.source in (ContentSource.FEED_FALLBACK, ContentSource.JS_REQUIRED):
+        wayback = _fetch_from_wayback(url)
+        if wayback is not None:
+            if wayback.image_url is None and result.image_url:
+                return ArticleContent(
+                    text=wayback.text,
+                    source=wayback.source,
+                    image_url=result.image_url,
+                )
+            return wayback
+    return result
+
+
+def _fetch_article_via_http(url: str) -> ArticleContent:
     response = _http_get_with_proxy_fallback(url)
     if response is None:
         return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
@@ -335,6 +370,71 @@ def _http_get_with_proxy_fallback(url: str) -> httpx.Response | None:
             direct_error=str(direct_exc),
         )
         return response
+
+
+def _fetch_from_wayback(url: str) -> ArticleContent | None:
+    """Look up the closest Wayback snapshot of ``url`` and extract from it.
+
+    Asks ``archive.org/wayback/available`` for the closest stored copy,
+    then fetches the snapshot with the ``id_`` flag so archive.org
+    returns the raw archived response (no link rewriting, no injected
+    toolbar). Reuses ``_http_get_with_proxy_fallback`` because
+    archive.org also throttles GitHub Actions IPs.
+
+    Returns ``None`` for every miss (Wayback disabled, no snapshot,
+    snapshot unavailable, snapshot fetch error, empty extraction,
+    Cloudflare interstitial, JS-required notice, cookie banner) so the
+    caller keeps the original failure result.
+    """
+    settings = get_settings()
+    if not settings.wayback_enabled:
+        return None
+    api_url = f"{_WAYBACK_API}?url={quote(url, safe='')}"
+    try:
+        api_resp = httpx.get(
+            api_url,
+            timeout=settings.http_timeout,
+            headers={"User-Agent": settings.user_agent},
+        )
+        api_resp.raise_for_status()
+        payload = api_resp.json()
+    except (httpx.HTTPError, ValueError) as exc:
+        log.warning("wayback_api_failed", url=url, error=str(exc))
+        return None
+    if not isinstance(payload, dict):
+        return None
+    snapshots = payload.get("archived_snapshots")
+    closest = snapshots.get("closest") if isinstance(snapshots, dict) else None
+    if not isinstance(closest, dict):
+        return None
+    if not closest.get("available"):
+        return None
+    if str(closest.get("status", "")) != "200":
+        return None
+    snapshot_url = closest.get("url")
+    if not isinstance(snapshot_url, str) or not snapshot_url:
+        return None
+    raw_url = _WAYBACK_RAW_FLAG_RE.sub(r"\1id_/", snapshot_url, count=1)
+    snap_resp = _http_get_with_proxy_fallback(raw_url)
+    if snap_resp is None:
+        return None
+    html = snap_resp.text
+    if _is_cloudflare_challenge(html):
+        return None
+    extracted = _extract_main_content(html)
+    if not extracted:
+        return None
+    if _is_js_required_notice(extracted, html):
+        return None
+    if _is_cookie_banner_only(extracted):
+        return None
+    image_url = _extract_image_url(html, url)
+    log.info("article_fetch_via_wayback", url=url, snapshot=raw_url)
+    return ArticleContent(
+        text=extracted,
+        source=ContentSource.EXTRACTED,
+        image_url=image_url,
+    )
 
 
 def _extract_youtube_video_id(url: str) -> str | None:
@@ -609,13 +709,15 @@ def _fetch_github_pr_issue(
     )
 
 
-def _extract_mastodon_handle(url: str) -> tuple[str, str] | None:
-    """Return ``(user, host)`` for a Mastodon-style status URL, or None.
+def _extract_mastodon_handle(url: str) -> tuple[str, str, str] | None:
+    """Return ``(user, host, status_id)`` for a Mastodon-style status URL.
 
     Detects the fediverse status URL shape ``/@<user>/<numeric_id>``,
     optionally with a trailing slash. ``host`` is returned so the caller
-    can render the full federated handle (``@user@host``). Pleroma,
-    Misskey and friends use different paths and are not detected.
+    can render the full federated handle (``@user@host``); ``status_id``
+    enables the Mastodon REST API fallback when the ActivityPub endpoint
+    is gated by authorized_fetch. Pleroma, Misskey and friends use
+    different paths and are not detected.
     """
     try:
         parsed = urlparse(url)
@@ -627,10 +729,12 @@ def _extract_mastodon_handle(url: str) -> tuple[str, str] | None:
     match = _MASTODON_PATH_RE.match(parsed.path)
     if match is None:
         return None
-    return match.group("user"), host
+    return match.group("user"), host, match.group("id")
 
 
-def _fetch_mastodon_note(url: str, user: str, host: str) -> ArticleContent | None:
+def _fetch_mastodon_note(
+    url: str, user: str, host: str, status_id: str
+) -> ArticleContent | None:
     settings = get_settings()
     try:
         response = httpx.get(
@@ -644,6 +748,14 @@ def _fetch_mastodon_note(url: str, user: str, host: str) -> ArticleContent | Non
         )
         response.raise_for_status()
         payload = response.json()
+    except httpx.HTTPStatusError as exc:
+        if exc.response.status_code in (401, 403):
+            # The server runs in "authorized fetch" mode: anonymous
+            # ActivityPub fetches are refused but the public REST API
+            # still serves the same content.
+            return _fetch_mastodon_rest_status(host, status_id, user)
+        log.warning("mastodon_fetch_failed", url=url, error=str(exc))
+        return None
     except (httpx.HTTPError, ValueError) as exc:
         log.warning("mastodon_fetch_failed", url=url, error=str(exc))
         return None
@@ -658,6 +770,134 @@ def _fetch_mastodon_note(url: str, user: str, host: str) -> ArticleContent | Non
         source=ContentSource.EXTRACTED,
         image_url=image_url,
     )
+
+
+def _fetch_mastodon_rest_status(
+    host: str, status_id: str, user: str
+) -> ArticleContent | None:
+    settings = get_settings()
+    api_url = f"https://{host}/api/v1/statuses/{status_id}"
+    try:
+        response = httpx.get(
+            api_url,
+            timeout=settings.http_timeout,
+            headers={"User-Agent": settings.user_agent},
+            follow_redirects=True,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except (httpx.HTTPError, ValueError) as exc:
+        log.warning("mastodon_rest_failed", api_url=api_url, error=str(exc))
+        return None
+    if not isinstance(payload, dict):
+        return None
+    body = _strip_html_text(payload.get("content") or "")
+    if not body:
+        return None
+    image_url = _first_mastodon_rest_image(payload)
+    log.info("mastodon_fetch_via_rest", api_url=api_url)
+    return ArticleContent(
+        text=f"@{user}@{host}:\n\n{body}",
+        source=ContentSource.EXTRACTED,
+        image_url=image_url,
+    )
+
+
+def _first_mastodon_rest_image(payload: dict) -> str | None:
+    """First ``image``-type attachment URL from a REST API status payload."""
+    attachments = payload.get("media_attachments")
+    if not isinstance(attachments, list):
+        return None
+    for att in attachments:
+        if not isinstance(att, dict):
+            continue
+        if att.get("type") != "image":
+            continue
+        href = att.get("url")
+        if isinstance(href, str) and href:
+            return href
+    return None
+
+
+def _extract_substack_slug(url: str) -> tuple[str, str] | None:
+    """Return ``(subdomain, slug)`` for a Substack post URL, or None.
+
+    Matches ``<sub>.substack.com/p/<slug>`` (optional trailing slash).
+    Rejects custom domains, the publication home/archive, and post-suffixed
+    paths like ``/p/<slug>/comments``.
+    """
+    try:
+        parsed = urlparse(url)
+    except ValueError:
+        return None
+    host = (parsed.hostname or "").lower()
+    if not host.endswith(_SUBSTACK_HOST_SUFFIX):
+        return None
+    subdomain = host[: -len(_SUBSTACK_HOST_SUFFIX)]
+    if not subdomain or "." in subdomain or subdomain == "www":
+        return None
+    match = _SUBSTACK_PATH_RE.match(parsed.path)
+    if match is None:
+        return None
+    return subdomain, match.group("slug")
+
+
+def _fetch_substack_article(url: str, subdomain: str, slug: str) -> ArticleContent | None:
+    """Fetch the Substack post body from the publication RSS feed.
+
+    Returns ``None`` when the feed is unreachable, the slug is absent
+    (older post that has fallen off the feed), or trafilatura cannot
+    extract anything from the embedded HTML — the caller then falls
+    through to the normal HTTP path.
+    """
+    settings = get_settings()
+    feed_url = f"https://{subdomain}{_SUBSTACK_HOST_SUFFIX}/feed"
+    try:
+        response = httpx.get(
+            feed_url,
+            timeout=settings.http_timeout,
+            headers={"User-Agent": settings.user_agent},
+            follow_redirects=True,
+        )
+        response.raise_for_status()
+    except httpx.HTTPError as exc:
+        log.warning("substack_feed_failed", feed=feed_url, error=str(exc))
+        return None
+    parsed = feedparser.parse(response.content)
+    entry = _find_substack_entry(parsed.entries, url, slug)
+    if entry is None:
+        log.info("substack_entry_not_in_feed", url=url, feed=feed_url)
+        return None
+    html_body = _substack_entry_html(entry)
+    if not html_body:
+        return None
+    extracted = _extract_main_content(html_body)
+    if not extracted:
+        return None
+    return ArticleContent(text=extracted, source=ContentSource.EXTRACTED)
+
+
+def _find_substack_entry(entries, url: str, slug: str):
+    """Pick the feed entry whose link matches ``url`` (ignoring trailing slash)."""
+    target = url.rstrip("/")
+    slug_suffix = f"/p/{slug}"
+    for entry in entries:
+        link = (entry.get("link") or "").rstrip("/")
+        if not link:
+            continue
+        if link == target or link.endswith(slug_suffix):
+            return entry
+    return None
+
+
+def _substack_entry_html(entry) -> str | None:
+    """Return the entry's ``content:encoded`` HTML, wrapped for trafilatura."""
+    content = entry.get("content")
+    if isinstance(content, list) and content:
+        value = content[0].get("value") if isinstance(content[0], dict) else None
+        if isinstance(value, str) and value.strip():
+            return f"<html><body>{value}</body></html>"
+    return None
 
 
 def _first_mastodon_image(payload: dict) -> str | None:
