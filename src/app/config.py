@@ -75,6 +75,13 @@ class Settings(BaseSettings):
     # lifts the limit to 5000/hr.
     github_token: str = ""
 
+    # Wayback Machine fallback. When the direct HTTP + Webshare path fails
+    # to produce usable content (paywall 403, Cloudflare challenge, JS-only
+    # SPA, empty extraction), the dispatcher asks
+    # archive.org/wayback/available for the closest snapshot and extracts
+    # from there. No auth required. Set to False to disable.
+    wayback_enabled: bool = True
+
     artifacts_dir: Path = Path("artifacts")
     articles_dir: Path = Path("articles")
 
