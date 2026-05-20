@@ -8,7 +8,7 @@ dependencies = [
     "feedparser>=6.0.11",
     "httpx>=0.27",
     "trafilatura>=2.0",
-    "python-frontmatter>=1.1",
+    "python-frontmatter>=1.2.0",
     "feedgen>=1.0",
     "markdown-it-py>=4.2.0",
     "pydantic>=2.13.4",
@@ -25,7 +25,7 @@ dev = [
     "pytest>=8.3",
     "pytest-httpx>=0.32",
     "pyright>=1.1.409",
-    "ruff>=0.15.12",
+    "ruff>=0.15.13",
 ]
 
 [build-system]
