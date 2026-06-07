@@ -38,6 +38,7 @@ _MASTODON_PATH_RE = re.compile(r"^/@(?P<user>[^/]+)/(?P<id>\d+)/?$")
 _SUBSTACK_HOST_SUFFIX = ".substack.com"
 _SUBSTACK_PATH_RE = re.compile(r"^/p/(?P<slug>[^/]+)/?$")
 _WAYBACK_API = "https://archive.org/wayback/available"
+_READER_API = "https://r.jina.ai/"
 # Inserted after the timestamp segment of a Wayback snapshot URL, the
 # ``id_`` flag asks archive.org to return the raw archived response
 # without rewriting links or injecting the toolbar — exactly what
@@ -136,14 +137,27 @@ def fetch_article(url: str) -> ArticleContent:
     if result.source in (ContentSource.FEED_FALLBACK, ContentSource.JS_REQUIRED):
         wayback = _fetch_from_wayback(url)
         if wayback is not None:
-            if wayback.image_url is None and result.image_url:
-                return ArticleContent(
-                    text=wayback.text,
-                    source=wayback.source,
-                    image_url=result.image_url,
-                )
-            return wayback
+            return _with_fallback_image(wayback, result.image_url)
+        reader = _fetch_via_reader(url)
+        if reader is not None:
+            return _with_fallback_image(reader, result.image_url)
     return result
+
+
+def _with_fallback_image(content: ArticleContent, fallback_image: str | None) -> ArticleContent:
+    """Carry over the direct fetch's og:image when the fallback found none.
+
+    The direct page often still exposes ``og:image`` metadata even when its
+    body is unextractable; the Wayback / reader fallbacks may recover the
+    text but not that image. Keep the original image rather than dropping it.
+    """
+    if content.image_url is None and fallback_image:
+        return ArticleContent(
+            text=content.text,
+            source=content.source,
+            image_url=fallback_image,
+        )
+    return content
 
 
 def _fetch_article_via_http(url: str) -> ArticleContent:
@@ -435,6 +449,31 @@ def _fetch_from_wayback(url: str) -> ArticleContent | None:
         source=ContentSource.EXTRACTED,
         image_url=image_url,
     )
+
+
+def _fetch_via_reader(url: str) -> ArticleContent | None:
+    """Fetch ``url`` through the r.jina.ai reader and return its text.
+
+    The reader fetches and renders the page server-side (running its
+    JavaScript) and returns already-extracted prose, so it recovers both
+    client-rendered SPA pages and soft anti-bot blocks that defeat the
+    direct + Wayback paths. Reuses ``_http_get_with_proxy_fallback`` so a
+    reader-side rate limit (429 from a shared GitHub Actions IP) retries
+    through the Webshare residential pool. Returns ``None`` when the reader
+    is disabled, the request fails, or the body is empty, so the caller
+    keeps the original failure result.
+    """
+    settings = get_settings()
+    if not settings.reader_enabled:
+        return None
+    response = _http_get_with_proxy_fallback(f"{_READER_API}{url}")
+    if response is None:
+        return None
+    body = response.text.strip()
+    if not body:
+        return None
+    log.info("article_fetch_via_reader", url=url)
+    return ArticleContent(text=body, source=ContentSource.EXTRACTED)
 
 
 def _extract_youtube_video_id(url: str) -> str | None:

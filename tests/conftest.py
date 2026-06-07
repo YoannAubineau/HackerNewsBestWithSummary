@@ -19,5 +19,8 @@ def isolated_settings(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     # existing fetch_article test that exercises a failure path to also
     # mock archive.org calls, which is unrelated to what they verify.
     settings.wayback_enabled = False
+    # Same rationale as wayback above: tests opt in to the reader fallback
+    # explicitly so existing failure-path tests don't have to mock r.jina.ai.
+    settings.reader_enabled = False
     yield settings
     config_module.reset_settings()

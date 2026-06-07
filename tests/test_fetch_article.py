@@ -1497,6 +1497,146 @@ def test_fetch_article_wayback_disabled_skips_archive_call(
     assert result.source == ContentSource.FEED_FALLBACK
 
 
+_READER_TEXT = (
+    "Title: Le titre\n\n"
+    "Le contenu rendu et extrait par le reader r.jina.ai, avec assez de"
+    " texte substantiel pour constituer un vrai corps d'article.\n\n"
+    "Un second paragraphe pour faire bonne mesure."
+)
+
+
+def test_fetch_article_reader_recovers_on_403(httpx_mock, isolated_settings):
+    isolated_settings.reader_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://r.jina.ai/https://paywalled.example/article",
+        status_code=200,
+        headers={"content-type": "text/plain; charset=utf-8"},
+        text=_READER_TEXT,
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.EXTRACTED
+    assert "rendu et extrait par le reader" in result.text
+
+
+def test_fetch_article_reader_recovers_on_js_required(httpx_mock, isolated_settings):
+    isolated_settings.reader_enabled = True
+    js_only_html = (
+        "<html><body>"
+        "<noscript>You need to enable JavaScript to run this app.</noscript>"
+        "</body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://spa.example/route",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=js_only_html,
+    )
+    httpx_mock.add_response(
+        url="https://r.jina.ai/https://spa.example/route",
+        status_code=200,
+        headers={"content-type": "text/plain; charset=utf-8"},
+        text=_READER_TEXT,
+    )
+    result = fetch_article("https://spa.example/route")
+    assert result.source == ContentSource.EXTRACTED
+    assert "rendu et extrait par le reader" in result.text
+
+
+def test_fetch_article_reader_runs_after_wayback_miss(httpx_mock, isolated_settings):
+    isolated_settings.wayback_enabled = True
+    isolated_settings.reader_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://archive.org/wayback/available?url=https%3A%2F%2Fpaywalled.example%2Farticle",
+        status_code=200,
+        json=_wayback_api_response(None),
+    )
+    httpx_mock.add_response(
+        url="https://r.jina.ai/https://paywalled.example/article",
+        status_code=200,
+        headers={"content-type": "text/plain; charset=utf-8"},
+        text=_READER_TEXT,
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.EXTRACTED
+    assert "rendu et extrait par le reader" in result.text
+
+
+def test_fetch_article_reader_disabled_skips_call(httpx_mock, isolated_settings):
+    isolated_settings.reader_enabled = False
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    # No mock for r.jina.ai — if the code attempted it, httpx_mock would
+    # error on the unmocked request.
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_reader_bails_on_http_error(httpx_mock, isolated_settings):
+    isolated_settings.reader_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://r.jina.ai/https://paywalled.example/article",
+        status_code=500,
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_reader_bails_on_empty_body(httpx_mock, isolated_settings):
+    isolated_settings.reader_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://r.jina.ai/https://paywalled.example/article",
+        status_code=200,
+        headers={"content-type": "text/plain; charset=utf-8"},
+        text="   \n  ",
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_reader_keeps_direct_image(httpx_mock, isolated_settings):
+    isolated_settings.reader_enabled = True
+    js_only_html = (
+        "<html><head>"
+        '<meta property="og:image" content="https://spa.example/cover.png">'
+        "</head><body>"
+        "<noscript>You need to enable JavaScript to run this app.</noscript>"
+        "</body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://spa.example/route",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=js_only_html,
+    )
+    httpx_mock.add_response(
+        url="https://r.jina.ai/https://spa.example/route",
+        status_code=200,
+        headers={"content-type": "text/plain; charset=utf-8"},
+        text=_READER_TEXT,
+    )
+    result = fetch_article("https://spa.example/route")
+    assert result.source == ContentSource.EXTRACTED
+    assert result.image_url == "https://spa.example/cover.png"
+
+
 def test_fetch_article_substack_falls_through_on_feed_http_error(httpx_mock):
     httpx_mock.add_response(
         url="https://example.substack.com/feed",
