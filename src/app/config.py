@@ -82,6 +82,13 @@ class Settings(BaseSettings):
     # from there. No auth required. Set to False to disable.
     wayback_enabled: bool = True
 
+    # r.jina.ai reader fallback. Tried after the Wayback miss: the reader
+    # fetches and renders the page server-side (running its JavaScript) and
+    # returns already-extracted prose, recovering client-rendered SPA pages
+    # and soft anti-bot blocks that defeat the direct + Wayback paths. No
+    # auth required on the free tier. Set to False to disable.
+    reader_enabled: bool = True
+
     artifacts_dir: Path = Path("artifacts")
     articles_dir: Path = Path("articles")
 
