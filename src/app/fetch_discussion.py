@@ -157,10 +157,10 @@ def _find_single_comment_redirect(payload: AlgoliaItem) -> int | None:
     single-comment constraint avoids false positives on comments that
     legitimately reference a related thread among many other comments.
     """
-    children_with_text = [c for c in payload.children if c.text]
+    children_with_text = [c.text for c in payload.children if c.text]
     if len(children_with_text) != 1:
         return None
-    decoded = html.unescape(children_with_text[0].text)
+    decoded = html.unescape(children_with_text[0])
     match = _DUPE_LINK_RE.search(decoded)
     if match is None:
         return None
