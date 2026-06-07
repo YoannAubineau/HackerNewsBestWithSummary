@@ -33,6 +33,7 @@ class Article(BaseModel):
     status: Status = Status.PENDING
     is_ask_or_show_hn: bool = False
     content_source: ContentSource | None = None
+    content_failure_reason: str | None = None
     article_fetched_at: datetime | None = None
     discussion_fetched_at: datetime | None = None
     discussion_comment_count: int | None = None
