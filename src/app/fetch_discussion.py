@@ -81,6 +81,8 @@ def fetch_discussion(hn_item_id: int) -> Discussion | None:
     if payload is None:
         return None
     canonical_dupe_id = find_dupe_canonical_id(payload)
+    if canonical_dupe_id is None:
+        canonical_dupe_id = _find_single_comment_redirect(payload)
     if canonical_dupe_id is not None:
         # The current entry was flagged as a duplicate by the first commenter;
         # the caller will substitute or drop it, so skip the HN HTML scrape
@@ -137,6 +139,28 @@ def find_dupe_canonical_id(payload: AlgoliaItem) -> int | None:
     decoded = html.unescape(first.text)
     if "dupe" not in decoded.lower():
         return None
+    match = _DUPE_LINK_RE.search(decoded)
+    if match is None:
+        return None
+    canonical_id = int(match.group(1))
+    if canonical_id == payload.id:
+        return None
+    return canonical_id
+
+
+def _find_single_comment_redirect(payload: AlgoliaItem) -> int | None:
+    """Detect a discussion whose only comment links to another HN thread.
+
+    When moderators merge discussions, the original is left with a single
+    comment containing a bare link to the canonical thread — without the
+    ``dupe`` keyword that ``find_dupe_canonical_id`` requires. The
+    single-comment constraint avoids false positives on comments that
+    legitimately reference a related thread among many other comments.
+    """
+    children_with_text = [c for c in payload.children if c.text]
+    if len(children_with_text) != 1:
+        return None
+    decoded = html.unescape(children_with_text[0].text)
     match = _DUPE_LINK_RE.search(decoded)
     if match is None:
         return None
