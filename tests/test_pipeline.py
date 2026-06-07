@@ -657,11 +657,11 @@ def test_step_fetch_discussions_substitutes_canonical_when_unknown(
     assert read_sidecar(new_path, "discussion") == "[alice] first canonical comment"
 
 
-def test_step_fetch_discussions_does_not_dedup_when_no_dupe_keyword(
+def test_step_fetch_discussions_does_not_redirect_when_multiple_comments(
     isolated_settings, httpx_mock, monkeypatch
 ):
-    # First comment legitimately links to another HN thread without the
-    # "dupe" marker. Must process normally with the original identity.
+    # One comment links to another HN thread, but the discussion has several
+    # comments so the single-comment redirect heuristic must not fire.
     from app import fetch_discussion as fd
 
     isolated_settings.min_discussion_comments = 0
@@ -684,6 +684,12 @@ def test_step_fetch_discussions_does_not_dedup_when_no_dupe_keyword(
                         'related: <a href="https://news.ycombinator.com/item?id=42">'
                         "older thread</a>"
                     ),
+                    "children": [],
+                },
+                {
+                    "id": 902,
+                    "author": "bob",
+                    "text": "interesting article",
                     "children": [],
                 },
             ],

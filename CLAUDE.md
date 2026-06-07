@@ -147,10 +147,15 @@ hourly on a public repo, so minutes are free.
   `find_dupe_canonical_id` inspects the first child comment for an HN
   moderator dupe pointer (`dupe:` keyword + `news.ycombinator.com/item?id=NNN`
   link, with `html.unescape` because Algolia entity-encodes the slashes
-  as `&#x2F;`). When found, `fetch_discussion` short-circuits and returns
-  a `Discussion` with empty text and `canonical_dupe_id=NNN`, plus the
-  payload's `title` and `created_at` so the caller can substitute the
-  article identity without a second Algolia call. Also produces the
+  as `&#x2F;`). A second detection path, `_find_single_comment_redirect`,
+  fires when the discussion has exactly one text-bearing root comment and
+  that comment contains an HN URL — no keyword required. This catches
+  moderator merges where the original discussion is left with a bare
+  redirect link. When either check fires, `fetch_discussion`
+  short-circuits and returns a `Discussion` with empty text and
+  `canonical_dupe_id=NNN`, plus the payload's `title` and `created_at`
+  so the caller can substitute the article identity without a second
+  Algolia call. Also produces the
   "Top commentaires" block rendered at the end of the
   discussion section. Per-comment scores are not exposed by any HN API
   (Algolia returns `points: null` on every child, Firebase doesn't carry
@@ -239,14 +244,19 @@ hourly on a public repo, so minutes are free.
   everything fails, the section degrades to empty rather than crashing. If HN ever
   rewrites its comment-row markup, update `_COMMENT_ROW_RE` in
   `fetch_discussion.py`.
-- **Dupe detection looks at the first comment only**: HN moderators
-  (and occasionally regular users) flag a duplicate submission with a
-  comment of the form `dupe: https://news.ycombinator.com/item?id=NNN`.
-  We trigger on `payload.children[0]` because Algolia returns children
-  in chronological order and the dupe pointer is almost always posted
-  first. The `dupe` keyword is required in addition to the link, to
-  avoid false positives on first comments that legitimately link to a
-  related HN thread. Substitution is single-hop only. If the canonical
+- **Dupe detection has two paths**: The primary check
+  (`find_dupe_canonical_id`) looks at the first comment for the pattern
+  `dupe: https://news.ycombinator.com/item?id=NNN`. We trigger on
+  `payload.children[0]` because Algolia returns children in chronological
+  order and the dupe pointer is almost always posted first. The `dupe`
+  keyword is required to avoid false positives on first comments that
+  legitimately link to a related HN thread. A second check
+  (`_find_single_comment_redirect`) fires when the discussion has exactly
+  one text-bearing root comment containing an HN URL — no keyword
+  required. This catches moderator merges where the original discussion
+  is left with a bare redirect and no `dupe` annotation. The
+  single-comment constraint is sufficient to prevent false positives.
+  Substitution is single-hop only. If the canonical
   is itself a dupe, the resulting `Discussion` will carry its own
   `canonical_dupe_id` and we ignore it. Multi-hop chains are rare
   enough not to justify the loop. The article filename changes when the

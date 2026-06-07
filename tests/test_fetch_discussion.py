@@ -4,6 +4,7 @@ from structlog.testing import capture_logs
 from app import fetch_discussion as fd
 from app.fetch_discussion import (
     AlgoliaItem,
+    _find_single_comment_redirect,
     fetch_discussion,
     fetch_submitter_text,
     find_dupe_canonical_id,
@@ -964,6 +965,135 @@ def test_find_dupe_canonical_id_returns_first_link_when_multiple():
         ],
     )
     assert find_dupe_canonical_id(payload) == 42
+
+
+# --- _find_single_comment_redirect -------------------------------------------
+
+
+def test_single_comment_redirect_extracts_id():
+    payload = _algolia_item(
+        id=10,
+        children=[
+            {
+                "author": "alice",
+                "text": '<a href="https://news.ycombinator.com/item?id=42">other thread</a>',
+            },
+        ],
+    )
+    assert _find_single_comment_redirect(payload) == 42
+
+
+def test_single_comment_redirect_unescapes_html():
+    payload = _algolia_item(
+        id=10,
+        children=[
+            {
+                "author": "alice",
+                "text": (
+                    '<a href="https:&#x2F;&#x2F;news.ycombinator.com'
+                    '&#x2F;item?id=99">link</a>'
+                ),
+            },
+        ],
+    )
+    assert _find_single_comment_redirect(payload) == 99
+
+
+def test_single_comment_redirect_returns_none_when_multiple_comments():
+    payload = _algolia_item(
+        id=10,
+        children=[
+            {
+                "author": "alice",
+                "text": '<a href="https://news.ycombinator.com/item?id=42">x</a>',
+            },
+            {"author": "bob", "text": "some other comment"},
+        ],
+    )
+    assert _find_single_comment_redirect(payload) is None
+
+
+def test_single_comment_redirect_returns_none_without_hn_url():
+    payload = _algolia_item(
+        id=10,
+        children=[
+            {"author": "alice", "text": "just a regular comment, no link"},
+        ],
+    )
+    assert _find_single_comment_redirect(payload) is None
+
+
+def test_single_comment_redirect_returns_none_on_self_pointer():
+    payload = _algolia_item(
+        id=10,
+        children=[
+            {
+                "author": "alice",
+                "text": '<a href="https://news.ycombinator.com/item?id=10">self</a>',
+            },
+        ],
+    )
+    assert _find_single_comment_redirect(payload) is None
+
+
+def test_single_comment_redirect_returns_none_when_no_children():
+    payload = _algolia_item(id=10, children=[])
+    assert _find_single_comment_redirect(payload) is None
+
+
+def test_single_comment_redirect_returns_none_when_all_children_deleted():
+    payload = _algolia_item(
+        id=10,
+        children=[
+            {"author": "alice", "text": None},
+            {"author": "bob", "text": None},
+        ],
+    )
+    assert _find_single_comment_redirect(payload) is None
+
+
+def test_single_comment_redirect_ignores_deleted_siblings():
+    payload = _algolia_item(
+        id=10,
+        children=[
+            {"author": "deleted", "text": None},
+            {
+                "author": "alice",
+                "text": '<a href="https://news.ycombinator.com/item?id=42">x</a>',
+            },
+        ],
+    )
+    assert _find_single_comment_redirect(payload) == 42
+
+
+def test_fetch_discussion_short_circuits_on_single_comment_redirect(
+    httpx_mock, monkeypatch
+):
+    payload = {
+        "id": 100,
+        "title": "Some article",
+        "created_at": "2026-04-24T20:00:30Z",
+        "children": [
+            _comment(
+                "alice",
+                '<a href="https://news.ycombinator.com/item?id=99">canonical</a>',
+            ),
+        ],
+    }
+    httpx_mock.add_response(
+        url="https://hn.algolia.com/api/v1/items/100", json=payload
+    )
+
+    def _explode(_id):
+        raise AssertionError("HN scrape should not happen on a redirect entry")
+
+    monkeypatch.setattr(fd, "_fetch_hn_display_order", _explode)
+    result = fetch_discussion(100)
+    assert result is not None
+    assert result.canonical_dupe_id == 99
+    assert result.text == ""
+    assert result.top_comments_markdown == ""
+    assert result.url is None
 
 
 def test_fetch_discussion_short_circuits_on_dupe(httpx_mock, monkeypatch):
