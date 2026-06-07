@@ -61,6 +61,7 @@ class ArticleContent:
     text: str
     source: ContentSource
     image_url: str | None = None
+    failure_reason: str | None = None
 
 
 def fetch_article(url: str) -> ArticleContent:
@@ -88,6 +89,7 @@ def fetch_article(url: str) -> ArticleContent:
             text="",
             source=ContentSource.FEED_FALLBACK,
             image_url=thumbnail,
+            failure_reason="transcript unavailable",
         )
 
     tweet_id = _extract_tweet_id(url)
@@ -98,7 +100,9 @@ def fetch_article(url: str) -> ArticleContent:
         tweet = _fetch_tweet(*tweet_id)
         if tweet is not None:
             return tweet
-        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+        return ArticleContent(
+            text="", source=ContentSource.FEED_FALLBACK, failure_reason="tweet unavailable"
+        )
 
     mastodon = _extract_mastodon_handle(url)
     if mastodon is not None:
@@ -109,7 +113,9 @@ def fetch_article(url: str) -> ArticleContent:
         note = _fetch_mastodon_note(url, *mastodon)
         if note is not None:
             return note
-        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+        return ArticleContent(
+            text="", source=ContentSource.FEED_FALLBACK, failure_reason="post unavailable"
+        )
 
     substack = _extract_substack_slug(url)
     if substack is not None:
@@ -131,7 +137,9 @@ def fetch_article(url: str) -> ArticleContent:
         result = _fetch_github_pr_issue(*github)
         if result is not None:
             return result
-        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+        return ArticleContent(
+            text="", source=ContentSource.FEED_FALLBACK, failure_reason="GitHub API error"
+        )
 
     result = _fetch_article_via_http(url)
     if result.source in (ContentSource.FEED_FALLBACK, ContentSource.JS_REQUIRED):
@@ -156,42 +164,48 @@ def _with_fallback_image(content: ArticleContent, fallback_image: str | None) ->
             text=content.text,
             source=content.source,
             image_url=fallback_image,
+            failure_reason=content.failure_reason,
         )
     return content
 
 
 def _fetch_article_via_http(url: str) -> ArticleContent:
-    response = _http_get_with_proxy_fallback(url)
+    response, http_failure = _http_get_with_proxy_fallback(url)
     if response is None:
-        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+        return ArticleContent(
+            text="", source=ContentSource.FEED_FALLBACK,
+            failure_reason=http_failure or "connection failed",
+        )
 
     content_type = response.headers.get("content-type", "").split(";")[0].strip().lower()
     if content_type.startswith("text/plain"):
         body = response.text.strip()
         if not body:
-            return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+            return ArticleContent(
+                text="", source=ContentSource.FEED_FALLBACK, failure_reason="empty document"
+            )
         return ArticleContent(text=body, source=ContentSource.EXTRACTED)
     if content_type.startswith("application/pdf"):
         body = _extract_pdf_text(response.content)
         if not body:
-            return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+            return ArticleContent(
+                text="", source=ContentSource.FEED_FALLBACK,
+                failure_reason="PDF extraction failed",
+            )
         return ArticleContent(text=body, source=ContentSource.EXTRACTED)
     if content_type and not any(content_type.startswith(t) for t in _FETCHABLE_CONTENT_TYPES):
-        return ArticleContent(text="", source=ContentSource.FEED_FALLBACK)
+        return ArticleContent(
+            text="", source=ContentSource.FEED_FALLBACK, failure_reason="unsupported format"
+        )
 
     image_url = _extract_image_url(response.text, url)
 
     if _is_cloudflare_challenge(response.text):
-        # Cloudflare's interstitial page leaks just enough markup
-        # (cookie banner, JS variable) for trafilatura to pull out
-        # something non-empty, but that "something" is never the
-        # article. Short-circuit to FEED_FALLBACK so step_summarize
-        # skips the LLM call instead of producing a hallucinated
-        # "the content does not contain..." summary.
         return ArticleContent(
             text="",
             source=ContentSource.FEED_FALLBACK,
             image_url=image_url,
+            failure_reason="anti-bot protection",
         )
 
     if any(content_type.startswith(t) for t in _XML_CONTENT_TYPES):
@@ -201,6 +215,7 @@ def _fetch_article_via_http(url: str) -> ArticleContent:
                 text="",
                 source=ContentSource.FEED_FALLBACK,
                 image_url=image_url,
+                failure_reason="malformed content",
             )
     else:
         html_for_extraction = response.text
@@ -212,12 +227,14 @@ def _fetch_article_via_http(url: str) -> ArticleContent:
                 text="",
                 source=ContentSource.JS_REQUIRED,
                 image_url=image_url,
+                failure_reason="JavaScript required",
             )
         if _is_cookie_banner_only(extracted):
             return ArticleContent(
                 text="",
                 source=ContentSource.FEED_FALLBACK,
                 image_url=image_url,
+                failure_reason="cookie wall",
             )
         return ArticleContent(
             text=extracted,
@@ -228,6 +245,7 @@ def _fetch_article_via_http(url: str) -> ArticleContent:
         text="",
         source=ContentSource.FEED_FALLBACK,
         image_url=image_url,
+        failure_reason="extraction failed",
     )
 
 
@@ -330,7 +348,18 @@ def _isolated_article_html(html_for_extraction: str) -> str | None:
     return f"<html><body>{body}</body></html>"
 
 
-def _http_get_with_proxy_fallback(url: str) -> httpx.Response | None:
+def _classify_http_failure(exc: httpx.HTTPError) -> str:
+    if isinstance(exc, httpx.HTTPStatusError):
+        code = exc.response.status_code
+        if code in (401, 403):
+            return "access denied"
+        if code >= 500:
+            return "server error"
+        return "access denied" if code == 451 else "connection failed"
+    return "connection failed"
+
+
+def _http_get_with_proxy_fallback(url: str) -> tuple[httpx.Response | None, str | None]:
     """GET ``url`` directly, then retry through Webshare on any HTTP error.
 
     Publishers like nytimes.com, fastcompany.com, openai.com and medium.com
@@ -338,8 +367,9 @@ def _http_get_with_proxy_fallback(url: str) -> httpx.Response | None:
     Actions runners included). Routing the retry through Webshare's
     rotating residential pool — already wired in for YouTube transcripts
     and HN comment-ranking scraping — bypasses those blocks for a tiny
-    per-request cost. Returns ``None`` when both attempts fail, or when
-    the direct attempt fails and Webshare credentials are not configured.
+    per-request cost. Returns ``(None, reason)`` when both attempts fail,
+    or when the direct attempt fails and Webshare credentials are not
+    configured.
     """
     settings = get_settings()
     headers = {"User-Agent": settings.user_agent}
@@ -351,12 +381,12 @@ def _http_get_with_proxy_fallback(url: str) -> httpx.Response | None:
             follow_redirects=True,
         )
         response.raise_for_status()
-        return response
+        return response, None
     except httpx.HTTPError as direct_exc:
         if not (
             settings.webshare_proxy_username and settings.webshare_proxy_password
         ):
-            return None
+            return None, _classify_http_failure(direct_exc)
         proxy_url = WebshareProxyConfig(
             proxy_username=settings.webshare_proxy_username,
             proxy_password=settings.webshare_proxy_password,
@@ -377,13 +407,13 @@ def _http_get_with_proxy_fallback(url: str) -> httpx.Response | None:
                 direct_error=str(direct_exc),
                 proxy_error=str(proxy_exc),
             )
-            return None
+            return None, _classify_http_failure(proxy_exc)
         log.info(
             "article_fetch_via_proxy",
             url=url,
             direct_error=str(direct_exc),
         )
-        return response
+        return response, None
 
 
 def _fetch_from_wayback(url: str) -> ArticleContent | None:
@@ -429,7 +459,7 @@ def _fetch_from_wayback(url: str) -> ArticleContent | None:
     if not isinstance(snapshot_url, str) or not snapshot_url:
         return None
     raw_url = _WAYBACK_RAW_FLAG_RE.sub(r"\1id_/", snapshot_url, count=1)
-    snap_resp = _http_get_with_proxy_fallback(raw_url)
+    snap_resp, _ = _http_get_with_proxy_fallback(raw_url)
     if snap_resp is None:
         return None
     html = snap_resp.text
@@ -466,7 +496,7 @@ def _fetch_via_reader(url: str) -> ArticleContent | None:
     settings = get_settings()
     if not settings.reader_enabled:
         return None
-    response = _http_get_with_proxy_fallback(f"{_READER_API}{url}")
+    response, _ = _http_get_with_proxy_fallback(f"{_READER_API}{url}")
     if response is None:
         return None
     body = response.text.strip()

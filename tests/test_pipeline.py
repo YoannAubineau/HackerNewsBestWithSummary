@@ -1188,8 +1188,9 @@ def test_step_summarize_drops_to_placeholder_when_llm_flags_unusable(
     reloaded, body = load(path)
     assert reloaded.status == Status.SUMMARIZED
     assert reloaded.content_source == ContentSource.FEED_FALLBACK
+    assert reloaded.content_failure_reason == "content not usable"
     assert reloaded.rewritten_title == "titre français traduit"
-    assert "## Résumé de l'article\n\n(unable to load content)" in body
+    assert "## Résumé de l'article\n\n(unable to load content: content not usable)" in body
     assert "hallucinated junk" not in body
     # Discussion summary travels independently of the article verdict.
     assert "**Avis positifs**" in body

@@ -90,6 +90,7 @@ def step_fetch_articles(failures: list[tuple[str, str]] | None = None) -> int:
         if result.text:
             write_sidecar(path, "article", result.text)
         article.content_source = result.source
+        article.content_failure_reason = result.failure_reason
         article.image_url = result.image_url
         article.article_fetched_at = _now()
         article.status = Status.ARTICLE_FETCHED
@@ -255,7 +256,11 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
                 calls.append(call)
                 if translated:
                     article.rewritten_title = translated
-                article_summary = "(unable to load content)"
+                reason = article.content_failure_reason
+                if reason:
+                    article_summary = f"(unable to load content: {reason})"
+                else:
+                    article_summary = "(unable to load content)"
                 time.sleep(settings.llm_sleep_seconds)
             elif (
                 article.content_source == ContentSource.TWEET
@@ -276,15 +281,9 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
                 if summary.content_usable:
                     article_summary = summary.summary_markdown
                 else:
-                    # The LLM saw the extracted text and judged it not
-                    # usable (cookie banner, Cloudflare challenge, error
-                    # page, off-topic content). Drop its summary, switch
-                    # content_source to FEED_FALLBACK so reprocess_placeholders
-                    # will sweep this article up after a future fetch-side
-                    # improvement, and keep the (already paid for) French
-                    # title the model returned.
                     article.content_source = ContentSource.FEED_FALLBACK
-                    article_summary = "(unable to load content)"
+                    article.content_failure_reason = "content not usable"
+                    article_summary = "(unable to load content: content not usable)"
                 time.sleep(settings.llm_sleep_seconds)
 
             if discussion_text:
@@ -341,7 +340,7 @@ def run_cycle() -> CycleResult:
 
 
 _PLACEHOLDER_ARTICLE_SUMMARY_RE = re.compile(
-    r"^## Résumé de l'article\s*\n+\((?:no content|unable to load content)\)",
+    r"^## Résumé de l'article\s*\n+\((?:no content|unable to load content(?::[^)]*)?)\)",
     re.MULTILINE,
 )
 
@@ -394,6 +393,7 @@ def reprocess_placeholders() -> int:
         article.status = Status.PENDING
         article.attempts = 0
         article.content_source = None
+        article.content_failure_reason = None
         article.article_fetched_at = None
         article.discussion_fetched_at = None
         article.discussion_comment_count = None
