@@ -2,7 +2,91 @@ import json as json_mod
 
 import pytest
 
-from app.llm import AllModelsFailedError, LLMError, complete
+from app.llm import (
+    AllModelsFailedError,
+    ContextLengthExceededError,
+    LLMError,
+    complete,
+)
+
+
+def test_complete_raises_context_error_on_overflow(httpx_mock, isolated_settings):
+    body = json_mod.dumps(
+        {
+            "error": {
+                "message": (
+                    "This endpoint's maximum context length is 200000 tokens. "
+                    "However, you requested about 222911 tokens (222911 of text input)."
+                ),
+                "code": 400,
+            }
+        }
+    )
+    httpx_mock.add_response(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        status_code=400,
+        text=body,
+    )
+    with pytest.raises(ContextLengthExceededError) as exc_info:
+        complete("system", "user")
+    assert exc_info.value.limit == 200000
+    assert exc_info.value.requested == 222911
+
+
+def test_complete_uses_known_window_when_message_omits_limit(httpx_mock, isolated_settings):
+    isolated_settings.openrouter_model = "anthropic/claude-haiku-4.5"
+    body = json_mod.dumps(
+        {
+            "error": {
+                "message": "context length exceeded; you requested about 250000 tokens",
+                "code": 400,
+            }
+        }
+    )
+    httpx_mock.add_response(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        status_code=400,
+        text=body,
+    )
+    with pytest.raises(ContextLengthExceededError) as exc_info:
+        complete("system", "user")
+    assert exc_info.value.limit == 200000  # from config, the message had none
+    assert exc_info.value.requested == 250000
+
+
+def test_complete_falls_back_to_parsed_limit_for_unknown_model(httpx_mock, isolated_settings):
+    isolated_settings.openrouter_model = "some/unlisted-model"
+    body = json_mod.dumps(
+        {
+            "error": {
+                "message": (
+                    "This endpoint's maximum context length is 64000 tokens. "
+                    "However, you requested about 90000 tokens."
+                ),
+                "code": 400,
+            }
+        }
+    )
+    httpx_mock.add_response(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        status_code=400,
+        text=body,
+    )
+    with pytest.raises(ContextLengthExceededError) as exc_info:
+        complete("system", "user")
+    assert exc_info.value.limit == 64000  # no config entry, parsed from message
+    assert exc_info.value.requested == 90000
+
+
+def test_complete_raises_generic_error_on_other_400(httpx_mock, isolated_settings):
+    httpx_mock.add_response(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        status_code=400,
+        text='{"error": {"message": "invalid model"}}',
+    )
+    with pytest.raises(LLMError) as exc_info:
+        complete("system", "user")
+    assert not isinstance(exc_info.value, ContextLengthExceededError)
 
 
 def _openrouter_response(

@@ -1,33 +1,39 @@
 ---
 article_fetched_at: '2026-05-18T13:11:14.164642Z'
 attempts: 0
-content_failure_reason: access denied
-content_source: feed_fallback
+content_source: extracted
 discussion_comment_count: 239
 discussion_fetched_at: '2026-05-18T13:10:27.219721Z'
 error: null
 guid: https://news.ycombinator.com/item?id=48168856
 hn_item_id: 48168856
 hn_url: https://news.ycombinator.com/item?id=48168856
+image_url: https://www.techspot.com/images2/news/bigimage/2026/05/2026-05-14-image-17.jpg
 is_ask_or_show_hn: false
-llm_input_tokens: 18282
-llm_latency_ms: 9559
+llm_input_tokens: 19708
+llm_latency_ms: 13911
 llm_models_used:
 - anthropic/claude-4.5-haiku-20251001
-llm_output_tokens: 690
+llm_output_tokens: 1098
 our_published_at: '2026-05-17T16:07:13Z'
-rewritten_title: Un chercheur en sécurité affirme que Microsoft a construit une porte
-  dérobée Bitlocker, publie un exploit
+rewritten_title: Un chercheur en sécurité affirme que Microsoft a intégré une porte
+  dérobée à BitLocker et publie un exploit
 source_published_at: '2026-05-17T13:42:30Z'
 status: summarized
-summarized_at: '2026-05-18T13:17:20.554672Z'
+summarized_at: '2026-06-08T07:33:55.325621Z'
 title: Security researcher says Microsoft built a Bitlocker backdoor, releases exploit
 url: https://www.techspot.com/news/112410-security-researcher-microsoft-secretly-built-backdoor-bitlocker-releases.html
 ---
 
 ## Résumé de l'article
 
-(unable to load content: access denied)
+Un chercheur en sécurité connu sous le pseudonyme « Nightmare-Eclipse » a publié YellowKey, une vulnérabilité qui contournerait complètement le chiffrement intégral du volume de BitLocker (système de chiffrement de disque de Microsoft). Le chercheur soupçonne Microsoft d'avoir intentionnellement intégré une porte dérobée dans ce système de protection des données.
+
+- La vulnérabilité YellowKey se déclenche en copiant un dossier « FsTx » sur une clé USB ou la partition EFI de Windows, puis en redémarrant la machine et en accédant à l'environnement de récupération Windows
+- Une fois exploitée, la vulnérabilité accorde un accès sans restriction aux volumes protégés par BitLocker, sans nécessiter de mot de passe
+- Le chercheur juge suspecte la présence du composant problématique exclusivement dans l'image WinRE officielle, suggérant qu'il s'agit d'une porte dérobée intentionnelle
+- Seules les versions Windows 11 (et Server 2022/2025) seraient affectées, Windows 10 restant épargné
+- Des chercheurs tiers ont confirmé le comportement décrit, et un second exploit nommé GreenPlasma permettrait une escalade de privilèges
 
 ## Discussion sur Hacker News (239 commentaires)
 

@@ -1,7 +1,7 @@
 import pytest
 
 from app import summarize
-from app.llm import LLMCallResult
+from app.llm import ContextLengthExceededError, LLMCallResult
 from app.summarize import (
     LLMOutputError,
     _parse_article_response,
@@ -266,6 +266,103 @@ def test_summarize_article_wraps_inputs_in_xml_tags(monkeypatch):
     assert "texte hostile" in captured["user"]
     assert "fournies par des tiers non fiables" not in captured["user"]
     assert "tiers non fiables" in captured["system"]
+
+
+def test_summarize_article_retries_truncated_on_context_error(monkeypatch):
+    calls: list[str] = []
+
+    def fake_complete(system, user, *, json=False):
+        calls.append(user)
+        if len(calls) == 1:
+            raise ContextLengthExceededError(
+                "m: context length exceeded", limit=200000, requested=400000
+            )
+        return _call_result('{"title": "t", "summary": "s"}')
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    result, _call = summarize_article("mot " * 100000, "Titre")
+    assert len(calls) == 2
+    assert len(calls[1]) < len(calls[0])
+    assert summarize._TRUNCATION_MARKER in calls[1]
+    assert result.summary_markdown == "s"
+
+
+def test_summarize_article_no_truncation_when_within_limit(monkeypatch):
+    calls: list[str] = []
+
+    def fake_complete(system, user, *, json=False):
+        calls.append(user)
+        return _call_result('{"title": "t", "summary": "s"}')
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    summarize_article("Un article court et normal.", "Titre")
+    assert len(calls) == 1
+    assert summarize._TRUNCATION_MARKER not in calls[0]
+
+
+def test_summarize_article_raises_after_exhausting_truncation(monkeypatch):
+    def fake_complete(system, user, *, json=False):
+        raise ContextLengthExceededError(
+            "m: context length exceeded", limit=200000, requested=400000
+        )
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    with pytest.raises(ContextLengthExceededError):
+        summarize_article("mot " * 100000, "Titre")
+
+
+def test_looks_french_detects_language():
+    assert summarize._looks_french(
+        "Ceci est un résumé qui décrit les faits dans le détail."
+    )
+    assert not summarize._looks_french(
+        "This is an English summary describing the facts in detail and more."
+    )
+    assert summarize._looks_french("")
+
+
+def test_summarize_article_translates_non_french_output(monkeypatch):
+    calls: list[bool] = []
+
+    def fake_complete(system, user, *, json=False):
+        calls.append(json)
+        if json:
+            return _call_result(
+                '{"title": "An English title about the book", '
+                '"summary": "This is an English summary of the novel and its plot.", '
+                '"content_usable": true}'
+            )
+        if "summary_to_translate" in user:
+            return _call_result(
+                "Ceci est un résumé français du roman qui décrit les faits."
+            )
+        return _call_result("un titre français au sujet du roman")
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    result, call = summarize_article("English novel text", "Titre original")
+    assert summarize._looks_french(result.summary_markdown)
+    assert "résumé français" in result.summary_markdown
+    assert result.rewritten_title == "un titre français au sujet du roman"
+    # summarize call + summary translation + title translation
+    assert len(calls) == 3
+    # the translation calls' tokens are folded into the returned metrics
+    assert call.input_tokens > _call_result("x").input_tokens
+
+
+def test_summarize_article_skips_translation_when_already_french(monkeypatch):
+    calls: list[bool] = []
+
+    def fake_complete(system, user, *, json=False):
+        calls.append(json)
+        return _call_result(
+            '{"title": "un titre", '
+            '"summary": "Ceci est un résumé qui décrit les faits dans le détail.", '
+            '"content_usable": true}'
+        )
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    summarize_article("texte", "Titre")
+    assert calls == [True]  # only the summarize call, no translation pass
 
 
 def test_summarize_discussion_wraps_inputs_in_xml_tags(monkeypatch):

@@ -3,7 +3,89 @@ import re
 from dataclasses import dataclass
 from html import escape as _html_escape
 
-from app.llm import LLMCallResult, LLMError, complete
+import structlog
+
+from app.llm import ContextLengthExceededError, LLMCallResult, LLMError, complete
+
+log = structlog.get_logger()
+
+# Most fetched pages fit the model's ~200k-token window, but a few — full
+# novels (Accelerando), multi-hour transcripts — overflow it and the call
+# 400s, leaving a load-failure placeholder. Rather than pre-truncate every
+# article on a guessed char/token ratio, we send it whole and react only to
+# the provider's context-length 400, which reports the exact limit and the
+# requested token count. _shrink_to_fit cuts by that ratio (with margin) and
+# we retry, so a book-length page yields a summary of its head instead of
+# nothing, while large-but-fitting pages are never needlessly clipped.
+# Fraction of the reported limit to target on the retry. Truncation only ever
+# fires on book-length inputs (normal articles sit far under the window), and
+# the model's structured-French-output reliability degrades as the input nears
+# the ceiling — so we aim well below it, trading some coverage of a giant page
+# for a dependable summary rather than packing the window to 90%.
+_CONTEXT_TARGET_FRACTION = 0.6
+# One precise cut normally suffices; the extra rounds cover a provider that
+# reports no numbers (we halve blindly) or undershoots its own estimate.
+_MAX_TRUNCATION_RETRIES = 3
+_TRUNCATION_MARKER = "\n\n[…]"
+
+
+def _shrink_to_fit(text: str, exc: ContextLengthExceededError) -> str | None:
+    """Return ``text`` cut to fit the context window, or None if it can't shrink.
+
+    With both the limit and the requested token count, scale the text by
+    ``target / requested`` so the retry lands a safe margin under the limit;
+    without them, fall back to halving. Cuts on a word edge.
+    """
+    if exc.limit and exc.requested and exc.requested > exc.limit:
+        new_len = int(len(text) * exc.limit * _CONTEXT_TARGET_FRACTION / exc.requested)
+    else:
+        new_len = len(text) // 2
+    if new_len <= 0 or new_len >= len(text):
+        return None
+    head = text[:new_len]
+    cut = head.rfind(" ")
+    if cut > new_len - 200:
+        head = head[:cut]
+    return head.rstrip() + _TRUNCATION_MARKER
+
+
+# Function words that occur only in French, not in English. A real French
+# summary (one or two sentences plus bullets) hits several; an English one
+# hits none. Used to catch the LLM drifting to the source language on very
+# long inputs, where the system prompt's "écris en français" loses its grip.
+_FRENCH_MARKERS = frozenset(
+    {
+        "le", "la", "les", "une", "des", "du", "aux", "est", "sont", "été",
+        "que", "qui", "dont", "où", "pour", "dans", "avec", "par", "ne", "pas",
+        "cette", "ces", "ses", "leur", "mais", "comme", "selon", "ainsi",
+    }
+)
+_FR_WORD_RE = re.compile(r"[a-zàâäéèêëïîôöùûüç]+", re.IGNORECASE)
+
+
+def _looks_french(text: str) -> bool:
+    """True when ``text`` reads as French (or is too short to judge).
+
+    Real article summaries run dozens of words, always carrying several
+    markers; the drift we guard against produces a full English summary.
+    Below a handful of words the signal is unreliable, so we abstain
+    (return True) rather than translate a short, possibly-fine snippet.
+    """
+    words = _FR_WORD_RE.findall(text.lower())
+    if len(words) < 8:
+        return True
+    return sum(1 for w in set(words) if w in _FRENCH_MARKERS) >= 2
+
+
+def _merge_calls(base: LLMCallResult, extra: LLMCallResult) -> LLMCallResult:
+    """Fold a follow-up call's token/latency cost into the primary result."""
+    return LLMCallResult(
+        content=base.content,
+        model=base.model,
+        input_tokens=base.input_tokens + extra.input_tokens,
+        output_tokens=base.output_tokens + extra.output_tokens,
+        latency_ms=base.latency_ms + extra.latency_ms,
+    )
 
 
 def _esc(value: str) -> str:
@@ -67,6 +149,16 @@ uniquement par le titre traduit, sur une seule ligne.
 
 {_DEFENSIVE_INSTRUCTION}"""
 
+_SUMMARY_TRANSLATION_SYSTEM = f"""Tu reçois un résumé d'article rédigé en Markdown, \
+dans une langue qui n'est pas le français. Traduis-le fidèlement en français en \
+conservant exactement sa structure Markdown : la ou les phrases de synthèse \
+initiales, la ligne vide, puis les bullets préfixées par "- ". Ne résume pas \
+davantage, n'ajoute ni ne retire d'information. Si le texte est déjà en \
+français, réutilise-le tel quel. Réponds uniquement par le résumé traduit, sans \
+préfixe ni commentaire.
+
+{_DEFENSIVE_INSTRUCTION}"""
+
 _DISCUSSION_SYSTEM = f"""Tu synthétises en français une discussion Hacker News. Les \
 commentaires sont indentés selon le fil de réponse.
 
@@ -100,21 +192,55 @@ class ArticleSummary:
 
 
 def summarize_article(text: str, title: str) -> tuple[ArticleSummary, LLMCallResult]:
-    user = (
-        f"<original_title>\n{_esc(title)}\n</original_title>\n\n"
-        f"<content_to_summarize>\n{_esc(text)}\n</content_to_summarize>"
-    )
-    result = complete(_ARTICLE_SYSTEM, user, json=True)
-    rewritten, summary, content_usable = _parse_article_response(result.content)
-    summary = _sanitize_llm_markdown(summary)
-    return (
-        ArticleSummary(
-            rewritten_title=rewritten,
-            summary_markdown=summary,
-            content_usable=content_usable,
-        ),
-        result,
-    )
+    payload = text
+    last_exc: ContextLengthExceededError | None = None
+    for _ in range(_MAX_TRUNCATION_RETRIES + 1):
+        user = (
+            f"<original_title>\n{_esc(title)}\n</original_title>\n\n"
+            f"<content_to_summarize>\n{_esc(payload)}\n</content_to_summarize>"
+        )
+        try:
+            result = complete(_ARTICLE_SYSTEM, user, json=True)
+        except ContextLengthExceededError as exc:
+            last_exc = exc
+            shrunk = _shrink_to_fit(payload, exc)
+            if shrunk is None:
+                raise
+            log.info(
+                "article_truncated_for_context",
+                original_chars=len(payload),
+                kept_chars=len(shrunk),
+                limit=exc.limit,
+                requested=exc.requested,
+            )
+            payload = shrunk
+            continue
+        rewritten, summary, content_usable = _parse_article_response(result.content)
+        summary = _sanitize_llm_markdown(summary)
+        if content_usable and summary and not _looks_french(summary):
+            # On book-length inputs the model sometimes mirrors the source
+            # language instead of writing French. Translate the summary back,
+            # and the title with it since they drift together.
+            log.info("summary_language_guard_triggered", title=title)
+            translated, translate_call = translate_summary(summary)
+            summary = translated
+            result = _merge_calls(result, translate_call)
+            if rewritten:
+                new_title, title_call = translate_title(rewritten)
+                if new_title:
+                    rewritten = new_title
+                result = _merge_calls(result, title_call)
+        return (
+            ArticleSummary(
+                rewritten_title=rewritten,
+                summary_markdown=summary,
+                content_usable=content_usable,
+            ),
+            result,
+        )
+    # The loop only stays in it via the except branch, so last_exc is set here.
+    assert last_exc is not None
+    raise last_exc
 
 
 def translate_title(title: str) -> tuple[str | None, LLMCallResult]:
@@ -123,6 +249,14 @@ def translate_title(title: str) -> tuple[str | None, LLMCallResult]:
     raw = result.content.strip()
     translated = raw.splitlines()[0].strip() if raw else ""
     return (translated or None), result
+
+
+def translate_summary(markdown: str) -> tuple[str, LLMCallResult]:
+    """Translate a non-French article summary to French, keeping its Markdown."""
+    user = f"<summary_to_translate>\n{_esc(markdown)}\n</summary_to_translate>"
+    result = complete(_SUMMARY_TRANSLATION_SYSTEM, user)
+    translated = _sanitize_llm_markdown(result.content.strip())
+    return (translated or markdown), result
 
 
 def summarize_discussion(text: str, title: str) -> tuple[str, LLMCallResult]:

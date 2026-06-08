@@ -1,3 +1,4 @@
+import re
 import time
 from dataclasses import dataclass
 
@@ -17,6 +18,45 @@ class LLMError(RuntimeError):
 
 class AllModelsFailedError(LLMError):
     pass
+
+
+class ContextLengthExceededError(LLMError):
+    """Raised when a request overflows the model's context window.
+
+    Carries the limit and the requested token count parsed from the
+    provider's 400 body (either may be ``None`` when the wording changes),
+    so the caller can shrink its input by the exact ratio and retry.
+    """
+
+    def __init__(self, message: str, *, limit: int | None, requested: int | None) -> None:
+        super().__init__(message)
+        self.limit = limit
+        self.requested = requested
+
+
+_CONTEXT_LIMIT_RE = re.compile(r"maximum context length is\s+([\d,]+)", re.IGNORECASE)
+_CONTEXT_REQUESTED_RE = re.compile(r"requested about\s+([\d,]+)", re.IGNORECASE)
+
+
+def _context_length_error(model: str, body: str) -> ContextLengthExceededError | None:
+    """Return a ContextLengthExceededError if ``body`` is a context-window 400.
+
+    The limit prefers the model's known context window (an intrinsic property)
+    and falls back to the number parsed from the message, so a change in the
+    provider's error wording cannot blind the truncation retry.
+    """
+    lowered = body.lower()
+    if "context length" not in lowered and "context_length" not in lowered:
+        return None
+    limit = _CONTEXT_LIMIT_RE.search(body)
+    requested = _CONTEXT_REQUESTED_RE.search(body)
+    known_limit = get_settings().model_context_windows.get(model)
+    parsed_limit = int(limit.group(1).replace(",", "")) if limit else None
+    return ContextLengthExceededError(
+        f"{model}: context length exceeded",
+        limit=known_limit or parsed_limit,
+        requested=int(requested.group(1).replace(",", "")) if requested else None,
+    )
 
 
 @dataclass
@@ -50,6 +90,9 @@ def complete(system_prompt: str, user_prompt: str, *, json: bool = False) -> LLM
             log.warning("llm_retry", model=model, reason=str(exc))
             continue
         except httpx.HTTPStatusError as exc:
+            context_error = _context_length_error(model, exc.response.text)
+            if context_error is not None:
+                raise context_error from exc
             raise LLMError(f"{model}: {exc.response.status_code} {exc.response.text}") from exc
     raise AllModelsFailedError(f"all models failed: {last_error}")
 

@@ -39,6 +39,15 @@ _SUBSTACK_HOST_SUFFIX = ".substack.com"
 _SUBSTACK_PATH_RE = re.compile(r"^/p/(?P<slug>[^/]+)/?$")
 _WAYBACK_API = "https://archive.org/wayback/available"
 _READER_API = "https://r.jina.ai/"
+_ARCHIVE_TODAY_NEWEST = "https://archive.ph/newest/"
+# r.jina.ai answers HTTP 200 even when the target page is blocked or gone,
+# embedding the failure in its own ``Warning:`` lines and leaving the
+# ``Markdown Content:`` section empty. These markers identify that case.
+_READER_SOFT_ERROR_MARKERS = (
+    "Warning: Target URL returned error",
+    "This page maybe requiring CAPTCHA",
+)
+_READER_CONTENT_MARKER = "Markdown Content:"
 # Inserted after the timestamp segment of a Wayback snapshot URL, the
 # ``id_`` flag asks archive.org to return the raw archived response
 # without rewriting links or injecting the toolbar — exactly what
@@ -149,6 +158,9 @@ def fetch_article(url: str) -> ArticleContent:
         reader = _fetch_via_reader(url)
         if reader is not None:
             return _with_fallback_image(reader, result.image_url)
+        archived = _fetch_from_archive_today(url)
+        if archived is not None:
+            return _with_fallback_image(archived, result.image_url)
     return result
 
 
@@ -240,6 +252,13 @@ def _fetch_article_via_http(url: str) -> ArticleContent:
             text=extracted,
             source=ContentSource.EXTRACTED,
             image_url=image_url,
+        )
+    if _is_js_app_shell(html_for_extraction):
+        return ArticleContent(
+            text="",
+            source=ContentSource.JS_REQUIRED,
+            image_url=image_url,
+            failure_reason="JavaScript required",
         )
     return ArticleContent(
         text="",
@@ -502,8 +521,65 @@ def _fetch_via_reader(url: str) -> ArticleContent | None:
     body = response.text.strip()
     if not body:
         return None
+    if _is_reader_soft_error(body):
+        log.info("reader_soft_error", url=url)
+        return None
     log.info("article_fetch_via_reader", url=url)
     return ArticleContent(text=body, source=ContentSource.EXTRACTED)
+
+
+def _is_reader_soft_error(body: str) -> bool:
+    """True when r.jina.ai returned an error notice instead of page content.
+
+    On a blocked or missing target (403/404/CAPTCHA) the reader still answers
+    HTTP 200, surfacing the failure in its ``Warning:`` lines and leaving the
+    ``Markdown Content:`` section empty. Treat that as a miss so the caller
+    keeps the original failure rather than handing a fake body to the LLM.
+    """
+    if any(marker in body for marker in _READER_SOFT_ERROR_MARKERS):
+        return True
+    idx = body.find(_READER_CONTENT_MARKER)
+    return idx != -1 and not body[idx + len(_READER_CONTENT_MARKER):].strip()
+
+
+def _fetch_from_archive_today(url: str) -> ArticleContent | None:
+    """Look up the latest archive.today snapshot of ``url`` and extract it.
+
+    archive.today (reachable as archive.ph) is the community archive of
+    record for paywalled news — nytimes.com, reuters.com, economist.com —
+    that Wayback often lacks or that block archive.org outright. The
+    ``/newest/<url>`` endpoint 302-redirects to the most recent snapshot,
+    which ``_http_get_with_proxy_fallback`` follows transparently; the proxy
+    retry matters because archive.today blocks datacenter IPs (GitHub Actions
+    runners included).
+
+    Returns ``None`` for every miss (disabled, no snapshot, snapshot fetch
+    error, DDoS-Guard interstitial, empty extraction, JS-required notice,
+    cookie banner) so the caller keeps the original failure result.
+    """
+    settings = get_settings()
+    if not settings.archive_today_enabled:
+        return None
+    response, _ = _http_get_with_proxy_fallback(f"{_ARCHIVE_TODAY_NEWEST}{url}")
+    if response is None:
+        return None
+    html = response.text
+    if _is_cloudflare_challenge(html):
+        return None
+    extracted = _extract_main_content(html)
+    if not extracted:
+        return None
+    if _is_js_required_notice(extracted, html):
+        return None
+    if _is_cookie_banner_only(extracted):
+        return None
+    image_url = _extract_image_url(html, url)
+    log.info("article_fetch_via_archive_today", url=url)
+    return ArticleContent(
+        text=extracted,
+        source=ContentSource.EXTRACTED,
+        image_url=image_url,
+    )
 
 
 def _extract_youtube_video_id(url: str) -> str | None:
@@ -1031,10 +1107,16 @@ def _is_cloudflare_challenge(html: str) -> bool:
     alone is unambiguous enough — they don't appear together in real
     publisher pages. Tested against the body curl returned for
     epicfurious.com (article HN id 48109519).
+
+    The third marker is Cloudflare's legacy CAPTCHA interstitial, which
+    archive.today (archive.ph) serves to datacenter IPs: it is sometimes
+    returned with HTTP 200, so without this guard ``_extract_main_content``
+    would treat the CAPTCHA copy as the archived article body.
     """
     return (
         "_cf_chl_opt" in html
         or "Enable JavaScript and cookies to continue" in html
+        or "Completing the CAPTCHA proves you are a human" in html
     )
 
 
@@ -1066,6 +1148,37 @@ def _is_cookie_banner_only(extracted: str) -> bool:
     """
     lowered = extracted.lower()
     return any(phrase in lowered for phrase in _COOKIE_BANNER_PHRASES)
+
+
+def _is_js_app_shell(html: str) -> bool:
+    """True when the page is a client-rendered app shell with no static text.
+
+    A single-page app ships an essentially empty ``<body>`` — a mount node
+    like ``<main></main>`` or ``<div id="root"></div>`` plus a bundle
+    ``<script>`` — and paints everything client-side (clickclickclick.click is
+    the canonical case). trafilatura then extracts nothing, but the honest
+    reason is "JavaScript required", not a generic extraction miss. Detected
+    from structure, not length: the ``<body>`` carries at least one
+    ``<script>`` and no human-readable text outside
+    ``<script>``/``<style>``/``<noscript>``.
+    """
+    try:
+        tree = etree.HTML(html)
+    except (ValueError, etree.XMLSyntaxError):
+        return False
+    if tree is None:
+        return False
+    bodies = tree.xpath("//body")
+    if not bodies:
+        return False
+    body = bodies[0]
+    if not body.xpath(".//script"):
+        return False
+    visible = body.xpath(
+        ".//text()[not(ancestor::script) and not(ancestor::style)"
+        " and not(ancestor::noscript)]"
+    )
+    return not any(t.strip() for t in visible)
 
 
 def _is_js_required_notice(extracted: str, html: str) -> bool:

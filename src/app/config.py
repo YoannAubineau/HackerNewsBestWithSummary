@@ -19,6 +19,15 @@ class Settings(BaseSettings):
         "nvidia/nemotron-3-super-120b-a12b:free",
         "meta-llama/llama-3.3-70b-instruct:free",
     )
+    # Known context window (tokens) per model id. Used to size the truncation
+    # retry without depending on the provider's context-length 400 spelling the
+    # limit out: the number is an intrinsic model property, while the error
+    # wording is an OpenRouter detail that can change. Only models we are sure
+    # of are listed; an unlisted model falls back to the limit parsed from the
+    # message, then to blind halving.
+    model_context_windows: dict[str, int] = {
+        "anthropic/claude-haiku-4.5": 200_000,
+    }
 
     source_feed_url: str = "https://hnrss.org/best"
     feed_self_url: str = "http://localhost/feed.fr.xml"
@@ -88,6 +97,16 @@ class Settings(BaseSettings):
     # and soft anti-bot blocks that defeat the direct + Wayback paths. No
     # auth required on the free tier. Set to False to disable.
     reader_enabled: bool = True
+
+    # archive.today (reachable as archive.ph) fallback. Tried last, after both
+    # Wayback and the reader miss: archive.today is the community archive of
+    # record for paywalled news (nytimes.com, reuters.com, economist.com) that
+    # Wayback often lacks or that block archive.org outright. Its
+    # ``/newest/<url>`` endpoint redirects to the most recent snapshot. The
+    # service is hostile to datacenter IPs, so the request goes through the
+    # Webshare proxy retry when configured. No auth required. Set to False to
+    # disable.
+    archive_today_enabled: bool = True
 
     artifacts_dir: Path = Path("artifacts")
     articles_dir: Path = Path("articles")
