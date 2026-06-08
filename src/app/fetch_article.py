@@ -253,6 +253,13 @@ def _fetch_article_via_http(url: str) -> ArticleContent:
             source=ContentSource.EXTRACTED,
             image_url=image_url,
         )
+    if _is_js_app_shell(html_for_extraction):
+        return ArticleContent(
+            text="",
+            source=ContentSource.JS_REQUIRED,
+            image_url=image_url,
+            failure_reason="JavaScript required",
+        )
     return ArticleContent(
         text="",
         source=ContentSource.FEED_FALLBACK,
@@ -1141,6 +1148,37 @@ def _is_cookie_banner_only(extracted: str) -> bool:
     """
     lowered = extracted.lower()
     return any(phrase in lowered for phrase in _COOKIE_BANNER_PHRASES)
+
+
+def _is_js_app_shell(html: str) -> bool:
+    """True when the page is a client-rendered app shell with no static text.
+
+    A single-page app ships an essentially empty ``<body>`` — a mount node
+    like ``<main></main>`` or ``<div id="root"></div>`` plus a bundle
+    ``<script>`` — and paints everything client-side (clickclickclick.click is
+    the canonical case). trafilatura then extracts nothing, but the honest
+    reason is "JavaScript required", not a generic extraction miss. Detected
+    from structure, not length: the ``<body>`` carries at least one
+    ``<script>`` and no human-readable text outside
+    ``<script>``/``<style>``/``<noscript>``.
+    """
+    try:
+        tree = etree.HTML(html)
+    except (ValueError, etree.XMLSyntaxError):
+        return False
+    if tree is None:
+        return False
+    bodies = tree.xpath("//body")
+    if not bodies:
+        return False
+    body = bodies[0]
+    if not body.xpath(".//script"):
+        return False
+    visible = body.xpath(
+        ".//text()[not(ancestor::script) and not(ancestor::style)"
+        " and not(ancestor::noscript)]"
+    )
+    return not any(t.strip() for t in visible)
 
 
 def _is_js_required_notice(extracted: str, html: str) -> bool:

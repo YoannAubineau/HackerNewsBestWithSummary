@@ -420,6 +420,50 @@ def test_fetch_article_detects_js_required_noscript(httpx_mock):
     assert result.text == ""
 
 
+def test_is_js_app_shell_detects_spa_shell():
+    shell = (
+        "<html><head><title>Click</title></head>"
+        "<body><main></main><script src='bundle.js'></script></body></html>"
+    )
+    assert fetch_article_module._is_js_app_shell(shell)
+
+
+def test_is_js_app_shell_false_when_body_has_text():
+    page = (
+        "<html><body><p>Du vrai texte d'article ici.</p>"
+        "<script src='a.js'></script></body></html>"
+    )
+    assert not fetch_article_module._is_js_app_shell(page)
+
+
+def test_is_js_app_shell_false_without_script():
+    assert not fetch_article_module._is_js_app_shell(
+        "<html><body><main></main></body></html>"
+    )
+
+
+def test_fetch_article_reports_js_required_for_app_shell(httpx_mock):
+    # An SPA shell: empty <main> mount + bundle script, no static prose and
+    # no <noscript>. trafilatura extracts nothing; the reason must say JS,
+    # not the generic "extraction failed". (clickclickclick.click in the wild.)
+    shell = (
+        "<html><head><title>Click</title></head>"
+        "<body><main></main>"
+        "<script type='text/javascript' src='bundle.js'></script>"
+        "</body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://clickclickclick.example/",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=shell,
+    )
+    result = fetch_article("https://clickclickclick.example/")
+    assert result.source == ContentSource.JS_REQUIRED
+    assert result.failure_reason == "JavaScript required"
+    assert result.text == ""
+
+
 def test_fetch_article_captures_image_url(httpx_mock):
     html = """
     <html><head>
