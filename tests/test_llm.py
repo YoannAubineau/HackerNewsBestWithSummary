@@ -2,7 +2,46 @@ import json as json_mod
 
 import pytest
 
-from app.llm import AllModelsFailedError, LLMError, complete
+from app.llm import (
+    AllModelsFailedError,
+    ContextLengthExceededError,
+    LLMError,
+    complete,
+)
+
+
+def test_complete_raises_context_error_on_overflow(httpx_mock, isolated_settings):
+    body = json_mod.dumps(
+        {
+            "error": {
+                "message": (
+                    "This endpoint's maximum context length is 200000 tokens. "
+                    "However, you requested about 222911 tokens (222911 of text input)."
+                ),
+                "code": 400,
+            }
+        }
+    )
+    httpx_mock.add_response(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        status_code=400,
+        text=body,
+    )
+    with pytest.raises(ContextLengthExceededError) as exc_info:
+        complete("system", "user")
+    assert exc_info.value.limit == 200000
+    assert exc_info.value.requested == 222911
+
+
+def test_complete_raises_generic_error_on_other_400(httpx_mock, isolated_settings):
+    httpx_mock.add_response(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        status_code=400,
+        text='{"error": {"message": "invalid model"}}',
+    )
+    with pytest.raises(LLMError) as exc_info:
+        complete("system", "user")
+    assert not isinstance(exc_info.value, ContextLengthExceededError)
 
 
 def _openrouter_response(

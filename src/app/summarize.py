@@ -3,7 +3,45 @@ import re
 from dataclasses import dataclass
 from html import escape as _html_escape
 
-from app.llm import LLMCallResult, LLMError, complete
+import structlog
+
+from app.llm import ContextLengthExceededError, LLMCallResult, LLMError, complete
+
+log = structlog.get_logger()
+
+# Most fetched pages fit the model's ~200k-token window, but a few — full
+# novels (Accelerando), multi-hour transcripts — overflow it and the call
+# 400s, leaving a load-failure placeholder. Rather than pre-truncate every
+# article on a guessed char/token ratio, we send it whole and react only to
+# the provider's context-length 400, which reports the exact limit and the
+# requested token count. _shrink_to_fit cuts by that ratio (with margin) and
+# we retry, so a book-length page yields a summary of its head instead of
+# nothing, while large-but-fitting pages are never needlessly clipped.
+_CONTEXT_TARGET_FRACTION = 0.9
+# One precise cut normally suffices; the extra rounds cover a provider that
+# reports no numbers (we halve blindly) or undershoots its own estimate.
+_MAX_TRUNCATION_RETRIES = 3
+_TRUNCATION_MARKER = "\n\n[…]"
+
+
+def _shrink_to_fit(text: str, exc: ContextLengthExceededError) -> str | None:
+    """Return ``text`` cut to fit the context window, or None if it can't shrink.
+
+    With both the limit and the requested token count, scale the text by
+    ``target / requested`` so the retry lands a safe margin under the limit;
+    without them, fall back to halving. Cuts on a word edge.
+    """
+    if exc.limit and exc.requested and exc.requested > exc.limit:
+        new_len = int(len(text) * exc.limit * _CONTEXT_TARGET_FRACTION / exc.requested)
+    else:
+        new_len = len(text) // 2
+    if new_len <= 0 or new_len >= len(text):
+        return None
+    head = text[:new_len]
+    cut = head.rfind(" ")
+    if cut > new_len - 200:
+        head = head[:cut]
+    return head.rstrip() + _TRUNCATION_MARKER
 
 
 def _esc(value: str) -> str:
@@ -100,21 +138,42 @@ class ArticleSummary:
 
 
 def summarize_article(text: str, title: str) -> tuple[ArticleSummary, LLMCallResult]:
-    user = (
-        f"<original_title>\n{_esc(title)}\n</original_title>\n\n"
-        f"<content_to_summarize>\n{_esc(text)}\n</content_to_summarize>"
-    )
-    result = complete(_ARTICLE_SYSTEM, user, json=True)
-    rewritten, summary, content_usable = _parse_article_response(result.content)
-    summary = _sanitize_llm_markdown(summary)
-    return (
-        ArticleSummary(
-            rewritten_title=rewritten,
-            summary_markdown=summary,
-            content_usable=content_usable,
-        ),
-        result,
-    )
+    payload = text
+    last_exc: ContextLengthExceededError | None = None
+    for _ in range(_MAX_TRUNCATION_RETRIES + 1):
+        user = (
+            f"<original_title>\n{_esc(title)}\n</original_title>\n\n"
+            f"<content_to_summarize>\n{_esc(payload)}\n</content_to_summarize>"
+        )
+        try:
+            result = complete(_ARTICLE_SYSTEM, user, json=True)
+        except ContextLengthExceededError as exc:
+            last_exc = exc
+            shrunk = _shrink_to_fit(payload, exc)
+            if shrunk is None:
+                raise
+            log.info(
+                "article_truncated_for_context",
+                original_chars=len(payload),
+                kept_chars=len(shrunk),
+                limit=exc.limit,
+                requested=exc.requested,
+            )
+            payload = shrunk
+            continue
+        rewritten, summary, content_usable = _parse_article_response(result.content)
+        summary = _sanitize_llm_markdown(summary)
+        return (
+            ArticleSummary(
+                rewritten_title=rewritten,
+                summary_markdown=summary,
+                content_usable=content_usable,
+            ),
+            result,
+        )
+    # The loop only stays in it via the except branch, so last_exc is set here.
+    assert last_exc is not None
+    raise last_exc
 
 
 def translate_title(title: str) -> tuple[str | None, LLMCallResult]:

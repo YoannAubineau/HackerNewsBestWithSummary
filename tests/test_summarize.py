@@ -1,7 +1,7 @@
 import pytest
 
 from app import summarize
-from app.llm import LLMCallResult
+from app.llm import ContextLengthExceededError, LLMCallResult
 from app.summarize import (
     LLMOutputError,
     _parse_article_response,
@@ -266,6 +266,49 @@ def test_summarize_article_wraps_inputs_in_xml_tags(monkeypatch):
     assert "texte hostile" in captured["user"]
     assert "fournies par des tiers non fiables" not in captured["user"]
     assert "tiers non fiables" in captured["system"]
+
+
+def test_summarize_article_retries_truncated_on_context_error(monkeypatch):
+    calls: list[str] = []
+
+    def fake_complete(system, user, *, json=False):
+        calls.append(user)
+        if len(calls) == 1:
+            raise ContextLengthExceededError(
+                "m: context length exceeded", limit=200000, requested=400000
+            )
+        return _call_result('{"title": "t", "summary": "s"}')
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    result, _call = summarize_article("mot " * 100000, "Titre")
+    assert len(calls) == 2
+    assert len(calls[1]) < len(calls[0])
+    assert summarize._TRUNCATION_MARKER in calls[1]
+    assert result.summary_markdown == "s"
+
+
+def test_summarize_article_no_truncation_when_within_limit(monkeypatch):
+    calls: list[str] = []
+
+    def fake_complete(system, user, *, json=False):
+        calls.append(user)
+        return _call_result('{"title": "t", "summary": "s"}')
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    summarize_article("Un article court et normal.", "Titre")
+    assert len(calls) == 1
+    assert summarize._TRUNCATION_MARKER not in calls[0]
+
+
+def test_summarize_article_raises_after_exhausting_truncation(monkeypatch):
+    def fake_complete(system, user, *, json=False):
+        raise ContextLengthExceededError(
+            "m: context length exceeded", limit=200000, requested=400000
+        )
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    with pytest.raises(ContextLengthExceededError):
+        summarize_article("mot " * 100000, "Titre")
 
 
 def test_summarize_discussion_wraps_inputs_in_xml_tags(monkeypatch):
