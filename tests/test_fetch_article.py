@@ -1637,6 +1637,177 @@ def test_fetch_article_reader_keeps_direct_image(httpx_mock, isolated_settings):
     assert result.image_url == "https://spa.example/cover.png"
 
 
+_READER_SOFT_ERROR_TEXT = (
+    "Title: paywalled.example\n\n"
+    "URL Source: https://paywalled.example/article\n\n"
+    "Warning: Target URL returned error 403: Forbidden\n"
+    "Warning: This page maybe requiring CAPTCHA, please make sure you are"
+    " authorized to access this page.\n\n"
+    "Markdown Content:"
+)
+
+
+def test_fetch_article_reader_rejects_soft_error(httpx_mock, isolated_settings):
+    isolated_settings.reader_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://r.jina.ai/https://paywalled.example/article",
+        status_code=200,
+        headers={"content-type": "text/plain; charset=utf-8"},
+        text=_READER_SOFT_ERROR_TEXT,
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.FEED_FALLBACK
+    assert result.text == ""
+
+
+def test_fetch_article_reader_rejects_empty_markdown(httpx_mock, isolated_settings):
+    isolated_settings.reader_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://r.jina.ai/https://paywalled.example/article",
+        status_code=200,
+        headers={"content-type": "text/plain; charset=utf-8"},
+        text=(
+            "Title: example\n\n"
+            "URL Source: https://paywalled.example/article\n\n"
+            "Markdown Content:\n   "
+        ),
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+_ARCHIVE_TODAY_SNAPSHOT_HTML = (
+    "<html><head><title>Archived</title></head><body>"
+    "<article>"
+    "<h1>Le titre</h1>"
+    "<p>Le contenu archivé sur archive.today, avec assez de phrases"
+    " substantielles pour passer le seuil de précision de trafilatura sans"
+    " difficulté.</p>"
+    "<p>Un second paragraphe avec du contenu utile et concret pour assurer"
+    " la qualité de l'extraction par l'outil.</p>"
+    "</article>"
+    "</body></html>"
+)
+
+
+def test_fetch_article_archive_today_recovers_after_wayback_and_reader_miss(
+    httpx_mock, isolated_settings
+):
+    # Wayback and reader are off by default in the fixture, so archive.today
+    # is the only remaining fallback after the direct 403.
+    isolated_settings.archive_today_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://archive.ph/newest/https://paywalled.example/article",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=_ARCHIVE_TODAY_SNAPSHOT_HTML,
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.EXTRACTED
+    assert "archivé sur archive.today" in result.text
+
+
+def test_fetch_article_archive_today_disabled_skips_call(httpx_mock, isolated_settings):
+    isolated_settings.archive_today_enabled = False
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    # No mock for archive.ph — if the code attempted it, httpx_mock would
+    # error on the unmocked request.
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_archive_today_bails_when_no_snapshot(httpx_mock, isolated_settings):
+    isolated_settings.archive_today_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://archive.ph/newest/https://paywalled.example/article",
+        status_code=404,
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_archive_today_bails_on_ddos_guard(httpx_mock, isolated_settings):
+    isolated_settings.archive_today_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://archive.ph/newest/https://paywalled.example/article",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text="<html><body>Enable JavaScript and cookies to continue</body></html>",
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_archive_today_bails_on_captcha_200(httpx_mock, isolated_settings):
+    # archive.ph sometimes serves its Cloudflare CAPTCHA interstitial with a
+    # 200, not a 429 — without the guard its copy would become the "article".
+    isolated_settings.archive_today_enabled = True
+    httpx_mock.add_response(
+        url="https://paywalled.example/article",
+        status_code=403,
+    )
+    httpx_mock.add_response(
+        url="https://archive.ph/newest/https://paywalled.example/article",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=(
+            "<html><body><p>Completing the CAPTCHA proves you are a human and"
+            " gives you temporary access to the web property.</p></body></html>"
+        ),
+    )
+    result = fetch_article("https://paywalled.example/article")
+    assert result.source == ContentSource.FEED_FALLBACK
+
+
+def test_fetch_article_archive_today_keeps_direct_image(httpx_mock, isolated_settings):
+    isolated_settings.archive_today_enabled = True
+    js_only_html = (
+        "<html><head>"
+        '<meta property="og:image" content="https://spa.example/cover.png">'
+        "</head><body>"
+        "<noscript>You need to enable JavaScript to run this app.</noscript>"
+        "</body></html>"
+    )
+    httpx_mock.add_response(
+        url="https://spa.example/route",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=js_only_html,
+    )
+    httpx_mock.add_response(
+        url="https://archive.ph/newest/https://spa.example/route",
+        status_code=200,
+        headers={"content-type": "text/html; charset=utf-8"},
+        text=_ARCHIVE_TODAY_SNAPSHOT_HTML,
+    )
+    result = fetch_article("https://spa.example/route")
+    assert result.source == ContentSource.EXTRACTED
+    assert result.image_url == "https://spa.example/cover.png"
+
+
 def test_fetch_article_substack_falls_through_on_feed_http_error(httpx_mock):
     httpx_mock.add_response(
         url="https://example.substack.com/feed",

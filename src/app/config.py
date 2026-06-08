@@ -89,6 +89,16 @@ class Settings(BaseSettings):
     # auth required on the free tier. Set to False to disable.
     reader_enabled: bool = True
 
+    # archive.today (reachable as archive.ph) fallback. Tried last, after both
+    # Wayback and the reader miss: archive.today is the community archive of
+    # record for paywalled news (nytimes.com, reuters.com, economist.com) that
+    # Wayback often lacks or that block archive.org outright. Its
+    # ``/newest/<url>`` endpoint redirects to the most recent snapshot. The
+    # service is hostile to datacenter IPs, so the request goes through the
+    # Webshare proxy retry when configured. No auth required. Set to False to
+    # disable.
+    archive_today_enabled: bool = True
+
     artifacts_dir: Path = Path("artifacts")
     articles_dir: Path = Path("articles")
 

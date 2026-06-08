@@ -22,5 +22,8 @@ def isolated_settings(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     # Same rationale as wayback above: tests opt in to the reader fallback
     # explicitly so existing failure-path tests don't have to mock r.jina.ai.
     settings.reader_enabled = False
+    # Same rationale: tests opt in to the archive.today fallback explicitly so
+    # existing failure-path tests don't have to mock archive.ph.
+    settings.archive_today_enabled = False
     yield settings
     config_module.reset_settings()
