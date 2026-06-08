@@ -1,32 +1,39 @@
 ---
 article_fetched_at: '2026-06-04T12:59:26.557407Z'
 attempts: 0
-content_source: feed_fallback
+content_source: extracted
 discussion_comment_count: 293
 discussion_fetched_at: '2026-06-04T12:59:18.481733Z'
 error: null
 guid: https://news.ycombinator.com/item?id=48382052
 hn_item_id: 48382052
 hn_url: https://news.ycombinator.com/item?id=48382052
+image_url: https://www.science.org/cms/asset/64aeeedb-e746-4b6c-9f23-cb969b8b07a1/_20260602_on_ai-math.jpg
 is_ask_or_show_hn: false
-llm_input_tokens: 30104
-llm_latency_ms: 10952
+llm_input_tokens: 31459
+llm_latency_ms: 15037
 llm_models_used:
 - anthropic/claude-4.5-haiku-20251001
-llm_output_tokens: 728
+llm_output_tokens: 1155
 our_published_at: '2026-06-04T12:21:18Z'
-rewritten_title: les mathématiciens lancent un avertissement alors que l'IA progresse
-  rapidement
+rewritten_title: Mathématiciens lancent un appel face aux avancées rapides de l'intelligence
+  artificielle
 source_published_at: '2026-06-03T10:05:48Z'
 status: summarized
-summarized_at: '2026-06-04T13:00:43.231023Z'
+summarized_at: '2026-06-08T00:01:28.469312Z'
 title: Mathematicians issue warning as AI rapidly gains ground
 url: https://www.science.org/content/article/mathematicians-issue-warning-ai-rapidly-gains-ground
 ---
 
 ## Résumé de l'article
 
-(unable to load content)
+Seize spécialistes en mathématiques ont publié la Déclaration de Leiden sur l'intelligence artificielle et les mathématiques, un manifeste d'11 pages avertissant que l'automatisation non régulée menace à la fois la pratique des mathématiques et les valeurs qui la fondent. L'IA a récemment résolu des conjectures anciennes et devient un outil majeur en recherche mathématique, mais les auteurs craignent que cette évolution compromette la nature collaborative et créative de la discipline.
+
+- Le document cautions que l'IA pourrait submerger les systèmes d'évaluation par des travaux de faible qualité, compliquer l'attribution des découvertes, et désavantager les chercheurs refusant d'utiliser ces outils
+- Les auteurs soulignent que la logique commerciale de l'industrie technologique entre en conflit avec les valeurs fondamentales des mathématiques
+- Des préoccupations éthiques sont soulevées quant à l'utilisation des travaux mathématiques pour entraîner des systèmes d'IA militaires et de surveillance
+- La déclaration, endossée par l'Union mathématique internationale, est ouverte à la signature et sera débattue au Congrès international des mathématiciens de Philadelphie le mois prochain
+- Cet appel intervient alors que les gouvernements prennent davantage intérêt à la régulation des systèmes d'IA
 
 ## Discussion sur Hacker News (293 commentaires)
 
