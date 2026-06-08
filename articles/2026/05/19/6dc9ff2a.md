@@ -1,8 +1,8 @@
 ---
 article_fetched_at: '2026-05-19T05:19:28.215282Z'
 attempts: 0
-content_failure_reason: extraction failed
-content_source: feed_fallback
+content_failure_reason: JavaScript required
+content_source: js_required
 discussion_comment_count: 56
 discussion_fetched_at: '2026-05-19T05:19:25.958524Z'
 error: null
@@ -27,7 +27,7 @@ url: https://clickclickclick.click/
 
 ## Résumé de l'article
 
-(unable to load content: extraction failed)
+(unable to load content: JavaScript required)
 
 ## Discussion sur Hacker News (56 commentaires)
 
