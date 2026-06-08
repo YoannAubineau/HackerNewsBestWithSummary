@@ -69,11 +69,15 @@ def clear_sidecars(article_path: Path) -> None:
         sibling.unlink(missing_ok=True)
 
 
+def _write_article_file(path: Path, article: Article, body: str) -> None:
+    post = frontmatter.Post(body, **_serialize_metadata(article))
+    path.write_text(frontmatter.dumps(post) + "\n", encoding="utf-8")
+
+
 def save(article: Article, body: str = "") -> Path:
     path = path_for(article.guid, article.our_published_at)
     path.parent.mkdir(parents=True, exist_ok=True)
-    post = frontmatter.Post(body, **_serialize_metadata(article))
-    path.write_text(frontmatter.dumps(post) + "\n", encoding="utf-8")
+    _write_article_file(path, article, body)
     return path
 
 
@@ -99,8 +103,7 @@ def move_to_failed(path: Path, article: Article, body: str) -> Path:
     article.status = Status.FAILED
     dest = path_for(article.guid, article.our_published_at, failed=True)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    post = frontmatter.Post(body, **_serialize_metadata(article))
-    dest.write_text(frontmatter.dumps(post) + "\n", encoding="utf-8")
+    _write_article_file(dest, article, body)
     path.unlink(missing_ok=True)
     return dest
 

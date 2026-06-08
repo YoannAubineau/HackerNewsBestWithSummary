@@ -1,7 +1,6 @@
 import re
 from dataclasses import dataclass
 from difflib import SequenceMatcher
-from html import unescape as html_unescape
 from html.parser import HTMLParser
 from urllib.parse import parse_qs, quote, urljoin, urlparse
 
@@ -12,10 +11,11 @@ import structlog
 import trafilatura
 from lxml import etree  # pyright: ignore[reportAttributeAccessIssue]
 from youtube_transcript_api import YouTubeTranscriptApi
-from youtube_transcript_api.proxies import WebshareProxyConfig
 
 from app.config import get_settings
+from app.html_text import strip_html_preserving_paragraphs
 from app.models import ContentSource
+from app.proxy import webshare_proxy_config
 
 log = structlog.get_logger()
 
@@ -57,12 +57,6 @@ _GITHUB_HOSTS = {"github.com"}
 _GITHUB_PR_ISSUE_PATH_RE = re.compile(
     r"^/(?P<owner>[^/]+)/(?P<repo>[^/]+)/(?P<kind>pull|issues)/(?P<num>\d+)(?:/.*)?$"
 )
-_HTML_BLOCK_BREAK_RE = re.compile(
-    r"</?(p|div|pre|blockquote|li)\s*>", re.IGNORECASE
-)
-_HTML_LINE_BREAK_RE = re.compile(r"<br\s*/?>", re.IGNORECASE)
-_HTML_TAG_RE = re.compile(r"<[^>]+>")
-_BLANK_LINES_RE = re.compile(r"\n{3,}")
 
 
 @dataclass
@@ -402,21 +396,16 @@ def _http_get_with_proxy_fallback(url: str) -> tuple[httpx.Response | None, str 
         response.raise_for_status()
         return response, None
     except httpx.HTTPError as direct_exc:
-        if not (
-            settings.webshare_proxy_username and settings.webshare_proxy_password
-        ):
+        proxy_config = webshare_proxy_config()
+        if proxy_config is None:
             return None, _classify_http_failure(direct_exc)
-        proxy_url = WebshareProxyConfig(
-            proxy_username=settings.webshare_proxy_username,
-            proxy_password=settings.webshare_proxy_password,
-        ).url
         try:
             response = httpx.get(
                 url,
                 timeout=settings.http_timeout,
                 headers=headers,
                 follow_redirects=True,
-                proxy=proxy_url,
+                proxy=proxy_config.url,
             )
             response.raise_for_status()
         except httpx.HTTPError as proxy_exc:
@@ -605,15 +594,8 @@ def _extract_youtube_video_id(url: str) -> str | None:
 
 
 def _fetch_youtube_transcript(video_id: str) -> str | None:
-    settings = get_settings()
-    proxy_config = None
-    if settings.webshare_proxy_username and settings.webshare_proxy_password:
-        proxy_config = WebshareProxyConfig(
-            proxy_username=settings.webshare_proxy_username,
-            proxy_password=settings.webshare_proxy_password,
-        )
     try:
-        api = YouTubeTranscriptApi(proxy_config=proxy_config)
+        api = YouTubeTranscriptApi(proxy_config=webshare_proxy_config())
         fetched = api.fetch(video_id, languages=_TRANSCRIPT_LANGUAGES)
     except Exception as exc:  # noqa: BLE001
         log.warning(
@@ -906,7 +888,7 @@ def _fetch_mastodon_note(
         return None
     if not isinstance(payload, dict):
         return None
-    body = _strip_html_text(payload.get("content") or "")
+    body = strip_html_preserving_paragraphs(payload.get("content") or "")
     if not body:
         return None
     image_url = _first_mastodon_image(payload)
@@ -936,7 +918,7 @@ def _fetch_mastodon_rest_status(
         return None
     if not isinstance(payload, dict):
         return None
-    body = _strip_html_text(payload.get("content") or "")
+    body = strip_html_preserving_paragraphs(payload.get("content") or "")
     if not body:
         return None
     image_url = _first_mastodon_rest_image(payload)
@@ -1058,20 +1040,6 @@ def _first_mastodon_image(payload: dict) -> str | None:
             if isinstance(href, str) and href:
                 return href
     return None
-
-
-def _strip_html_text(text: str) -> str:
-    """Strip HTML tags from ActivityPub content while keeping block boundaries.
-
-    Mastodon ``Note.content`` is HTML (``<p>``, ``<br>``, ``<a>``); plain
-    tag removal would glue paragraphs into one mashed run. Block closers
-    and ``<br>`` become newlines first so the LLM sees readable prose.
-    """
-    text = _HTML_BLOCK_BREAK_RE.sub("\n\n", text)
-    text = _HTML_LINE_BREAK_RE.sub("\n", text)
-    text = _HTML_TAG_RE.sub("", text)
-    text = html_unescape(text)
-    return _BLANK_LINES_RE.sub("\n\n", text).strip()
 
 
 def _xml_to_html(content: bytes) -> str | None:

@@ -56,6 +56,4 @@ def test_observed_at_carries_channel_last_build_date():
 
 def test_published_at_parsed_as_utc():
     entries = parse_feed_bytes(_FEED_SAMPLE)
-    assert entries[0].source_published_at.year == 2026
-    assert entries[0].source_published_at.month == 4
-    assert entries[0].source_published_at.day == 21
+    assert entries[0].source_published_at == datetime(2026, 4, 21, 8, 30, 0, tzinfo=UTC)

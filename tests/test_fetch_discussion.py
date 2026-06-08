@@ -1,4 +1,3 @@
-import pytest
 from structlog.testing import capture_logs
 
 from app import fetch_discussion as fd
@@ -12,14 +11,6 @@ from app.fetch_discussion import (
 from app.fetch_discussion import (
     _fetch_hn_display_order as _real_fetch_hn_display_order,
 )
-
-
-@pytest.fixture(autouse=True)
-def _stub_hn_display_order(monkeypatch):
-    """Default every test to an empty HN order so fetch_discussion never
-    tries to hit news.ycombinator.com. Tests that care about top comments
-    override this via a local monkeypatch."""
-    monkeypatch.setattr(fd, "_fetch_hn_display_order", lambda _id: [])
 
 
 def _comment(author, text, children=None, points=None, id=None):

@@ -4,6 +4,7 @@ from xml.etree import ElementTree as ET
 from app.models import Article, ContentSource, Status
 from app.publish import build_feed
 from app.storage import save
+from tests.conftest import make_article
 
 
 def _make_article(
@@ -17,18 +18,16 @@ def _make_article(
     our_published_at: datetime | None = None,
 ) -> Article:
     hn_url = f"https://news.ycombinator.com/item?id={hn_item_id}"
-    return Article(
-        guid=guid,
+    return make_article(
+        guid,
         url=hn_url if ask_show else url,
-        hn_url=hn_url,
         hn_item_id=hn_item_id,
         title=title,
         rewritten_title=rewritten_title,
-        source_published_at=datetime(2026, 4, 21, 8, 0, tzinfo=UTC),
-        our_published_at=our_published_at or datetime(2026, 4, 21, 9, 0, tzinfo=UTC),
         status=Status.SUMMARIZED,
         is_ask_or_show_hn=ask_show,
         content_source=ContentSource.ASK_SHOW_HN if ask_show else ContentSource.EXTRACTED,
+        our_published_at=our_published_at or datetime(2026, 4, 21, 9, 0, tzinfo=UTC),
         summarized_at=datetime(2026, 4, 21, 9, 5, tzinfo=UTC),
     )
 

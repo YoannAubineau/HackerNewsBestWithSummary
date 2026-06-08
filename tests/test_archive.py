@@ -3,6 +3,7 @@ from datetime import UTC, datetime
 from app.archive import write_archive
 from app.models import Article, ContentSource, Status
 from app.storage import save, short_hash
+from tests.conftest import make_article
 
 
 def _make_article(
@@ -15,19 +16,16 @@ def _make_article(
     our_published_at: datetime | None = None,
     summarized_at: datetime | None = None,
 ) -> Article:
-    return Article(
-        guid=guid,
-        url="https://example.com/a",
-        hn_url=f"https://news.ycombinator.com/item?id={hn_item_id}",
+    return make_article(
+        guid,
         hn_item_id=hn_item_id,
         title=title,
         rewritten_title=rewritten_title,
-        source_published_at=source_published_at
-        or datetime(2026, 4, 20, 8, 0, tzinfo=UTC),
-        our_published_at=our_published_at
-        or datetime(2026, 4, 21, 9, 0, tzinfo=UTC),
         status=Status.SUMMARIZED,
         content_source=ContentSource.EXTRACTED,
+        source_published_at=source_published_at
+        or datetime(2026, 4, 20, 8, 0, tzinfo=UTC),
+        our_published_at=our_published_at or datetime(2026, 4, 21, 9, 0, tzinfo=UTC),
         summarized_at=summarized_at or datetime(2026, 4, 21, 9, 5, tzinfo=UTC),
     )
 

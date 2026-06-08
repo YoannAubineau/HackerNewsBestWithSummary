@@ -25,31 +25,20 @@ from app.storage import (
     write_sidecar,
 )
 from app.summarize import ArticleSummary
+from tests.conftest import make_article
 
 
 def _make_article(guid: str = "https://news.ycombinator.com/item?id=1") -> Article:
-    return Article(
-        guid=guid,
-        url="https://example.com/a",
-        hn_url="https://news.ycombinator.com/item?id=1",
-        hn_item_id=1,
-        title="t",
-        source_published_at=datetime(2026, 4, 21, 8, 0, tzinfo=UTC),
-        our_published_at=datetime(2026, 4, 21, 9, 0, tzinfo=UTC),
-        status=Status.PENDING,
-    )
+    return make_article(guid, title="t")
 
 
 def _make_ask_hn_article(hn_item_id: int = 42) -> Article:
-    return Article(
-        guid=f"https://news.ycombinator.com/item?id={hn_item_id}",
-        url=f"https://news.ycombinator.com/item?id={hn_item_id}",
-        hn_url=f"https://news.ycombinator.com/item?id={hn_item_id}",
+    guid = f"https://news.ycombinator.com/item?id={hn_item_id}"
+    return make_article(
+        guid,
+        url=guid,
         hn_item_id=hn_item_id,
         title="Ask HN: what's your X?",
-        source_published_at=datetime(2026, 4, 21, 8, 0, tzinfo=UTC),
-        our_published_at=datetime(2026, 4, 21, 9, 0, tzinfo=UTC),
-        status=Status.PENDING,
         is_ask_or_show_hn=True,
     )
 

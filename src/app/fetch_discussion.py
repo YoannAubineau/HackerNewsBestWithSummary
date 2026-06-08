@@ -14,17 +14,14 @@ from tenacity import (
     stop_after_attempt,
     wait_exponential,
 )
-from youtube_transcript_api.proxies import WebshareProxyConfig
 
 from app.config import get_settings
+from app.html_text import TAG_RE, strip_html_preserving_paragraphs
+from app.proxy import webshare_proxy_config
 
 _ALGOLIA_URL = "https://hn.algolia.com/api/v1/items/{id}"
 _HN_STORY_URL = "https://news.ycombinator.com/item?id={id}"
-_TAG_RE = re.compile(r"<[^>]+>")
 _LINK_RE = re.compile(r"<a\b[^>]*>(.*?)</a>", re.IGNORECASE | re.DOTALL)
-_BLOCK_BREAK_RE = re.compile(r"</?(p|div|pre|blockquote|li)\s*>", re.IGNORECASE)
-_LINE_BREAK_RE = re.compile(r"<br\s*/?>", re.IGNORECASE)
-_BLANK_LINES_RE = re.compile(r"\n{3,}")
 _WHITESPACE_RE = re.compile(r"\s+")
 _BLOCKQUOTE_LINE_RE = re.compile(r"^>\s?")
 _COMMENT_ROW_RE = re.compile(
@@ -180,7 +177,7 @@ def fetch_submitter_text(hn_item_id: int) -> str:
     payload = _fetch_algolia_item(hn_item_id)
     if payload is None or not payload.text:
         return ""
-    return _strip_html_preserving_paragraphs(payload.text)
+    return strip_html_preserving_paragraphs(payload.text)
 
 
 def _fetch_algolia_item(hn_item_id: int) -> AlgoliaItem | None:
@@ -220,7 +217,7 @@ def _walk(node: AlgoliaItem, depth: int) -> Iterator[dict]:
 
 
 def _strip_html(text: str) -> str:
-    return html.unescape(_TAG_RE.sub("", text))
+    return html.unescape(TAG_RE.sub("", text))
 
 
 def _link_text_ratio(raw_html: str, cleaned_length: int) -> float:
@@ -231,22 +228,6 @@ def _link_text_ratio(raw_html: str, cleaned_length: int) -> float:
         inner = _WHITESPACE_RE.sub(" ", _strip_html(m.group(1))).strip()
         total += len(inner)
     return total / cleaned_length
-
-
-def _strip_html_preserving_paragraphs(text: str) -> str:
-    """Like ``_strip_html`` but keeps block boundaries as blank lines.
-
-    HN submitter posts are typically wrapped in ``<p>...</p>`` blocks; the
-    plain tag-strip would glue consecutive paragraphs into a single run
-    (``Para 1Para 2``), which the summarization LLM then parses as one
-    mashed token. Converting block-level closers and ``<br>`` into
-    newlines before stripping keeps the prose readable.
-    """
-    text = _BLOCK_BREAK_RE.sub("\n\n", text)
-    text = _LINE_BREAK_RE.sub("\n", text)
-    text = _TAG_RE.sub("", text)
-    text = html.unescape(text)
-    return _BLANK_LINES_RE.sub("\n\n", text).strip()
 
 
 def _wrap_initial_blockquote(text: str) -> str:
@@ -388,7 +369,7 @@ def _fetch_hn_html(hn_item_id: int) -> str:
     retry=retry_if_exception(_is_retryable_hn_proxy_error),
     reraise=True,
 )
-def _fetch_hn_html_via_proxy(hn_item_id: int) -> str:
+def _fetch_hn_html_via_proxy(hn_item_id: int, proxy_url: str) -> str:
     """Up to three attempts against HN through the Webshare residential pool.
 
     Each request comes from a fresh rotating residential IP, which
@@ -400,10 +381,6 @@ def _fetch_hn_html_via_proxy(hn_item_id: int) -> str:
     this. Raises ``httpx.HTTPError`` on failure.
     """
     settings = get_settings()
-    proxy_url = WebshareProxyConfig(
-        proxy_username=settings.webshare_proxy_username,
-        proxy_password=settings.webshare_proxy_password,
-    ).url
     response = httpx.get(
         _HN_STORY_URL.format(id=hn_item_id),
         timeout=settings.http_timeout,
@@ -440,10 +417,8 @@ def _fetch_hn_display_order(hn_item_id: int) -> list[int]:
     try:
         text = _fetch_hn_html(hn_item_id)
     except (httpx.HTTPError, RetryError) as direct_exc:
-        settings = get_settings()
-        if not (
-            settings.webshare_proxy_username and settings.webshare_proxy_password
-        ):
+        proxy_config = webshare_proxy_config()
+        if proxy_config is None:
             log.warning(
                 "hn_display_order_fetch_failed",
                 hn_item_id=hn_item_id,
@@ -451,7 +426,7 @@ def _fetch_hn_display_order(hn_item_id: int) -> list[int]:
             )
             return []
         try:
-            text = _fetch_hn_html_via_proxy(hn_item_id)
+            text = _fetch_hn_html_via_proxy(hn_item_id, proxy_config.url)
         except httpx.HTTPError as proxy_exc:
             log.warning(
                 "hn_display_order_proxy_failed",
@@ -497,7 +472,7 @@ def _select_top_comments(
         node = by_id.get(cid)
         if node is None or node.author is None or node.text is None:
             continue
-        with_paragraphs = _strip_html_preserving_paragraphs(node.text)
+        with_paragraphs = strip_html_preserving_paragraphs(node.text)
         wrapped = _wrap_initial_blockquote(with_paragraphs)
         cleaned = _WHITESPACE_RE.sub(" ", wrapped).strip()
         if not cleaned:

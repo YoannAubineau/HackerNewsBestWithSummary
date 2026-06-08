@@ -20,6 +20,7 @@ from app.storage import (
     ensure_articles_dir,
     find_existing,
     iter_by_status,
+    iter_summarized,
     move_to_failed,
     path_for,
     read_sidecar,
@@ -37,6 +38,11 @@ from app.summarize import (
 from app.usage import today_spend
 
 log = structlog.get_logger()
+
+
+def _delete_article(path: Path) -> None:
+    clear_sidecars(path)
+    path.unlink(missing_ok=True)
 
 
 class CycleResult(NamedTuple):
@@ -126,8 +132,7 @@ def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int
             canonical_guid = f"https://news.ycombinator.com/item?id={canonical_id}"
 
             if find_existing(canonical_guid) is not None:
-                clear_sidecars(path)
-                path.unlink(missing_ok=True)
+                _delete_article(path)
                 log.info(
                     "dupe_skipped",
                     guid=article.guid,
@@ -162,8 +167,7 @@ def step_fetch_discussions(failures: list[tuple[str, str]] | None = None) -> int
                 continue
 
             dupe_id = article.hn_item_id
-            clear_sidecars(path)
-            path.unlink(missing_ok=True)
+            _delete_article(path)
             article.hn_item_id = canonical_id
             article.guid = canonical_guid
             article.hn_url = canonical_guid
@@ -381,8 +385,6 @@ def reprocess_placeholders() -> int:
     extractors. Caller is responsible for bypassing the daily cost
     breaker if the resulting reprocessing batch would exceed it.
     """
-    from app.storage import iter_summarized
-
     reset = 0
     for path, article, body in list(iter_summarized()):
         if not (
@@ -421,8 +423,6 @@ def backfill_images() -> int:
     carry an image_url, Ask/Show HN entries, and URLs we fail to fetch
     are skipped in place.
     """
-    from app.storage import iter_summarized
-
     filled = 0
     for _path, article, body in list(iter_summarized()):
         if article.image_url:

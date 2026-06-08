@@ -19,6 +19,7 @@ from app.storage import (
     sidecar_path,
     write_sidecar,
 )
+from tests.conftest import make_article
 
 
 def _make_article(
@@ -27,12 +28,8 @@ def _make_article(
     source_published_at: datetime = datetime(2026, 4, 21, 8, 30, tzinfo=UTC),
     our_published_at: datetime = datetime(2026, 4, 22, 9, 0, tzinfo=UTC),
 ) -> Article:
-    return Article(
-        guid=guid,
-        url="https://example.com/a",
-        hn_url="https://news.ycombinator.com/item?id=1",
-        hn_item_id=1,
-        title="Titre",
+    return make_article(
+        guid,
         source_published_at=source_published_at,
         our_published_at=our_published_at,
     )
