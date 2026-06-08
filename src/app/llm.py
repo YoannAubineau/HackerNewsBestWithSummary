@@ -39,15 +39,22 @@ _CONTEXT_REQUESTED_RE = re.compile(r"requested about\s+([\d,]+)", re.IGNORECASE)
 
 
 def _context_length_error(model: str, body: str) -> ContextLengthExceededError | None:
-    """Return a ContextLengthExceededError if ``body`` is a context-window 400."""
+    """Return a ContextLengthExceededError if ``body`` is a context-window 400.
+
+    The limit prefers the model's known context window (an intrinsic property)
+    and falls back to the number parsed from the message, so a change in the
+    provider's error wording cannot blind the truncation retry.
+    """
     lowered = body.lower()
     if "context length" not in lowered and "context_length" not in lowered:
         return None
     limit = _CONTEXT_LIMIT_RE.search(body)
     requested = _CONTEXT_REQUESTED_RE.search(body)
+    known_limit = get_settings().model_context_windows.get(model)
+    parsed_limit = int(limit.group(1).replace(",", "")) if limit else None
     return ContextLengthExceededError(
         f"{model}: context length exceeded",
-        limit=int(limit.group(1).replace(",", "")) if limit else None,
+        limit=known_limit or parsed_limit,
         requested=int(requested.group(1).replace(",", "")) if requested else None,
     )
 

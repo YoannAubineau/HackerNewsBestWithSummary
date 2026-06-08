@@ -19,6 +19,15 @@ class Settings(BaseSettings):
         "nvidia/nemotron-3-super-120b-a12b:free",
         "meta-llama/llama-3.3-70b-instruct:free",
     )
+    # Known context window (tokens) per model id. Used to size the truncation
+    # retry without depending on the provider's context-length 400 spelling the
+    # limit out: the number is an intrinsic model property, while the error
+    # wording is an OpenRouter detail that can change. Only models we are sure
+    # of are listed; an unlisted model falls back to the limit parsed from the
+    # message, then to blind halving.
+    model_context_windows: dict[str, int] = {
+        "anthropic/claude-haiku-4.5": 200_000,
+    }
 
     source_feed_url: str = "https://hnrss.org/best"
     feed_self_url: str = "http://localhost/feed.fr.xml"
