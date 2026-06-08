@@ -1,6 +1,7 @@
 ---
 article_fetched_at: '2026-05-19T05:19:28.215282Z'
 attempts: 0
+content_failure_reason: extraction failed
 content_source: feed_fallback
 discussion_comment_count: 56
 discussion_fetched_at: '2026-05-19T05:19:25.958524Z'
@@ -26,7 +27,7 @@ url: https://clickclickclick.click/
 
 ## Résumé de l'article
 
-(unable to load content)
+(unable to load content: extraction failed)
 
 ## Discussion sur Hacker News (56 commentaires)
 

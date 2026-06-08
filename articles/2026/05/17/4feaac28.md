@@ -1,6 +1,7 @@
 ---
 article_fetched_at: '2026-05-18T13:11:14.164642Z'
 attempts: 0
+content_failure_reason: access denied
 content_source: feed_fallback
 discussion_comment_count: 239
 discussion_fetched_at: '2026-05-18T13:10:27.219721Z'
@@ -26,7 +27,7 @@ url: https://www.techspot.com/news/112410-security-researcher-microsoft-secretly
 
 ## Résumé de l'article
 
-(unable to load content)
+(unable to load content: access denied)
 
 ## Discussion sur Hacker News (239 commentaires)
 
