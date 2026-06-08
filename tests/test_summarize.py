@@ -311,6 +311,60 @@ def test_summarize_article_raises_after_exhausting_truncation(monkeypatch):
         summarize_article("mot " * 100000, "Titre")
 
 
+def test_looks_french_detects_language():
+    assert summarize._looks_french(
+        "Ceci est un résumé qui décrit les faits dans le détail."
+    )
+    assert not summarize._looks_french(
+        "This is an English summary describing the facts in detail and more."
+    )
+    assert summarize._looks_french("")
+
+
+def test_summarize_article_translates_non_french_output(monkeypatch):
+    calls: list[bool] = []
+
+    def fake_complete(system, user, *, json=False):
+        calls.append(json)
+        if json:
+            return _call_result(
+                '{"title": "An English title about the book", '
+                '"summary": "This is an English summary of the novel and its plot.", '
+                '"content_usable": true}'
+            )
+        if "summary_to_translate" in user:
+            return _call_result(
+                "Ceci est un résumé français du roman qui décrit les faits."
+            )
+        return _call_result("un titre français au sujet du roman")
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    result, call = summarize_article("English novel text", "Titre original")
+    assert summarize._looks_french(result.summary_markdown)
+    assert "résumé français" in result.summary_markdown
+    assert result.rewritten_title == "un titre français au sujet du roman"
+    # summarize call + summary translation + title translation
+    assert len(calls) == 3
+    # the translation calls' tokens are folded into the returned metrics
+    assert call.input_tokens > _call_result("x").input_tokens
+
+
+def test_summarize_article_skips_translation_when_already_french(monkeypatch):
+    calls: list[bool] = []
+
+    def fake_complete(system, user, *, json=False):
+        calls.append(json)
+        return _call_result(
+            '{"title": "un titre", '
+            '"summary": "Ceci est un résumé qui décrit les faits dans le détail.", '
+            '"content_usable": true}'
+        )
+
+    monkeypatch.setattr(summarize, "complete", fake_complete)
+    summarize_article("texte", "Titre")
+    assert calls == [True]  # only the summarize call, no translation pass
+
+
 def test_summarize_discussion_wraps_inputs_in_xml_tags(monkeypatch):
     captured: dict = {}
 
