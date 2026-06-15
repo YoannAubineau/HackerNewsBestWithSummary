@@ -184,7 +184,9 @@ hourly on a public repo, so minutes are free.
 - `src/app/summarize.py`, three prompts (article + title rewrite in one
   call, discussion synthesis, and a cheap title-only translation used when
   the article is `js_required`). French output, strict `## Titre` /
-  `## Résumé` format that we parse back.
+  `## Résumé` format that we parse back. `step_summarize` has a verbatim
+  branch (guarded by `is_ask_hn_title`) that bypasses the article LLM for
+  Ask HN posts — see the Ask HN gotcha below.
 - `src/app/publish.py`, builds `feed.fr.xml` with `feedgen`. Items ordered
   by `our_published_at` desc (date of entry in our feed), so the XSLT
   preview shows the most recently ingested articles on top. Per-item
@@ -223,6 +225,20 @@ hourly on a public repo, so minutes are free.
   rewritten identity is saved at `pending` before parking so the new
   on-disk entry exists at the canonical guid for re-pickup; the old
   per-dupe path is already gone by then.
+- **Ask HN posts are published verbatim**: when the title starts with
+  "Ask HN" (`is_ask_hn_title`, a prefix match), `step_summarize` skips the
+  article LLM entirely — the author's own post body (already fetched into
+  the `article` sidecar by `step_fetch_articles`) is rendered as-is with no
+  `## Résumé de l'article` heading (`compose_body(article_heading=None)`),
+  and `rewritten_title` stays `None` so publish falls back to the original
+  title. The discussion synthesis (Avis +/- , Top commentaires) still runs.
+  The gate also requires `content_source == ASK_SHOW_HN`, which is always
+  true at `step_summarize` entry for an Ask HN (set unconditionally in
+  `step_fetch_articles`); this guards against ever dumping an external
+  article body verbatim. A prefix match (not `contains`) is deliberate:
+  it excludes Show HN / Tell HN self-posts and normal titles that merely
+  mention "Show HN" mid-string. Only "Ask HN" gets verbatim treatment
+  because the exact wording of the question is the value.
 - **HN HTML is the only source for comment ranking**: per-comment scores
   are not exposed by Algolia or Firebase, and Algolia returns children
   in chronological (ID-ascending) order, not HN's best order. The

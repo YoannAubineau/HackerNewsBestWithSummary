@@ -298,14 +298,12 @@ _HN_ITEM_URL = "https://news.ycombinator.com/item?id={id}"
 _MARKDOWN_SPECIAL_RE = re.compile(r"([\\\[\]()*_`#<>])")
 
 
-def _escape_markdown(text: str) -> str:
-    """Backslash-escape Markdown control characters.
+def escape_markdown(text: str) -> str:
+    """Backslash-escape Markdown control characters in untrusted plain text.
 
-    Commenters control both their handle and their text. Without this,
-    an author named ``[admin](https://evil)`` or a comment whose text
-    contains ``[clic ici](https://evil)`` would inject an active link
-    into the rendered Markdown — and into the upstream LLM context, which
-    receives this same string before producing the discussion summary.
+    HN users control comment and submitter text. Without this, text such as
+    ``[clic ici](https://evil)`` would inject an active link into rendered
+    Markdown. Backslash escaping preserves the displayed text.
     """
     return _MARKDOWN_SPECIAL_RE.sub(r"\\\1", text)
 
@@ -519,7 +517,7 @@ def render_top_comments(comments: list[TopComment]) -> str:
     lines = ["**Top commentaires** :", ""]
     for c in comments:
         url = _HN_ITEM_URL.format(id=c.id)
-        author = _escape_markdown(c.author)
-        text = _escape_markdown(c.text)
+        author = escape_markdown(c.author)
+        text = escape_markdown(c.text)
         lines.append(f"- [{author}]({url}) : {text}")
     return "\n".join(lines)

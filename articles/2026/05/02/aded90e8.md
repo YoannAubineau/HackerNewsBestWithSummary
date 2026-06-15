@@ -5,40 +5,6 @@ content_source: ask_show_hn
 discussion_comment_count: 260
 discussion_fetched_at: '2026-05-02T05:01:35.297712Z'
 error: null
-feed_summary: '<p>Please state the location and include REMOTE for remote work, REMOTE
-  (US)
-
-  or similar if the country is restricted, and ONSITE when remote work is <i>not</i>
-  an option.<p>Please only post if you personally are part of the hiring company—no
-
-  recruiting firms or job boards. One post per company. If it isn''t a household name,
-
-  explain what your company does.<p>Please only post if you are actively filling a
-  position and are committed
-
-  to replying to applicants.<p>Commenters: please don''t reply to job posts to complain
-  about
-
-  something. It''s off topic here.<p>Readers: please only email if you are personally
-  interested in the job.<p>Searchers: try <a href="https://nthesis.ai/public/hn-who-is-hiring"
-  rel="nofollow">https://nthesis.ai/public/hn-who-is-hiring</a>, <a href="https://dheerajck.github.io/hnwhoishiring/"
-  rel="nofollow">https://dheerajck.github.io/hnwhoishiring/</a>, <a href="http://nchelluri.github.io/hnjobs/"
-  rel="nofollow">http://nchelluri.github.io/hnjobs/</a>,
-
-  <a href="https://hnjobs.emilburzo.com" rel="nofollow">https://hnjobs.emilburzo.com</a>,
-  or this (unofficial) Chrome extension:
-
-  <a href="https://chromewebstore.google.com/detail/hn-hiring-pro/mpfaljjblphnlloddaplgicpkinikjlp"
-  rel="nofollow">https://chromewebstore.google.com/detail/hn-hiring-pro/mpfal...</a>.<p>Don''t
-  miss this other fine thread: <i>Who wants to be hired?</i> <a href="https://news.ycombinator.com/item?id=47975570">https://news.ycombinator.com/item?id=47975570</a></p>
-
-  <hr />
-
-  <p>Comments URL: <a href="https://news.ycombinator.com/item?id=47975571">https://news.ycombinator.com/item?id=47975571</a></p>
-
-  <p>Points: 238</p>
-
-  <p># Comments: 261</p>'
 guid: https://news.ycombinator.com/item?id=47975571
 hn_item_id: 47975571
 hn_url: https://news.ycombinator.com/item?id=47975571
@@ -49,8 +15,6 @@ llm_models_used:
 - anthropic/claude-4.5-haiku-20251001
 llm_output_tokens: 817
 our_published_at: '2026-05-02T04:14:12Z'
-rewritten_title: Thread mensuel de Hacker News pour les entreprises qui recrutent,
-  mai 2026
 source_published_at: '2026-05-01T15:00:07Z'
 status: summarized
 summarized_at: '2026-05-02T05:01:51.920082Z'
@@ -58,15 +22,26 @@ title: 'Ask HN: Who is hiring? (May 2026)'
 url: https://news.ycombinator.com/item?id=47975571
 ---
 
-## Résumé de l'article
+Please state the location and include REMOTE for remote work, REMOTE (US)
+or similar if the country is restricted, and ONSITE when remote work is not an option.
 
-Hacker News propose un fil de discussion mensuel où les entreprises publient directement leurs offres d'emploi. Ce thread de mai 2026 établit les règles de participation : les posteurs doivent être des employés de l'entreprise qui recrute, déclarer la localisation ou le statut de télétravail, et s'engager à répondre aux candidats.
+Please only post if you personally are part of the hiring company—no
+recruiting firms or job boards. One post per company. If it isn't a household name,
+explain what your company does.
 
-- Les recruteurs externes et les agences d'emploi sont explicitement exclus ; seuls les employés internes peuvent poster
-- Chaque entreprise non connue du grand public doit expliquer son activité en quelques mots
-- Plusieurs outils tiers permettent de consulter et filtrer l'ensemble des offres du thread (nthesis.ai, dheerajck.github.io, hnjobs.emilburzo.com, extension Chrome)
-- Un thread parallèle « Who wants to be hired » existe pour que les candidats se présentent aux entreprises
-- Les commentaires non pertinents et les plaintes sont découragés dans ce fil dédié aux annonces
+Please only post if you are actively filling a position and are committed
+to replying to applicants.
+
+Commenters: please don't reply to job posts to complain about
+something. It's off topic here.
+
+Readers: please only email if you are personally interested in the job.
+
+Searchers: try https://nthesis.ai/public/hn-who-is-hiring, https://dheerajck.github.io/hnwhoishiring/, http://nchelluri.github.io/hnjobs/,
+https://hnjobs.emilburzo.com, or this (unofficial) Chrome extension:
+https://chromewebstore.google.com/detail/hn-hiring-pro/mpfal....
+
+Don't miss this other fine thread: Who wants to be hired? https://news.ycombinator.com/item?id=47975570
 
 ## Discussion sur Hacker News (260 commentaires)
 

@@ -10,6 +10,7 @@ from app.summarize import (
     _sanitize_llm_markdown,
     compose_body,
     format_tweet_verbatim,
+    is_ask_hn_title,
     summarize_article,
     summarize_discussion,
     translate_title,
@@ -123,6 +124,44 @@ def test_compose_body_singular_for_one_comment():
         hn_url="https://news.ycombinator.com/item?id=1",
     )
     assert "(1 commentaire)" in body
+
+
+@pytest.mark.parametrize(
+    ("title", "expected"),
+    [
+        ("Ask HN: How do you test?", True),
+        ("  ask hn: lowercase", True),
+        ("Show HN: my project", False),
+        ("Tell HN: a notice", False),
+        ("Scoring Show HN submissions for AI design patterns", False),
+        ("A normal article title", False),
+    ],
+)
+def test_is_ask_hn_title(title, expected):
+    assert is_ask_hn_title(title) is expected
+
+
+def test_compose_body_without_article_heading():
+    body = compose_body(
+        article_summary="Question brute de l'auteur.",
+        discussion_summary="**Confirmations** :\n- yes",
+        url="https://news.ycombinator.com/item?id=1",
+        hn_url="https://news.ycombinator.com/item?id=1",
+        article_heading=None,
+    )
+    assert "## Résumé de l'article" not in body
+    assert "Question brute de l'auteur." in body
+    assert "## Discussion sur Hacker News" in body
+
+
+def test_compose_body_keeps_default_article_heading():
+    body = compose_body(
+        article_summary="Un résumé.",
+        discussion_summary=None,
+        url="https://example.com/a",
+        hn_url="https://news.ycombinator.com/item?id=1",
+    )
+    assert "## Résumé de l'article\n\nUn résumé." in body
 
 
 def test_compose_body_omits_count_when_none():
