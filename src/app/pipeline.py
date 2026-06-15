@@ -10,7 +10,7 @@ import structlog
 from app.archive import write_archive
 from app.config import get_settings
 from app.fetch_article import fetch_article
-from app.fetch_discussion import fetch_discussion, fetch_submitter_text
+from app.fetch_discussion import escape_markdown, fetch_discussion, fetch_submitter_text
 from app.llm import AllModelsFailedError, LLMCallResult, LLMError
 from app.models import Article, ContentSource, Status
 from app.publish import write_feed
@@ -29,6 +29,7 @@ from app.storage import (
 from app.summarize import (
     compose_body,
     format_tweet_verbatim,
+    is_ask_hn_title,
     summarize_article,
     summarize_discussion,
     translate_title,
@@ -247,8 +248,18 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
             article_summary: str | None = None
             discussion_summary: str | None = None
             calls: list[LLMCallResult] = []
+            article_heading: str | None = "## Résumé de l'article"
 
-            if article.content_source in (
+            if article.content_source == ContentSource.ASK_SHOW_HN and is_ask_hn_title(
+                article.title
+            ):
+                # Ask HN: keep the author's question/title verbatim, no LLM
+                # rewrite or summary. rewritten_title stays None so publish
+                # falls back to the original title. The HN discussion synthesis
+                # below still runs.
+                article_summary = escape_markdown(article_text) if article_text else None
+                article_heading = None
+            elif article.content_source in (
                 ContentSource.JS_REQUIRED,
                 ContentSource.FEED_FALLBACK,
             ):
@@ -302,6 +313,7 @@ def step_summarize(failures: list[tuple[str, str]] | None = None) -> int:
                 top_comments_markdown=top_comments_md,
                 url=article.url,
                 hn_url=article.hn_url,
+                article_heading=article_heading,
             )
             article.status = Status.SUMMARIZED
             article.summarized_at = _now()

@@ -1094,6 +1094,55 @@ def test_step_summarize_long_tweet_uses_summarize_article(isolated_settings, mon
     assert "- résumé" in final_body
 
 
+def test_step_summarize_ask_hn_keeps_title_and_body_verbatim(
+    isolated_settings, monkeypatch
+):
+    isolated_settings.llm_sleep_seconds = 0
+    article = _make_ask_hn_article(hn_item_id=77)
+    article.title = "Ask HN: How do you test?"
+    article.status = Status.ARTICLE_FETCHED
+    article.content_source = ContentSource.ASK_SHOW_HN
+    path = save(article)
+    write_sidecar(
+        path,
+        "article",
+        "Voici ma question, posée *telle quelle*. "
+        "[clic](https://evil.example) ![pixel](https://evil.example/p.png) "
+        "<https://evil.example/autolink>",
+    )
+    write_sidecar(path, "discussion", "raw discussion")
+
+    def boom_summarize_article(text, title):  # noqa: ARG001
+        raise AssertionError("summarize_article must not run for Ask HN posts")
+
+    def boom_translate_title(title):  # noqa: ARG001
+        raise AssertionError("translate_title must not run for Ask HN posts")
+
+    def fake_summarize_discussion(text, title):  # noqa: ARG001
+        return "**Avis positifs** :\n- ok", LLMCallResult(
+            content="", model="m", input_tokens=1, output_tokens=1, latency_ms=1,
+        )
+
+    monkeypatch.setattr(pipeline, "summarize_article", boom_summarize_article)
+    monkeypatch.setattr(pipeline, "translate_title", boom_translate_title)
+    monkeypatch.setattr(pipeline, "summarize_discussion", fake_summarize_discussion)
+    monkeypatch.setattr(pipeline, "today_spend", lambda: None)
+
+    assert pipeline.step_summarize() == 1
+
+    reloaded, final_body = load(path)
+    assert reloaded.status == Status.SUMMARIZED
+    assert reloaded.rewritten_title is None  # publish falls back to original title
+    assert reloaded.content_source == ContentSource.ASK_SHOW_HN
+    assert r"Voici ma question, posée \*telle quelle\*." in final_body
+    assert r"\[clic\]\(https://evil.example\)" in final_body
+    assert r"!\[pixel\]\(https://evil.example/p.png\)" in final_body
+    assert r"\<https://evil.example/autolink\>" in final_body
+    assert "## Résumé de l'article" not in final_body
+    assert "## Discussion sur Hacker News" in final_body
+    assert "**Avis positifs** :" in final_body
+
+
 def test_step_summarize_records_llm_metrics(isolated_settings, monkeypatch):
     isolated_settings.llm_sleep_seconds = 0
     article = _make_article("guid-metrics")

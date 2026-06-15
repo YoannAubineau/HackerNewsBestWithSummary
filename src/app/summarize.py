@@ -271,6 +271,16 @@ def summarize_discussion(text: str, title: str) -> tuple[str, LLMCallResult]:
     return markdown, result
 
 
+def is_ask_hn_title(title: str) -> bool:
+    """True when the HN title is an Ask HN post (verbatim handling).
+
+    HN reserves the ``Ask HN:`` prefix for self-posts, so a prefix match is
+    both correct and safe: it excludes Show HN / Tell HN and normal articles
+    that merely mention "Show HN" mid-title.
+    """
+    return title.strip().lower().startswith("ask hn")
+
+
 def tweet_body_char_count(article_text: str) -> int:
     """Length of the tweet body (text + optional quote), excluding attribution."""
     parts = article_text.split("\n\n", 1)
@@ -305,10 +315,14 @@ def compose_body(
     top_comments_markdown: str | None = None,
     url: str,
     hn_url: str,
+    article_heading: str | None = "## Résumé de l'article",
 ) -> str:
     parts: list[str] = []
     if article_summary:
-        parts.append("## Résumé de l'article\n\n" + article_summary.strip())
+        block = article_summary.strip()
+        if article_heading:
+            block = f"{article_heading}\n\n{block}"
+        parts.append(block)
     if discussion_summary:
         heading = "## Discussion sur Hacker News"
         if discussion_comment_count:
