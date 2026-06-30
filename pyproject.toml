@@ -17,15 +17,15 @@ dependencies = [
     "tenacity>=9.0",
     "structlog>=26.1.0",
     "youtube-transcript-api>=1.2.4",
-    "pypdfium2>=5.9.0",
+    "pypdfium2>=5.10.1",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=8.3",
+    "pytest>=9.1.1",
     "pytest-httpx>=0.32",
     "pyright>=1.1.410",
-    "ruff>=0.15.16",
+    "ruff>=0.15.19",
 ]
 
 [build-system]
