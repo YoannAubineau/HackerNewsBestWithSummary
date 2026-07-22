@@ -13,11 +13,11 @@ dependencies = [
     "markdown-it-py>=4.2.0",
     "pydantic>=2.13.4",
     "pydantic-settings>=2.14.2",
-    "typer>=0.26.8",
+    "typer>=0.27.0",
     "tenacity>=9.0",
     "structlog>=26.1.0",
     "youtube-transcript-api>=1.2.4",
-    "pypdfium2>=5.11.0",
+    "pypdfium2>=5.12.1",
 ]
 
 [dependency-groups]
@@ -25,7 +25,7 @@ dev = [
     "pytest>=9.1.1",
     "pytest-httpx>=0.32",
     "pyright>=1.1.411",
-    "ruff>=0.15.20",
+    "ruff>=0.15.22",
 ]
 
 [build-system]
